@@ -551,6 +551,21 @@ function buildClaims(): Claim[] {
       expected: String(stats.concerts),
     },
 
+    // ---- public/llm.txt: the scenes. It described five for months after Ask shipped as
+    // the sixth, in the order the scenes had before the Venues/Artists swap.
+    {
+      file: 'public/llm.txt',
+      label: 'scene count',
+      pattern: /The site has (\d+) scenes, in this order:/,
+      expected: String(sceneCount),
+    },
+    {
+      file: 'public/llm.txt',
+      label: 'scene roster',
+      pattern: /The site has \d+ scenes, in this order: (.+)\./,
+      expected: roster,
+    },
+
     // ---- public/llm.txt: the v6.0 data-file counts (#290).
     //
     // llm.txt was OUTSIDE this gate until now, and it is the file whose stats
@@ -629,6 +644,27 @@ interface Failure {
   pattern: RegExp
 }
 
+/**
+ * Separators with nothing between them, in the two files AI tools read.
+ *
+ * update:meta rewrites llm.txt's statistics section on every data refresh. Before
+ * its delete reached the insertion anchor, each run left one `---` behind, and 46
+ * of them piled up in the published file before anyone looked. The writer is
+ * idempotent now; this makes a regression fail instead of accumulating.
+ */
+function checkSeparators(): Failure[] {
+  // Each separator followed by another counts once, so the count is the number of strays.
+  const pattern = /^---\n\s*\n(?=---$)/gm
+  const failures: Failure[] = []
+  for (const file of ['public/llm.txt', 'public/llms.txt']) {
+    const stray = readRepoFile(file).match(pattern)?.length ?? 0
+    if (stray > 0) {
+      failures.push({ file, label: 'back-to-back --- separators', reason: 'mismatch', expected: '0', actual: String(stray), pattern })
+    }
+  }
+  return failures
+}
+
 export function validateDocs(): Failure[] {
   const failures: Failure[] = []
 
@@ -645,6 +681,7 @@ export function validateDocs(): Failure[] {
 
   failures.push(...checkDerivationUse())
   failures.push(...checkTableRosters())
+  failures.push(...checkSeparators())
 
   const fileCache = new Map<string, string>()
 

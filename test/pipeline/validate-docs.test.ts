@@ -87,6 +87,19 @@ function goodLlmsTxt() {
   ].join('\n')
 }
 
+function goodLlmTxt() {
+  return [
+    `## Deep Linking System`,
+    ``,
+    `### Scene Navigation`,
+    `The site has ${SCENE_NAMES.length} scenes, in this order: ${ROSTER}.`,
+    ``,
+    `---`,
+    ``,
+    `## Page Structure & Semantic Hierarchy`,
+  ].join('\n')
+}
+
 const SCENE_WORD_LOWER = SCENE_WORD.toLowerCase()
 
 function goodSceneDesignGuide() {
@@ -213,6 +226,7 @@ function mockFiles(overrides: Partial<Record<string, string>> = {}) {
     'ROADMAP.md': goodRoadmap(),
     'CLAUDE.md': goodClaudeMd(),
     'public/llms.txt': goodLlmsTxt(),
+    'public/llm.txt': goodLlmTxt(),
     'docs/architecture.svg': goodArchitectureSvg(),
     'docs/design/scene-design-guide.md': goodSceneDesignGuide(),
     'docs/design/ui-component-patterns.md': goodUiComponentPatterns(),
@@ -410,6 +424,29 @@ describe('validate-docs', () => {
         'no-match',
         'no-match',
       ])
+    })
+  })
+
+  describe('public/llm.txt', () => {
+    // It listed five scenes, in the old order, for months after Ask shipped as the sixth.
+    it('flags a scene missing from the roster', async () => {
+      const short = SCENE_NAMES.slice(0, -1).map((n) => SCENE_LABELS[n]).join(', ')
+      mockFiles({
+        'public/llm.txt': goodLlmTxt().replace(`${SCENE_NAMES.length} scenes, in this order: ${ROSTER}`, `${SCENE_NAMES.length - 1} scenes, in this order: ${short}`),
+      })
+      const failures = await runValidator()
+
+      expect(failures.map((f) => f.label).sort()).toEqual(['scene count', 'scene roster'])
+      expect(failures.find((f) => f.label === 'scene roster')?.actual).toBe(short)
+    })
+
+    // update:meta used to leave one `---` behind on every data refresh; 46 piled up.
+    it('flags back-to-back separators', async () => {
+      mockFiles({ 'public/llm.txt': goodLlmTxt().replace('---\n', '---\n\n---\n\n---\n') })
+      const failures = await runValidator()
+
+      expect(failures).toHaveLength(1)
+      expect(failures[0]).toMatchObject({ file: 'public/llm.txt', label: 'back-to-back --- separators', actual: '2' })
     })
   })
 
