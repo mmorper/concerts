@@ -39,6 +39,11 @@ describe("system prompt — photos and clips", () => {
 
   it("forbids describing what it cannot see", () => {
     expect(prompt).toContain("You cannot see any photo or clip");
+    expect(prompt).toContain("never \"them tearing through");
+  });
+
+  it("keeps media on the nights the line names", () => {
+    expect(prompt).toContain("Place it on those nights only");
   });
 });
 
