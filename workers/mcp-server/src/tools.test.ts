@@ -204,6 +204,16 @@ describe("get_archive_info", () => {
     expect(text).toContain("seen most: The Act (2), Solo (1)");
   });
 
+  it("doesn't claim to have been to shows that haven't happened", () => {
+    const past = night("Past");
+    const future = { ...night("Future"), date: "2030-01-01", year: 2030 };
+    const text = archiveInfo([past, future], null, undefined, "2026-11-02");
+    expect(text).toContain("I've been to 1 concerts");
+    expect(text).toContain("from 2020 to 2020");
+    expect(text).toContain("1 more show is on the calendar.");
+    expect(text).not.toContain("Future");
+  });
+
   it("counts an act once on a night it appears on twice", () => {
     expect(archiveInfo([night("Twice", ["Twice"])], null)).toContain("seen most: Twice (1)");
   });

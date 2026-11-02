@@ -260,10 +260,14 @@ function topActs(concerts: Concert[], aliases: AliasIndex): [string, number][] {
 // ===================================================================
 
 export function archiveInfo(
-  concerts: Concert[],
+  allConcerts: Concert[],
   facts: FactsData | null,
   aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+  today: string = new Date().toISOString().slice(0, 10),
 ): string {
+  // "I've been to" can only mean shows that have happened.
+  const concerts = allConcerts.filter((c) => c.date < today);
+  const upcoming = allConcerts.length - concerts.length;
   const sorted = [...concerts].sort(byDate);
   const total = sorted.length;
   if (total === 0) return "The archive is empty right now.";
@@ -325,6 +329,7 @@ export function archiveInfo(
     `My busiest decade was the ${topDecade[0]}, with ${topDecade[1]} shows.`,
   ];
   if (genreLine) lines.push(genreLine);
+  if (upcoming > 0) lines.push(`${upcoming} more ${upcoming === 1 ? "show is" : "shows are"} on the calendar.`);
   lines.push(
     "",
     `The longest I went without a show was ${maxGap} days, between ${gapA.headliner} in ${monYear(gapA.date)} and ${gapB.headliner} in ${monYear(gapB.date)}.`,

@@ -37,6 +37,16 @@ const published = (media: MediaIndexFile): MediaAsset[] => media.assets.filter((
 
 const plural = (n: number, noun: string) => `${n} ${noun}${n === 1 ? "" : "s"}`;
 
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+/** "2026-09-16" -> "16 September 2026". Split rather than parsed: no timezone can slip it. */
+function fullDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${MONTHS[m - 1]} ${y}`;
+}
+
+const nightsOf = (assets: MediaAsset[]) => [...new Set(assets.map((a) => a.date))].sort();
+
 /** "3 photos and 1 clip", or just the half that exists. Empty for no assets. */
 function counts(assets: MediaAsset[]): string {
   const clips = assets.filter((a) => a.kind === "video").length;
@@ -71,9 +81,15 @@ export function artistMediaNote(
     (a) => a.artistNormalized !== null && slugs.includes(a.artistNormalized),
   );
   if (!mine.length) return "";
-  const nights = new Set(mine.map((a) => a.date)).size;
-  const across = nights > 1 ? ` across ${nights} nights` : "";
-  return `**${MEDIA_NOTE_LABEL}:** ${counts(mine)} of ${name}${across}.${songSentence(mine)}`;
+  /* 🔴 NAME THE NIGHT. A bare count let the model spread nine photos from one 2026 show "across
+     those three shows from 1984 through 2026", which is the false attribution the media rules
+     exist to prevent. Stating the nights leaves nothing to infer. */
+  const parts = nightsOf(mine).map((date) => {
+    const night = mine.filter((a) => a.date === date);
+    const list = songs(night);
+    return `${counts(night)} from ${fullDate(date)}${list ? ` (${list})` : ""}`;
+  });
+  return `**${MEDIA_NOTE_LABEL}:** ${name}: ${parts.join("; ")}. None from any other night.`;
 }
 
 /** One night, act by act, then the room. Never a single total under the headliner's name. */
@@ -104,8 +120,10 @@ export function nightsMediaNote(media: MediaIndexFile | null, dates: readonly st
   const wanted = new Set(dates);
   const found = published(media).filter((a) => wanted.has(a.date));
   if (!found.length) return "";
-  const nights = new Set(found.map((a) => a.date)).size;
-  const from = wanted.size === 1 ? "this night" : `${nights} of these ${wanted.size} nights`;
+  const nights = nightsOf(found);
+  const from = wanted.size === 1
+    ? "this night"
+    : `${nights.length} of these ${wanted.size} nights: ${nights.map(fullDate).join(", ")}`;
   return `**${MEDIA_NOTE_LABEL}:** ${counts(found)} from ${from}.${songSentence(found)}`;
 }
 

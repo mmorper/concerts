@@ -41,13 +41,15 @@ const media: MediaIndexFile = {
 describe("artistMediaNote", () => {
   it("counts the act across nights and names the clips' songs", () => {
     expect(artistMediaNote(media, "Thompson Twins", ["thompson-twins"])).toBe(
-      "**Media on the site:** 3 photos and 2 clips of Thompson Twins across 2 nights. The clips show “Lies”, “In the Name of Love”.",
+      "**Media on the site:** Thompson Twins: 1 photo from 1 January 2019; 2 photos and 2 clips from 16 September 2026 (“Lies”, “In the Name of Love”). None from any other night.",
     );
   });
 
   it("collapses every billing of one act", () => {
     const billed = { assets: [still("2020-01-01", "A", "a"), still("2021-01-01", "A Band", "a-band")] };
-    expect(artistMediaNote(billed, "A", ["a", "a-band"])).toContain("2 photos of A across 2 nights");
+    expect(artistMediaNote(billed, "A", ["a", "a-band"])).toBe(
+      "**Media on the site:** A: 1 photo from 1 January 2020; 1 photo from 1 January 2021. None from any other night.",
+    );
   });
 
   it("says nothing about an act with no media", () => {
@@ -56,7 +58,7 @@ describe("artistMediaNote", () => {
 
   it("does not credit a room frame to an act", () => {
     expect(artistMediaNote(media, "Blancmange", ["blancmange"])).toBe(
-      "**Media on the site:** 1 photo of Blancmange.",
+      "**Media on the site:** Blancmange: 1 photo from 16 September 2026. None from any other night.",
     );
   });
 });
@@ -93,7 +95,7 @@ describe("nightMediaNote", () => {
 describe("nightsMediaNote", () => {
   it("totals a set of nights and says how many had media", () => {
     expect(nightsMediaNote(media, [NIGHT, "2019-01-01", "1987-06-30"])).toBe(
-      "**Media on the site:** 5 photos and 2 clips from 2 of these 3 nights. The clips show “Lies”, “In the Name of Love”.",
+      "**Media on the site:** 5 photos and 2 clips from 2 of these 3 nights: 1 January 2019, 16 September 2026. The clips show “Lies”, “In the Name of Love”.",
     );
   });
 

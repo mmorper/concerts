@@ -50,15 +50,24 @@ export function AskConversation({
   // streams in and its card lands below the question, and the view stays put. This used to
   // scroll to the bottom on every change (each streamed token, then the card), which left a
   // long answer pinned to its end with the question and the top of the card scrolled away.
-  const lastId = exchanges[exchanges.length - 1]?.id
+  // It runs again when the answer lands: the card can change the layout above a smooth scroll that
+  // is still running, and that is the moment the reader needs the question in view.
+  const last = exchanges[exchanges.length - 1]
+  const lastId = last?.id
+  const lastAnswered = !!last && (last.status !== 'streaming' || !!last.exhibit)
   useEffect(() => {
     const box = transcriptRef.current
     const turn = lastTurnRef.current
     if (!box || !turn || !lastId) return
+    // The last turn fills the view, or a short answer leaves nothing to scroll into and its
+    // question stops partway down. Measured here because a percentage can't resolve: the panel's
+    // height comes from its content.
+    for (const child of box.children) (child as HTMLElement).style.minHeight = ''
+    turn.style.minHeight = `${box.clientHeight}px`
     const top = turn.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     box.scrollTo({ top: Math.max(0, top - 4), behavior: reduce ? 'auto' : 'smooth' })
-  }, [lastId])
+  }, [lastId, lastAnswered])
 
   const submit = (q: string) => {
     const trimmed = q.trim()
