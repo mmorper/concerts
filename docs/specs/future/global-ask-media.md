@@ -103,6 +103,31 @@ Photos panel and the Ask viewer, which then takes `ReelItem[]` rather than still
 - `preload="none"` until the viewer opens a clip. A card can carry a dozen tiles.
 - Track with `ask_media_opened`, per the analytics skill.
 
+What `ClipPlayer` must keep from the Photos panel, per #616:
+
+- The event and parameter names stay exactly as they are. The owner is registering them as GA
+  dimensions in #617: `photo`, `media_kind`, `view_source`, `concert_date`, `song`.
+- `clip_played` and `clip_completed` fire once per view, so pause and resume is one play. Paging
+  away and back is a new view. Today that reset lives in the panel's `media_viewed` effect, so the
+  player needs its own, by remounting on clip identity or with an effect.
+- Those two events carry `artist_name`, `concert_date`, `song` and `photo`, which stays the
+  `mediaId` ending in `-video`.
+- `media_viewed` stays in the panel. It covers stills, and its `view_source` comes from the panel.
+- The panel needs play, pause and ended back through a callback, because `isPlaying` hides the
+  desktop footer.
+- Keep `key={item.url}`, `controls`, `playsInline`, `poster` and contain fit. The panel keeps
+  `preload="metadata"`, so `preload` is a prop.
+- Plays in Ask would mix with gatefold plays. Add a `surface` param rather than changing any
+  existing one, give it a row in #617, and tell the owner the day it ships: a dimension isn't
+  retroactive.
+- Check the panel on real iOS Safari, not only Chromium. Its phone layout was fixed against it.
+
+For the gallery in Phase 2: build links with `photoDeepLink` and `mediaId`, and never change the
+`mediaId` format. The Worker, the sitemap and every share link depend on it. `artist` is the act
+whose gatefold holds the frame, by canonical slug, so an opener's frame opens in the opener's
+gatefold. A clip link is its own canonical only if its share image exists in `public/og/shows`.
+Add Ask to the emitters list in `docs/DEEP_LINKING.md`.
+
 ### Phase 4: "show me something"
 
 - `surprise_me` gains `kind: 'photo' | 'clip'`, drawing from the social pool in
