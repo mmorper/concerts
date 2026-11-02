@@ -8,7 +8,6 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { normalizeArtistName, normalizeGenreName } from '../../src/utils/normalize.js'
 import { TheAudioDBClient } from './theaudiodb-client.js'
-import { LastFmClient } from './lastfm-client.js'
 import { createBackup } from './backup.js'
 
 export interface ArtistMetadata {
@@ -33,21 +32,16 @@ export class ArtistMetadataManager {
   private metadataPath: string
   private hasChanges = false
   private audioDbClient?: TheAudioDBClient
-  private lastFmClient?: LastFmClient
 
   constructor(
     metadataPath: string,
     audioDbApiKey?: string,
-    lastFmApiKey?: string
   ) {
     this.metadataPath = metadataPath
 
     // Initialize API clients if credentials provided
     if (audioDbApiKey) {
       this.audioDbClient = new TheAudioDBClient(audioDbApiKey)
-    }
-    if (lastFmApiKey) {
-      this.lastFmClient = new LastFmClient(lastFmApiKey)
     }
   }
 
@@ -147,27 +141,6 @@ export class ArtistMetadataManager {
         }
       } catch (error) {
         console.warn(`   TheAudioDB lookup failed for ${artistName}`)
-      }
-    }
-
-    // Fallback to Last.fm
-    if (this.lastFmClient) {
-      try {
-        const lastFmData = await this.lastFmClient.getArtistInfo(artistName)
-
-        if (lastFmData && lastFmData.genres && lastFmData.genres[0]) {
-          return {
-            name: artistName,
-            normalizedName: normalizeArtistName(artistName),
-            genre: lastFmData.genres[0],
-            genreNormalized: normalizeGenreName(lastFmData.genres[0]),
-            imageUrl: lastFmData.image,
-            source: 'lastfm',
-            fetchedAt: new Date().toISOString()
-          }
-        }
-      } catch (error) {
-        console.warn(`   Last.fm lookup failed for ${artistName}`)
       }
     }
 

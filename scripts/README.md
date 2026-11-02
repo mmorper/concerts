@@ -12,7 +12,7 @@ This directory contains all data pipeline, build, and utility scripts for the Mo
 |--------|---------|---------|-------------|
 | **build-data.ts** | `npm run build-data` | **Main orchestrator** - runs all data refresh steps | Adding concerts, monthly refresh |
 | fetch-google-sheet.ts | `npm run fetch-sheet` | Fetch concert data from Google Sheets | Standalone fetch (rare) |
-| enrich-artists.ts | `npm run enrich` | Enrich artist metadata (TheAudioDB/Last.fm) | Standalone enrichment (rare) |
+| enrich-artists.ts | `npm run enrich` | Enrich artist metadata (TheAudioDB, then Deezer) | Standalone enrichment (rare) |
 | enrich-venues.ts | `npm run enrich-venues` | Enrich venue metadata (Google Places API) | Monthly, or when adding new venues |
 | enrich-spotify-metadata.ts | `npm run enrich-spotify` | Enrich Spotify album art + tracks | When Spotify credentials available |
 | prefetch-setlists.ts | `npm run prefetch:setlists` | Pre-fetch setlists from setlist.fm | Standalone setlist refresh |
@@ -120,7 +120,7 @@ See [docs/DATA_PIPELINE.md](../docs/DATA_PIPELINE.md) for complete pipeline docu
 - `prefetch-setlists.ts` - Setlist cache generation (setlist.fm → setlists-cache.json)
 
 **Enrichment:**
-- `enrich-artists.ts` - Artist metadata (TheAudioDB/Last.fm → artists-metadata.json)
+- `enrich-artists.ts` - Artist metadata (TheAudioDB, then Deezer → artists-metadata.json)
 - `enrich-venues.ts` - Venue photos (Google Places → venues-metadata.json)
 - `enrich-spotify-metadata.ts` - Album art + tracks (Spotify → artists-metadata.json)
 
@@ -338,7 +338,8 @@ All scripts share common utilities in `scripts/utils/`:
 | google-sheets-client.ts | Google Sheets OAuth + data fetching |
 | google-places-client.ts | Google Places API wrapper + caching |
 | theaudiodb-client.ts | TheAudioDB API wrapper |
-| lastfm-client.ts | Last.fm API wrapper |
+| deezer-client.ts | Deezer API wrapper |
+| act-name.ts | Matches a search result to the act asked for |
 | rate-limiter.ts | Rate limiting for API calls |
 
 ---
@@ -353,7 +354,7 @@ Different scripts require different API credentials:
 | enrich-venues.ts | `GOOGLE_PLACES_API_KEY` |
 | enrich-spotify-metadata.ts | `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` |
 | prefetch-setlists.ts | `VITE_SETLISTFM_API_KEY` |
-| enrich-artists.ts | `THEAUDIODB_API_KEY` (optional), `LASTFM_API_KEY` (optional) |
+| enrich-artists.ts | `THEAUDIODB_API_KEY` (optional; the free key "123" is built in) |
 
 See [docs/api-setup.md](../docs/api-setup.md) for complete credential setup instructions.
 

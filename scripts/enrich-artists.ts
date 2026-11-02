@@ -1,5 +1,4 @@
 import { TheAudioDBClient } from './utils/theaudiodb-client'
-import { LastFmClient } from './utils/lastfm-client'
 import { DeezerClient } from './utils/deezer-client'
 import { RateLimiter } from './utils/rate-limiter'
 import { normalizeArtistName } from '../src/utils/normalize.js'
@@ -161,9 +160,6 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
 
   // Initialize API clients
   const audioDb = new TheAudioDBClient(process.env.THEAUDIODB_API_KEY || undefined)
-  const lastFm = process.env.LASTFM_API_KEY
-    ? new LastFmClient(process.env.LASTFM_API_KEY)
-    : null
   const deezer = new DeezerClient()
 
   const rateLimiter = new RateLimiter(2) // TheAudioDB: 2 calls/sec
@@ -234,25 +230,9 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
         }
       }
 
-      // 2. Last.fm — fallback with genre data
-      if (!found && lastFm) {
-        for (let i = 0; i < nameVariants.length && !found; i++) {
-          const variantName = nameVariants[i]
-          const isOriginalName = i === 0
-          if (!isOriginalName) console.log(`  → Trying simplified name: ${variantName}`)
-          const lastFmInfo = await lastFm.getArtistInfo(variantName)
-          if (lastFmInfo && lastFmInfo.image) {
-            metadata[normalized] = lastFmInfo
-            written.add(normalized)
-            console.log(`  ✅ Found on Last.fm${isOriginalName ? '' : ' (using simplified name)'}`)
-            enriched++
-            found = true
-          }
-        }
-      }
-
-      // 3. Deezer — last resort (images only, no genres). Never for an act whose name Deezer
-      // gives to someone else: a matching name is not the same band.
+      // 2. Deezer — last resort, images only, no genres. Never for an act whose name Deezer
+      // gives to someone else: a matching name is not the same band. There is no Last.fm step:
+      // since 2019 it answers every artist with the same grey star, a placeholder, not a photo.
       if (!found && !DEEZER_NAMESAKES.has(normalized)) {
         for (let i = 0; i < nameVariants.length && !found; i++) {
           const variantName = nameVariants[i]

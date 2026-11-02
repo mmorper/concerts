@@ -56,8 +56,7 @@ export async function enrichConcertGenres(options: { dryRun?: boolean } = {}) {
   // Initialize artist metadata manager
   const metadataManager = new ArtistMetadataManager(
     metadataPath,
-    process.env.THEAUDIODB_API_KEY || '2', // TheAudioDB free key
-    process.env.LASTFM_API_KEY
+    process.env.THEAUDIODB_API_KEY || '123', // TheAudioDB's free key
   )
 
   // Load metadata
