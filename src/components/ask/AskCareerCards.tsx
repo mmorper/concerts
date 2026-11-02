@@ -6,11 +6,10 @@
 import { useEffect, useRef } from 'react'
 import { getGenreColor, DEFAULT_GENRE_COLOR } from '@/constants/colors'
 import { setlistDeepLink } from '@/utils/deepLinks'
-import type { Exchange } from '@/hooks/useAskArchive'
 import type { EraExhibit, ShapeExhibit, SongsExhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
 import { CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
-import { DeepLink, Frame, PhotoButton, Portrait, Prose, captionLookups, trackDeepLink, useFrameOpener, trackPhotoOpened } from './AskCardParts'
+import { DeepLink, Frame, PhotoButton, Portrait, captionLookups, trackDeepLink, useFrameOpener, trackPhotoOpened } from './AskCardParts'
 import { agePhrase, fmtDate, monthsPhrase, nightPhoto, photoCaption, yearOf, type Photo } from './media'
 
 const genreColor = (archive: ArchiveLookups, slug: string | undefined): string => {
@@ -24,7 +23,7 @@ const genreColor = (archive: ArchiveLookups, slug: string | undefined): string =
 // Era — "where were Depeche Mode in their career when I saw them in 1988?"
 // ---------------------------------------------------------------------------------------------
 
-export function EraCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: EraExhibit; archive: ArchiveLookups }) {
+export function EraCard({ exhibit, archive }: { exhibit: EraExhibit; archive: ArchiveLookups }) {
   const c = archive.concertById(exhibit.concertId)
   const color = c ? getGenreColor(c.genre) : genreColor(archive, exhibit.artist.slug)
   const pick = c ? nightPhoto(archive.media, c) : null
@@ -52,7 +51,7 @@ export function EraCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: EraEx
     : 'Before their first studio album'
 
   return (
-    <Frame color={color}>
+    <Frame>
       <div className="ex-head">
         {pick ? (
           <PhotoButton className="ex-photo-btn" onOpen={() => viewer.open(nightAll, nightAll.indexOf(pick.photo))} label={caption(pick.photo)}>
@@ -87,7 +86,6 @@ export function EraCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: EraEx
         </div>
       </div>
 
-      <Prose ex={ex} />
 
       {exhibit.shelf.length > 0 && (
         <div className="ask-shelf">
@@ -130,10 +128,10 @@ const BUCKETS: Array<{ key: keyof ShapeExhibit['buckets']; label: string }> = [
   { key: 'catalog', label: '10+ years' },
 ]
 
-export function ShapeCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ShapeExhibit; archive: ArchiveLookups }) {
+export function ShapeCard({ exhibit, archive }: { exhibit: ShapeExhibit; archive: ArchiveLookups }) {
   const total = BUCKETS.reduce((n, b) => n + exhibit.buckets[b.key], 0) || 1
   return (
-    <Frame color={DEFAULT_GENRE_COLOR}>
+    <Frame>
       <div className="ask-kick">How old the record was, the nights I went</div>
       <div className="ask-shape-bar" role="img" aria-label={BUCKETS.map((b) => `${b.label}: ${exhibit.buckets[b.key]}`).join(', ')}>
         {BUCKETS.map((b, i) => (
@@ -151,7 +149,6 @@ export function ShapeCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Sha
       <div className="ask-note">
         {exhibit.placed} of {exhibit.total} nights placed · the median night came {exhibit.medianMonths} months after the record.
       </div>
-      <Prose ex={ex} />
       {exhibit.ahead.length > 0 && (
         <div className="ask-ahead">
           <div className="ask-kick">Before the record existed · {exhibit.aheadCount} nights</div>
@@ -181,11 +178,10 @@ export function ShapeCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Sha
 // Songs — "what songs have I heard most?"
 // ---------------------------------------------------------------------------------------------
 
-export function SongsCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: SongsExhibit; archive: ArchiveLookups }) {
+export function SongsCard({ exhibit, archive }: { exhibit: SongsExhibit; archive: ArchiveLookups }) {
   return (
-    <Frame color={DEFAULT_GENRE_COLOR}>
+    <Frame>
       <div className="ask-list-title">Most-heard songs</div>
-      <Prose ex={ex} />
       <ol className="ask-songs">
         {exhibit.songs.map((s, i) => {
           const color = genreColor(archive, s.artist?.slug)

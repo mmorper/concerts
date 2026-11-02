@@ -13,7 +13,7 @@ import { getGenreColor, DEFAULT_GENRE_COLOR } from '@/constants/colors'
 import { analytics } from '@/services/analytics'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { ArchiveLookups } from './types'
-import type { ArtistExhibit, VenueExhibit, ListExhibit, SerendipityExhibit, DisambiguationExhibit } from '@/types/exhibit'
+import type { ArtistExhibit, VenueExhibit, ListExhibit, SerendipityExhibit, DisambiguationExhibit, Exhibit } from '@/types/exhibit'
 import { CameraMark, DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
 import { ChipLink, DeepLink, Filmstrip, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackPhotoOpened, yearSpan } from './AskCardParts'
 import { AlbumCard, DiscographyCard, ShowCard, SongCard } from './AskRecordCards'
@@ -37,7 +37,7 @@ import {
 
 // ---------- the cards ----------
 
-function ArtistCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ArtistExhibit; archive: ArchiveLookups }) {
+function ArtistCard({ exhibit, archive }: { exhibit: ArtistExhibit; archive: ArchiveLookups }) {
   const f = archive.artistFacts(exhibit.slug)
   const genre = f.primaryGenre ?? f.meta?.genres?.[0]
   const color = genre ? getGenreColor(genre) : DEFAULT_GENRE_COLOR
@@ -76,7 +76,7 @@ function ArtistCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ArtistExh
   )
 
   return (
-    <Frame color={color}>
+    <Frame>
       {lead ? (
         <PhotoHero
           photo={lead}
@@ -90,7 +90,6 @@ function ArtistCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ArtistExh
       ) : (
         title(true)
       )}
-      <Prose ex={ex} />
       <Filmstrip
         photos={rest}
         label={stripLabel}
@@ -118,19 +117,21 @@ function ArtistCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ArtistExh
           {extra > 0 && <span className="show"><span className="yr">+{extra} more</span></span>}
         </div>
       )}
-      {clips[0] && (
-        <DeepLink href={frameLink(clips[0], exhibit.slug)} kind="artist">
-          {clips.length === 1 ? `Watch “${clips[0].song ?? 'the clip'}”` : `Watch ${clips.length} clips`} in the gatefold
+      <div className="ask-links">
+        {clips[0] && (
+          <DeepLink href={frameLink(clips[0], exhibit.slug)} kind="artist">
+            {clips.length === 1 ? `Watch “${clips[0].song ?? 'the clip'}”` : `Watch ${clips.length} clips`} in the gatefold
+          </DeepLink>
+        )}
+        <DeepLink href={exhibit.deepLink} kind="artist">
+          See all {f.count || ''} {exhibit.name} shows on the site
         </DeepLink>
-      )}
-      <DeepLink href={exhibit.deepLink} kind="artist">
-        See all {f.count || ''} {exhibit.name} shows on the site
-      </DeepLink>
+      </div>
     </Frame>
   )
 }
 
-function VenueCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: VenueExhibit; archive: ArchiveLookups }) {
+function VenueCard({ exhibit, archive }: { exhibit: VenueExhibit; archive: ArchiveLookups }) {
   const f = archive.venueFacts(exhibit.slug)
   const color = f.primaryGenre ? getGenreColor(f.primaryGenre) : DEFAULT_GENRE_COLOR
   const lookups = captionLookups(archive)
@@ -222,14 +223,13 @@ function VenueCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: VenueExhib
   }
 
   return (
-    <Frame color={color}>
+    <Frame>
       {hero}
       <div className="stats">
         {f.count > 0 && <div className="stat"><div className="v">{f.count}</div><div className="k">Shows</div></div>}
         {f.firstYear && <div className="stat"><div className="v">{f.firstYear}</div><div className="k">First</div></div>}
         {f.lastYear && <div className="stat"><div className="v">{`'${String(f.lastYear).slice(2)}`}</div><div className="k">Latest</div></div>}
       </div>
-      <Prose ex={ex} />
       {picks.length > 1 && (
         <div className="ask-nights">
           <div className="ask-strip-head">One frame from each night</div>
@@ -256,12 +256,11 @@ function VenueCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: VenueExhib
   )
 }
 
-function ListCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ListExhibit; archive: ArchiveLookups }) {
+function ListCard({ exhibit, archive }: { exhibit: ListExhibit; archive: ArchiveLookups }) {
   const lookups = captionLookups(archive)
   return (
-    <Frame color={DEFAULT_GENRE_COLOR}>
+    <Frame>
       <div className="ask-list-title">{exhibit.title}</div>
-      <Prose ex={ex} />
       {exhibit.rows.map((r) => {
         const c = archive.concertById(r.concertId)
         const pick = c ? nightPhoto(archive.media, c) : null
@@ -300,7 +299,7 @@ function ListCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ListExhibit
   )
 }
 
-function SerendipityCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: SerendipityExhibit; archive: ArchiveLookups }) {
+function SerendipityCard({ exhibit, archive }: { exhibit: SerendipityExhibit; archive: ArchiveLookups }) {
   const c = archive.concertById(exhibit.concertId)
   const af = archive.artistFacts(exhibit.artist.slug)
   const color = c ? getGenreColor(c.genre) : DEFAULT_GENRE_COLOR
@@ -311,7 +310,7 @@ function SerendipityCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Sere
   const nightPhotos = photo ? (archive.media.byDate.get(photo.date) ?? [photo]) : []
   const viewer = useFrameOpener(archive, trackPhotoOpened('serendipity'))
   return (
-    <Frame color={color}>
+    <Frame>
       <div className="ex-head">
         {photo ? (
           <PhotoButton className="ex-photo-btn" onOpen={() => viewer.open(nightPhotos, nightPhotos.indexOf(photo))} label={caption(photo)}>
@@ -335,16 +334,14 @@ function SerendipityCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Sere
           )}
         </div>
       </div>
-      <Prose ex={ex} />
       <DeepLink href={exhibit.artist.deepLink} kind="serendipity">See {exhibit.artist.name} on the site</DeepLink>
     </Frame>
   )
 }
 
-function DisambiguationCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: DisambiguationExhibit; archive: ArchiveLookups }) {
+function DisambiguationCard({ exhibit, archive }: { exhibit: DisambiguationExhibit; archive: ArchiveLookups }) {
   return (
-    <Frame color={DEFAULT_GENRE_COLOR}>
-      <Prose ex={ex} />
+    <Frame>
       <div className="chips">
         {exhibit.candidates.map((c) => {
           if (c.entity !== 'artist') return <ChipLink key={c.slug} entity={c} kind="disambiguation" />
@@ -362,19 +359,11 @@ function DisambiguationCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: D
   )
 }
 
-function PlainCard({ ex }: { ex: Exchange }) {
-  return (
-    <Frame color={DEFAULT_GENRE_COLOR}>
-      <Prose ex={ex} />
-    </Frame>
-  )
-}
-
 function RefusalCard({ ex }: { ex: Exchange }) {
   return (
-    <Frame color={DEFAULT_GENRE_COLOR}>
-      <p className="ex-prose" style={{ opacity: 0.75 }}>{ex.message || ex.prose}</p>
-    </Frame>
+    <div className="ask-answer">
+      <p className="ex-prose ask-refusal">{ex.message || ex.prose}</p>
+    </div>
   )
 }
 
@@ -383,46 +372,53 @@ function RefusalCard({ ex }: { ex: Exchange }) {
 export function AskExhibit({ exchange, archive }: { exchange: Exchange; archive: ArchiveLookups }) {
   const { exhibit, status } = exchange
 
-  // Refusal/error: one quiet card regardless of any partial exhibit.
-  if (status === 'refused' || status === 'error') return <RefusalCard ex={exchange} />
+  // Refusal/error: one quiet line regardless of any partial exhibit.
+  if (status === 'refused' || status === 'error' || exhibit?.kind === 'refusal') return <RefusalCard ex={exchange} />
 
-  // Hold the card back until the answer is composed: rather than paint an empty frame (which
+  // Hold the answer back until it is composed: rather than paint an empty frame (which
   // reads as "broken") and a churn of "consulting…" text, the box shows the question and its
   // thinking dots, and the real exhibit hydrates here once the `exhibit` event lands.
   if (!exhibit) return null
 
+  // A sentence or two first, then the exhibit as the largest thing on screen (Phase 6).
+  return (
+    <div className="ask-answer">
+      <Prose ex={exchange} />
+      <ExhibitCard exhibit={exhibit} archive={archive} />
+    </div>
+  )
+}
+
+function ExhibitCard({ exhibit, archive }: { exhibit: Exhibit; archive: ArchiveLookups }) {
   switch (exhibit.kind) {
     case 'artist':
-      return <ArtistCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <ArtistCard exhibit={exhibit} archive={archive} />
     case 'venue':
-      return <VenueCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <VenueCard exhibit={exhibit} archive={archive} />
     case 'list':
-      return <ListCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <ListCard exhibit={exhibit} archive={archive} />
     case 'serendipity':
-      return <SerendipityCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <SerendipityCard exhibit={exhibit} archive={archive} />
     case 'album':
-      return <AlbumCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <AlbumCard exhibit={exhibit} archive={archive} />
     case 'discography':
-      return <DiscographyCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <DiscographyCard exhibit={exhibit} archive={archive} />
     case 'show':
-      return <ShowCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <ShowCard exhibit={exhibit} archive={archive} />
     case 'era':
-      return <EraCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <EraCard exhibit={exhibit} archive={archive} />
     case 'shape':
-      return <ShapeCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <ShapeCard exhibit={exhibit} archive={archive} />
     case 'songs':
-      return <SongsCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <SongsCard exhibit={exhibit} archive={archive} />
     case 'gallery':
-      return <GalleryCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <GalleryCard exhibit={exhibit} archive={archive} />
     case 'song':
-      return <SongCard ex={exchange} exhibit={exhibit} archive={archive} />
+      return <SongCard exhibit={exhibit} archive={archive} />
     case 'disambiguation':
-      return <DisambiguationCard ex={exchange} exhibit={exhibit} archive={archive} />
-    case 'refusal':
-      return <RefusalCard ex={exchange} />
-    case 'plain':
+      return <DisambiguationCard exhibit={exhibit} archive={archive} />
     default:
-      // An unknown kind (a newer worker than this bundle) still renders its prose.
-      return <PlainCard ex={exchange} />
+      // Plain, or an unknown kind from a newer worker than this bundle: the prose above is all.
+      return null
   }
 }

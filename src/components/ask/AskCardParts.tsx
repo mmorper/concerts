@@ -52,10 +52,10 @@ export function ChipLink({ entity, kind, color, avatar }: { entity: EntityRef; k
   )
 }
 
-export function Frame({ color, children, className = '' }: { color: string; children: ReactNode; className?: string }) {
+// No box around an answer: the exhibit sits on the panel itself, under the prose (Phase 6).
+export function Frame({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <div className={`ask-exhibit ${className}`}>
-      <div className="spine" style={{ background: color }} />
       <div className="body">{children}</div>
     </div>
   )

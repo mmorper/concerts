@@ -2,32 +2,24 @@
    docs/specs/future/global-ask-the-archive-chat/mock-chat.html (dark register).
    Containers (#141) own layout/positioning; these are the card internals (#140). */
 
-.ask-exhibit {
-  max-width: 680px;
-  margin: 0 auto 24px;
-  background: rgba(255, 255, 255, 0.055);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  animation: ask-rise 0.4s ease both;
-}
+/* One answer (Phase 6): a sentence or two in Playfair, then the exhibit as the largest thing on
+   screen. No bubble, avatar or card box: the exhibit sits on the panel itself. */
+.ask-answer { margin: 0 0 36px; animation: ask-rise 0.4s ease both; }
 @keyframes ask-rise {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ask-exhibit { animation: none; }
+  .ask-answer { animation: none; }
 }
+.ask-answer > .ex-prose { max-width: 780px; margin: 0 0 22px; }
+.ask-answer > .ex-prose > p:first-child { font-family: 'Playfair Display', Georgia, serif; font-size: 25px; line-height: 1.34; color: #fff; }
+.ask-refusal { font-size: 16px; opacity: 0.75; }
 
-.ask-exhibit .spine { width: 5px; flex: none; background: #4b5563; }
-.ask-exhibit .body { padding: 20px 22px; flex: 1; min-width: 0; }
+.ask-exhibit { min-width: 0; }
 
-.ask-q { max-width: 680px; margin: 0 auto 14px; display: flex; gap: 10px; align-items: baseline; }
-.ask-q .you { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); }
-.ask-q .q { font-style: italic; color: rgba(255, 255, 255, 0.8); font-size: 17px; }
+/* Each question, kept above its answer so earlier answers still say what they answer. */
+.ask-q { margin: 0 0 10px; font-size: 14px; color: rgba(255, 255, 255, 0.55); }
 
 .ex-head { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
 .ex-photo {
@@ -173,8 +165,8 @@ img.ex-photo, img.ex-avatar { display: block; object-fit: cover; }
 .ex-photo-btn { flex: none; width: 56px; height: 56px; border-radius: 10px; }
 .ex-photo-btn .ex-photo { width: 56px; height: 56px; }
 
-/* Hero — banner bleeds to the card edges; portrait sits beside the title at the crop's own aspect. */
-.ask-hero.banner { margin: -20px -22px 14px; width: calc(100% + 44px); border-radius: 0; }
+/* Hero — banner spans the answer; portrait sits beside the title at the crop's own aspect. */
+.ask-hero.banner { margin: 0 0 14px; width: 100%; border-radius: 12px; }
 .ask-hero-cap {
   position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 7px;
   padding: 26px 14px 11px; font-size: 12.5px; color: #fff;
@@ -397,6 +389,7 @@ img.chip-av { object-fit: cover; display: block; }
 @media (prefers-reduced-motion: reduce) { .ask-lightbox { animation: none; } }
 
 @media (max-width: 767px) {
+  .ask-answer > .ex-prose > p:first-child { font-size: 22px; line-height: 1.32; }
   .ask-hero.portrait { flex-basis: 40%; }
   /* Beside a portrait photo the avatar crowds the name; the photo already says who it is. */
   .ask-hero-side .ex-avatar { display: none; }
@@ -423,7 +416,10 @@ img.chip-av { object-fit: cover; display: block; }
 .ask-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
 /* overflow-x:hidden — `overflow-y:auto` alone promotes overflow-x to `auto`, which would let a stray
    over-wide child scroll the transcript sideways. overscroll-behavior keeps flings off the scene (#189). */
-.ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+/* Answers sit on the panel with no card padding. They end where the search box ends, which keeps
+   them clear of the scrollbar and esc. */
+.ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; padding-right: 32px; scrollbar-gutter: stable; }
+@media (max-width: 767px) { .ask-transcript { padding-right: 0; } }
 /* Empty state — centered teaching block that fills the space above the persistent composer (#189). */
 .ask-empty { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 18px 8px 8px; }
 .ask-empty-hint { margin: 0; max-width: 34ch; font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.55); }
@@ -489,13 +485,14 @@ img.chip-av { object-fit: cover; display: block; }
   position: fixed; inset: 0; z-index: 2000;
   background: rgba(15, 12, 40, 0.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   display: flex; align-items: flex-start; justify-content: center;
-  padding: 10vh 16px 16px; animation: ask-scrim-in 0.18s ease both;
+  padding: 6vh 16px 16px; animation: ask-scrim-in 0.18s ease both;
 }
 @keyframes ask-scrim-in { from { opacity: 0; } to { opacity: 1; } }
 
 .ask-spotlight {
-  width: min(620px, 94vw); max-height: 70vh; display: flex; flex-direction: column;
-  background: rgba(30, 27, 75, 0.92); border: 1px solid rgba(255, 255, 255, 0.16);
+  width: min(920px, 94vw); max-height: 86vh; display: flex; flex-direction: column;
+  /* Opaque: answers sit straight on the panel, so the page behind must not show through. */
+  background: #1a1742; border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 18px; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   padding: 16px 18px; overflow: hidden;

@@ -4,11 +4,10 @@
 
 import { analytics } from '@/services/analytics'
 import { DEFAULT_GENRE_COLOR } from '@/constants/colors'
-import type { Exchange } from '@/hooks/useAskArchive'
 import type { GalleryExhibit, GalleryItem } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
 import { DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
-import { Frame, Prose } from './AskCardParts'
+import { Frame } from './AskCardParts'
 import { findMedia, fmtDate, isClip, type Photo } from './media'
 
 /** The lead takes four cells, so it and eight tiles fill three rows. With more to see, the last is the way to them. */
@@ -45,14 +44,13 @@ function Tile({ item, archive }: { item: GalleryItem; archive: ArchiveLookups })
   )
 }
 
-export function GalleryCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: GalleryExhibit; archive: ArchiveLookups }) {
+export function GalleryCard({ exhibit, archive }: { exhibit: GalleryExhibit; archive: ArchiveLookups }) {
   const tiles = exhibit.items.slice(0, exhibit.total > CELLS ? CELLS - 1 : CELLS)
   const more = exhibit.total - tiles.length
   const next = exhibit.items[tiles.length]
   return (
-    <Frame color={DEFAULT_GENRE_COLOR}>
+    <Frame>
       <div className="ask-list-title">{exhibit.title}</div>
-      <Prose ex={ex} />
       <div className="ask-gallery">
         {tiles.map((item) => (
           <Tile key={`${item.date}-${item.id}`} item={item} archive={archive} />

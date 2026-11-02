@@ -4,11 +4,10 @@
 import { getGenreColor, DEFAULT_GENRE_COLOR } from '@/constants/colors'
 import { setlistDeepLink } from '@/utils/deepLinks'
 import { normalizeArtistName } from '@/utils/normalize'
-import type { Exchange } from '@/hooks/useAskArchive'
 import type { AlbumExhibit, AlbumIdentity, DiscographyExhibit, ShowExhibit, SetSong, SongExhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
 import { CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
-import { DeepLink, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackDeepLink, trackPhotoOpened } from './AskCardParts'
+import { DeepLink, Frame, PhotoButton, PhotoHero, Portrait, captionLookups, useFrameOpener, trackDeepLink, trackPhotoOpened } from './AskCardParts'
 import {
   actPhotosOnNight,
   billSlugs,
@@ -60,7 +59,7 @@ function ActAvatar({ archive, slug, name, color, kind }: { archive: ArchiveLooku
 // A · Album
 // ---------------------------------------------------------------------------------------------
 
-export function AlbumCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: AlbumExhibit; archive: ArchiveLookups }) {
+export function AlbumCard({ exhibit, archive }: { exhibit: AlbumExhibit; archive: ArchiveLookups }) {
   const a = exhibit.album
   const color = genreColor(archive, exhibit.artist?.slug)
   const live = exhibit.heardLive
@@ -79,7 +78,7 @@ export function AlbumCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Alb
   const opening = live && normalizeArtistName(live.performer) !== live.headliner.slug
 
   return (
-    <Frame color={color}>
+    <Frame>
       <div className="ask-album-head">
         <CoverArt album={a} size={500} color={color} className="ask-album-cover" />
         <div className="ask-album-title">
@@ -89,7 +88,6 @@ export function AlbumCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Alb
           {exhibit.defining && <span className="ask-pill">Their defining record</span>}
         </div>
       </div>
-      <Prose ex={ex} />
       {live && (
         <div className="ask-live">
           <div className="ask-live-head">
@@ -142,7 +140,7 @@ export function AlbumCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Alb
 // F · Discography
 // ---------------------------------------------------------------------------------------------
 
-export function DiscographyCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: DiscographyExhibit; archive: ArchiveLookups }) {
+export function DiscographyCard({ exhibit, archive }: { exhibit: DiscographyExhibit; archive: ArchiveLookups }) {
   const { artist, albums } = exhibit
   const color = genreColor(archive, artist.slug)
   const seenCycles = albums.filter((a) => a.seen.length > 0).length
@@ -158,7 +156,7 @@ export function DiscographyCard({ ex, exhibit, archive }: { ex: Exchange; exhibi
     .join(' · ')
 
   return (
-    <Frame color={color}>
+    <Frame>
       <div className="ex-head">
         <ActAvatar archive={archive} slug={artist.slug} name={artist.name} color={color} kind="discography" />
         <div className="ex-title">
@@ -169,7 +167,6 @@ export function DiscographyCard({ ex, exhibit, archive }: { ex: Exchange; exhibi
           </div>
         </div>
       </div>
-      <Prose ex={ex} />
       <div className="ask-disc-grid">
         {albums.map((a) => {
           const seen = a.seen.length > 0
@@ -203,7 +200,7 @@ export function DiscographyCard({ ex, exhibit, archive }: { ex: Exchange; exhibi
 // S · One song, every night I heard it (built in the browser from a search match)
 // ---------------------------------------------------------------------------------------------
 
-export function SongCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: SongExhibit; archive: ArchiveLookups }) {
+export function SongCard({ exhibit, archive }: { exhibit: SongExhibit; archive: ArchiveLookups }) {
   const { artist, album } = exhibit
   const color = genreColor(archive, artist.slug)
   const meta = album ? `${artist.name} · from ${album.title}, ${yearOf(album.releaseDate)}` : artist.name
@@ -216,7 +213,7 @@ export function SongCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Song
   )
 
   return (
-    <Frame color={color}>
+    <Frame>
       {album ? (
         <div className="ask-album-head">
           <CoverArt album={album} size={500} color={color} className="ask-album-cover" />
@@ -228,7 +225,6 @@ export function SongCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Song
           <div className="ex-title ask-album-title">{title}</div>
         </div>
       )}
-      <Prose ex={ex} />
       <div className="ask-song-nights">
         <div className="ask-kick">{exhibit.dates.length === 1 ? 'The night I heard it' : 'The nights I heard it'}</div>
         {exhibit.dates.map((date) => {
@@ -266,7 +262,7 @@ export function SongCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Song
 // C · One night
 // ---------------------------------------------------------------------------------------------
 
-export function ShowCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ShowExhibit; archive: ArchiveLookups }) {
+export function ShowCard({ exhibit, archive }: { exhibit: ShowExhibit; archive: ArchiveLookups }) {
   const c = archive.concertById(exhibit.concertId)
   const color = c ? getGenreColor(c.genre) : genreColor(archive, exhibit.headliner.slug)
   const date = exhibit.date
@@ -314,7 +310,7 @@ export function ShowCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Show
   const identified = exhibit.songs.filter((s) => s.album).length
 
   return (
-    <Frame color={color}>
+    <Frame>
       {tiles.length > 1 ? (
         <>
           <div className={`ask-mosaic n${tiles.length}`}>
@@ -347,7 +343,6 @@ export function ShowCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Show
           {title}
         </div>
       )}
-      <Prose ex={ex} />
       {records.length > 0 && (
         <div className="ask-records">
           <div className="ask-kick">Records in the set</div>
