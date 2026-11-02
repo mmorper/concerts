@@ -19,7 +19,7 @@ const PHONE_BOX = 0.9
 /** A portrait photo beside the text keeps the owner's 4:5 crop. */
 const SIDE_BOX = 0.8
 
-type Shape = 'fill' | 'side' | 'tile'
+export type Shape = 'fill' | 'side' | 'tile'
 const shapeOf = (idea: BannerIdea): Shape => (idea.photo ? (fillsBanner(idea.photo) ? 'fill' : 'side') : idea.poster ? 'fill' : 'tile')
 
 export function AskBanner({ archive, busy, onAsk }: { archive: ArchiveLookups; busy: boolean; onAsk: (q: string) => void }) {
@@ -74,7 +74,8 @@ export function AskBanner({ archive, busy, onAsk }: { archive: ArchiveLookups; b
   )
 }
 
-function BannerFace({ idea, shape, archive }: { idea: BannerIdea; shape: Shape; archive: ArchiveLookups }) {
+/** `bylineBelow` puts the byline under the text, for a picture too small to carry it on top. */
+export function BannerFace({ idea, shape, archive, bylineBelow = false }: { idea: BannerIdea; shape: Shape; archive: ArchiveLookups; bylineBelow?: boolean }) {
   const fallback = <DerivedArt name={idea.title} color={idea.genre ? getGenreColor(idea.genre) : DEFAULT_GENRE_COLOR} />
   let picture: ReactNode = <span className="pic">{fallback}</span>
   let byline: string | null = null
@@ -112,13 +113,13 @@ function BannerFace({ idea, shape, archive }: { idea: BannerIdea; shape: Shape; 
         <span className="t">{idea.title}</span>
         <span className="s">{idea.sub}</span>
         {/* Beside a portrait photo the byline joins the text, clear of the face. */}
-        {byline && shape === 'side' && (
+        {byline && (shape === 'side' || bylineBelow) && (
           <span className="by-line">
             <CameraMark size={12} /> {byline}
           </span>
         )}
       </span>
-      {byline && shape === 'fill' && (
+      {byline && shape === 'fill' && !bylineBelow && (
         <span className="by">
           <CameraMark size={12} /> {byline}
         </span>

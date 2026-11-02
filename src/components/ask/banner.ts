@@ -80,12 +80,12 @@ function clipIdeas({ media, concertByDate }: BannerSources): BannerIdea[] {
   })
 }
 
-function yearIdeas({ media, searchEntries, concertByDate }: BannerSources): BannerIdea[] {
+function yearIdeas({ media, searchEntries, concertByDate }: BannerSources, fits: (p: Photo) => boolean): BannerIdea[] {
   return searchEntries.flatMap((e) => {
     if (e.kind !== 'year') return []
     const year = e.name
     const nights = [...media.byDate.keys()].filter((d) => d.startsWith(`${year}-`)).sort()
-    const frames = nights.flatMap((d) => media.byDate.get(d) ?? []).filter((p) => p.subject === 'artist' && fillsBanner(p))
+    const frames = nights.flatMap((d) => media.byDate.get(d) ?? []).filter((p) => p.subject === 'artist' && fits(p))
     const photo = frames.find((p) => p.hero) ?? frames[0]
     if (!photo) return []
     // The act in the picture first, then the year's other photographed headliners.
@@ -110,13 +110,13 @@ function yearIdeas({ media, searchEntries, concertByDate }: BannerSources): Bann
   })
 }
 
-function actIdeas({ media, searchEntries, artistFacts }: BannerSources): BannerIdea[] {
+function actIdeas({ media, searchEntries, artistFacts }: BannerSources, fits: (p: Photo) => boolean): BannerIdea[] {
   return searchEntries.flatMap((e) => {
     const slug = e.kind === 'band' ? e.photo?.artistNormalized : null
     if (!slug) return []
     const facts = artistFacts(slug)
     if (facts.count < FAMILIAR_SHOWS || !facts.firstYear || !facts.lastYear) return []
-    const frames = (media.byArtist.get(slug) ?? []).filter(fillsBanner)
+    const frames = (media.byArtist.get(slug) ?? []).filter(fits)
     const photo = frames.find((p) => p.signature) ?? frames[0]
     if (!photo) return []
     const span = facts.firstYear === facts.lastYear ? `in ${facts.firstYear}` : `from ${facts.firstYear} to ${facts.lastYear}`
@@ -196,10 +196,13 @@ function shuffle<T>(list: T[], rand: () => number): T[] {
 /**
  * Every idea, in the day's order. This date's shows lead. After them the kinds take turns (a clip,
  * a year, a face), so two pulls in a row are never the same kind while more than one kind is left.
+ *
+ * `fits` picks the frames a year or a face may use. The wide banner takes landscape frames only.
+ * The Ask scene's crate cards are tall, so they take any frame.
  */
-export function bannerDeck(sources: BannerSources, day: string): BannerIdea[] {
+export function bannerDeck(sources: BannerSources, day: string, fits: (p: Photo) => boolean = fillsBanner): BannerIdea[] {
   const rand = seeded(day)
-  const piles = [clipIdeas(sources), yearIdeas(sources), actIdeas(sources)].map((p) => shuffle(p, rand))
+  const piles = [clipIdeas(sources), yearIdeas(sources, fits), actIdeas(sources, fits)].map((p) => shuffle(p, rand))
   const deck: BannerIdea[] = todayIdeas(sources, day)
   for (let i = 0; piles.some((p) => i < p.length); i++) {
     for (const pile of piles) if (i < pile.length) deck.push(pile[i])

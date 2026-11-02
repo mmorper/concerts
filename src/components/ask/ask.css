@@ -632,7 +632,7 @@ img.chip-av { object-fit: cover; display: block; }
 .ask-back:active { background: rgba(255, 255, 255, 0.12); }
 
 /* ---- The Ask scene (#142) — the blended invitation; final snap panel + /?scene=ask ----
-   The storytelling coda fused with the /ask warmth. The composer + prompts open the Spotlight in
+   The storytelling coda fused with the /ask warmth. The composer + the crate open the Spotlight in
    place (the one chat surface). One invitation, one home — no dock, no separate chat page. */
 .ask-scene {
   min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -657,11 +657,49 @@ img.chip-av { object-fit: cover; display: block; }
 .ask-scene-composer:hover { border-color: rgba(165, 180, 252, 0.9); background: rgba(255, 255, 255, 0.09); }
 .ask-scene-composer .ph { flex: 1; min-width: 0; font-size: 17px; color: rgba(255, 255, 255, 0.72); padding: 8px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Suggested prompts — demoted to hints (not buttons) so they don't compete with the composer. */
-.ask-scene-try { margin: 32px 0 12px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.36); font-weight: 600; }
-.ask-scene-prompts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.ask-scene-prompts button { font-family: inherit; font-size: 13.5px; color: rgba(255, 255, 255, 0.62); cursor: pointer; background: transparent; border: none; border-radius: 999px; padding: 6px 12px; transition: background 0.2s ease, color 0.2s ease; }
-.ask-scene-prompts button:hover { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.95); }
+/* The crate — the banner's ideas as a row of tall cards. Five to a view on desktop, one on a phone.
+   A native scroll-snap row, so a phone swipes it; the arrows page it by one view. Each card wears
+   the banner's face (.ask-band and its parts), resized here. */
+.ask-crate { width: min(1140px, 94vw); margin-top: 36px; text-align: left; }
+.ask-crate-h { margin: 0 0 14px 50px; font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: 24px; color: #fff; }
+.ask-crate-row { display: flex; align-items: center; gap: 10px; }
+.ask-crate-arrow {
+  flex: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(165, 180, 252, 0.55); background: rgba(255, 255, 255, 0.06); color: #e0e7ff; cursor: pointer;
+}
+.ask-crate-arrow:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); }
+.ask-crate-arrow:disabled { opacity: 0.3; cursor: default; }
+.ask-crate-arrow:focus-visible, .ask-crate-card:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.ask-crate-track {
+  flex: 1; min-width: 0; display: flex; gap: 12px; margin: 0; padding: 4px 0; list-style: none;
+  overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+}
+.ask-crate-track::-webkit-scrollbar { display: none; }
+.ask-crate-track > li { flex: 0 0 calc((100% - 48px) / 5); scroll-snap-align: start; }
+.ask-crate-card.ask-band { aspect-ratio: 0.8; max-height: none; border-radius: 12px; }
+.ask-crate-card.loading { display: block; aspect-ratio: 0.8; border-radius: 12px; background: rgba(255, 255, 255, 0.06); list-style: none; flex: 0 0 calc((100% - 48px) / 5); }
+.ask-crate-card.ask-band > img, .ask-crate-card.ask-band .pic > img { object-position: var(--pos-tall, 50% 30%); }
+.ask-crate-card .shade { background: linear-gradient(180deg, rgba(8, 10, 16, 0) 28%, rgba(8, 10, 16, 0.78) 58%, rgba(8, 10, 16, 0.94) 80%); }
+.ask-crate-card .txt { left: 14px; right: 12px; bottom: 14px; width: auto; gap: 3px; }
+.ask-crate-card .k { font-size: 11px; letter-spacing: 0.1em; }
+.ask-crate-card .t { font-size: 21px; line-height: 1.15; }
+.ask-crate-card .s { font-size: 13px; }
+.ask-crate-card .by-line { margin-top: 4px; font-size: 11px; line-height: 1.3; color: rgba(255, 255, 255, 0.7); align-items: flex-start; }
+.ask-crate-card .by-line svg { flex: none; margin-top: 2px; }
+.ask-crate-card .play { right: 12px; top: 12px; bottom: auto; width: 40px; height: 40px; }
+.ask-crate-card .play svg { width: 13px; height: 15px; }
+.ask-crate-card.tile .pic { top: 14px; left: 50%; right: auto; height: auto; width: 62%; transform: translateX(-50%); }
+.ask-crate-card .yr { display: none; }
+@media (max-width: 767px) {
+  .ask-crate { margin-top: 28px; }
+  .ask-crate-h { margin-left: 0; text-align: center; font-size: 22px; }
+  .ask-crate-row { gap: 6px; }
+  .ask-crate-arrow { width: 34px; height: 34px; }
+  .ask-crate-track > li, .ask-crate-card.loading { flex-basis: 100%; }
+  .ask-crate-card.ask-band, .ask-crate-card.loading { aspect-ratio: 1; }
+  .ask-crate-card .t { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) { .ask-crate-track { scroll-behavior: auto; } }
 
 .ask-scene-funnel { margin-top: 32px; font-size: 13px; color: rgba(255, 255, 255, 0.5); }
 .ask-scene-funnel a { color: #818cf8; text-decoration: none; }
