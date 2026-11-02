@@ -4,7 +4,7 @@
 **Target Version:** next
 **Priority:** Medium
 **Estimated Complexity:** High
-**Dependencies:** On This Day photo fix (shipped first), `media:publish-video`, #529 claim check
+**Dependencies:** `media:publish-video`, `song` on clips (#612), #529 claim check
 
 ---
 
@@ -22,7 +22,8 @@ The owner's decisions, 2026-11-01:
 2. Every link goes to the gatefold deep link, never to a liner note.
 3. The pool is signatures, heroes that beat another frame, and published clips.
 4. Clips with live audio may post to Bluesky and Mastodon.
-5. Clips get a `song` field, set by the owner.
+5. Clips carry the song they show. All 22 are set and confirmed by the owner (#612).
+6. The site's clip player is not muted by default. A reader chooses to press play.
 
 ---
 
@@ -39,7 +40,7 @@ I need to implement the Social Media Posts feature for Morperhaus Concerts.
 - Build the phases in order. Phase 1 ships on its own.
 - Never hand-build a deep link. Use src/utils/deepLinks.ts.
 
-Start with Phase 1, the song field.
+Start with Phase 1, photo posts.
 ```
 
 ---
@@ -62,7 +63,7 @@ that act that night. No comparison happened, so those stay out of the pool until
 marks them signature.
 
 **A post never describes what it cannot see.** The model has no view of the frame. Copy comes
-from archive facts, the owner's `song`, and the owner's `notes` when present.
+from archive facts, the clip's `song`, and the owner's `notes` when present.
 
 ---
 
@@ -81,8 +82,8 @@ Also required:
 - A still needs a `crop`, because the renderer refuses a personal photo without one.
 - The act must be credited. A room frame needs its own explicit `signature`.
 
-On 2026-11-01 that is 30 stills across 24 acts and 22 shows. Clip supply is changing while the
-remaining clips are published, so read the count from the index rather than quoting one.
+On 2026-11-02 that is 30 stills across 24 acts and 22 shows, plus 22 clips: 52 items, about a
+year at one post a week. Read the count from the index rather than quoting this one.
 
 **Order:** least-recently-posted act first, then clips before stills, then newest show. Never
 post the same act within 30 days. Never reuse an item: the ledger slug is the identity.
@@ -99,23 +100,13 @@ post the same act within 30 days. Never reuse an item: the ledger slug is the id
 
 ---
 
-## Song Field
+## Song
 
-`song?: string` on a video row in `media-index.json`. Set by the owner, never inferred.
+Shipped in #612. `song` is on every video row in `media-index.json`, and `/media-add` asks for
+it on new clips. The owner confirmed all 22.
 
-| Where | Change |
-|---|---|
-| Review page | A song field beside the clip's in and out marks. Suggestions come from that night's setlist; free text is allowed because setlists are often partial |
-| `selects.json` | Carries `song` in `marks` |
-| `media-decisions.json` | Carries `song`, so a re-finish cannot lose it |
-| `media:ingest` / `frames.ts` | Writes `song` to the video row and keeps it on a re-render |
-| Backfill | `npm run media:song <date>` lists that night's clips and sets the song on each |
-
-`credit.song` already renders on the card, so stills need no card work. A frame pulled from a
-tagged clip does not inherit the song: the song belongs to the clip.
-
-**Backfill issue:** open a GitHub issue once `media:song` ships, with one checkbox per clip,
-grouped by show. The owner works through it in their own time. A clip with no song still posts.
+- A clip post sets `credit.song` from the row. Leave it out when a future clip has no song.
+- A frame pulled from a clip does not inherit the song: the song belongs to the clip.
 
 ---
 
@@ -170,15 +161,7 @@ still with a play mark: it looks playable and is not.
 
 ## Implementation Plan
 
-### Phase 1: Song field
-
-Ship the field, `media:song`, and the backfill issue.
-
-- [ ] A re-render keeps `song`
-- [ ] A re-finish keeps `song`
-- [ ] `media:song` lists a night's clips with its setlist
-
-### Phase 2: Photo posts
+### Phase 1: Photo posts
 
 The selection, stream, workflow and contact sheet, stills only.
 
@@ -187,13 +170,13 @@ The selection, stream, workflow and contact sheet, stills only.
 - [ ] Links open the exact frame
 - [ ] The kill switch stops the stream, and `--retract` and `--correct` work
 
-### Phase 3: Clip posts
+### Phase 2: Clip posts
 
 One real test post on each channel, then the adapters.
 
 - [ ] A clip plays in both feeds, with sound on tap
 - [ ] A failed upload retries one channel only
-- [ ] A clip's song appears in the text only when the owner set it
+- [ ] A clip's song appears in the text and matches its row
 
 ---
 
@@ -202,8 +185,9 @@ One real test post on each channel, then the adapters.
 - Unit tests for selection, including solo heroes staying out and the 30-day act rule.
 - Ledger tests: a retried run never double-posts.
 - Unicode acts in text, as the existing tests do with Björk and Motörhead.
-- A live check of one opener link, because a gatefold opens differently for a card that has not
-  rendered yet.
+- Opener links were checked on the live site on 2026-11-02, in a visible browser: three acts at
+  desktop size and one at phone size all opened the right frame. An earlier miss was a hidden
+  test pane. Repeat the check if the gatefold's deep-link code changes.
 
 ---
 
@@ -217,6 +201,7 @@ One real test post on each channel, then the adapters.
 
 ## Revision History
 
+- **2026-11-02:** Song phase removed, shipped in #612. Clip count updated. Site player not muted
 - **2026-11-01:** Initial specification created
-- **Version:** 1.0.0
+- **Version:** 1.1.0
 - **Status:** Planned
