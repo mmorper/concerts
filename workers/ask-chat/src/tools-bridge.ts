@@ -38,7 +38,14 @@ import {
   getAlbumEras,
   getArtistAliases,
   getSongAlbums,
+  getMediaIndex,
 } from "../../mcp-server/src/data.js";
+import {
+  artistMediaNote,
+  nightMediaNote,
+  nightsMediaNote,
+  withMediaNote,
+} from "../../mcp-server/src/media.js";
 import { albumInfo, albumExhibit } from "./album-info.js";
 import { OWNER_FIRST_NAME } from "../../mcp-server/src/owner.js";
 import type { Env } from "./types.js";
@@ -347,21 +354,25 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         limit: num(input.limit) ?? 25, // chat list-exhibit wants the full set; MCP default stays 10
       } as Parameters<typeof searchConcerts>[1], eras);
       if (!matches.length) return { text }; // plain ("nothing matching")
+      const media = await getMediaIndex(e, bgCtx);
+      const noted = withMediaNote(text, nightsMediaNote(media, matches.map((c) => c.date)));
       const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       const m = num(input.month);
       const monthName = m && m >= 1 && m <= 12 ? MONTHS[m - 1] : undefined;
       const filters = [input.artist, input.genre, input.city, monthName, input.year, input.decade].filter(Boolean).map(str);
       const title = `${matches.length} ${matches.length === 1 ? "concert" : "concerts"}${filters.length ? ` · ${filters.join(", ")}` : ""}`;
-      return { text: text + timingNote(matches, todayISO()), exhibit: { kind: "list", title, rows: matches.map(concertRow) } };
+      return { text: noted + timingNote(matches, todayISO()), exhibit: { kind: "list", title, rows: matches.map(concertRow) } };
     }
 
     case "get_artist_history": {
       const data = await getConcerts(e, bgCtx);
       if (!data) return { text: DATA_UNAVAILABLE };
       const query = str(input.artist);
-      const [meta, tracks] = await Promise.all([
+      const [meta, tracks, media, aliasData] = await Promise.all([
         getArtistsMetadata(e, bgCtx),
         getArtistsTopTracks(e, bgCtx),
+        getMediaIndex(e, bgCtx),
+        getArtistAliases(e, bgCtx),
       ]);
       const r = resolveArtist(data.concerts, query);
       const narration = r.kind === "match" ? await getNarration("artists", r.slug, e, bgCtx) : null;
@@ -370,6 +381,10 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       let exhibit: Exhibit | undefined;
       if (r.kind === "match") {
         exhibit = { kind: "artist", entity: "artist", slug: r.slug, name: r.name, deepLink: artistDeepLink(r.slug) };
+        // Photos are filed under the night's billing, so every billing of the act counts.
+        const billed = resolveArtist(data.concerts, query, buildAliasIndex(aliasData));
+        const slugs = billed.kind === "match" ? billed.slugs : r.slugs;
+        text = withMediaNote(text, artistMediaNote(media, r.name, slugs));
         text += timingNote(data.concerts.filter((c) => c.headlinerNormalized === r.slug), todayISO());
       } else if (r.kind === "ambiguous") {
         const candidates = r.options.map((o) => artistRef(data.concerts, o)).filter((x): x is EntityRef => x !== null);
@@ -379,7 +394,11 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
     }
 
     case "get_venue_history": {
-      const [data, venues] = await Promise.all([getConcerts(e, bgCtx), getVenuesMetadata(e, bgCtx)]);
+      const [data, venues, media] = await Promise.all([
+        getConcerts(e, bgCtx),
+        getVenuesMetadata(e, bgCtx),
+        getMediaIndex(e, bgCtx),
+      ]);
       if (!data || !venues) return { text: DATA_UNAVAILABLE };
       const query = str(input.venue);
       const r = resolveVenue(venues, query);
@@ -391,7 +410,9 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       if (r.kind === "match") {
         const v = r.venue;
         exhibit = { kind: "venue", entity: "venue", slug: v.normalizedName, name: v.name, deepLink: venueDeepLink(v.normalizedName) };
-        text += timingNote(data.concerts.filter((c) => c.venueNormalized === v.normalizedName), todayISO());
+        const nights = data.concerts.filter((c) => c.venueNormalized === v.normalizedName);
+        text = withMediaNote(text, nightsMediaNote(media, nights.map((c) => c.date)));
+        text += timingNote(nights, todayISO());
       } else if (r.kind === "ambiguous") {
         const candidates = r.options.map((o) => venueRef(venues, o)).filter((x): x is EntityRef => x !== null);
         if (candidates.length) exhibit = { kind: "disambiguation", entity: "venue", candidates };
@@ -407,16 +428,19 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const day = num(input.day) ?? now.getUTCDate();
       const { text, matches } = onThisDay(data.concerts, month, day);
       if (!matches.length) return { text }; // plain ("a quiet date")
-      return { text: text + timingNote(matches, todayISO()), exhibit: { kind: "list", title: `On this day · ${matches.length} ${matches.length === 1 ? "show" : "shows"}`, rows: matches.map(concertRow) } };
+      const media = await getMediaIndex(e, bgCtx);
+      const noted = withMediaNote(text, nightsMediaNote(media, matches.map((c) => c.date)));
+      return { text: noted + timingNote(matches, todayISO()), exhibit: { kind: "list", title: `On this day · ${matches.length} ${matches.length === 1 ? "show" : "shows"}`, rows: matches.map(concertRow) } };
     }
 
     case "surprise_me": {
       const data = await getConcerts(e, bgCtx);
       if (!data) return { text: DATA_UNAVAILABLE };
-      const [setlists, meta, tracks] = await Promise.all([
+      const [setlists, meta, tracks, media] = await Promise.all([
         getSetlistsCache(e, bgCtx),
         getArtistsMetadata(e, bgCtx),
         getArtistsTopTracks(e, bgCtx),
+        getMediaIndex(e, bgCtx),
       ]);
       const pick = (n: number) => Math.floor(Math.random() * n);
       const r = surpriseMe(data.concerts, pick, setlists, meta ?? {}, tracks ?? {});
@@ -426,7 +450,7 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         concertId: c.id,
         artist: { entity: "artist", slug: c.headlinerNormalized, name: c.headliner, deepLink: artistDeepLink(c.headlinerNormalized) },
       };
-      return { text: r.text, exhibit };
+      return { text: withMediaNote(r.text, nightMediaNote(media, c.date)), exhibit };
     }
 
     case "get_concert_setlist": {
@@ -434,13 +458,14 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       if (!data) return { text: DATA_UNAVAILABLE };
       // The same six inputs the MCP tool passes. Until #317 this passed two, so every song
       // came back without the album the connector annotates it with.
-      const [setlists, tracks, eras, songAlbums, meta, aliasData] = await Promise.all([
+      const [setlists, tracks, eras, songAlbums, meta, aliasData, media] = await Promise.all([
         getSetlistsCache(e, bgCtx),
         getArtistsTopTracks(e, bgCtx),
         getAlbumEras(e, bgCtx),
         getSongAlbums(e, bgCtx),
         getArtistsMetadata(e, bgCtx),
         getArtistAliases(e, bgCtx),
+        getMediaIndex(e, bgCtx),
       ]);
       const args = {
         artist: input.artist ? str(input.artist) : undefined,
@@ -451,7 +476,7 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       // The night card (#593): same resolver as the prose, so it is the same night and set.
       const sel = setlistSelection(data.concerts, setlists, args, eras, songAlbums, meta ?? {}, aliasData);
       if (!sel) return { text }; // the prose is asking which night — no card yet
-      return { text, exhibit: showExhibit(sel) };
+      return { text: withMediaNote(text, nightMediaNote(media, sel.concert.date)), exhibit: showExhibit(sel) };
     }
 
     case "get_archive_top_songs": {

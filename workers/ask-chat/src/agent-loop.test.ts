@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { buildSystemPrompt } from "./agent-loop.js";
 import { TOOL_DEFS } from "./tools-bridge.js";
+import { MEDIA_NOTE_LABEL } from "../../mcp-server/src/media.js";
 
 describe("system prompt — owner identity", () => {
   const prompt = buildSystemPrompt("2026-08-19", []);
@@ -21,6 +22,23 @@ describe("system prompt — owner identity", () => {
   it("keeps the rules it already had", () => {
     expect(prompt).toContain("TODAY'S DATE is 2026-08-19");
     expect(prompt).toContain("GROUNDING");
+  });
+});
+
+describe("system prompt — photos and clips", () => {
+  const prompt = buildSystemPrompt("2026-08-19", []);
+
+  it("names the line the tools carry, so a missing line can mean no media", () => {
+    expect(prompt).toContain(`"${MEDIA_NOTE_LABEL}" line`);
+    expect(prompt).toMatch(/no such line, I have no photos or clips/);
+  });
+
+  it("keeps absence from reading as the show not happening", () => {
+    expect(prompt).toContain("never imply the show didn't happen");
+  });
+
+  it("forbids describing what it cannot see", () => {
+    expect(prompt).toContain("You cannot see any photo or clip");
   });
 });
 
