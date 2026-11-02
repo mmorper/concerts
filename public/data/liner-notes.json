@@ -1,7 +1,154 @@
 {
-  "generatedAt": "2026-10-19T15:21:53.940Z",
-  "dataHash": "90e010df",
+  "generatedAt": "2026-11-02T17:59:47.708Z",
+  "dataHash": "d37590cf",
   "posts": [
+    {
+      "id": "geographic-west-coast-1989",
+      "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "25 Shows in a Row on the West Coast, 1989–1999",
+      "prose": "I caught Howard Jones at Universal Amphitheater on July 5, 1989, and from there I settled into a run of 25 straight West Coast shows that didn't let up until Alien Fashion Show at Club Caprice in Redondo Beach on April 2, 1999 — nearly nine years and eight months apart. In between, I moved through 16 different venues and saw 21 different artists, all without a show from anywhere else breaking the chain. Before that run started, my last stop had been the Beach Boys in Phoenix in November 1988. After Alien Fashion Show closed it out, I didn't land on the West Coast again for a while — my next show was The Art of Noise in Boston that October. Twenty-five shows is a lot of parking lots in the same stretch of coastline, and I only notice the shape of it now, looking back.",
+      "image": {
+        "url": "/images/venues/universalamphitheater-1.jpg",
+        "alt": "Universal Amphitheater",
+        "source": "venue",
+        "ref": "universal-amphitheater"
+      },
+      "audio": {
+        "trackName": "No One Is To Blame",
+        "artistName": "Howard Jones",
+        "albumName": "Action Replay",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/df/99/76/df997638-87b7-daac-b0ed-59a50eee951a/mzaf_15859020045805298129.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/30/b7/b430b70f-1cc8-b120-1217-6ada0096fe7a/5037300817439.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/no-one-is-to-blame/1764332125?i=1764332265&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "howard-jones",
+        "tone-loc",
+        "erasure",
+        "depeche-mode",
+        "jesus-jones",
+        "social-distortion",
+        "bell-biv-devoe",
+        "maxi-priest",
+        "jimmy-buffett",
+        "burning-spear",
+        "sting",
+        "siouxsie-and-the-banshees",
+        "the-smithereens",
+        "adam-ant",
+        "peter-gabriel",
+        "tears-for-fears",
+        "violent-femmes",
+        "the-brian-setzer-orchestra",
+        "big-audio-dynamite",
+        "pat-dinizio",
+        "alien-fashion-show"
+      ],
+      "venues": [
+        "universal-amphitheater",
+        "jets",
+        "kia-forum",
+        "irvine-meadows",
+        "dodger-stadium",
+        "hollywood-palladium",
+        "cal-state-fullerton",
+        "pacific-amphitheatre",
+        "long-beach-arena",
+        "the-celebrity-theatre",
+        "the-coach-house",
+        "olympic-velodrome",
+        "hard-rock-cafe",
+        "the-galaxy-theatre",
+        "greek-theatre",
+        "club-caprice"
+      ],
+      "years": [
+        1989,
+        1990,
+        1990,
+        1990,
+        1990,
+        1990,
+        1990,
+        1991,
+        1991,
+        1991,
+        1991,
+        1991,
+        1991,
+        1992,
+        1993,
+        1993,
+        1993,
+        1995,
+        1995,
+        1995,
+        1995,
+        1997,
+        1998,
+        1998,
+        1999
+      ],
+      "tags": [
+        "#geographic",
+        "#two-coasts"
+      ],
+      "deepLinks": [
+        {
+          "label": "Howard Jones",
+          "url": "/?scene=artists&artist=howard-jones",
+          "type": "artist"
+        },
+        {
+          "label": "Tone-Loc",
+          "url": "/?scene=artists&artist=tone-loc",
+          "type": "artist"
+        },
+        {
+          "label": "Erasure (US)",
+          "url": "/?scene=artists&artist=erasure",
+          "type": "artist"
+        },
+        {
+          "label": "Universal Amphitheater",
+          "url": "/?scene=venues&venue=universal-amphitheater",
+          "type": "venue"
+        },
+        {
+          "label": "Jets",
+          "url": "/?scene=venues&venue=jets",
+          "type": "venue"
+        },
+        {
+          "label": "1989",
+          "url": "/?scene=timeline&year=1989",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "gwen-stefani-walked-on-for-the-brian-setzer-orchestra",
+        "pacific-amphitheatre-16-shows-over-5-decades-2"
+      ],
+      "score": 31,
+      "detector": "geographic-chapter",
+      "publishedAt": "2026-11-02T17:59:47.708Z",
+      "factsAsOf": "2026-11-02T17:59:47.709Z",
+      "social": {
+        "hook": "Twenty-five shows went by before anything from outside the coastline broke in.",
+        "caption": "Howard Jones started this run in 1989. A decade-ending stretch at Club Caprice closed it, not a bigger name.",
+        "beats": [
+          "Before this run, my last show was the Beach Boys, in Phoenix.",
+          "Then 25 shows straight, across 16 venues, with no show from anywhere else between them.",
+          "Depeche Mode, Peter Gabriel, Sting, Siouxsie and The Banshees all fell inside this stretch.",
+          "It closed with Alien Fashion Show at Club Caprice in Redondo Beach, April 1999.",
+          "My next show after that was The Art of Noise, in Boston."
+        ],
+        "authoredAt": "2026-11-02T17:59:47.717Z"
+      }
+    },
     {
       "id": "milestone-150-x",
       "slug": "concert-150-my-150th-show",
@@ -794,7 +941,7 @@
       "headline": "Pacific Amphitheatre: 17 Shows Over 5 Decades",
       "prose": "I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That's five decades under the same Costa Mesa sky, from the *Songs from the Big Chair* era straight through to a stage I still can't quite believe I was standing in front of in July 2026. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don't have a tidy reason why. I just know I never once regretted the drive.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeO_w4VLuoyt276VK1c6bx8Y9_EVKJC-CNb5qxP0vx23RB4-UO5hNxn-wIqU1BJVKojkQFP62QIQyUL4ATzwL5ZDxQTrC-EouOm7mxpz-miM8faRb4KeW_l2nMllw-aYi-fTZ9y=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLewwCFymAm2NMkdY0k3MXhN5gSQMmAiMor1LJ12nBHFl3BGGO7Cyf6GNDZMJEBMzmD27ooPJACxsK6OPlxSe8Xaf3BoN9MTOPqPOLTJueHeu9YKN1kHwuNmXvmmbEHgYFLhHygegA=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -976,7 +1123,7 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades under that name, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLccd6EfAnRS0vpLC01Os-MtY6wXMPD1GxJJ0vS1M5QUYf-cL9pr9yDNndlShqvhJdU3GgvS2NxmvmA3naWHY_FJb0vCRY2mquHhd3ippLptN89pRqJo3bl7T8900WsMmrjPy8wbXw=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfjaPCTuXJ7MxKx2rQaQUIzYYoTNInFxEOTdC0xrJzCkY7G35o1dlZKHkJogmjL9QckRSCoE7kSCVtlek5VtfVdUBzYFh-votIXhCBafWEPesHhkW_IR9bihGswZqp3ItSpSZRjng=s4800-h1200",
         "alt": "House of Blues Anaheim",
         "source": "venue",
         "ref": "house-of-blues-anaheim"
@@ -1280,7 +1427,7 @@
       "headline": "Sting — Days After Nevermind Dropped",
       "prose": "Nevermind hit shelves on September 24th, 1991, and within days the entire rock landscape had shifted — yet there I was on October 4th, just 10 days later, watching Sting perform his polished pop-rock at Pacific Amphitheatre in Costa Mesa. I remember thinking how surreal it felt to be watching Sting, with The Soul Cages still his newest album, while the radio was still figuring out what to do with \"Smells Like Teen Spirit.\" The timing captures this perfect moment when the old guard was still touring their greatest hits, completely unaware that the ground had already moved beneath them.",
       "image": {
-        "url": "https://cdn-images.dzcdn.net/images/artist/5b8043688300104410c5c61e8b378d6a/500x500-000000-80-0-0.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/5f5402aae0bfc8b586fd7c5c397ef218/500x500-000000-80-0-0.jpg",
         "alt": "Sting",
         "source": "artist",
         "ref": "sting"
@@ -1350,10 +1497,18 @@
       "headline": "Blancmange at Crawford Hall: 40 Years On",
       "prose": "I saw Blancmange at Crawford Hall in Irvine on February 15, 1986, and I can still picture Neil Arthur's theatrical gestures up on that stage. They already had three albums out, the newest, Believe You Me, from 1985, and their blend of electronic beats and Arthur's distinctive vocals still felt like the future of pop music. Crawford Hall was an intimate venue for a band that was getting significant radio play, making it feel like catching lightning in a bottle. Looking back, that Saturday in February 1986 captured a specific moment when British new wave was reshaping American college radio.",
       "image": {
-        "url": "https://cdn-images.dzcdn.net/images/artist/d3c1f45911a1913ed5d6e8f18cbefb4f/500x500-000000-80-0-0.jpg",
+        "url": "/images/shows/2026-09-16-blancmange-02.jpg",
         "alt": "Blancmange",
-        "source": "artist",
-        "ref": "blancmange"
+        "source": "show",
+        "ref": "blancmange",
+        "credit": "Mike Morper · 16 September 2026",
+        "shotOn": "2026-09-16",
+        "crop": {
+          "x": 0.04,
+          "y": 0.0461,
+          "w": 0.96,
+          "h": 0.9
+        }
       },
       "audio": {
         "trackName": "Don't Tell Me",
@@ -1674,10 +1829,18 @@
       "headline": "Blancmange: One Night at Crawford Hall, 1986",
       "prose": "I saw Blancmange at Crawford Hall in Irvine on February 15, 1986, and for four decades that one night was the only Blancmange show in my archive. This English synth-pop duo formed in 1979 and already had three albums out by the time I saw them, from \"Happy Families\" to \"Believe You Me,\" yet they stayed a one-night entry in my concert history. It's fascinating how an artist can pass through your life once and then stay a single snapshot for decades.",
       "image": {
-        "url": "https://cdn-images.dzcdn.net/images/artist/d3c1f45911a1913ed5d6e8f18cbefb4f/500x500-000000-80-0-0.jpg",
+        "url": "/images/shows/2026-09-16-blancmange-02.jpg",
         "alt": "Blancmange",
-        "source": "artist",
-        "ref": "blancmange"
+        "source": "show",
+        "ref": "blancmange",
+        "credit": "Mike Morper · 16 September 2026",
+        "shotOn": "2026-09-16",
+        "crop": {
+          "x": 0.04,
+          "y": 0.0461,
+          "w": 0.96,
+          "h": 0.9
+        }
       },
       "audio": {
         "trackName": "Living On The Ceiling",
@@ -1981,7 +2144,7 @@
       "headline": "Echo and the Bunnymen: 26 Years Between Headline Shows",
       "prose": "I caught Echo and the Bunnymen at Irvine Meadows in 1984, when their post-punk atmospherics still felt urgent and new. I saw them again 19 years later as one of The Cure's openers in 2003, but it took 26 years to see them headline again, at a club in D.C. called The Black Cat in 2010. By then, Ian McCulloch's voice had weathered but the songs from *Porcupine* and those early albums still carried that same moody weight. Sometimes the longest waits between shows make you appreciate how certain bands become part of your internal soundtrack, whether you're actively listening or not.",
       "image": {
-        "url": "https://cdn-images.dzcdn.net/images/artist/484b109058cfd0d50c69add180cd8250/500x500-000000-80-0-0.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/fb36f786b4d37dccf0b4a6bed971a645/500x500-000000-80-0-0.jpg",
         "alt": "Echo & The Bunnymen",
         "source": "artist",
         "ref": "echo-and-the-bunnymen"
@@ -4102,7 +4265,7 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Bonafide was Maxi Priest's latest album, and he headlined a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeO_w4VLuoyt276VK1c6bx8Y9_EVKJC-CNb5qxP0vx23RB4-UO5hNxn-wIqU1BJVKojkQFP62QIQyUL4ATzwL5ZDxQTrC-EouOm7mxpz-miM8faRb4KeW_l2nMllw-aYi-fTZ9y=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLewwCFymAm2NMkdY0k3MXhN5gSQMmAiMor1LJ12nBHFl3BGGO7Cyf6GNDZMJEBMzmD27ooPJACxsK6OPlxSe8Xaf3BoN9MTOPqPOLTJueHeu9YKN1kHwuNmXvmmbEHgYFLhHygegA=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -4286,7 +4449,7 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo four months out from BOI-NGO, The Bangles, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcwUJi0pq_EN1lQsyOJfMhWgseiCoYE0cWAW_2PI-Qy9P8-Bd9McEO2sQsZQBh13KVkmuONY1GSEn_4Q7ypWGPduNKoz6kSPbw6JVH3arLnrlcEAmUKg6fGg7TtLRGJRUQFXu5B=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcTgPd4vAWoPOOsOBBt5uSTydefEjW__OjuM6zcUwzfj2SpzCVNm7kOm7SrqSAvFNs9SVGjDO5btk_JL367HkK1UxqTFblJUvSKidTHH25g65bOnfC9lLzvCtp8BLZdgWMNuj8-=s4800-h1200",
         "alt": "Caliente Racetrack",
         "source": "venue",
         "ref": "caliente-racetrack"
@@ -4463,7 +4626,7 @@
       "headline": "50 Shows in a Row in the D.C. Area, 2009–2018",
       "prose": "For my first 25 years of shows, California was nearly the whole map: 71 of the first 76, starting with Adam Ant at Irvine Meadows in 1984. Then, from Rob Thomas at EagleBank Arena in November 2009 to Beck at The Anthem in April 2018, I saw 50 shows in a row in D.C., Maryland and Virginia, 11 of them at the 9:30 Club. Between Brian Setzer at Doheny in May 2009 and The Human League at Huntington State Beach in May 2018, I didn't see a single show in California. After that, 50 of the next 55 shows were back in California. Echo and the Bunnymen were one of the bands I saw on both coasts, Irvine Meadows in 1984 and The Black Cat in 2010 — the same band, a whole country apart.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfWi1yFh5LwgE4f9F8390i6bnVzskTVDPDyjWgjAo3vtPJBTboKMlPzjDBnQpHj-8cw2ZLsBMKbzJa4v-MkHLhasUV2Wuph3aNSa4-3uY4i1OzSPZxfRGsVyH42H4Mra-Hzmlia=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeUhK-qbrtxgnUJGpdrzmA45aXDBSAhlavmGkq8QFcPzDqySWsDjaGrwJPL1Kc7c0lqYPY_4s8LO_Rp6gjhKf8bt2bs19Amt06bTsTWsv-DZGTlkG_AtIEbKMKFxYSZnpMhXU05=s4800-h1200",
         "alt": "EagleBank Arena",
         "source": "venue",
         "ref": "eaglebank-arena"
@@ -5010,7 +5173,7 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in March 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeBuTZMgMpD4sFZN4bqzUezeQqvJXjkrUtCZFrdDN-b5pqx4xHh8oFe1kXk6UC0B18fQfq8OFfJpTpH2v9OZN0HfbsFS7fgyKDwEQV44mVeMLEW2hnQZB8Zdq-WPRee1AlUwmIRxA=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfl-ICtZbU_ISViT8qP3q1SwmIgrlYTEF-f3OZEr9DK6chm3Q23smeHQCfZiMmEsDSkzBaYXxrm-avqECUrzSI8Uk_G9-i-YSDS-fEnQbLHv217nhDkr6WrGQ6Bh5NjXunzx950Zw=s4800-h1200",
         "alt": "Kia Forum",
         "source": "venue",
         "ref": "kia-forum"
@@ -5092,10 +5255,10 @@
     }
   ],
   "metadata": {
-    "totalPosts": 58,
-    "totalGenerated": 98,
-    "averageScore": 38,
-    "lastPipelineRun": "2026-10-19T15:21:53.940Z",
+    "totalPosts": 59,
+    "totalGenerated": 99,
+    "averageScore": 37.9,
+    "lastPipelineRun": "2026-11-02T17:59:47.708Z",
     "concertsAnalyzed": 183,
     "feedUrl": "/liner-notes.xml"
   }

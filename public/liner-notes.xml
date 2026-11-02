@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 19 Oct 2026 15:21:53 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Nov 2026 17:59:47 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>25 Shows in a Row on the West Coast, 1989–1999</title>
+    <link>https://concerts.morperhaus.org/liner-notes/25-shows-in-a-row-on-the-west-coast-1989-1999</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/25-shows-in-a-row-on-the-west-coast-1989-1999</guid>
+    <pubDate>Mon, 02 Nov 2026 17:59:47 +0000</pubDate>
+    <description>I caught Howard Jones at Universal Amphitheater on July 5, 1989, and from there I settled into a run of 25 straight West Coast shows that didn&apos;t let up until Alien Fashion Show at Club Caprice in Redondo Beach on April 2, 1999 — nearly nine years and eight months apart. In between, I moved through 16 different venues and saw 21 different artists, all without a show from anywhere else breaking the chain. Before that run started, my last stop had been the Beach Boys in Phoenix in November 1988. After Alien Fashion Show closed it out, I didn&apos;t land on the West Coast again for a while — my next show was The Art of Noise in Boston that October. Twenty-five shows is a lot of parking lots in the same stretch of coastline, and I only notice the shape of it now, looking back.</description>
+    <category>#geographic</category>
+    <category>#two-coasts</category>
+    <media:content url="/images/venues/universalamphitheater-1.jpg" medium="image" />
+  </item>
   <item>
     <title>Concert #150: My 150th Show</title>
     <link>https://concerts.morperhaus.org/liner-notes/concert-150-my-150th-show</link>
@@ -109,7 +119,7 @@
     <description>I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That&apos;s five decades under the same Costa Mesa sky, from the Songs from the Big Chair era straight through to a stage I still can&apos;t quite believe I was standing in front of in July 2026. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don&apos;t have a tidy reason why. I just know I never once regretted the drive.</description>
     <category>#venue-loyalty</category>
     <category>#home-venue</category>
-    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLeO_w4VLuoyt276VK1c6bx8Y9_EVKJC-CNb5qxP0vx23RB4-UO5hNxn-wIqU1BJVKojkQFP62QIQyUL4ATzwL5ZDxQTrC-EouOm7mxpz-miM8faRb4KeW_l2nMllw-aYi-fTZ9y=s4800-h1200" medium="image" />
+    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLewwCFymAm2NMkdY0k3MXhN5gSQMmAiMor1LJ12nBHFl3BGGO7Cyf6GNDZMJEBMzmD27ooPJACxsK6OPlxSe8Xaf3BoN9MTOPqPOLTJueHeu9YKN1kHwuNmXvmmbEHgYFLhHygegA=s4800-h1200" medium="image" />
   </item>
   <item>
     <title>July 16: 40 Years Since Beach Boys</title>
@@ -128,7 +138,7 @@
     <pubDate>Mon, 06 Jul 2026 12:07:53 +0000</pubDate>
     <description>I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who&apos;d been making records since before I probably knew what a record was. Six shows across three decades under that name, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.</description>
     <category>#venue-loyalty</category>
-    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLccd6EfAnRS0vpLC01Os-MtY6wXMPD1GxJJ0vS1M5QUYf-cL9pr9yDNndlShqvhJdU3GgvS2NxmvmA3naWHY_FJb0vCRY2mquHhd3ippLptN89pRqJo3bl7T8900WsMmrjPy8wbXw=s4800-h1200" medium="image" />
+    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLfjaPCTuXJ7MxKx2rQaQUIzYYoTNInFxEOTdC0xrJzCkY7G35o1dlZKHkJogmjL9QckRSCoE7kSCVtlek5VtfVdUBzYFh-votIXhCBafWEPesHhkW_IR9bihGswZqp3ItSpSZRjng=s4800-h1200" medium="image" />
   </item>
   <item>
     <title>June 21: 35 Years Since Jimmy Buffett</title>
@@ -168,7 +178,7 @@
     <description>Nevermind hit shelves on September 24th, 1991, and within days the entire rock landscape had shifted — yet there I was on October 4th, just 10 days later, watching Sting perform his polished pop-rock at Pacific Amphitheatre in Costa Mesa. I remember thinking how surreal it felt to be watching Sting, with The Soul Cages still his newest album, while the radio was still figuring out what to do with &quot;Smells Like Teen Spirit.&quot; The timing captures this perfect moment when the old guard was still touring their greatest hits, completely unaware that the ground had already moved beneath them.</description>
     <category>#album-context</category>
     <category>#cultural-moment</category>
-    <media:content url="https://cdn-images.dzcdn.net/images/artist/5b8043688300104410c5c61e8b378d6a/500x500-000000-80-0-0.jpg" medium="image" />
+    <media:content url="https://cdn-images.dzcdn.net/images/artist/5f5402aae0bfc8b586fd7c5c397ef218/500x500-000000-80-0-0.jpg" medium="image" />
   </item>
   <item>
     <title>Blancmange at Crawford Hall: 40 Years On</title>
@@ -178,7 +188,7 @@
     <description>I saw Blancmange at Crawford Hall in Irvine on February 15, 1986, and I can still picture Neil Arthur&apos;s theatrical gestures up on that stage. They already had three albums out, the newest, Believe You Me, from 1985, and their blend of electronic beats and Arthur&apos;s distinctive vocals still felt like the future of pop music. Crawford Hall was an intimate venue for a band that was getting significant radio play, making it feel like catching lightning in a bottle. Looking back, that Saturday in February 1986 captured a specific moment when British new wave was reshaping American college radio.</description>
     <category>#anniversary</category>
     <category>#on-this-day</category>
-    <media:content url="https://cdn-images.dzcdn.net/images/artist/d3c1f45911a1913ed5d6e8f18cbefb4f/500x500-000000-80-0-0.jpg" medium="image" />
+    <media:content url="/images/shows/2026-09-16-blancmange-02.jpg" medium="image" />
   </item>
   <item>
     <title>April 12: 40 Years Since The Alarm</title>
@@ -199,16 +209,6 @@
     <category>#artist-longevity</category>
     <category>#multi-decade</category>
     <media:content url="/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg" medium="image" />
-  </item>
-  <item>
-    <title>March 22: 13 Years Since Bad Religion</title>
-    <link>https://concerts.morperhaus.org/liner-notes/march-22-13-years-since-bad-religion</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/march-22-13-years-since-bad-religion</guid>
-    <pubDate>Tue, 24 Mar 2026 00:47:49 +0000</pubDate>
-    <description>I remember walking into the 9:30 Club that March night in 2013, thirteen years ago now, and feeling like I was stepping into punk rock church. Bad Religion delivered their signature blend of melody and fury to a packed room, with Against Me!, The Bronx, and Polar Bear Club warming up the crowd beforehand. The whole evening felt like a masterclass in how punk has evolved since Bad Religion formed back in 1980, yet Greg Graffin&apos;s voice cut through the years like nothing had changed. Sometimes the best shows are the ones that remind you why you fell in love with live music in the first place.</description>
-    <category>#anniversary</category>
-    <category>#on-this-day</category>
-    <media:content url="/images/shows/2014-07-30-bad-religion-01.jpg" medium="image" />
   </item>
   </channel>
 </rss>
