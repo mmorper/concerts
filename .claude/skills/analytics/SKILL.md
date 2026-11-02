@@ -313,6 +313,10 @@ fires these itself.
   clip, song), `position`, `search_term`. A match costs no model call, so `ask_question_sent` never
   sees it. A song match then opens its card in Ask, which fires `ask_exhibit_shown` with
   `kind: song`
+- `ask_suggested_prompt_clicked` — An idea or a follow-up that asks for the visitor: `prompt`,
+  `position`, `source` (`banner`, `crate`, `chip`). A banner or crate idea adds `idea_kind`, and a
+  follow-up chip adds `exhibit_kind`, the card it sat under. The question then fires
+  `ask_question_sent` as usual
 
 **Timeline (Scene 1):**
 - `timeline_year_selected`

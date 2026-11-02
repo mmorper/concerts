@@ -250,11 +250,22 @@ export type Exhibit =
   | PlainExhibit
   | RefusalExhibit
 
+/**
+ * A follow-up the Worker offers under an answer (workers/ask-chat/src/chips.ts). It checked the
+ * tool already answers before offering it, so the site never second-guesses one: clicking sends
+ * `label` as the question and the tool + input back with it, untouched.
+ */
+export interface Chip {
+  label: string
+  tool: string
+  input: Record<string, string>
+}
+
 // SSE events streamed by POST /api/ask/chat (see the worker's index.ts header).
 export type AskEvent =
   | { type: 'token'; text: string }
   | { type: 'tool'; name: string }
-  | { type: 'exhibit'; exhibit: Exhibit }
+  | { type: 'exhibit'; exhibit: Exhibit; chips?: Chip[] }
   | { type: 'refusal'; message: string }
   | { type: 'done'; fraction: number }
   | { type: 'error'; message: string }

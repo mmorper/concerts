@@ -205,15 +205,18 @@ export interface AgentResult {
 
 // Run one user turn to completion, looping over tool_use. `messages` is the running
 // Anthropic-format history (prior user/assistant text + the new user message). Returns the
-// final assistant text and the turn's total token usage (for the cost commit).
+// final assistant text and the turn's total token usage (for the cost commit). `seeded` holds
+// the exhibits of a tool already run for this turn: a follow-up chip runs its tool before the
+// model sees the turn, and the messages end with that tool's result.
 export async function runAgentTurn(
   env: Env,
   messages: unknown[],
   events: AgentEvents,
+  seeded: Exhibit[] = [],
 ): Promise<AgentResult> {
   const work = [...messages];
   const total: AnthropicUsage = {};
-  const exhibits: Exhibit[] = [];
+  const exhibits: Exhibit[] = [...seeded];
 
   // Computed once per turn and injected into the system prompt so the model never has to compare
   // dates itself (which Haiku does unreliably).

@@ -155,6 +155,29 @@ Also:
 The test does not cover the daily spend cap or a model failure. Those replies stay as they are
 today.
 
+**Done.** `workers/ask-chat/src/chips.ts` offers them. Each candidate is checked against the same
+pure fn its tool runs, `setlistSelection`, `mediaResults` or `resolveArtist`, so the check and the
+answer can't disagree. What each card offers, at most two:
+
+| Card | Chips |
+|---|---|
+| An act | Your first show by them (2+ nights), then the clips or the photos |
+| A room | "Your first show here" (2+ nights), then the clips or the photos |
+| A night | Every show by that act (2+ nights), then the night's clips, or its photos when there are 2+ (the card shows one) |
+| A surprise pick, or a list of one night | The setlist (3+ songs), then the night's clips or photos |
+| A night's place in a career | The setlist, then every show by that act |
+| A gallery of one act on one night | The setlist |
+| The seen-most ranking | Every show by the top act |
+
+A label drops a leading "The" ("Your first Human League show"). The tool's input keeps the full
+name. A chip comes back with its turn as `{ tool, input }`, and `readChip` throws out any tool or
+input key it didn't offer. The Worker runs that tool, then hands the model the result as a tool
+call already made, so the prose is written about what the chip promised. The chips skip the
+`plain` card, and any turn after which the day's cap is spent. Quiet mode offers none, but a chip
+clicked before the switch still runs its tool, with no model call. The walk test is
+`chips.test.ts`: it serves the real `public/data` to the shared data layer and runs every chip
+offered for every act, room and night.
+
 ### Phase 6: the redesign
 
 Mocks: [Ask the Archive redesign](https://claude.ai/artifact/GghUJAdPAzQmZ231XDDBe7), the page
@@ -315,6 +338,7 @@ link sits below it. The "Try asking" chips and `prompts.ts` are gone.
 
 ## Revision History
 
+- **2026-11-02:** Phase 5 built: follow-up chips, chosen and checked by the Worker
 - **2026-11-02:** A song match opens a song card in Ask, from the owner's review of the live search
 - **2026-11-02:** Imagery ladder and the full set of response layouts added to Phase 6
 - **2026-11-02:** Phase 6 added: the search-first redesign, from the owner's review of the mocks

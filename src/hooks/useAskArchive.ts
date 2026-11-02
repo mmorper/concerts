@@ -3,7 +3,7 @@
 // (#141) render `exchanges`; this hook is UI-agnostic.
 
 import { useCallback, useRef, useState } from 'react'
-import type { Exhibit } from '@/types/exhibit'
+import type { Chip, Exhibit } from '@/types/exhibit'
 import { streamAskTurn, type Turn } from '@/services/askArchive'
 import { analytics } from '@/services/analytics'
 
@@ -14,6 +14,8 @@ export interface Exchange {
   question: string
   prose: string
   exhibit: Exhibit | null
+  /** One or two follow-ups the Worker offered with the card. */
+  chips?: Chip[]
   status: ExchangeStatus
   message?: string // refusal / error copy
 }
@@ -36,8 +38,9 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
   const patch = (id: string, fn: (ex: Exchange) => Exchange) =>
     setExchanges((xs) => xs.map((x) => (x.id === id ? fn(x) : x)))
 
+  // `chip` when the question is a follow-up the Worker offered: its tool runs before the model.
   const ask = useCallback(
-    async (question: string) => {
+    async (question: string, chip?: Chip) => {
       const q = question.trim()
       if (!q || busy) return
 
@@ -49,7 +52,7 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
           { role: 'user' as const, text: x.question },
           { role: 'assistant' as const, text: x.prose },
         ])
-      const turns: Turn[] = [...history, { role: 'user', text: q }]
+      const turns: Turn[] = [...history, { role: 'user', text: q, ...(chip ? { chip: { tool: chip.tool, input: chip.input } } : {}) }]
 
       const id = nextId()
       setExchanges((xs) => [
@@ -73,7 +76,7 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
               // 'tool' events are ignored: the worker buffers interim prose and streams only the
               // final answer, and the UI shows a single loading cue until the exhibit lands.
               case 'exhibit':
-                patch(id, (x) => ({ ...x, exhibit: event.exhibit }))
+                patch(id, (x) => ({ ...x, exhibit: event.exhibit, ...(event.chips ? { chips: event.chips } : {}) }))
                 analytics.trackEvent('ask_exhibit_shown', { kind: event.exhibit.kind })
                 break
               case 'refusal':
