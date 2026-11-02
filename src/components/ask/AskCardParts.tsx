@@ -9,8 +9,8 @@ import { analytics } from '@/services/analytics'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { EntityRef, Exhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
-import { BANNER_ASPECT, frameLink, heroLayout, type CaptionContext, type Photo } from './media'
-import { CameraMark, DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
+import { frameLink, type CaptionContext, type Photo } from './media'
+import { DerivedArt, LadderImage } from './AskMedia'
 
 export const sceneOf = (deepLink: string): string => new URLSearchParams(deepLink.split('?')[1] ?? '').get('scene') ?? ''
 
@@ -118,50 +118,6 @@ export function Portrait({ name, image, color, className, round = false }: { nam
       className={className}
       fallback={<DerivedArt name={name} color={color} shape={round ? 'round' : 'tile'} className={className} />}
     />
-  )
-}
-
-/**
- * The lead photo, framed so the owner's crop survives: a 3:2 banner when it keeps ≥80% of the crop,
- * otherwise the photo beside `side` at the crop's own aspect.
- */
-export function PhotoHero({ photo, caption, onOpen, count, color, name, side }: {
-  photo: Photo
-  caption: string
-  onOpen: () => void
-  count: number
-  color: string
-  name: string
-  side: ReactNode
-}) {
-  const derived = <DerivedArt name={name} color={color} className="ask-hero-derived" />
-  if (heroLayout(photo) === 'banner') {
-    return (
-      <>
-        <PhotoButton className="ask-hero banner" onOpen={onOpen} label={caption}>
-          <FramedPhoto photo={photo} aspect={BANNER_ASPECT} alt={caption} fallback={derived} eager />
-          <span className="ask-hero-cap">
-            <CameraMark /> {caption}
-          </span>
-          {count > 1 && <span className="ask-hero-count">{count} photos</span>}
-        </PhotoButton>
-        {side}
-      </>
-    )
-  }
-  return (
-    <div className="ask-hero-row">
-      <PhotoButton className="ask-hero portrait" onOpen={onOpen} label={caption}>
-        <FramedPhoto photo={photo} alt={caption} fallback={derived} eager />
-        {count > 1 && <span className="ask-hero-count">{count} photos</span>}
-      </PhotoButton>
-      <div className="ask-hero-side">
-        {side}
-        <p className="ask-cap">
-          <CameraMark /> {caption}
-        </p>
-      </div>
-    </div>
   )
 }
 
