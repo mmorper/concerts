@@ -30,6 +30,8 @@ interface DeepLinkParams {
   venue?: string | null
   /** Concert date from `?show=` (#196), already resolved against the archive */
   show?: string | null
+  /** Still or video from `?photo=`, already validated. Only meaningful with `show`. */
+  photo?: string | null
   /** Venue of the resolved show — display only, never part of the URL */
   showVenue?: string | null
 }
@@ -81,6 +83,9 @@ export function buildPagePath(
   }
   if (params?.show) {
     searchParams.set('show', params.show)
+  }
+  if (params?.show && params.photo) {
+    searchParams.set('photo', params.photo)
   }
 
   return `/?${searchParams.toString()}`

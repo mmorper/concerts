@@ -45,6 +45,9 @@ const BOT_USER_AGENTS = [
   'google-extended',
 ];
 
+// Routes that reach the scene fallback but are real pages, so they name themselves as canonical.
+const SELF_CANONICAL_PATHS = new Set(['/about', '/about-mcp']);
+
 // Cache same-origin JSON between requests so we don't pay fetch+parse on every bot hit.
 // Spike #110 measured cold-isolate CPU at 11–16 ms on venue routes (over the 10 ms free-tier limit);
 // the parse dominates. 300s TTL keeps SEO bots within acceptable staleness.
@@ -203,7 +206,7 @@ export default {
       html = await injectRegionMeta(html, region, url.origin, ctx);
     } else {
       // Scene-only or homepage — inject scene meta
-      html = await injectSceneMeta(html, scene, url.origin, ctx);
+      html = await injectSceneMeta(html, scene, url.origin, ctx, url.pathname);
     }
 
     // Preserve all original headers (CORS, CSP, security headers, etc.)
@@ -246,6 +249,32 @@ function isHTMLRequest(request) {
 
   // Check Accept header
   return accept.includes('text/html') || accept.includes('*/*');
+}
+
+/**
+ * Tell crawlers which page this is, beyond the og: tags.
+ *
+ * `index.html` ships one canonical, the homepage, and the app never changes it. Until this ran,
+ * every deep link in the sitemap named the homepage as its real page, and `twitter:title` stayed
+ * generic on shared links.
+ *
+ * `canonicalUrl` differs from `pageUrl` only when a share link should not be indexed itself.
+ * Campaign parameters never reach either, because both are rebuilt from the route.
+ */
+function injectPageIdentity(html, title, pageUrl, canonicalUrl = pageUrl) {
+  return html
+    .replace(
+      /<link rel="canonical" href="[^"]*" \/>/,
+      () => `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" />`
+    )
+    .replace(
+      /<meta property="twitter:url" content="[^"]*" \/>/,
+      () => `<meta property="twitter:url" content="${escapeHtml(pageUrl)}" />`
+    )
+    .replace(
+      /<meta property="twitter:title" content="[^"]*" \/>/,
+      () => `<meta property="twitter:title" content="${escapeHtml(title)}" />`
+    );
 }
 
 /**
@@ -323,9 +352,11 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, pho
     // Per-show cards are a follow-up (#194); until then the artist image is the
     // best available, and a missing one falls back to the site card.
     const imageUrl = photoImage || metadata?.image || `${origin}/og-image.jpg`;
-    const pageUrl =
-      `${origin}/?scene=artists&artist=${artistNormalized}&show=${concert.date}` +
-      (photoImage ? `&photo=${photo}` : '');
+    const showUrl = `${origin}/?scene=artists&artist=${artistNormalized}&show=${concert.date}`;
+    const pageUrl = showUrl + (photoImage ? `&photo=${photo}` : '');
+    // A clip is the main content of its link, so it can rank alone. A still stays with its night:
+    // 150 near-identical pages would only compete with the show page.
+    const canonicalUrl = photoImage && photo.endsWith('-video') ? pageUrl : showUrl;
 
     html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
     html = html.replace(
@@ -356,6 +387,8 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, pho
       /<meta property="twitter:image" content="[^"]*" \/>/,
       `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`
     );
+
+    html = injectPageIdentity(html, title, pageUrl, canonicalUrl);
 
     console.log(`[Show Meta Injected] ${artistName} at ${concert.venue}, ${concert.date}`);
     return html;
@@ -467,6 +500,8 @@ async function injectArtistMeta(html, artistNormalized, origin, ctx) {
       `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`
     );
 
+    html = injectPageIdentity(html, title, pageUrl);
+
     console.log(`[Artist Meta Injected] ${artistName} (${concertCount} concerts)`);
     return html;
 
@@ -558,6 +593,8 @@ async function injectVenueMeta(html, venueNormalized, origin, scene, ctx) {
       `<meta property="twitter:description" content="${escapeHtml(description)}" />`
     );
 
+    html = injectPageIdentity(html, title, pageUrl);
+
     console.log(`[Venue Meta Injected] ${metadata.name} (${concertCount} concerts, ${sceneLabel} scene)`);
     return html;
 
@@ -645,6 +682,8 @@ async function injectRegionMeta(html, regionNormalized, origin, ctx) {
     html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
 
+    html = injectPageIdentity(html, title, pageUrl);
+
     console.log(`[Region Meta Injected] ${regionName} (${regionConcerts.length} concerts)`);
     return html;
 
@@ -705,6 +744,8 @@ async function injectGenreMeta(html, genreNormalized, origin, ctx) {
     html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
 
+    html = injectPageIdentity(html, title, pageUrl);
+
     console.log(`[Genre Meta Injected] ${genreName} (${genreConcerts.length} concerts)`);
     return html;
 
@@ -738,6 +779,8 @@ async function injectHowItWorksMeta(html, origin, ctx) {
     html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
 
+    html = injectPageIdentity(html, title, pageUrl);
+
     console.log(`[How It Works Meta Injected]`);
     return html;
 
@@ -750,7 +793,7 @@ async function injectHowItWorksMeta(html, origin, ctx) {
 /**
  * Inject scene-specific meta tags (no entity deep link)
  */
-async function injectSceneMeta(html, scene, origin, ctx) {
+async function injectSceneMeta(html, scene, origin, ctx, pathname = '/') {
   try {
     // Fetch stats from concerts.json
     const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
@@ -799,6 +842,12 @@ async function injectSceneMeta(html, scene, origin, ctx) {
 
     const meta = sceneMeta[scene] || sceneMeta.timeline;
     const pageUrl = scene ? `${origin}/?scene=${scene}` : origin;
+    // A path the SPA merely answers with its shell stays with the homepage.
+    const canonicalUrl = scene
+      ? pageUrl
+      : SELF_CANONICAL_PATHS.has(pathname)
+        ? `${origin}${pathname}`
+        : `${origin}/`;
 
     // Replace meta tags
     html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(meta.title)}</title>`);
@@ -807,6 +856,8 @@ async function injectSceneMeta(html, scene, origin, ctx) {
     html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(meta.description)}" />`);
     html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(meta.description)}" />`);
+
+    html = injectPageIdentity(html, meta.title, pageUrl, canonicalUrl);
 
     console.log(`[Scene Meta Injected] ${scene || 'homepage'}`);
     return html;
@@ -844,6 +895,8 @@ async function injectLinerNotesFeedMeta(html, origin, ctx) {
     html = html.replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`);
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
     html = html.replace(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`);
+
+    html = injectPageIdentity(html, title, pageUrl);
 
     console.log('[Liner Notes Feed Meta Injected]');
     return html;
@@ -893,6 +946,8 @@ async function injectLinerNotesPostMeta(html, slug, origin, ctx) {
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
     html = html.replace(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(ogImageUrl)}" />`);
 
+    html = injectPageIdentity(html, title, pageUrl);
+
     console.log(`[Liner Notes Post Meta Injected] ${post.headline}`);
     return html;
 
@@ -918,6 +973,8 @@ async function injectWhatsPlayingMeta(html, origin) {
     html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
     html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+
+    html = injectPageIdentity(html, title, pageUrl);
 
     console.log("[What's Playing Meta Injected]");
     return html;

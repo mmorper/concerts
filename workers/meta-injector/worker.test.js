@@ -19,11 +19,14 @@ const HTML = '<html><head><title>Morperhaus Concert Archives</title></head><body
 // assertion against it would pass on an empty match rather than on content.
 const PAGE =
   '<html><head><title>Morperhaus Concert Archives</title>' +
+  '<link rel="canonical" href="https://concerts.morperhaus.org/" />' +
   '<meta name="description" content="A visual love letter to 5+ decades of live music." />' +
   '<meta property="og:title" content="Morperhaus Concert Archives" />' +
   '<meta property="og:description" content="A visual love letter to 5+ decades of live music." />' +
   '<meta property="og:url" content="https://concerts.morperhaus.org/" />' +
   '<meta property="og:image" content="https://concerts.morperhaus.org/og-image.jpg" />' +
+  '<meta property="twitter:url" content="https://concerts.morperhaus.org/" />' +
+  '<meta property="twitter:title" content="Morperhaus Concert Archives" />' +
   '<meta property="twitter:description" content="A visual love letter to 5+ decades of live music." />' +
   '<meta property="twitter:image" content="https://concerts.morperhaus.org/og-image.jpg" />' +
   '</head><body></body></html>'
@@ -268,6 +271,89 @@ describe('meta-injector worker', () => {
       serve('image/jpeg')
       const body = await (await worker.fetch(req(`${LINK}&photo=..%2F..%2Fsecret`), {}, ctx)).text()
       expect(body).not.toContain('/og/shows/')
+    })
+  })
+
+  // A deep link that names the homepage as its real page is invisible to search, and the failure
+  // is silent: every other tag on the page looks right.
+  describe('canonical', () => {
+    const SITE = 'https://concerts.morperhaus.org'
+    const concerts = {
+      concerts: [
+        { date: '2026-09-16', year: 2026, headliner: 'Thompson Twins', headlinerNormalized: 'thompson-twins', venue: 'Pavilion Theatre', venueNormalized: 'pavilion-theatre', city: 'Glasgow', state: 'UK', genreNormalized: 'new-wave' },
+      ],
+    }
+    const artists = { 'thompson-twins': { name: 'Thompson Twins' } }
+    const venues = { 'pavilion-theatre': { name: 'Pavilion Theatre', city: 'Glasgow', state: 'UK' } }
+    const liner = { posts: [{ slug: 'a-note', headline: 'A Note', prose: 'Short.' }] }
+
+    function serve() {
+      vi.mocked(fetch).mockImplementation(async (input, init) => {
+        const url = String(input?.url ?? input)
+        const json = (body) => new Response(JSON.stringify(body), { status: 200 })
+        if (url.includes('/og/shows/')) {
+          return new Response(null, { status: 200, headers: { 'Content-Type': init?.method === 'HEAD' ? 'image/jpeg' : 'text/html' } })
+        }
+        if (url.includes('/data/concerts.json')) return json(concerts)
+        if (url.includes('/data/artists-metadata.json')) return json(artists)
+        if (url.includes('/data/venues-metadata.json')) return json(venues)
+        if (url.includes('/data/liner-notes.json')) return json(liner)
+        if (url.includes('/data/')) return json({})
+        return htmlResponse(PAGE)
+      })
+    }
+
+    async function headOf(path) {
+      serve()
+      return (await worker.fetch(req(path), {}, ctx)).text()
+    }
+    const canonical = (href) => `<link rel="canonical" href="${href.replaceAll('&', '&amp;')}" />`
+
+    it.each([
+      ['an artist', '/?scene=artists&artist=thompson-twins'],
+      ['a show', '/?scene=artists&artist=thompson-twins&show=2026-09-16'],
+      ['a venue', '/?scene=venues&venue=pavilion-theatre'],
+      ['a venue on the map', '/?scene=geography&venue=pavilion-theatre'],
+      ['a genre', '/?scene=genres&genre=new-wave'],
+      ['a region', '/?scene=geography&region=glasgow'],
+      ['a scene', '/?scene=timeline'],
+      ['a liner note', '/liner-notes/a-note'],
+      ['the liner notes feed', '/liner-notes'],
+      ['how it works', '/how-it-works'],
+      ["what's playing", '/whats-playing'],
+      ['the about page', '/about'],
+    ])('names %s as its own page', async (_, path) => {
+      expect(await headOf(path)).toContain(canonical(`${SITE}${path}`))
+    })
+
+    it('leaves the homepage canonical on the homepage', async () => {
+      expect(await headOf('/')).toContain(canonical(`${SITE}/`))
+    })
+
+    it('does not give a path the SPA merely answers a canonical of its own', async () => {
+      expect(await headOf('/nothing-here')).toContain(canonical(`${SITE}/`))
+    })
+
+    it('points a still at its show, while its share link stays intact', async () => {
+      const body = await headOf('/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-10')
+      expect(body).toContain(canonical(`${SITE}/?scene=artists&artist=thompson-twins&show=2026-09-16`))
+      expect(body).toContain('property="og:url" content="https://concerts.morperhaus.org/?scene=artists&amp;artist=thompson-twins&amp;show=2026-09-16&amp;photo=thompson-twins-10"')
+    })
+
+    it('gives a clip its own canonical', async () => {
+      const link = '/?scene=artists&artist=thompson-twins&show=2026-09-16&photo=thompson-twins-01-video'
+      expect(await headOf(link)).toContain(canonical(`${SITE}${link}`))
+    })
+
+    it('drops campaign parameters from the canonical', async () => {
+      const body = await headOf('/?scene=artists&artist=thompson-twins&utm_source=bluesky&utm_medium=social')
+      expect(body).toContain(canonical(`${SITE}/?scene=artists&artist=thompson-twins`))
+    })
+
+    it('names the show in the twitter tags as well', async () => {
+      const body = await headOf('/?scene=artists&artist=thompson-twins&show=2026-09-16')
+      expect(body).toContain('<meta property="twitter:title" content="Thompson Twins at Pavilion Theatre')
+      expect(body).toContain('<meta property="twitter:url" content="https://concerts.morperhaus.org/?scene=artists&amp;artist=thompson-twins&amp;show=2026-09-16" />')
     })
   })
 

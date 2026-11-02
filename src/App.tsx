@@ -86,6 +86,7 @@ function MainScenes() {
     artist?: string | null
     venue?: string | null
     show?: string | null
+    photo?: string | null
   }>({})
 
   // Check for new changelog entries and liner notes posts
@@ -251,12 +252,15 @@ function MainScenes() {
     // Matching is date + artist with a first-match fallback: date uniqueness
     // holds in the current data but isn't an enforced invariant.
     const resolvedShow = resolveShow(data?.concerts ?? [], showParam, artistParam)
+    const photoParam = params.get('photo')
+    const resolvedPhoto = resolvedShow && isValidPhotoId(photoParam) ? photoParam : null
 
     // Store deep link parameters in state for pageview tracking
     setCurrentDeepLinkParams({
       artist: artistParam,
       venue: venueParam,
       show: resolvedShow?.date ?? null,
+      photo: resolvedPhoto,
     })
 
     // Track deep link access with legacy event (for continuity)
@@ -266,6 +270,7 @@ function MainScenes() {
         artist: artistParam || undefined,
         venue: venueParam || undefined,
         show: resolvedShow?.date || undefined,
+        photo: resolvedPhoto || undefined,
         // A `show` that arrived but didn't resolve is worth seeing separately —
         // it means links are drifting (renamed artist, removed concert).
         show_unresolved: !!(showParam && !resolvedShow) || undefined,
@@ -281,6 +286,7 @@ function MainScenes() {
         artist: artistParam,
         venue: venueParam,
         show: resolvedShow?.date ?? null,
+        photo: resolvedPhoto,
         showVenue: resolvedShow?.venue ?? null,
       }
       const pagePath = buildPagePath(sceneId, trackedParams)
@@ -294,8 +300,7 @@ function MainScenes() {
         // gatefold first; the gatefold expands this setlist once mounted.
         setPendingSetlistFocus(resolvedShow?.date ?? null)
         // With `photo`, the same stage opens the night's Photos panel instead.
-        const photoParam = params.get('photo')
-        setPendingPhotoFocus(resolvedShow && isValidPhotoId(photoParam) ? photoParam : null)
+        setPendingPhotoFocus(resolvedPhoto)
       }
 
       // If year parameter is provided, expand that year's card stack on the timeline

@@ -296,6 +296,18 @@ See complete list in: `docs/specs/implemented/global-analytics-tracking.md` (lin
 
 ### Scene-Specific Events
 
+**Media (Photos panel, Scene 5):**
+- `photos_button_clicked` — The Photos button on a concert row
+- `media_viewed` — Every frame shown, however it was reached: `photo`, `media_kind` (photo, video),
+  `view_source` (button, deep_link, paging)
+- `clip_played` — First play of a clip per view. A pause and a resume are one play
+- `clip_completed` — A clip reached its end
+- `artist_photo_opened` — A still opened in the full-size viewer
+- `photo_link_shared` — A frame's link was copied or shared
+
+GA's enhanced measurement only sees YouTube embeds, so a hosted `<video>` reports nothing unless it
+fires these itself.
+
 **Timeline (Scene 1):**
 - `timeline_year_selected`
 - `timeline_card_clicked`
