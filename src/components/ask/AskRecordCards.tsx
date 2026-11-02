@@ -1,14 +1,14 @@
-// The record-shaped cards (#593): one album, an act's studio albums, one night's set.
+// The record-shaped cards (#593): one album, an act's studio albums, one song, one night's set.
 // Album identity arrives in the envelope; covers, photos and every fallback resolve here.
 
 import { getGenreColor, DEFAULT_GENRE_COLOR } from '@/constants/colors'
 import { setlistDeepLink } from '@/utils/deepLinks'
 import { normalizeArtistName } from '@/utils/normalize'
 import type { Exchange } from '@/hooks/useAskArchive'
-import type { AlbumExhibit, AlbumIdentity, DiscographyExhibit, ShowExhibit, SetSong } from '@/types/exhibit'
+import type { AlbumExhibit, AlbumIdentity, DiscographyExhibit, ShowExhibit, SetSong, SongExhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
 import { CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
-import { DeepLink, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackPhotoOpened } from './AskCardParts'
+import { DeepLink, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackDeepLink, trackPhotoOpened } from './AskCardParts'
 import {
   actPhotosOnNight,
   billSlugs,
@@ -40,7 +40,7 @@ function SongMark({ album, color }: { album: AlbumIdentity | null; color: string
 }
 
 /** The act's avatar: my photo of them (opens its gatefold), else Deezer, else the derived tile. */
-function ActAvatar({ archive, slug, name, color, kind }: { archive: ArchiveLookups; slug: string; name: string; color: string; kind: 'album' | 'discography' }) {
+function ActAvatar({ archive, slug, name, color, kind }: { archive: ArchiveLookups; slug: string; name: string; color: string; kind: 'album' | 'discography' | 'song' }) {
   const lead = leadPhoto(archive.media, slug)
   const all = archive.media.byArtist.get(slug) ?? []
   const caption = (p: Photo) => photoCaption(p, { aboutAct: slug, ...captionLookups(archive) })
@@ -193,6 +193,69 @@ export function DiscographyCard({ ex, exhibit, archive }: { ex: Exchange; exhibi
       {seenCycles > 0 && <div className="ask-note">Faded: no show of mine during that record’s cycle.</div>}
       {exhibit.truncated && <div className="ask-note">Their release list is long; the first and last here may not be the true first and last.</div>}
       <DeepLink href={artist.deepLink} kind="discography">
+        See {artist.name} on the site
+      </DeepLink>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------------------------------------
+// S · One song, every night I heard it (built in the browser from a search match)
+// ---------------------------------------------------------------------------------------------
+
+export function SongCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: SongExhibit; archive: ArchiveLookups }) {
+  const { artist, album } = exhibit
+  const color = genreColor(archive, artist.slug)
+  const meta = album ? `${artist.name} · from ${album.title}, ${yearOf(album.releaseDate)}` : artist.name
+  const title = (
+    <>
+      <div className="ask-kick">Song</div>
+      <div className="n">{exhibit.title}</div>
+      <div className="meta">{meta}</div>
+    </>
+  )
+
+  return (
+    <Frame color={color}>
+      {album ? (
+        <div className="ask-album-head">
+          <CoverArt album={album} size={500} color={color} className="ask-album-cover" />
+          <div className="ask-album-title">{title}</div>
+        </div>
+      ) : (
+        <div className="ex-head">
+          <ActAvatar archive={archive} slug={artist.slug} name={artist.name} color={color} kind="song" />
+          <div className="ex-title ask-album-title">{title}</div>
+        </div>
+      )}
+      <Prose ex={ex} />
+      <div className="ask-song-nights">
+        <div className="ask-kick">{exhibit.dates.length === 1 ? 'The night I heard it' : 'The nights I heard it'}</div>
+        {exhibit.dates.map((date) => {
+          const c = archive.concertByDate(date)
+          const photo = actPhotosOnNight(archive.media, date, artist.slug)[0]
+          const opening = c && c.headlinerNormalized !== artist.slug ? ` · opening for ${c.headliner}` : ''
+          const href = setlistDeepLink(artist.slug, date)
+          return (
+            <a key={date} className="ask-row" href={href} onClick={() => trackDeepLink('song', href)}>
+              <span className="yr">{date.slice(0, 4)}</span>
+              <span className="th">
+                {photo ? (
+                  <FramedPhoto photo={photo} aspect={1} alt="" className="mine" fallback={<DerivedArt name={artist.name} color={color} />} />
+                ) : (
+                  <Portrait name={artist.name} image={archive.artistFacts(artist.slug).meta?.image} color={color} className="src" round />
+                )}
+              </span>
+              <span className="who">
+                {c?.venue ?? fmtDate(date)}
+                {opening}
+              </span>
+              <span className="where">{c ? fmtDate(date, false) : ''}</span>
+            </a>
+          )
+        })}
+      </div>
+      <DeepLink href={artist.deepLink} kind="song">
         See {artist.name} on the site
       </DeepLink>
     </Frame>

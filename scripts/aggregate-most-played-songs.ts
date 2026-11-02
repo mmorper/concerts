@@ -19,7 +19,8 @@
  *     legible.
  *
  * Also writes public/data/song-index.json for Ask's type-ahead: every song, not only those seen
- * twice, per act, with the last night it was heard so a match can open that setlist.
+ * twice, per act, with every night it was heard and the record it came off (from
+ * song-albums.json, which build-data writes first) so a match can open a card about it.
  *
  * Run: npm run generate:most-played-songs (or as part of build-data)
  */
@@ -27,6 +28,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { songAlbumKey } from './utils/song-title.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -74,16 +76,32 @@ export interface MostPlayedSongs {
   songs: SongStat[]
 }
 
-/** One song by one act. A cover is its own row, because it opens a different night. */
+/** One song by one act. A cover is its own row, because it was heard on different nights. */
 export interface SongIndexEntry {
   name: string
   act: string
   slug: string
-  count: number
-  lastDate: string
+  /** Every night it was heard, newest first. */
+  dates: string[]
+  /** The record it came off: a position in `albums`, which keeps each long id once. */
+  album?: number
+}
+export interface SongIndexAlbum {
+  mbid: string
+  title: string
+  releaseDate: string
+  coverAvailable: boolean
 }
 export interface SongIndex {
   songs: SongIndexEntry[]
+  albums: SongIndexAlbum[]
+}
+/** The fields of a song-albums.json row this file reads. */
+export interface SongAlbumRow {
+  albumTitle: string
+  mbid: string
+  releaseDate: string
+  coverAvailable: boolean
 }
 
 // Mirrors src/utils/normalize.ts — used to match an entry's artistName to a headliner.
@@ -123,7 +141,11 @@ function entriesByConcert(entries: SetlistEntry[]): Map<string, SetlistEntry[]> 
   return byConcert
 }
 
-export function buildSongIndex(concerts: Concert[], entries: SetlistEntry[]): SongIndex {
+export function buildSongIndex(
+  concerts: Concert[],
+  entries: SetlistEntry[],
+  songAlbums: Record<string, SongAlbumRow> = {},
+): SongIndex {
   const byConcert = entriesByConcert(entries)
   const agg = new Map<string, SongIndexEntry>()
   for (const c of concerts) {
@@ -136,16 +158,25 @@ export function buildSongIndex(concerts: Concert[], entries: SetlistEntry[]): So
       if (!songKey(raw) || seen.has(key)) continue
       seen.add(key)
       const rec = agg.get(key)
-      if (!rec) {
-        agg.set(key, { name: raw, act: chosen.e.artistName, slug, count: 1, lastDate: c.date })
-        continue
-      }
-      rec.count++
-      if (c.date > rec.lastDate) rec.lastDate = c.date
+      if (rec) rec.dates.push(c.date)
+      else agg.set(key, { name: raw, act: chosen.e.artistName, slug, dates: [c.date] })
     }
   }
-  const songs = [...agg.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
-  return { songs }
+
+  const songs = [...agg.values()].sort((a, b) => b.dates.length - a.dates.length || a.name.localeCompare(b.name))
+  const albums: SongIndexAlbum[] = []
+  const position = new Map<string, number>()
+  for (const rec of songs) {
+    rec.dates.sort((a, b) => b.localeCompare(a))
+    const hit = songAlbums[songAlbumKey(rec.slug, rec.name)]
+    if (!hit?.mbid) continue
+    if (!position.has(hit.mbid)) {
+      position.set(hit.mbid, albums.length)
+      albums.push({ mbid: hit.mbid, title: hit.albumTitle, releaseDate: hit.releaseDate, coverAvailable: hit.coverAvailable })
+    }
+    rec.album = position.get(hit.mbid)
+  }
+  return { songs, albums }
 }
 
 export async function generateMostPlayedSongs(): Promise<MostPlayedSongs> {
@@ -212,9 +243,15 @@ function writeSongIndex(): void {
   const dataDir = path.join(__dirname, '..', 'public', 'data')
   const { concerts }: ConcertsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'concerts.json'), 'utf-8'))
   const { entries }: SetlistsCache = JSON.parse(fs.readFileSync(path.join(dataDir, 'setlists-cache.json'), 'utf-8'))
-  const index = buildSongIndex(concerts, entries)
+  // Without the record file a song card just has no sleeve.
+  const albumsPath = path.join(dataDir, 'song-albums.json')
+  const songAlbums: Record<string, SongAlbumRow> = fs.existsSync(albumsPath)
+    ? JSON.parse(fs.readFileSync(albumsPath, 'utf-8')).songs
+    : {}
+  const index = buildSongIndex(concerts, entries, songAlbums)
   fs.writeFileSync(path.join(dataDir, 'song-index.json'), JSON.stringify(index) + '\n', 'utf-8')
-  console.log(`✓ ${index.songs.length} songs written to public/data/song-index.json`)
+  const onRecord = index.songs.filter((s) => s.album !== undefined).length
+  console.log(`✓ ${index.songs.length} songs (${onRecord} matched to a record) written to public/data/song-index.json`)
 }
 
 export async function writeMostPlayedSongs(): Promise<void> {

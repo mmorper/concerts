@@ -19,6 +19,7 @@ export type ExhibitKind =
   | 'shape'
   | 'songs'
   | 'gallery'
+  | 'song'
   | 'plain'
   | 'disambiguation'
   | 'refusal'
@@ -193,6 +194,19 @@ export interface GalleryExhibit {
   items: GalleryItem[]
 }
 
+/**
+ * One song and every night I heard it. The one kind the worker never sends: the Ask box builds it
+ * from song-index.json when a song is picked from its matches, so it costs no model call.
+ */
+export interface SongExhibit {
+  kind: 'song'
+  title: string
+  artist: EntityRef
+  /** Newest first. */
+  dates: string[]
+  album: AlbumIdentity | null
+}
+
 export interface PlainExhibit {
   kind: 'plain'
 }
@@ -213,6 +227,7 @@ export type Exhibit =
   | ShapeExhibit
   | SongsExhibit
   | GalleryExhibit
+  | SongExhibit
   | DisambiguationExhibit
   | PlainExhibit
   | RefusalExhibit

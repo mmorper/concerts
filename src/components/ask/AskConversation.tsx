@@ -9,7 +9,8 @@ import type { ArchiveLookups } from './types'
 import { AskExhibit } from './AskExhibit'
 import { SearchMark } from './AskMedia'
 import { AskSearchMatches, optionId } from './AskSearchMatches'
-import { MIN_QUERY, searchArchive } from './search'
+import { MIN_QUERY, searchArchive, songAnswer } from './search'
+import type { Exhibit } from '@/types/exhibit'
 import { analytics } from '@/services/analytics'
 
 export interface AskConversationProps {
@@ -28,6 +29,8 @@ export interface AskConversationProps {
   inputRef?: React.RefObject<HTMLInputElement>
   /** Sits beside the box, for the container's own control (the overlay's esc). */
   dockEnd?: React.ReactNode
+  /** Adds an answer the site already holds. Without it a song match follows its link. */
+  onShow?: (question: string, prose: string, exhibit: Exhibit) => void
 }
 
 export function AskConversation({
@@ -41,6 +44,7 @@ export function AskConversation({
   autoFocus,
   inputRef,
   dockEnd,
+  onShow,
 }: AskConversationProps) {
   const [input, setInput] = useState('')
   // Which row the arrow keys are on. -1 is the box itself, so Enter asks the words as typed.
@@ -221,6 +225,15 @@ export function AskConversation({
             over={!empty}
             busy={busy}
             onAsk={() => submit(input)}
+            onSong={
+              onShow &&
+              ((song) => {
+                const { question, prose, exhibit } = songAnswer(song)
+                setInput('')
+                setActive(-1)
+                onShow(question, prose, exhibit)
+              })
+            }
           />
         )}
       </div>

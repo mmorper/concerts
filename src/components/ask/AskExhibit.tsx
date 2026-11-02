@@ -16,7 +16,7 @@ import type { ArchiveLookups } from './types'
 import type { ArtistExhibit, VenueExhibit, ListExhibit, SerendipityExhibit, DisambiguationExhibit } from '@/types/exhibit'
 import { CameraMark, DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
 import { ChipLink, DeepLink, Filmstrip, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackPhotoOpened, yearSpan } from './AskCardParts'
-import { AlbumCard, DiscographyCard, ShowCard } from './AskRecordCards'
+import { AlbumCard, DiscographyCard, ShowCard, SongCard } from './AskRecordCards'
 import { GalleryCard } from './AskGalleryCard'
 import { EraCard, ShapeCard, SongsCard } from './AskCareerCards'
 import {
@@ -414,6 +414,8 @@ export function AskExhibit({ exchange, archive }: { exchange: Exchange; archive:
       return <SongsCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'gallery':
       return <GalleryCard ex={exchange} exhibit={exhibit} archive={archive} />
+    case 'song':
+      return <SongCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'disambiguation':
       return <DisambiguationCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'refusal':
