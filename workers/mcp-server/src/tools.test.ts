@@ -210,6 +210,21 @@ describe("get_media", () => {
     expect(text).toContain("I have no photos or clips of Oingo Boingo");
     expect(text).toContain("My photos start in 2022");
   });
+
+  // A "no" still answers: the shows the question was about come back for the card to list.
+  it("returns the shows behind a no, past ones only", () => {
+    const upcoming = concert("2030-05-01", "Oingo Boingo");
+    const { text, nights } = mediaResults([...concerts, upcoming], media, { year: 1987 }, null, undefined, "2026-11-02");
+    expect(nights.map((c) => c.date)).toEqual(["1987-06-30"]);
+    expect(text).toContain("The archive has 1 show for that:");
+    expect(text).toContain("June 30, 1987, Oingo Boingo, A Room");
+    const byAct = mediaResults([...concerts, upcoming], media, { artist: "Oingo Boingo" }, null, undefined, "2026-11-02");
+    expect(byAct.nights.map((c) => c.date)).toEqual(["1987-06-30"]);
+  });
+
+  it("names no shows behind a no about a song", () => {
+    expect(mediaResults(concerts, media, { song: "Dead Man's Party" }, null).nights).toEqual([]);
+  });
 });
 
 describe("get_archive_info", () => {

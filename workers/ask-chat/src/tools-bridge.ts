@@ -326,6 +326,16 @@ const albumId = (a: AlbumLike | null): AlbumIdentity | null =>
     ? { mbid: a.mbid, title: "albumTitle" in a ? a.albumTitle : a.title, releaseDate: a.releaseDate, coverAvailable: a.coverAvailable }
     : null;
 
+/** A media question with no media: the shows it was about, as a list under the plain no. */
+export function noMediaExhibit(nights: ConcertLike[]): Exhibit | undefined {
+  if (!nights.length) return undefined;
+  return {
+    kind: "list",
+    title: `No photos or clips · ${nights.length} ${nights.length === 1 ? "show" : "shows"}`,
+    rows: nights.map(concertRow),
+  };
+}
+
 /** How many acts the seen-most ranking shows: the five the prose names. */
 export const RANKED_ACTS = 5;
 
@@ -548,8 +558,10 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         },
         venues,
         buildAliasIndex(aliasData),
+        todayISO(),
       );
-      if (!r.items.length) return { text: r.text };
+      // Nothing to show: a plain no, then the shows the question was about (Phase 6).
+      if (!r.items.length) return { text: r.text, exhibit: noMediaExhibit(r.nights) };
       return { text: r.text, exhibit: { kind: "gallery", title: r.title, total: r.total, items: r.items } };
     }
 
