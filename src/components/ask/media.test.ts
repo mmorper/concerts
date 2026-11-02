@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   buildMediaIndex,
+  actRankSub,
   joinNames,
   nightMediaLabel,
   actPhotosOnNight,
@@ -284,6 +285,14 @@ describe('frame links', () => {
 
   it('finds nothing for a frame the index no longer holds', () => {
     expect(findMedia(ix, '2022-10-07', 'gone-01')).toBeNull()
+  })
+})
+
+describe('actRankSub', () => {
+  it('gives the years and how the nights split between headlining and opening', () => {
+    expect(actRankSub({ count: 10, headlined: 5, firstYear: 2003, lastYear: 2024 })).toBe('2003 to 2024 · 5 headlining, 5 opening')
+    expect(actRankSub({ count: 8, headlined: 8, firstYear: 1990, lastYear: 2024 })).toBe('1990 to 2024 · all headlining')
+    expect(actRankSub({ count: 2, headlined: 0, firstYear: 2019, lastYear: 2019 })).toBe('2019 · all opening')
   })
 })
 

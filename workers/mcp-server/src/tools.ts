@@ -238,31 +238,55 @@ function tally(concerts: Concert[], key: (c: Concert) => string): [string, numbe
   return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 }
 
+/** One act's nights in the archive, with its billings merged. */
+export interface ActTally {
+  slug: string;
+  name: string;
+  count: number;
+  /** Of `count`, the nights they headlined. */
+  headlined: number;
+  firstYear: number;
+  lastYear: number;
+}
+
 // Every act's nights, headlining or opening, with an act's billings merged: the way the site's
 // artist cards count. Headliners alone put Social Distortion (8) ahead of The English Beat (10).
-function topActs(concerts: Concert[], aliases: AliasIndex): [string, number][] {
-  const acts = new Map<string, { name: string; n: number }>();
+// Most first, then by name. Ask's ranking card draws from this too, so its numbers match the prose.
+export function tallyActs(concerts: Concert[], aliases: AliasIndex): ActTally[] {
+  const acts = new Map<string, ActTally>();
   for (const c of concerts) {
     const bill = [
-      { name: c.headliner, slug: c.headlinerNormalized },
+      { name: c.headliner, slug: c.headlinerNormalized, headlining: true },
       ...c.openers
         .map((o) => o.trim())
         .filter(Boolean)
-        .map((name) => ({ name, slug: normalizeName(name) })),
+        .map((name) => ({ name, slug: normalizeName(name), headlining: false })),
     ];
     const counted = new Set<string>();
-    for (const { name, slug } of bill) {
+    for (const { name, slug, headlining } of bill) {
       const key = canonicalSlug(aliases, slug);
       if (counted.has(key)) continue;
       counted.add(key);
-      const act = acts.get(key) ?? { name: aliasName(aliases, slug) ?? name, n: 0 };
-      act.n += 1;
+      const act = acts.get(key) ?? {
+        slug: key,
+        name: aliasName(aliases, slug) ?? name,
+        count: 0,
+        headlined: 0,
+        firstYear: c.year,
+        lastYear: c.year,
+      };
+      act.count += 1;
+      if (headlining) act.headlined += 1;
+      act.firstYear = Math.min(act.firstYear, c.year);
+      act.lastYear = Math.max(act.lastYear, c.year);
       acts.set(key, act);
     }
   }
-  return [...acts.values()]
-    .sort((a, b) => b.n - a.n || a.name.localeCompare(b.name))
-    .map((a) => [a.name, a.n]);
+  return [...acts.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+function topActs(concerts: Concert[], aliases: AliasIndex): [string, number][] {
+  return tallyActs(concerts, aliases).map((a) => [a.name, a.count]);
 }
 
 // ===================================================================

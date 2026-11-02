@@ -19,7 +19,7 @@ import { ChipLink, DeepLink, Frame, PhotoButton, Portrait, Prose, captionLookups
 import { setlistDeepLink } from '@/utils/deepLinks'
 import { AlbumCard, DiscographyCard, ShowCard, SongCard } from './AskRecordCards'
 import { GalleryCard } from './AskGalleryCard'
-import { EraCard, ShapeCard, SongsCard } from './AskCareerCards'
+import { ActsCard, EraCard, ShapeCard, SongsCard } from './AskCareerCards'
 import {
   BANNER_ASPECT,
   actClips,
@@ -394,6 +394,8 @@ function ExhibitCard({ exhibit, archive }: { exhibit: Exhibit; archive: ArchiveL
       return <ShapeCard exhibit={exhibit} archive={archive} />
     case 'songs':
       return <SongsCard exhibit={exhibit} archive={archive} />
+    case 'acts':
+      return <ActsCard exhibit={exhibit} archive={archive} />
     case 'gallery':
       return <GalleryCard exhibit={exhibit} archive={archive} />
     case 'song':

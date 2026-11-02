@@ -244,6 +244,22 @@ export interface SongsExhibit {
   songs: TopSong[];
 }
 
+/** One act in the seen-most ranking. */
+export interface RankedAct {
+  artist: EntityRef;
+  count: number;
+  /** Of `count`, the nights they headlined. */
+  headlined: number;
+  firstYear: number;
+  lastYear: number;
+}
+
+/** get_archive_info — the acts I've seen most, the same tally its prose names. */
+export interface ActsExhibit {
+  kind: "acts";
+  acts: RankedAct[];
+}
+
 /** get_media: the owner's frames, by identity. Tiles link to the exact frame in its gatefold. */
 export interface GalleryItem {
   id: string;
@@ -262,7 +278,7 @@ export interface GalleryExhibit {
   items: GalleryItem[];
 }
 
-/** Prose-only answer (archive_info, on_this_day with no matches, or any non-entity reply). */
+/** Prose-only answer (on_this_day with no matches, or any non-entity reply). */
 export interface PlainExhibit {
   kind: "plain";
 }
@@ -284,6 +300,7 @@ export type Exhibit =
   | EraExhibit
   | ShapeExhibit
   | SongsExhibit
+  | ActsExhibit
   | GalleryExhibit
   | DisambiguationExhibit
   | PlainExhibit
@@ -314,6 +331,8 @@ const KIND_PRIORITY: Record<Exhibit["kind"], number> = {
   // Archive-wide reads: any entity card in the same turn is the more specific answer.
   shape: 30,
   songs: 30,
+  // The collection overall: the broadest answer there is, so any other card in the turn wins.
+  acts: 20,
   plain: 10,
   refusal: 0,
 };

@@ -346,19 +346,26 @@ img.ex-photo { display: block; object-fit: cover; }
 .ask-ahead-item .y { font-size: 11.5px; color: rgba(255, 255, 255, 0.6); line-height: 1.3; }
 .ask-ahead-item:hover .t { text-decoration: underline; }
 
-/* Songs: rank, cover, title / act · record, count. */
-.ask-songs { list-style: none; margin: 0 0 6px; padding: 0; }
-.ask-songs li { display: grid; grid-template-columns: 22px 36px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 7px 0; border-top: 1px solid rgba(255, 255, 255, 0.07); }
-.ask-songs li:first-child { border-top: none; }
-.ask-songs .n { font-size: 12.5px; color: rgba(255, 255, 255, 0.45); text-align: right; font-variant-numeric: tabular-nums; }
-.ask-songs .c, .ask-songs .c .ask-cover, .ask-songs .c .ask-derived { width: 36px; height: 36px; border-radius: 4px; font-size: 11px; }
-.ask-songs .body { display: flex; flex-direction: column; min-width: 0; }
-.ask-songs .t { font-size: 14.5px; color: #fff; overflow-wrap: anywhere; }
-.ask-songs .w { font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
-.ask-songs .w a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
-.ask-songs .w a:hover { text-decoration: underline; }
-.ask-songs .al { font-style: italic; }
-.ask-songs .x { font-size: 13.5px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
+/* Rankings (Phase 6): a picture beside a list with large numbers. My photo is the larger column; a
+   sourced picture (a portrait, a record) the smaller one, and a record stays square. */
+.ask-rank { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 28px; align-items: start; margin-bottom: 12px; }
+.ask-rank.sourced { grid-template-columns: 200px minmax(0, 1fr); }
+.ask-rank-pic { position: sticky; top: 0; }
+.ask-rank-photo { border-radius: 12px; }
+.ask-rank-photo .ask-derived { aspect-ratio: 4 / 5; font-size: 28px; }
+.ask-rank-sourced { display: block; width: 100%; aspect-ratio: 1; border-radius: 12px; overflow: hidden; object-fit: cover; font-size: 24px; }
+.ask-rank-list { list-style: none; margin: 0; padding: 0; }
+.ask-rank-list li { border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.ask-rank-list li:first-child { border-top: none; }
+.ask-rank-list a, .ask-rank-list .row {
+  display: grid; grid-template-columns: 58px minmax(0, 1fr); align-items: baseline; padding: 11px 0; color: #fff; text-decoration: none;
+}
+.ask-rank-list a:hover .t { text-decoration: underline; text-underline-offset: 3px; }
+.ask-rank-list a:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; border-radius: 6px; }
+.ask-rank-list .n { font-family: 'Playfair Display', Georgia, serif; font-size: 34px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+.ask-rank-list .b { display: flex; flex-direction: column; min-width: 0; }
+.ask-rank-list .t { font-size: 18px; overflow-wrap: anywhere; }
+.ask-rank-list .s { font-size: 14px; color: rgba(255, 255, 255, 0.66); }
 
 /* Choice chips with a face. */
 .chip.with-av { display: inline-flex; align-items: center; gap: 8px; padding-left: 5px; }
@@ -400,6 +407,12 @@ img.chip-av { object-fit: cover; display: block; }
      thumbnail with its count sits to the right. */
   .ask-act, .ask-act.sourced { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .ask-act-photo, .ask-act > .ask-act-sourced { position: static; }
+  .ask-rank, .ask-rank.sourced { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .ask-rank-pic { position: static; width: 62%; }
+  .ask-rank.sourced .ask-rank-pic { width: 120px; }
+  .ask-rank-list a, .ask-rank-list .row { grid-template-columns: 44px minmax(0, 1fr); }
+  .ask-rank-list .n { font-size: 26px; }
+  .ask-rank-list .t { font-size: 16px; }
   .ask-act-photo { width: 62%; }
   .ask-act-sourced { width: 120px; }
   .ask-act-night { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'd m' 'v m'; gap: 2px 12px; }

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { readerProse, pickDeterministicTool, showExhibit, TOOL_DEFS, TOOL_NAMES } from "./tools-bridge.js";
+import { readerProse, pickDeterministicTool, showExhibit, actsExhibit, RANKED_ACTS, TOOL_DEFS, TOOL_NAMES } from "./tools-bridge.js";
+import { EMPTY_ALIAS_INDEX } from "../../mcp-server/src/aliases.js";
 import type { Env } from "./types.js";
 
 // A dummy env is fine for the explicit-intent routes — they return before any data fetch.
@@ -111,5 +112,36 @@ describe("showExhibit (#593) — a resolved night becomes the night card", () =>
       ],
       touring: { mbid: "dl", title: "Dialogue", releaseDate: "2022-07-02", coverAvailable: false },
     });
+  });
+});
+
+describe("actsExhibit — the collection overall becomes the seen-most ranking", () => {
+  const night = (date: string, headliner: string, openers: string[] = []) =>
+    ({ id: date, date, year: Number(date.slice(0, 4)), headliner, headlinerNormalized: headliner.toLowerCase().replace(/[^a-z0-9]+/g, "-"), openers }) as never;
+
+  it("ranks acts across headlining and opening, with each one's years and link", () => {
+    const shows = [night("2003-08-24", "The Human League", ["The English Beat"]), night("2024-01-01", "The English Beat"), night("2010-01-01", "Solo")];
+    const ex = actsExhibit(shows, EMPTY_ALIAS_INDEX, "2026-11-02");
+    const acts = ex && ex.kind === "acts" ? ex.acts : [];
+    expect(acts[0]).toEqual({
+      artist: { entity: "artist", slug: "the-english-beat", name: "The English Beat", deepLink: "/?scene=artists&artist=the-english-beat" },
+      count: 2,
+      headlined: 1,
+      firstYear: 2003,
+      lastYear: 2024,
+    });
+  });
+
+  it("leaves out shows that haven't happened, and stops at five", () => {
+    const shows = ["A", "B", "C", "D", "E", "F"].map((a, i) => night(`2020-01-0${i + 1}`, a));
+    const future = night("2030-01-01", "Future");
+    const ex = actsExhibit([...shows, future, future], EMPTY_ALIAS_INDEX, "2026-11-02");
+    const slugs = ex && ex.kind === "acts" ? ex.acts.map((a) => a.artist.slug) : [];
+    expect(slugs).toHaveLength(RANKED_ACTS);
+    expect(slugs).not.toContain("future");
+  });
+
+  it("has no card for an empty archive", () => {
+    expect(actsExhibit([], EMPTY_ALIAS_INDEX, "2026-11-02")).toBeUndefined();
   });
 });
