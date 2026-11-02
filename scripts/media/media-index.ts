@@ -114,6 +114,12 @@ export interface MediaAsset {
   duration?: number | null
   /** What the band is playing, as the setlist spells it. Video only, set by hand. */
   song?: string | null
+  /**
+   * When the web copy first reached R2, as an ISO timestamp. Video only, set by
+   * `media:publish-video`. This is when the clip went public, not when it was filmed: `date` is
+   * the night, and search engines treat the two very differently.
+   */
+  uploadedAt?: string | null
   /** From `notes.txt`. Carries a different-night disclosure or a caption. */
   notes: string | null
 }

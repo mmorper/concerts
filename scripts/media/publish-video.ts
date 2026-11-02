@@ -196,6 +196,8 @@ async function main(): Promise<void> {
       corsChecked = true
       asset.url = live.url
       asset.poster = live.poster
+      // The first upload stands. A re-encode with --force is not a new video to a search engine.
+      asset.uploadedAt ??= new Date().toISOString()
       // Saved per clip, so a failure later in the run keeps what has already been proven live.
       index.generated = new Date().toISOString()
       saveIndex(index)
