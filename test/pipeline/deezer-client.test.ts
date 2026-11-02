@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { DeezerClient } from '../../scripts/utils/deezer-client'
+import { DeezerClient, actKey } from '../../scripts/utils/deezer-client'
 
 describe('DeezerClient', () => {
   let client: DeezerClient
@@ -311,43 +311,38 @@ describe('DeezerClient', () => {
       expect(result).toBeNull()
     })
 
-    it('should take first result when multiple artists returned', async () => {
-      const mockResponse = {
-        data: [
-          {
-            id: 1,
-            name: 'First Artist',
-            picture: 'https://example.com/image.jpg',
-            picture_small: 'https://example.com/56x56.jpg',
-            picture_medium: 'https://example.com/250x250.jpg',
-            picture_big: 'https://example.com/500x500-first.jpg',
-            picture_xl: 'https://example.com/1000x1000.jpg',
-            type: 'artist',
-          },
-          {
-            id: 2,
-            name: 'Second Artist',
-            picture: 'https://example.com/image.jpg',
-            picture_small: 'https://example.com/56x56.jpg',
-            picture_medium: 'https://example.com/250x250.jpg',
-            picture_big: 'https://example.com/500x500-second.jpg',
-            picture_xl: 'https://example.com/1000x1000.jpg',
-            type: 'artist',
-          },
-        ],
-        total: 2,
-      }
-
+    it('takes the result whose name matches, not the first one Deezer ranks', async () => {
+      const result = (name: string, id: number) => ({
+        id,
+        name,
+        picture: 'https://example.com/image.jpg',
+        picture_small: 'https://example.com/56x56.jpg',
+        picture_medium: 'https://example.com/250x250.jpg',
+        picture_big: `https://example.com/500x500-${id}.jpg`,
+        picture_xl: 'https://example.com/1000x1000.jpg',
+        type: 'artist',
+      })
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: async () => mockResponse,
+        json: async () => ({ data: [result('Adamant (IT)', 1), result('Adam Ant', 2)], total: 2 }),
       } as Response)
 
-      const result = await client.getArtistInfo('Test Artist')
+      const info = await client.getArtistInfo('Adam Ant')
 
-      expect(result).not.toBeNull()
-      expect(result?.name).toBe('First Artist')
-      expect(result?.image).toBe('https://example.com/500x500-first.jpg')
+      expect(info?.name).toBe('Adam Ant')
+      expect(info?.image).toBe('https://example.com/500x500-2.jpg')
+    })
+
+    it('returns null when no result is the act asked for', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          data: [{ id: 1, name: 'Blondie & Pappa', picture_big: 'https://example.com/500x500-1.jpg', type: 'artist' }],
+          total: 1,
+        }),
+      } as Response)
+
+      expect(await client.getArtistInfo('Blondie')).toBeNull()
     })
 
     it('should return valid ISO timestamp', async () => {
@@ -517,7 +512,7 @@ describe('DeezerClient', () => {
 
     it('should handle tracks with missing preview URLs', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -565,7 +560,7 @@ describe('DeezerClient', () => {
 
     it('should convert duration from seconds to milliseconds', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -602,7 +597,7 @@ describe('DeezerClient', () => {
 
     it('should respect the limit parameter', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -632,7 +627,7 @@ describe('DeezerClient', () => {
 
     it('should retry once on 429 rate limit for top tracks request', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -681,7 +676,7 @@ describe('DeezerClient', () => {
 
     it('should handle 404 errors on top tracks request', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -707,7 +702,7 @@ describe('DeezerClient', () => {
 
     it('should handle network errors', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -730,7 +725,7 @@ describe('DeezerClient', () => {
 
     it('should handle malformed tracks response', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -752,7 +747,7 @@ describe('DeezerClient', () => {
 
     it('should use default limit of 5 when not specified', async () => {
       const mockArtistResponse = {
-        data: [{ id: 123, name: 'Test', picture_big: 'https://img.jpg', type: 'artist' }],
+        data: [{ id: 123, name: 'Test Artist', picture_big: 'https://img.jpg', type: 'artist' }],
         total: 1,
       }
 
@@ -779,5 +774,21 @@ describe('DeezerClient', () => {
         'https://api.deezer.com/artist/123/top?limit=5'
       )
     })
+  })
+})
+
+describe('actKey — telling one act from another by name', () => {
+  it('ignores case, accents, punctuation, spaces, "the" and "and"', () => {
+    expect(actKey('Run–D.M.C.')).toBe(actKey('Run DMC'))
+    expect(actKey("Sinéad O'Connor")).toBe(actKey("Sinead O' Connor"))
+    expect(actKey('Joan Jett & The Blackhearts')).toBe(actKey('Joan Jett and the Blackhearts'))
+    expect(actKey('The Cure')).toBe(actKey('Cure'))
+  })
+
+  it('keeps acts apart that only start the same', () => {
+    expect(actKey('Adamant (IT)')).not.toBe(actKey('Adam Ant'))
+    expect(actKey('Erasure (US)')).not.toBe(actKey('Erasure'))
+    expect(actKey('Heart & Soul')).not.toBe(actKey('Heart'))
+    expect(actKey('beck & call')).not.toBe(actKey('Beck'))
   })
 })

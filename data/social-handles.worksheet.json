@@ -176,7 +176,7 @@
     },
     {
       "kind": "artist",
-      "slug": "jane-weidlin",
+      "slug": "jane-wiedlin",
       "name": "Jane Wiedlin",
       "channel": "bluesky",
       "handle": "janewiedlin.bsky.social",
@@ -186,7 +186,7 @@
     },
     {
       "kind": "artist",
-      "slug": "jane-weidlin",
+      "slug": "jane-wiedlin",
       "name": "Jane Wiedlin",
       "channel": "instagram",
       "handle": "janewiedlin",
@@ -231,7 +231,7 @@
     },
     {
       "kind": "artist",
-      "slug": "jane-weidlin",
+      "slug": "jane-wiedlin",
       "name": "Jane Wiedlin",
       "channel": "x",
       "handle": "janewiedlin",
@@ -638,8 +638,8 @@
     },
     {
       "kind": "artist",
-      "slug": "chaka-kahn",
-      "name": "Chaka Kahn",
+      "slug": "chaka-khan",
+      "name": "Chaka Khan",
       "channel": "x",
       "handle": "ChakaKhan",
       "evidence": "musicbrainz",
@@ -647,8 +647,8 @@
     },
     {
       "kind": "artist",
-      "slug": "chaka-kahn",
-      "name": "Chaka Kahn",
+      "slug": "chaka-khan",
+      "name": "Chaka Khan",
       "channel": "instagram",
       "handle": "chakaikhan",
       "evidence": "musicbrainz",
@@ -4197,7 +4197,7 @@
     },
     {
       "kind": "artist",
-      "slug": "gene-loves-jezabel",
+      "slug": "gene-loves-jezebel",
       "name": "Gene Loves Jezebel"
     },
     {
@@ -4377,8 +4377,8 @@
     },
     {
       "kind": "venue",
-      "slug": "pier-6-pavillion",
-      "name": "Pier 6 Pavillion"
+      "slug": "pier-6-pavilion",
+      "name": "Pier 6 Pavilion"
     },
     {
       "kind": "venue",
@@ -4514,7 +4514,7 @@
     "artist:boy-harsher": "2026-08-28",
     "artist:bruce-springsteen": "2026-08-28",
     "artist:buddy-guy": "2026-08-28",
-    "artist:chaka-kahn": "2026-08-28",
+    "artist:chaka-khan": "2026-08-28",
     "artist:chris-isaak": "2026-08-28",
     "artist:chris-murray": "2026-08-28",
     "artist:chris-shiflett": "2026-08-28",
@@ -4781,7 +4781,7 @@
     "venue:the-strathmore": "2026-08-28",
     "venue:the-hamilton-live": "2026-08-28",
     "venue:rams-head-center-stage": "2026-08-28",
-    "venue:pier-6-pavillion": "2026-08-28",
+    "venue:pier-6-pavilion": "2026-08-28",
     "venue:dar-constitution-hall": "2026-08-28",
     "venue:rfk-stadium": "2026-08-28",
     "venue:bethesda-jazz-and-blues-club": "2026-08-28",
@@ -4819,13 +4819,13 @@
     "artist:brian-setzer-and-the-nashvillians": "2026-08-29",
     "artist:bangles": "2026-08-29",
     "artist:stereo-mc-s": "2026-08-29",
-    "artist:jane-weidlin": "2026-08-29",
+    "artist:jane-wiedlin": "2026-08-29",
     "artist:new-morty-show": "2026-08-29",
     "artist:raveonettes": "2026-08-29",
     "artist:barroom-heroes": "2026-08-29",
     "artist:joan-jett-the-blackhearts": "2026-08-29",
     "artist:dj-z-trip": "2026-08-29",
-    "artist:gene-loves-jezabel": "2026-08-29",
+    "artist:gene-loves-jezebel": "2026-08-29",
     "artist:smoke-mirrors-sound-system": "2026-08-29",
     "artist:nick-heyward": "2026-10-25",
     "venue:union-stage": "2026-10-25"

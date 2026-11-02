@@ -52,6 +52,34 @@ export interface NormalizedTrack {
   streamingUrl: string
 }
 
+/**
+ * A name reduced to the letters that tell one act from another: no case, accents,
+ * punctuation or spaces, and no "the" or "and". "Run–D.M.C." is "Run DMC" and "Joan Jett &
+ * the Blackhearts" is "Joan Jett and the Blackhearts", but "Adamant (IT)" is not "Adam Ant"
+ * and "Erasure (US)" is not "Erasure".
+ */
+export function actKey(name: string): string {
+  return name
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w && w !== 'the' && w !== 'and')
+    .join('')
+}
+
+/**
+ * The search result that is the act asked for, or null. Deezer ranks by popularity, not by
+ * name, so its first result for "Adam Ant" was an Italian act called Adamant, and for
+ * "Blondie" a duo called Blondie & Pappa. A wrong face on an artist is worse than none: with
+ * no match the site falls back to its own type-led tile.
+ */
+export function matchingArtist<T extends { name: string }>(artists: T[], artistName: string): T | null {
+  const key = actKey(artistName)
+  return artists.find((a) => actKey(a.name) === key) ?? null
+}
+
 export class DeezerClient {
   private baseUrl = 'https://api.deezer.com'
 
@@ -91,8 +119,10 @@ export class DeezerClient {
       return null
     }
 
-    // Take the first result (most relevant match)
-    const artist = artists[0]
+    const artist = matchingArtist(artists, artistName)
+    if (!artist) {
+      return null
+    }
 
     // Prefer picture_big (500x500), fallback to picture_medium (250x250)
     const image = artist.picture_big || artist.picture_medium
@@ -128,7 +158,11 @@ export class DeezerClient {
         return []
       }
 
-      const artistId = artists[0].id
+      const artist = matchingArtist(artists, artistName)
+      if (!artist) {
+        return []
+      }
+      const artistId = artist.id
 
       // Step 2: Get top tracks
       const url = `${this.baseUrl}/artist/${artistId}/top?limit=${limit}`

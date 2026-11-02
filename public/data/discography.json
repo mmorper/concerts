@@ -79842,9 +79842,9 @@
     "fetchedAt": "2026-09-21T13:42:09.066Z",
     "cachedAt": "2026-09-21T13:42:09.066Z"
   },
-  "chaka-kahn": {
-    "artistName": "Chaka Kahn",
-    "normalizedName": "chaka-kahn",
+  "chaka-khan": {
+    "artistName": "Chaka Khan",
+    "normalizedName": "chaka-khan",
     "mbid": "900e9144-019d-4043-86cb-ec0e127c39d0",
     "albumCount": 99,
     "albums": [
@@ -135479,9 +135479,9 @@
     "fetchedAt": "2026-08-29T16:56:29.834Z",
     "cachedAt": "2026-08-29T16:56:29.834Z"
   },
-  "jane-weidlin": {
+  "jane-wiedlin": {
     "artistName": "Jane Wiedlin",
-    "normalizedName": "jane-weidlin",
+    "normalizedName": "jane-wiedlin",
     "mbid": "24575690-019f-4b77-9395-eaf6bcc3d5a7",
     "albumCount": 12,
     "albums": [
@@ -137423,9 +137423,9 @@
     "fetchedAt": "2026-08-29T16:56:41.882Z",
     "cachedAt": "2026-08-29T16:56:41.882Z"
   },
-  "gene-loves-jezabel": {
+  "gene-loves-jezebel": {
     "artistName": "Gene Loves Jezebel",
-    "normalizedName": "gene-loves-jezabel",
+    "normalizedName": "gene-loves-jezebel",
     "mbid": "d72c9ab4-0b73-44e3-8601-c4da02a43b25",
     "albumCount": 46,
     "albums": [

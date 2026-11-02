@@ -232,7 +232,7 @@
       "genre": "Pop",
       "genreNormalized": "pop",
       "openers": [
-        "Chaka Kahn",
+        "Chaka Khan",
         "Katrina And the Waves"
       ],
       "venue": "Hollywood Park Racetrack",
@@ -1177,7 +1177,7 @@
       "genreNormalized": "new-wave",
       "openers": [
         "John Doe",
-        "Jane Weidlin"
+        "Jane Wiedlin"
       ],
       "venue": "The Galaxy Theatre",
       "venueNormalized": "the-galaxy-theatre",
@@ -2498,8 +2498,8 @@
         "The Vandals",
         "Bad Religion"
       ],
-      "venue": "Pier 6 Pavillion",
-      "venueNormalized": "pier-6-pavillion",
+      "venue": "Pier 6 Pavilion",
+      "venueNormalized": "pier-6-pavilion",
       "city": "Baltimore",
       "state": "Maryland",
       "cityState": "Baltimore, Maryland",
@@ -3218,7 +3218,7 @@
         "The Motels",
         "Naked Eyes",
         "The Untouchables",
-        "Gene Loves Jezabel",
+        "Gene Loves Jezebel",
         "When In Rome",
         "The Polecats"
       ],

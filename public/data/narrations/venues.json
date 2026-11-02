@@ -31,7 +31,7 @@
       "context": "Hollywood Park Racetrack in Inglewood only shows up once in my records — August 30, 1985, when Wham! came through.",
       "closingArc": "The track itself is long gone, torn down in 2013 to make way for SoFi Stadium, but I can still say I caught a show on those grounds before it disappeared."
     },
-    "inputHash": "sha256:d38b1c0a23b62f922ebb76c060c089435538aba706586137a4fe998ad83f9f91",
+    "inputHash": "sha256:d02d0db808b4cf1757c925a578fcc121d480d093dba3fcfbca8576e0e7046dc2",
     "generatedAt": "2026-09-07T01:01:56.107Z",
     "promptVersion": 3
   },
@@ -211,7 +211,7 @@
       "context": "The Galaxy Theatre in Santa Ana was a room I only visited twice, once in 1995 for Big Audio Dynamite and again twelve years later, in 2007, for Lee Rocker.",
       "closingArc": "By the time it was renamed The Observatory in 2011, I'd already left it behind as just two nights, over a decade apart."
     },
-    "inputHash": "sha256:46a7aef4e51045294b287618e69b9f9d044f50b118dedd40dfe09139d67827da",
+    "inputHash": "sha256:420f36eba85a375431edbcd6a0647071dd07579a24fc525a015310a364eb34cf",
     "generatedAt": "2026-09-07T01:02:43.194Z",
     "promptVersion": 3
   },
@@ -413,12 +413,12 @@
     "generatedAt": "2026-09-07T01:03:36.945Z",
     "promptVersion": 3
   },
-  "pier-6-pavillion": {
+  "pier-6-pavilion": {
     "narration": {
       "context": "Pier 6 Pavilion in Baltimore only shows up once in my history — July 30, 2014, when I caught The Offspring there.",
       "closingArc": "One night on the water with one bill, and I never made it back."
     },
-    "inputHash": "sha256:1e7dd8d10cce13c7c129e26c4060ac3382cb2d48adcfc3f16b359d4b449384f0",
+    "inputHash": "sha256:a91d430ffac57b928035dbc87b9bf31de3433578839dcb53374d6488ef8fdd58",
     "generatedAt": "2026-09-07T01:03:39.146Z",
     "promptVersion": 3
   },
@@ -526,7 +526,7 @@
       "context": "Huntington State Beach only shows up twice in my history, both in 2018 — The Human League in May, then Social Distortion that October.",
       "closingArc": "A brief, oddly mismatched pair of nights by the water, and then nothing since."
     },
-    "inputHash": "sha256:583fb5955cefbab0c652e7b461344c1e5aa40785d498e4e0967c8e0ac707d178",
+    "inputHash": "sha256:a961a3744d0c71d91e3e00903483866abc64797b683c02f4a512c0ff3135cb20",
     "generatedAt": "2026-09-07T01:04:07.142Z",
     "promptVersion": 3
   },
