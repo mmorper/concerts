@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { readerProse, pickDeterministicTool, showExhibit, actsExhibit, RANKED_ACTS, TOOL_DEFS, TOOL_NAMES } from "./tools-bridge.js";
+import { readerProse, pickDeterministicTool, showExhibit, actsExhibit, noMediaExhibit, RANKED_ACTS, TOOL_DEFS, TOOL_NAMES } from "./tools-bridge.js";
 import { EMPTY_ALIAS_INDEX } from "../../mcp-server/src/aliases.js";
 import type { Env } from "./types.js";
 
@@ -112,6 +112,29 @@ describe("showExhibit (#593) — a resolved night becomes the night card", () =>
       ],
       touring: { mbid: "dl", title: "Dialogue", releaseDate: "2022-07-02", coverAvailable: false },
     });
+  });
+});
+
+describe("noMediaExhibit — a media question with no media lists the shows instead", () => {
+  const show = { id: "concert-30", date: "1987-06-30", headliner: "Oingo Boingo", headlinerNormalized: "oingo-boingo", venue: "Caliente Racetrack", venueNormalized: "caliente-racetrack" };
+
+  it("lists each show under a title that says there is nothing to see", () => {
+    expect(noMediaExhibit([show])).toEqual({
+      kind: "list",
+      title: "No photos or clips · 1 show",
+      rows: [
+        {
+          concertId: "concert-30",
+          date: "1987-06-30",
+          artist: { entity: "artist", slug: "oingo-boingo", name: "Oingo Boingo", deepLink: "/?scene=artists&artist=oingo-boingo" },
+          venue: { entity: "venue", slug: "caliente-racetrack", name: "Caliente Racetrack", deepLink: "/?scene=venues&venue=caliente-racetrack" },
+        },
+      ],
+    });
+  });
+
+  it("has no card when the question named no show", () => {
+    expect(noMediaExhibit([])).toBeUndefined();
   });
 });
 

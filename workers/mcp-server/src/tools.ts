@@ -1300,6 +1300,11 @@ export interface MediaResults {
   items: MediaItem[];
   total: number;
   title: string;
+  /**
+   * When nothing matched: the shows the question was about (the act, room, night or year), oldest
+   * first, so a "no" still answers with something. Empty for a song, which names no show.
+   */
+  nights: Concert[];
 }
 
 /**
@@ -1314,8 +1319,9 @@ export function mediaResults(
   args: MediaArgs,
   venues: VenuesMetadata | null,
   aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+  today: string = new Date().toISOString().slice(0, 10),
 ): MediaResults {
-  const none = (text: string): MediaResults => ({ text, items: [], total: 0, title: "" });
+  const none = (text: string, nights: Concert[] = []): MediaResults => ({ text, items: [], total: 0, title: "", nights });
   const filter: MediaFilter = {
     ...(args.year ? { year: args.year } : {}),
     ...(args.song ? { song: args.song } : {}),
@@ -1351,7 +1357,21 @@ export function mediaResults(
   const noun = args.kind === "clip" ? "clips" : args.kind === "photo" ? "photos" : "photos or clips";
   if (!all.length) {
     const earliest = media.assets.filter((a) => a.url).map((a) => a.date).sort()[0];
-    return none(`I have no ${noun} of ${labels.join(", ") || "that"} on the site.${earliest ? ` My photos start in ${earliest.slice(0, 4)}.` : ""}`);
+    const no = `I have no ${noun} of ${labels.join(", ") || "that"} on the site.${earliest ? ` My photos start in ${earliest.slice(0, 4)}.` : ""}`;
+    // The shows the question was about, so the answer can still name them. A song names no show.
+    const onBill = (c: Concert) =>
+      [c.headlinerNormalized, ...c.openers.map((o) => normalizeName(o.trim()))].some((s) => filter.slugs?.includes(canonicalSlug(aliases, s)));
+    const nights = args.song || !(filter.slugs || filter.dates || filter.year)
+      ? []
+      : concerts
+          .filter((c) => c.date < today)
+          .filter((c) => !filter.slugs || onBill(c))
+          .filter((c) => !filter.dates || filter.dates.has(c.date))
+          .filter((c) => !filter.year || c.year === filter.year)
+          .sort(byDate);
+    if (!nights.length) return none(no);
+    const listed = nights.map((c) => `- ${fullDate(c.date)}, ${c.headliner}${c.openers.length ? ` with ${joinList(c.openers)}` : ""}, ${c.venue}`);
+    return none([no, `The archive has ${nights.length} ${nights.length === 1 ? "show" : "shows"} for that:`, ...listed].join("\n"), nights);
   }
 
   const items = all.slice(0, MEDIA_RESULT_LIMIT);
@@ -1368,7 +1388,7 @@ export function mediaResults(
     all.length > clips ? `${all.length - clips} ${all.length - clips === 1 ? "photo" : "photos"}` : "",
     clips ? `${clips} ${clips === 1 ? "clip" : "clips"}` : "",
   ].filter(Boolean).join(" and ");
-  return { text: out, items, total: all.length, title: [counted, labels.join(", ")].filter(Boolean).join(" · ") };
+  return { text: out, items, total: all.length, title: [counted, labels.join(", ")].filter(Boolean).join(" · "), nights: [] };
 }
 
 // ===================================================================
