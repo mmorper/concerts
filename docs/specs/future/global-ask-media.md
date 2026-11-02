@@ -203,9 +203,11 @@ through every item before repeating one. "Pull another" works through the rest.
 
 1. The owner's photo from that night, with the byline
 2. The owner's photo of that act from another night, with its full date in the byline
-3. A sourced image, chosen by the subject: artist image, venue photo or album cover. The owner
-   approved this fallback on 2026-11-02. It carries no byline, and it stays smaller than a
-   personal photo, so the owner's work still visibly outranks it
+3. A sourced image, whichever suits the response: the artist for an answer about an act, the venue
+   for an answer about a room, the album cover for an answer about a record or a tour. There is
+   no fixed order among them. The owner approved this on 2026-11-02. It carries no byline, and it
+   stays smaller than a personal photo, so the owner's work still visibly outranks it. A photo can
+   bleed, but an album cover stays square and uncropped
 4. The type-led card, for when nothing else loads. Sourced URLs can die at runtime, so it must
    always work
 
