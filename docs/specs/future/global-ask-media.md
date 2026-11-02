@@ -4,7 +4,7 @@
 **Target Version:** next
 **Priority:** Medium
 **Estimated Complexity:** High
-**Dependencies:** #593 exhibit media. Song search needs the song field in `global-social-media-posts.md`
+**Dependencies:** #593 exhibit media, `song` on clips (#612)
 
 ---
 
@@ -80,7 +80,7 @@ link to it, and never describe what a photo shows.
 |---|---|
 | `artist`, `venue`, `date`, `year` | All optional, combined with AND |
 | `kind` | `image`, `video`, or both |
-| `song` | Only after the song field ships |
+| `song` | Matches a clip's `song`, for "did you film this song?" |
 
 Each result carries `id` (`mediaId`), `kind`, `date`, `act`, `subject`, `deepLink`, and for a clip
 `duration` and `song`. Return at most 12, with a `total`.
@@ -147,7 +147,7 @@ Photos panel and the Ask viewer, which then takes `ReelItem[]` rather than still
 
 ## Future Enhancements
 
-- **Song search:** "did you film this song?", once clips carry `song`.
+- **Play buttons on setlist rows,** for songs with a clip.
 - **Written descriptions:** alt text and searches like "show me marquees". They must never name
   a person, and the owner reviews them before they go live.
 - **Replay the night:** the setlist, photos and clips as one sequence.
@@ -156,6 +156,7 @@ Photos panel and the Ask viewer, which then takes `ReelItem[]` rather than still
 
 ## Revision History
 
+- **2026-11-02:** Song search moved into Phase 2, since #612 shipped `song`
 - **2026-11-01:** Initial specification created
-- **Version:** 1.0.0
+- **Version:** 1.1.0
 - **Status:** Planned

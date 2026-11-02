@@ -347,6 +347,10 @@ lost the link to the clip.
 - **Video on the site is hosted on R2.** Revised 2026-11-01: the owner wants clips in the
   gatefold's Photos panel. The panel plays any video whose `url` is set and skips the rest.
   `npm run media:publish-video` sets it. A video still never goes in `public/videos/`.
+- **The site's clip player is not muted by default.** The owner's call, 2026-11-02, replacing
+  the older plan in #341. A reader chooses to press play, so they expect the sound.
+- **A clip names its song.** `song` sits on the video row, comes from the owner, and shows in
+  the Photos panel. Offer that night's setlist and leave it out if nobody can place the song.
 - **A shared clip previews from a static card**, `<date>-<act>-NN-video.jpg` in
   `public/og/shows/`, made by `media:share`. The poster is letterboxed with a play mark, never
   cropped, because a clip has no owner-drawn box. Do not add `og:video`: checked 2026-11-01, a
@@ -618,13 +622,13 @@ consumer filters on `kind === 'image'` before reading `url`.
 | `scripts/media/match.ts` | forgiving folder → act matching, against one night's bill only |
 | `scripts/media/exif.ts` | EXIF cross-check, and the metadata-leak assertion |
 | `scripts/media/media-index.ts` | `media-index.json` schema and ordering |
+| **`npm run media:audit`** | **corpus scan across all concerts, written to `concert-photos-audit/audit/audit.json` — #381, shipped** |
 
 **Specified, NOT built** — do not instruct anyone to run these yet:
 
 | | |
 |---|---|
 | `media:gaps` | shows with no media, and the tier-2 fallback for each — **#380** |
-| `media:audit` | corpus scan across all 184 concerts — **#381** |
 
 When one ships, move it up and delete it from below.
 
