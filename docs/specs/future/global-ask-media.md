@@ -169,8 +169,8 @@ today.
 
 ### Phase 6: the redesign
 
-Mocks: [Ask the Archive redesign](https://claude.ai/artifact/GghUJAdPAzQmZ231XDDBe7), the rows
-"Where I'd land" and "The response". The canvas is private to the owner until shared.
+Mocks: [Ask the Archive redesign](https://claude.ai/artifact/GghUJAdPAzQmZ231XDDBe7), the page
+"Moving forward". The canvas is private to the owner until shared.
 
 The modal must read as search first. The owner's decisions, 2026-11-02:
 
@@ -193,21 +193,41 @@ Text never rotates on a timer: it would need a pause control and it reads as an 
 **The opening idea.** One per day, the same for everyone, chosen in this order:
 
 1. A photographed show on this date
-2. A show on this date with no photo from that night. Use the owner's photo of that act from
-   another night, with its full date in the byline. Use the type-led card only for acts never
-   photographed
+2. A show on this date with no photo from that night, using the imagery ladder below
 3. The rotation: a clip, a year, a familiar face
 
 A date with several shows prefers a photographed night, then the higher On This Day score. Go
 through every item before repeating one. "Pull another" works through the rest.
+
+**The imagery ladder.** Every banner, card and exhibit takes the first that exists:
+
+1. The owner's photo from that night, with the byline
+2. The owner's photo of that act from another night, with its full date in the byline
+3. A sourced image, whichever suits the response: the artist for an answer about an act, the venue
+   for an answer about a room, the album cover for an answer about a record or a tour. There is
+   no fixed order among them. The owner approved this on 2026-11-02. It carries no byline, and it
+   stays smaller than a personal photo, so the owner's work still visibly outranks it. A photo can
+   bleed, but an album cover stays square and uncropped
+4. The type-led card, for when nothing else loads. Sourced URLs can die at runtime, so it must
+   always work
 
 **The Ask scene.** "Pull one from the crate" is a carousel: five cards at a time on desktop, one on
 a phone, with an arrow on each side. An On This Day card leads it on days that are true, and clicking
 it asks "What did you see on this day?". Cards need swipe on a phone and a reduced-motion version.
 
 **The response.** A sentence or two in Playfair, then the exhibit as the largest thing on
-screen, then chips. No bubbles or avatars. Three layouts: clip with photos, a ranked list beside a
-photo, and shows with no media. "No photos from 1987" still lists that year's shows.
+screen, then chips. No bubbles or avatars. An empty photo slot never appears: with no media, the
+layout changes shape. "No photos from 1987" still lists that year's shows.
+
+| Answer | Layout |
+|---|---|
+| A clip | Large player, with photos beside it |
+| A ranking | A photo beside a list with large numbers |
+| No media for a question about media | A plain "no", then the shows |
+| A night with no media | Date, venue and bill beside the setlist |
+| An act never photographed | A small sourced image beside the shows |
+| An act across many nights | A list of nights, with a thumbnail and counts only on nights with media |
+| A gallery | One large photo, a grid, and an "All N photos" tile. The viewer names each photo's night |
 
 Every banner, card and opener goes through the same check as the chips in Phase 5: if a tool can't
 answer it, it doesn't appear.
@@ -264,6 +284,7 @@ opening idea, then the Ask scene carousel. Clip rows wait for Phase 3.
 
 ## Revision History
 
+- **2026-11-02:** Imagery ladder and the full set of response layouts added to Phase 6
 - **2026-11-02:** Phase 6 added: the search-first redesign, from the owner's review of the mocks
 - **2026-11-02:** Song search moved into Phase 2, since #612 shipped `song`
 - **2026-11-01:** Initial specification created
