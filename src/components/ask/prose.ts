@@ -16,3 +16,12 @@ export function cleanProse(text: string): string {
   t = t.replace(/(?<!\|[^\n]*)([^\n|])\s*(\|[^\n]*\|\n\s*\|[\s|:-]+\|)/g, '$1\n\n$2')
   return t
 }
+
+/** About two sentences. A longer opening set at display size buries the exhibit under it. */
+export const LEDE_MAX = 200
+
+/** Whether the answer's first paragraph is short enough to set large. */
+export function isShortLede(text: string): boolean {
+  const first = cleanProse(text).trim().split(/\n\s*\n/)[0] ?? ''
+  return first.length <= LEDE_MAX
+}

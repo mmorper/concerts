@@ -1,5 +1,23 @@
 import { describe, it, expect } from 'vitest'
-import { cleanProse } from './prose'
+import { cleanProse, isShortLede, LEDE_MAX } from './prose'
+
+describe('isShortLede', () => {
+  it('sets a sentence or two large', () => {
+    expect(isShortLede('I do. I filmed thirty seconds of “A Forest” at the Hollywood Bowl in May 2023.')).toBe(true)
+  })
+
+  it('steps a long opening paragraph down', () => {
+    expect(isShortLede('x'.repeat(LEDE_MAX + 1))).toBe(false)
+  })
+
+  it('judges only the first paragraph', () => {
+    expect(isShortLede(`Six times.\n\n${'x'.repeat(LEDE_MAX * 2)}`)).toBe(true)
+  })
+
+  it('ignores the deep-link footer', () => {
+    expect(isShortLede(`Six times.\n\n**Open on the site:** [${'x'.repeat(LEDE_MAX)}](/?scene=artists)`)).toBe(true)
+  })
+})
 
 describe('cleanProse — GFM table normalization', () => {
   it('preserves a multi-column table that OPENS the reply (the bug: header must not split)', () => {

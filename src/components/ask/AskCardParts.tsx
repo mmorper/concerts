@@ -4,7 +4,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { cleanProse } from './prose'
+import { cleanProse, isShortLede } from './prose'
 import { analytics } from '@/services/analytics'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { EntityRef, Exhibit } from '@/types/exhibit'
@@ -30,7 +30,7 @@ export function DeepLink({ href, kind, children }: { href: string; kind: Exhibit
 export function Prose({ ex }: { ex: Exchange }) {
   if (!ex.prose && ex.status === 'streaming') return null
   return (
-    <div className="ex-prose">
+    <div className={`ex-prose ${isShortLede(ex.prose) ? '' : 'long'}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{ table: ({ node, ...props }) => <div className="ex-table-wrap"><table {...props} /></div> }}
