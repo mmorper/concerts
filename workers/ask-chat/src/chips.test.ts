@@ -1,35 +1,52 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { existsSync, readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+// The real archive, imported as JSON the way the MCP server's query-budget test does. The Worker's
+// tsconfig has no Node types, so no fs.
+import concerts from "../../../public/data/concerts.json";
+import setlists from "../../../public/data/setlists-cache.json";
+import albumEras from "../../../public/data/album-eras.json";
+import songAlbums from "../../../public/data/song-albums.json";
+import artistsMetadata from "../../../public/data/artists-metadata.json";
+import artistAliases from "../../../public/data/artist-aliases.json";
+import mediaIndex from "../../../public/data/media-index.json";
+import venuesMetadata from "../../../public/data/venues-metadata.json";
+import topTracks from "../../../public/data/artists-top-tracks.json";
+import facts from "../../../public/data/facts.json";
+import mostPlayed from "../../../public/data/most-played-songs.json";
+import artistNarrations from "../../../public/data/narrations/artists.json";
+import venueNarrations from "../../../public/data/narrations/venues.json";
 import { CHIP_TOOLS, MAX_CHIPS, SETLIST_FLOOR, offerChips, readChip, type Chip, type ChipData } from "./chips.js";
 import { dispatchTool, loadChipData, type ToolResult } from "./tools-bridge.js";
 import type { Exhibit } from "./exhibits.js";
 import type { Env } from "./types.js";
 
-// The real archive, served to the shared data layer through a stand-in for caches.default. Each
-// file is parsed once and handed back already parsed, so walking every act, room and night costs
-// lookups, not megabytes of JSON per tool call. Files the site doesn't ship (a missing narration)
-// fall through to a fetch that 404s, which the data layer reads as "absent", as it would live.
-const DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), "../../../public/data");
+// Served to the shared data layer through a stand-in for caches.default, already parsed, so
+// walking every act, room and night costs lookups, not megabytes of JSON per tool call. A file
+// not listed falls through to a fetch that 404s, which the data layer reads as "absent", as it
+// would live.
 const BASE = "https://test.invalid/data";
 const env = { DATA_BASE_URL: BASE } as Env;
-const parsed = new Map<string, unknown>();
-
-function fileFor(url: string): string | null {
-  if (!url.startsWith(`${BASE}/`)) return null;
-  const path = join(DATA_DIR, url.slice(BASE.length + 1));
-  return existsSync(path) ? path : null;
-}
+const FILES: Record<string, unknown> = {
+  "concerts.json": concerts,
+  "setlists-cache.json": setlists,
+  "album-eras.json": albumEras,
+  "song-albums.json": songAlbums,
+  "artists-metadata.json": artistsMetadata,
+  "artist-aliases.json": artistAliases,
+  "media-index.json": mediaIndex,
+  "venues-metadata.json": venuesMetadata,
+  "artists-top-tracks.json": topTracks,
+  "facts.json": facts,
+  "most-played-songs.json": mostPlayed,
+  "narrations/artists.json": artistNarrations,
+  "narrations/venues.json": venueNarrations,
+};
 
 beforeAll(() => {
   (globalThis as { caches?: unknown }).caches = {
     default: {
       match: async (req: Request) => {
-        const path = fileFor(req.url);
-        if (!path) return undefined;
-        if (!parsed.has(path)) parsed.set(path, JSON.parse(readFileSync(path, "utf8")));
-        return { json: async () => parsed.get(path) };
+        const file = req.url.startsWith(`${BASE}/`) ? FILES[req.url.slice(BASE.length + 1)] : undefined;
+        return file === undefined ? undefined : { json: async () => file };
       },
       put: async () => {},
     },
