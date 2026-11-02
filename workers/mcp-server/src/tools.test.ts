@@ -179,6 +179,35 @@ function assertVoice(text: string) {
 // ---------- get_archive_info ----------
 
 describe("get_archive_info", () => {
+  const night = (headliner: string, openers: string[] = []) =>
+    ({
+      date: "2020-01-01",
+      year: 2020,
+      decade: "2020s",
+      headliner,
+      headlinerNormalized: headliner.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      openers,
+      venue: "A Room",
+      venueNormalized: "a-room",
+      city: "A City",
+      genre: "Rock",
+    }) as unknown as Concert;
+
+  it("counts opening slots toward the artists seen most", () => {
+    const text = archiveInfo([night("Twice"), night("Twice"), night("Other", ["Openers"]), night("Elsewhere", ["Openers"]), night("Third", ["Openers"])], null);
+    expect(text).toContain("seen most: Openers (3), Twice (2)");
+  });
+
+  it("merges an act's billings", () => {
+    const aliases = buildAliasIndex({ sameAct: [{ canonical: "act", name: "The Act", billings: ["act", "the-act-band"] }] });
+    const text = archiveInfo([night("Act"), night("The Act Band"), night("Solo")], null, aliases);
+    expect(text).toContain("seen most: The Act (2), Solo (1)");
+  });
+
+  it("counts an act once on a night it appears on twice", () => {
+    expect(archiveInfo([night("Twice", ["Twice"])], null)).toContain("seen most: Twice (1)");
+  });
+
   it("narrates the collection's shape", () => {
     const text = archiveInfo(archive(), null);
     assertVoice(text);

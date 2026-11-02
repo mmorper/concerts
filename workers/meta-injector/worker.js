@@ -903,6 +903,10 @@ async function injectSceneMeta(html, scene, origin, ctx) {
         title: `Music Genres Explored | Morperhaus Concert Archives`,
         description: `How ${stats.concerts} concerts break down by genre. Explore the musical diversity of ${stats.lastYear - stats.firstYear}+ years of live shows.`,
       },
+      ask: {
+        title: `Ask the Archive | Morperhaus Concert Archives`,
+        description: `Over forty years of live music, in its own voice. Ask about any band, venue or year, and the archive answers from the shows themselves.`,
+      },
     };
 
     const meta = sceneMeta[scene] || sceneMeta.timeline;

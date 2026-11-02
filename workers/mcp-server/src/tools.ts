@@ -228,11 +228,42 @@ function tally(concerts: Concert[], key: (c: Concert) => string): [string, numbe
   return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 }
 
+// Every act's nights, headlining or opening, with an act's billings merged: the way the site's
+// artist cards count. Headliners alone put Social Distortion (8) ahead of The English Beat (10).
+function topActs(concerts: Concert[], aliases: AliasIndex): [string, number][] {
+  const acts = new Map<string, { name: string; n: number }>();
+  for (const c of concerts) {
+    const bill = [
+      { name: c.headliner, slug: c.headlinerNormalized },
+      ...c.openers
+        .map((o) => o.trim())
+        .filter(Boolean)
+        .map((name) => ({ name, slug: normalizeName(name) })),
+    ];
+    const counted = new Set<string>();
+    for (const { name, slug } of bill) {
+      const key = canonicalSlug(aliases, slug);
+      if (counted.has(key)) continue;
+      counted.add(key);
+      const act = acts.get(key) ?? { name: aliasName(aliases, slug) ?? name, n: 0 };
+      act.n += 1;
+      acts.set(key, act);
+    }
+  }
+  return [...acts.values()]
+    .sort((a, b) => b.n - a.n || a.name.localeCompare(b.name))
+    .map((a) => [a.name, a.n]);
+}
+
 // ===================================================================
 // 1. get_archive_info
 // ===================================================================
 
-export function archiveInfo(concerts: Concert[], facts: FactsData | null): string {
+export function archiveInfo(
+  concerts: Concert[],
+  facts: FactsData | null,
+  aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+): string {
   const sorted = [...concerts].sort(byDate);
   const total = sorted.length;
   if (total === 0) return "The archive is empty right now.";
@@ -243,7 +274,7 @@ export function archiveInfo(concerts: Concert[], facts: FactsData | null): strin
   // different venue count than the site would be drift nobody could see.
   const { venues, cities } = deriveArchiveStats(concerts);
 
-  const topArtists = tally(concerts, (c) => c.headliner).slice(0, 5);
+  const topArtists = topActs(concerts, aliases).slice(0, 5);
   const topVenues = tally(concerts, (c) => c.venue).slice(0, 5);
   const topDecade = tally(concerts, (c) => c.decade)[0];
 
@@ -1685,8 +1716,11 @@ export function registerTools(server: McpServer, env: Env): void {
     instrument(env, "get_archive_info", async () => {
       const data = await getConcerts(env, bgCtx);
       if (!data) return dataUnavailableResult();
-      const facts = await getFacts(env, bgCtx);
-      return textResult(archiveInfo(data.concerts, facts));
+      const [facts, aliasData] = await Promise.all([
+        getFacts(env, bgCtx),
+        getArtistAliases(env, bgCtx),
+      ]);
+      return textResult(archiveInfo(data.concerts, facts, buildAliasIndex(aliasData)));
     }),
   );
 
