@@ -174,6 +174,16 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 
 ## Short-Term Roadmap
 
+### Ask the Archive — Shareable Answers
+
+**Status**: Planned
+**Spec**: [global-ask-shareable-answers.md](specs/future/global-ask-shareable-answers.md)
+
+A share button on every Ask answer with a card, and a link that reopens it word for word, with a
+proper preview. Opening a shared answer costs no model call.
+
+---
+
 ### Social Syndication — Liner Notes & On This Day (v7.0.0)
 
 **Status**: In Progress — Bluesky and Mastodon live since v6.1.0; Instagram wired, awaiting credentials
