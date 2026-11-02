@@ -51,6 +51,7 @@ import {
 import { albumInfo, albumExhibit } from "./album-info.js";
 import { OWNER_FIRST_NAME } from "../../mcp-server/src/owner.js";
 import type { Env } from "./types.js";
+import type { ChipData } from "./chips.js";
 import type { AlbumIdentity, Exhibit, EntityRef } from "./exhibits.js";
 import { artistDeepLink, venueDeepLink } from "./exhibits.js";
 
@@ -668,6 +669,26 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
     default:
       return { text: `Unknown tool: ${name}` };
   }
+}
+
+/**
+ * What the follow-up chips check against (chips.ts). The same cached files the tools read, so for
+ * most answers these are already warm. Null when the concerts can't load: no chips, never an error.
+ */
+export async function loadChipData(env: Env): Promise<ChipData | null> {
+  const e = asReused(env);
+  const [data, setlists, eras, songAlbums, meta, aliasData, media, venues] = await Promise.all([
+    getConcerts(e, bgCtx),
+    getSetlistsCache(e, bgCtx),
+    getAlbumEras(e, bgCtx),
+    getSongAlbums(e, bgCtx),
+    getArtistsMetadata(e, bgCtx),
+    getArtistAliases(e, bgCtx),
+    getMediaIndex(e, bgCtx),
+    getVenuesMetadata(e, bgCtx),
+  ]);
+  if (!data) return null;
+  return { concerts: data.concerts, setlists, eras, songAlbums, meta: meta ?? {}, aliasData, media, venues, today: todayISO() };
 }
 
 // ---------------------------------------------------------------------------------------------

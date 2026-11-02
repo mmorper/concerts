@@ -4,8 +4,9 @@
 // by hand. Photos, covers and portraits hydrate exactly as in production.
 
 import type { Exchange } from '@/hooks/useAskArchive'
+import type { Chip } from '@/types/exhibit'
 
-export const DEV_FIXTURES: Exchange[] = [
+const ENVELOPES: Exchange[] = [
   {
     "id": "fx-0",
     "question": "What album was Blind Vision on?",
@@ -1511,3 +1512,127 @@ export const DEV_FIXTURES: Exchange[] = [
     "status": "done"
   }
 ]
+
+// The follow-ups the worker's offerChips gives each answer, from the same real data (Phase 5).
+// Only the newest answer shows its chips, so step through with "Ask next" to see each set.
+const CHIPS: Record<string, Chip[]> = {
+  "fx-1": [
+    {
+      "label": "Your first Human League show",
+      "tool": "get_concert_setlist",
+      "input": {
+        "artist": "The Human League",
+        "date": "2003-08-24"
+      }
+    },
+    {
+      "label": "The clips",
+      "tool": "get_media",
+      "input": {
+        "artist": "The Human League",
+        "kind": "clip"
+      }
+    }
+  ],
+  "fx-2": [
+    {
+      "label": "Every Howard Jones show",
+      "tool": "get_artist_history",
+      "input": {
+        "artist": "Howard Jones"
+      }
+    },
+    {
+      "label": "The clips",
+      "tool": "get_media",
+      "input": {
+        "date": "2024-08-20",
+        "kind": "clip"
+      }
+    }
+  ],
+  "fx-3": [
+    {
+      "label": "Every Social Distortion show",
+      "tool": "get_artist_history",
+      "input": {
+        "artist": "Social Distortion"
+      }
+    }
+  ],
+  "fx-4": [
+    {
+      "label": "Your first show here",
+      "tool": "get_concert_setlist",
+      "input": {
+        "artist": "New Order",
+        "date": "2022-10-07"
+      }
+    },
+    {
+      "label": "The clips",
+      "tool": "get_media",
+      "input": {
+        "venue": "Hollywood Bowl",
+        "kind": "clip"
+      }
+    }
+  ],
+  "fx-5": [
+    {
+      "label": "Your first show here",
+      "tool": "get_concert_setlist",
+      "input": {
+        "artist": "Adam Ant",
+        "date": "1984-04-27"
+      }
+    }
+  ],
+  "fx-8": [
+    {
+      "label": "The setlist",
+      "tool": "get_concert_setlist",
+      "input": {
+        "artist": "New Order",
+        "date": "2022-10-07"
+      }
+    },
+    {
+      "label": "The photos",
+      "tool": "get_media",
+      "input": {
+        "date": "2022-10-07",
+        "kind": "photo"
+      }
+    }
+  ],
+  "fx-9": [
+    {
+      "label": "Your first Adam Ant show",
+      "tool": "get_concert_setlist",
+      "input": {
+        "artist": "Adam Ant",
+        "date": "1984-04-27"
+      }
+    }
+  ],
+  "fx-10": [
+    {
+      "label": "The setlist",
+      "tool": "get_concert_setlist",
+      "input": {
+        "artist": "Howard Jones",
+        "date": "2024-08-20"
+      }
+    },
+    {
+      "label": "Every Howard Jones show",
+      "tool": "get_artist_history",
+      "input": {
+        "artist": "Howard Jones"
+      }
+    }
+  ]
+}
+
+export const DEV_FIXTURES: Exchange[] = ENVELOPES.map((f) => (CHIPS[f.id] ? { ...f, chips: CHIPS[f.id] } : f))

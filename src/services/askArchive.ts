@@ -2,11 +2,13 @@
 // into typed AskEvent callbacks. The exhibit-rendering layer consumes these; container shells
 // (Spotlight overlay / `/ask` canvas) and the Turnstile session exchange are #141.
 
-import type { AskEvent } from '@/types/exhibit'
+import type { AskEvent, Chip } from '@/types/exhibit'
 
 export interface Turn {
   role: 'user' | 'assistant'
   text: string
+  /** The follow-up chip this question came from: the Worker runs its tool first. */
+  chip?: Pick<Chip, 'tool' | 'input'>
 }
 
 // Where the chat worker lives. The worker route is `concerts.morperhaus.org/api/ask*` — so
@@ -186,8 +188,12 @@ function parseFrame(frame: string): AskEvent | null {
       return { type: 'token', text: String(payload.text ?? '') }
     case 'tool':
       return { type: 'tool', name: String(payload.name ?? '') }
-    case 'exhibit':
-      return { type: 'exhibit', exhibit: payload as never }
+    case 'exhibit': {
+      // The chips ride on the card's event but aren't part of the card.
+      const { chips, ...exhibit } = payload
+      const valid = Array.isArray(chips) ? (chips as Chip[]).filter((c) => c && typeof c.label === 'string' && typeof c.tool === 'string') : []
+      return { type: 'exhibit', exhibit: exhibit as never, ...(valid.length ? { chips: valid } : {}) }
+    }
     case 'refusal':
       return { type: 'refusal', message: String(payload.message ?? '') }
     case 'done':

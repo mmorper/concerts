@@ -11,13 +11,15 @@ import { SearchMark } from './AskMedia'
 import { AskSearchMatches, optionId } from './AskSearchMatches'
 import { MIN_QUERY, searchArchive, songAnswer } from './search'
 import { AskBanner } from './AskBanner'
-import type { Exhibit } from '@/types/exhibit'
+import type { Chip, Exhibit } from '@/types/exhibit'
+import { analytics } from '@/services/analytics'
 
 export interface AskConversationProps {
   exchanges: Exchange[]
   busy: boolean
   archive: ArchiveLookups
-  onAsk: (question: string) => void
+  /** `chip` when the question is a follow-up the archive offered. */
+  onAsk: (question: string, chip?: Chip) => void
   /** Show the photo banner and "Pull another" until the first question. */
   banner?: boolean
   placeholder?: string
@@ -180,6 +182,31 @@ export function AskConversation({
               <div key={ex.id} ref={i === exchanges.length - 1 ? lastTurnRef : undefined}>
                 <div className="ask-q">{ex.question}</div>
                 <AskExhibit exchange={ex} archive={archive} />
+                {/* Only under the newest answer: an older one's next step has been taken or passed. */}
+                {i === exchanges.length - 1 && ex.status === 'done' && !busy && ex.chips?.length ? (
+                  <div className="chips ask-followups" role="group" aria-label="Ask next">
+                    {ex.chips.map((chip, n) => (
+                      <button
+                        key={chip.label}
+                        type="button"
+                        className="chip"
+                        onClick={() => {
+                          analytics.trackEvent('ask_suggested_prompt_clicked', {
+                            prompt: chip.label,
+                            position: n,
+                            source: 'chip',
+                            exhibit_kind: ex.exhibit?.kind ?? 'none',
+                          })
+                          setInput('')
+                          setActive(-1)
+                          onAsk(chip.label, chip)
+                        }}
+                      >
+                        {chip.label}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>

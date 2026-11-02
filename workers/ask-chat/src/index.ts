@@ -12,6 +12,8 @@
 //   exhibit  <Exhibit>       — the composed card to render (kind + slugs; see exhibits.ts).
 //                              Emitted once, after prose, before `done`. Thin: frontend hydrates
 //                              photo/genre/map/chips from the SPA's local data via the slugs/ids.
+//                              May carry `chips`: one or two follow-ups, each a tool + its input
+//                              (chips.ts). A turn that sends one back runs that tool first.
 //   refusal  { message }     — kill-switch / cap / backstop, graceful (never a 500)
 //   done     { fraction }    — turn complete (spend fraction of the daily cap)
 //   error    { message }     — unexpected failure
@@ -24,8 +26,9 @@ import type { Env } from "./types.js";
 import { getMode, isAdminIp } from "./control.js";
 import { reserveTurn, commitTurn, releaseTurn, type ReserveTicket } from "./cost.js";
 import { runAgentTurn } from "./agent-loop.js";
-import { dispatchTool, pickDeterministicTool, readerProse } from "./tools-bridge.js";
-import { pickPrimaryExhibit } from "./exhibits.js";
+import { dispatchTool, loadChipData, pickDeterministicTool, readerProse } from "./tools-bridge.js";
+import { pickPrimaryExhibit, type Exhibit } from "./exhibits.js";
+import { offerChips, readChip, type Chip } from "./chips.js";
 import { issueSession, verifySession } from "./session.js";
 import { allow } from "./ratelimit.js";
 import { maybeTripwire } from "./notify.js";
@@ -73,6 +76,36 @@ function cors(request: Request): Record<string, string> {
 interface Turn {
   role: "user" | "assistant";
   text: string;
+  /** A follow-up chip the visitor clicked, as the Worker offered it. Read with readChip. */
+  chip?: unknown;
+}
+
+const CHIP_TOOL_USE_ID = "toolu_chip";
+
+/**
+ * A chip's turn for the model: the history, the chip's label as the question, then the chip's tool
+ * already called and answered. The model writes the prose from that result, and can still look up
+ * more. Running the tool here, not asking the model to, is what makes a chip land where it said.
+ */
+function chipMessages(turns: Turn[], chip: Pick<Chip, "tool" | "input">, resultText: string): unknown[] {
+  return [
+    ...toMessages(turns),
+    { role: "assistant", content: [{ type: "tool_use", id: CHIP_TOOL_USE_ID, name: chip.tool, input: chip.input }] },
+    { role: "user", content: [{ type: "tool_result", tool_use_id: CHIP_TOOL_USE_ID, content: resultText }] },
+  ];
+}
+
+/** The follow-ups for an answer. Best-effort: a failure costs the chips, never the answer. */
+async function chipsFor(env: Env, exhibit: Exhibit, turns: Turn[]): Promise<Chip[]> {
+  try {
+    const data = await loadChipData(env);
+    if (!data) return [];
+    const asked = turns.filter((t) => t.role === "user").map((t) => t.text);
+    return offerChips(exhibit, data, asked);
+  } catch (err) {
+    console.error("chips failed (answer unaffected):", err);
+    return [];
+  }
 }
 
 function sseEvent(event: string, data: unknown): string {
@@ -136,6 +169,8 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
     // Per-turn telemetry, accumulated through the branches and written once in `finally` (one row
     // per turn, every exit path). Defaults assume the worst; each success path refines them.
     const lastUserText = (v.turns[v.turns.length - 1] as Turn).text;
+    // A malformed chip reads as null, and the turn is answered as the words it shows.
+    const chip = readChip((v.turns[v.turns.length - 1] as Turn).chip);
     const day = new Date().toISOString().slice(0, 10);
     let outcome: TurnOutcome = "error";
     let usage: AnthropicUsage = {};
@@ -160,7 +195,8 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
         // the rich exhibit card. The agent loop stays suppressed.
         const lastText = (v.turns[v.turns.length - 1] as Turn).text;
         try {
-          const choice = await pickDeterministicTool(env, lastText);
+          // A chip already names its tool. Quiet mode offers none, but one clicked before the flip still lands.
+          const choice = chip ? { name: chip.tool, input: chip.input } : await pickDeterministicTool(env, lastText);
           const result = await dispatchTool(env, choice.name, choice.input);
           const prose = readerProse(result.text);
           const exhibit = result.exhibit ?? { kind: "plain" as const };
@@ -206,10 +242,18 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
         status = reservation.status;
       }
 
-      const result = await runAgentTurn(env, toMessages(v.turns), {
-        onText: (text) => void send("token", { text }),
-        onTool: (name) => void send("tool", { name }),
-      });
+      const events = {
+        onText: (text: string) => void send("token", { text }),
+        onTool: (name: string) => void send("tool", { name }),
+      };
+      let result;
+      if (chip) {
+        events.onTool(chip.tool);
+        const forced = await dispatchTool(env, chip.tool, chip.input);
+        result = await runAgentTurn(env, chipMessages(v.turns, chip, forced.text), events, forced.exhibit ? [forced.exhibit] : []);
+      } else {
+        result = await runAgentTurn(env, toMessages(v.turns), events);
+      }
 
       // Best-effort: the answer already streamed, so a transient cost-counter failure must NOT fail
       // the turn (that would send an `error` event and drop the exhibit on a good answer). Only
@@ -242,7 +286,10 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
       }
 
       outcome = "answered";
-      await send("exhibit", exhibit);
+      // Chips only in the normal mode, and only while the next turn would still be answered: a chip
+      // must never lead to the cap message. The exhibit has nothing to offer from when it's plain.
+      const chips = exhibit.kind !== "plain" && status.fraction < 1 ? await chipsFor(env, exhibit, v.turns) : [];
+      await send("exhibit", chips.length ? { ...exhibit, chips } : exhibit);
 
       // Crossing a budget milestone (50/75/100%) → push a deep link to /ask/admin (once/day each).
       // Backgrounded.
