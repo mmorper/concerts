@@ -15,6 +15,7 @@
 //     silently credited to the headliner is fabricated attribution on half the archive.
 
 import { normalizeArtistName } from '@/utils/normalize'
+import { mediaId, photoDeepLink } from '@/utils/deepLinks'
 
 export interface MediaCrop {
   x: number
@@ -113,6 +114,13 @@ export function actPhotosOnNight(ix: MediaIndex, date: string, actSlug: string):
   return (ix.byDate.get(date) ?? []).filter((p) => p.subject === 'artist' && p.artistNormalized === actSlug)
 }
 
+/** Every playable clip of one act, newest night first. */
+export function actClips(ix: MediaIndex, actSlug: string): Clip[] {
+  return [...ix.clipsByDate.entries()]
+    .sort(([a], [b]) => b.localeCompare(a))
+    .flatMap(([, clips]) => clips.filter((c) => c.artistNormalized === actSlug))
+}
+
 /** Marquee, exterior, stub, the room before doors. */
 export function venuePhotosOnNight(ix: MediaIndex, date: string): Photo[] {
   return (ix.byDate.get(date) ?? []).filter((p) => p.subject === 'venue')
@@ -182,7 +190,21 @@ export function nightReel(ix: MediaIndex, date: string, actSlug: string): ReelIt
   return [...own, ...ownClips, ...room]
 }
 
-export { mediaId } from '@/utils/deepLinks'
+export { mediaId }
+
+/** One night's still or clip by its `mediaId`, or null if the index doesn't hold it. */
+export function findMedia(ix: MediaIndex, date: string, id: string): ReelItem | null {
+  const reel: ReelItem[] = [...(ix.byDate.get(date) ?? []), ...(ix.clipsByDate.get(date) ?? [])]
+  return reel.find((item) => mediaId(item) === id) ?? null
+}
+
+/**
+ * The link that opens this exact frame, not just the gatefold. A frame opens in the gatefold of
+ * the act in it, because a gatefold only holds that act's frames and the room.
+ */
+export function frameLink(item: ReelItem, fallbackAct: string): string {
+  return photoDeepLink(item.artistNormalized ?? fallbackAct, item.date, mediaId(item))
+}
 
 // ---------------------------------------------------------------------------------------------
 // Framing. Every published still carries a crop box the owner drew by hand (`media:crop`):

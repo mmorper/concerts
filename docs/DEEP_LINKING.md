@@ -156,7 +156,7 @@ https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-0
 - For search, a video's link is its own canonical page. A still's link names its show as canonical, so 150 near-identical pages do not compete with it. Both are set by the meta-injector Worker, which is also what stops a deep link naming the homepage (`index.html`'s only canonical).
 - For bots, the meta-injector Worker adds JSON-LD (`nightObjects`). A clip's link carries one `VideoObject`. Every other show link, a still's included, carries an `ImageObject` for each still its gatefold holds, the room among them. Each credits the act on the asset and names Mike Morper as creator. There is no `license` field until the owner decides to offer one.
 - The sitemap lists every published clip at this link with a video entry, and carries each still as an image entry on its act's show URL. A night with media is listed even with no setlist. New media reaches the sitemap the next time `generate:sitemap` runs, which a data refresh does.
-- Build these with `photoDeepLink` and `mediaId` in `src/utils/deepLinks.ts`. Two surfaces emit them: the Photos panel's link button, and On This Day posts that carry the owner's frame (`scripts/on-this-day/build.ts`).
+- Build these with `photoDeepLink` and `mediaId` in `src/utils/deepLinks.ts`. Four surfaces emit them: the Photos panel's link button, On This Day posts that carry the owner's frame (`scripts/on-this-day/build.ts`), the `get_media` tool (`workers/mcp-server/src/media.ts`), and Ask's gallery and list rows (`src/components/ask/media.ts`, `frameLink`).
 
 ---
 

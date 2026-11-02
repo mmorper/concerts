@@ -14,14 +14,17 @@ import { analytics } from '@/services/analytics'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { ArchiveLookups } from './types'
 import type { ArtistExhibit, VenueExhibit, ListExhibit, SerendipityExhibit, DisambiguationExhibit } from '@/types/exhibit'
-import { CameraMark, DerivedArt, FramedPhoto, LadderImage, usePhotoViewer } from './AskMedia'
-import { ChipLink, DeepLink, Filmstrip, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, trackPhotoOpened, yearSpan } from './AskCardParts'
+import { CameraMark, DerivedArt, FramedPhoto, LadderImage } from './AskMedia'
+import { ChipLink, DeepLink, Filmstrip, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackPhotoOpened, yearSpan } from './AskCardParts'
 import { AlbumCard, DiscographyCard, ShowCard } from './AskRecordCards'
+import { GalleryCard } from './AskGalleryCard'
 import { EraCard, ShapeCard, SongsCard } from './AskCareerCards'
 import {
   BANNER_ASPECT,
+  actClips,
   actPhotosOnNight,
   fmtDate,
+  frameLink,
   heroLayout,
   leadPhoto,
   nightPhoto,
@@ -45,10 +48,11 @@ function ArtistCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ArtistExh
   const extra = f.count - chips.length
 
   const all = archive.media.byArtist.get(exhibit.slug) ?? []
+  const clips = actClips(archive.media, exhibit.slug)
   const lead = leadPhoto(archive.media, exhibit.slug)
   const lookups = captionLookups(archive)
   const caption = (p: Photo) => photoCaption(p, { aboutAct: exhibit.slug, ...lookups })
-  const viewer = usePhotoViewer(caption, trackPhotoOpened('artist'))
+  const viewer = useFrameOpener(archive, trackPhotoOpened('artist'))
   const rest = lead ? all.filter((p) => p !== lead) : []
   const nights = new Set(all.map((p) => p.date))
   const stripLabel =
@@ -114,10 +118,14 @@ function ArtistCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ArtistExh
           {extra > 0 && <span className="show"><span className="yr">+{extra} more</span></span>}
         </div>
       )}
+      {clips[0] && (
+        <DeepLink href={frameLink(clips[0], exhibit.slug)} kind="artist">
+          {clips.length === 1 ? `Watch “${clips[0].song ?? 'the clip'}”` : `Watch ${clips.length} clips`} in the gatefold
+        </DeepLink>
+      )}
       <DeepLink href={exhibit.deepLink} kind="artist">
         See all {f.count || ''} {exhibit.name} shows on the site
       </DeepLink>
-      {viewer.element}
     </Frame>
   )
 }
@@ -140,7 +148,7 @@ function VenueCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: VenueExhib
   const stripPhotos = picks.map((x) => x.pick.photo)
   const viewerPhotos = mine && !stripPhotos.includes(mine) ? [mine, ...stripPhotos] : stripPhotos
   const caption = (p: Photo) => photoCaption(p, lookups)
-  const viewer = usePhotoViewer(caption, trackPhotoOpened('venue'))
+  const viewer = useFrameOpener(archive, trackPhotoOpened('venue'))
 
   const capText = [exhibit.name, f.cityState].filter(Boolean).join(' · ')
   const mapHero = (
@@ -244,7 +252,6 @@ function VenueCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: VenueExhib
         </div>
       )}
       <DeepLink href={exhibit.deepLink} kind="venue">Open {exhibit.name} on the site</DeepLink>
-      {viewer.element}
     </Frame>
   )
 }
@@ -262,7 +269,7 @@ function ListCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: ListExhibit
         const meta = archive.artistFacts(r.artist.slug).meta
         const count = nightPhotoCount(archive.media, r.date)
         return (
-          <a key={r.concertId} className="ask-row" href={r.artist.deepLink} onClick={() => analytics.trackEvent('ask_deeplink_clicked', { kind: 'list', target_scene: 'artists' })}>
+          <a key={r.concertId} className="ask-row" href={pick ? frameLink(pick.photo, r.artist.slug) : r.artist.deepLink} onClick={() => analytics.trackEvent('ask_deeplink_clicked', { kind: 'list', target_scene: 'artists' })}>
             <span className="yr">{r.date.slice(0, 4)}</span>
             <span className="th">
               {pick ? (
@@ -302,7 +309,7 @@ function SerendipityCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Sere
   const photo = (c && nightPhoto(archive.media, c)?.photo) || leadPhoto(archive.media, exhibit.artist.slug)
   const caption = (p: Photo) => photoCaption(p, { aboutAct: exhibit.artist.slug, aboutDate: c?.date, ...lookups })
   const nightPhotos = photo ? (archive.media.byDate.get(photo.date) ?? [photo]) : []
-  const viewer = usePhotoViewer(caption, trackPhotoOpened('serendipity'))
+  const viewer = useFrameOpener(archive, trackPhotoOpened('serendipity'))
   return (
     <Frame color={color}>
       <div className="ex-head">
@@ -330,7 +337,6 @@ function SerendipityCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Sere
       </div>
       <Prose ex={ex} />
       <DeepLink href={exhibit.artist.deepLink} kind="serendipity">See {exhibit.artist.name} on the site</DeepLink>
-      {viewer.element}
     </Frame>
   )
 }
@@ -414,6 +420,8 @@ export function AskExhibit({ exchange, archive }: { exchange: Exchange; archive:
       return <ShapeCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'songs':
       return <SongsCard ex={exchange} exhibit={exhibit} archive={archive} />
+    case 'gallery':
+      return <GalleryCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'disambiguation':
       return <DisambiguationCard ex={exchange} exhibit={exhibit} archive={archive} />
     case 'refusal':

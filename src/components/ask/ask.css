@@ -559,3 +559,18 @@ img.chip-av { object-fit: cover; display: block; }
    widget paints nothing unless a challenge is actually required, so no frame of our own here;
    Turnstile carries its own challenge UI when it appears. */
 .ts-gate { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2100; }
+
+/* The gallery card: a lead frame, then a grid. Every tile links to that frame in its gatefold. */
+.ask-gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.ask-gal-tile { position: relative; display: block; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #000; color: #fff; text-decoration: none; }
+.ask-gal-tile:first-child { grid-column: span 2; grid-row: span 2; }
+.ask-gal-tile:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.ask-gal-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ask-gal-tile .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 10px 8px; font-size: 12.5px; line-height: 1.25; background: linear-gradient(180deg, rgba(8, 10, 16, 0), rgba(8, 10, 16, 0.86)); }
+.ask-gal-tile .play { position: absolute; right: 8px; top: 8px; width: 32px; height: 32px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
+.ask-gal-tile.more { display: flex; align-items: center; justify-content: center; padding: 8px; text-align: center; background: rgba(255, 255, 255, 0.07); font-size: 14px; font-weight: 600; }
+.ask-gal-tile.more:hover { background: rgba(255, 255, 255, 0.13); }
+@media (max-width: 767px) {
+  .ask-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ask-gal-tile:first-child { grid-column: span 3; grid-row: auto; aspect-ratio: 4 / 3; }
+}

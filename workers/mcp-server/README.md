@@ -43,6 +43,7 @@ Any MCP client that speaks Streamable HTTP works the same way — point it at th
 - "Show me every concert at the 9:30 Club"
 - "Search for concerts in the 1990s"
 - "Surprise me"
+- "Got any video of The Cure?"
 - "Where were Depeche Mode in their career the night I saw them?"
 - "Do I catch bands early or late?"
 - "Which artists have I seen exactly twice?" — _(freeform; routes to `query`)_

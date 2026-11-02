@@ -60,7 +60,17 @@ import {
   getArtistAliases,
   getMediaIndex,
 } from "./data.js";
-import { artistMediaNote, nightMediaNote, nightsMediaNote, withMediaNote } from "./media.js";
+import {
+  MEDIA_RESULT_LIMIT,
+  artistMediaNote,
+  nightMediaNote,
+  nightsMediaNote,
+  selectMedia,
+  withMediaNote,
+  type MediaFilter,
+  type MediaIndexFile,
+  type MediaItem,
+} from "./media.js";
 import { recordMcpQuery } from "./telemetry.js";
 import QUERY_PROMPT from "../prompts/query.md";
 
@@ -1248,6 +1258,96 @@ export function setlistSelection(
 
 
 // ===================================================================
+// 8b. get_media
+// ===================================================================
+
+export interface MediaArgs {
+  artist?: string;
+  venue?: string;
+  date?: string;
+  year?: number;
+  kind?: "photo" | "clip";
+  song?: string;
+}
+
+export interface MediaResults {
+  text: string;
+  /** The first page, best first. Empty when nothing matched or the question needs narrowing. */
+  items: MediaItem[];
+  total: number;
+  title: string;
+}
+
+/**
+ * The owner's photos and clips, as links to the exact frame.
+ *
+ * Only public media is returned, the owner's marks lead, and every link opens that frame in its
+ * gatefold rather than the gatefold alone. Identity only: the site hydrates the pixels.
+ */
+export function mediaResults(
+  concerts: Concert[],
+  media: MediaIndexFile,
+  args: MediaArgs,
+  venues: VenuesMetadata | null,
+  aliases: AliasIndex = EMPTY_ALIAS_INDEX,
+): MediaResults {
+  const none = (text: string): MediaResults => ({ text, items: [], total: 0, title: "" });
+  const filter: MediaFilter = {
+    ...(args.year ? { year: args.year } : {}),
+    ...(args.song ? { song: args.song } : {}),
+    ...(args.kind ? { kind: args.kind === "clip" ? ("video" as const) : ("image" as const) } : {}),
+  };
+  const labels: string[] = [];
+
+  if (args.artist) {
+    const r = resolveArtist(concerts, args.artist, aliases);
+    if (r.kind === "owner") return none(ownerNotAnArtist(concerts.length));
+    if (r.kind === "ambiguous") return none(`Which one do you mean: ${joinList(r.options)}?`);
+    if (r.kind === "none") return none(`"${args.artist}" isn't in the archive.`);
+    filter.slugs = r.slugs;
+    labels.push(r.name);
+  }
+  if (args.venue) {
+    const r = venues ? resolveVenue(venues, args.venue) : null;
+    if (!r || r.kind !== "match") return none(`I can't place the venue "${args.venue}".`);
+    filter.dates = new Set(concerts.filter((c) => c.venueNormalized === r.venue.normalizedName).map((c) => c.date));
+    labels.push(r.venue.name);
+  }
+  if (args.date) {
+    filter.dates = new Set([args.date]);
+    labels.push(fullDate(args.date));
+  }
+  if (args.year) labels.push(String(args.year));
+  if (args.song) labels.push(`“${args.song}”`);
+
+  const headlinerOn = (date: string) => concerts.find((c) => c.date === date)?.headlinerNormalized;
+  const all = selectMedia(media, filter, (a) =>
+    a.artistNormalized ? canonicalSlug(aliases, a.artistNormalized) : (headlinerOn(a.date) ?? ""),
+  );
+  const noun = args.kind === "clip" ? "clips" : args.kind === "photo" ? "photos" : "photos or clips";
+  if (!all.length) {
+    const earliest = media.assets.filter((a) => a.url).map((a) => a.date).sort()[0];
+    return none(`I have no ${noun} of ${labels.join(", ") || "that"} on the site.${earliest ? ` My photos start in ${earliest.slice(0, 4)}.` : ""}`);
+  }
+
+  const items = all.slice(0, MEDIA_RESULT_LIMIT);
+  const rows = items.map((m) => {
+    const what = m.kind === "video"
+      ? `clip${m.song ? ` of “${m.song}”` : ""}${m.duration ? `, ${Math.round(m.duration)} sec` : ""}`
+      : "photo";
+    return `- ${fullDate(m.date)}, ${m.act ?? "the room"}, ${what}: [open it](${SITE_BASE_URL}${m.deepLink})`;
+  });
+  const more = all.length > items.length ? ` These are the first ${items.length}.` : "";
+  const out = [`I have ${all.length} on the site.${more} Each entry says its own night and act.`, ...rows].join("\n");
+  const clips = all.filter((m) => m.kind === "video").length;
+  const counted = [
+    all.length > clips ? `${all.length - clips} ${all.length - clips === 1 ? "photo" : "photos"}` : "",
+    clips ? `${clips} ${clips === 1 ? "clip" : "clips"}` : "",
+  ].filter(Boolean).join(" and ");
+  return { text: out, items, total: all.length, title: [counted, labels.join(", ")].filter(Boolean).join(" · ") };
+}
+
+// ===================================================================
 // 9. get_career_position (v5.4, #271)
 // ===================================================================
 
@@ -1587,6 +1687,8 @@ const DESC = {
   onThisDay: "Concerts that share a date — across all the years, whatever's happened on this day." + LINK_NOTE,
   surprise: "I'll pick one. A random concert, and why it's worth remembering." + LINK_NOTE,
   setlist: "The songs from a specific night — give me an artist (and a date if you have one) or a concert id, and I'll tell you what they played, if I have it on record." + LINK_NOTE,
+  media:
+    "My own photos and video clips, by artist, venue, date, year or song. Each result links to that exact frame on the site. Most shows have none, and nothing predates 2011." + LINK_NOTE,
   career:
     "Where an artist stood in their career the night I saw them — the record they were touring, and what hadn't happened yet." +
     LINK_NOTE,
@@ -1890,6 +1992,34 @@ export function registerTools(server: McpServer, env: Env): void {
       // Same resolver as the prose, so the note is about the night the text names.
       const sel = setlistSelection(data.concerts, setlists, asked, eras, songAlbums, meta ?? {}, aliases);
       return textResult(sel ? withMediaNote(text, nightMediaNote(media, sel.concert.date)) : text);
+    }),
+  );
+
+  server.registerTool(
+    "get_media",
+    {
+      title: "Photos and clips",
+      description: DESC.media,
+      inputSchema: {
+        artist: z.string().optional(),
+        venue: z.string().optional(),
+        date: z.string().optional().describe("One night, YYYY-MM-DD."),
+        year: z.number().int().optional(),
+        kind: z.enum(["photo", "clip"]).optional(),
+        song: z.string().optional().describe("A song a clip shows."),
+      },
+    },
+    instrument(env, "get_media", async (args) => {
+      const [data, media, venues, aliasData] = await Promise.all([
+        getConcerts(env, bgCtx),
+        getMediaIndex(env, bgCtx),
+        getVenuesMetadata(env, bgCtx),
+        getArtistAliases(env, bgCtx),
+      ]);
+      if (!data || !media) return dataUnavailableResult();
+      return textResult(
+        mediaResults(data.concerts, media, args as MediaArgs, venues, buildAliasIndex(aliasData)).text,
+      );
     }),
   );
 

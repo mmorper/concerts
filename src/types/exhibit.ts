@@ -18,6 +18,7 @@ export type ExhibitKind =
   | 'era'
   | 'shape'
   | 'songs'
+  | 'gallery'
   | 'plain'
   | 'disambiguation'
   | 'refusal'
@@ -174,6 +175,24 @@ export interface SongsExhibit {
   songs: TopSong[]
 }
 
+/** get_media: one still or clip by identity, with a link to that exact frame. */
+export interface GalleryItem {
+  id: string
+  kind: 'image' | 'video'
+  date: string
+  act: string | null
+  song?: string
+  duration?: number
+  deepLink: string
+}
+
+export interface GalleryExhibit {
+  kind: 'gallery'
+  title: string
+  total: number
+  items: GalleryItem[]
+}
+
 export interface PlainExhibit {
   kind: 'plain'
 }
@@ -193,6 +212,7 @@ export type Exhibit =
   | EraExhibit
   | ShapeExhibit
   | SongsExhibit
+  | GalleryExhibit
   | DisambiguationExhibit
   | PlainExhibit
   | RefusalExhibit

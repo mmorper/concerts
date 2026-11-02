@@ -20,6 +20,12 @@ describe("pickPrimaryExhibit", () => {
     expect(pickPrimaryExhibit([album, disambig])).toBe(disambig);
   });
 
+  it("lets a gallery outrank the act or night the same turn resolved", () => {
+    const gallery: Exhibit = { kind: "gallery", title: "t", total: 0, items: [] };
+    expect(pickPrimaryExhibit([artist, gallery])).toBe(gallery);
+    expect(pickPrimaryExhibit([gallery, disambig])).toBe(disambig);
+  });
+
   it("returns a plain exhibit when no descriptors were produced", () => {
     expect(pickPrimaryExhibit([])).toEqual({ kind: "plain" });
   });

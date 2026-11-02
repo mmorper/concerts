@@ -7,8 +7,8 @@ import { normalizeArtistName } from '@/utils/normalize'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { AlbumExhibit, AlbumIdentity, DiscographyExhibit, ShowExhibit, SetSong } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
-import { CoverArt, DerivedArt, FramedPhoto, usePhotoViewer } from './AskMedia'
-import { DeepLink, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, trackPhotoOpened } from './AskCardParts'
+import { CoverArt, DerivedArt, FramedPhoto } from './AskMedia'
+import { DeepLink, Frame, PhotoButton, PhotoHero, Portrait, Prose, captionLookups, useFrameOpener, trackPhotoOpened } from './AskCardParts'
 import {
   actPhotosOnNight,
   billSlugs,
@@ -39,12 +39,12 @@ function SongMark({ album, color }: { album: AlbumIdentity | null; color: string
   )
 }
 
-/** The act's avatar: my photo of them (opens the lightbox), else Deezer, else the derived tile. */
+/** The act's avatar: my photo of them (opens its gatefold), else Deezer, else the derived tile. */
 function ActAvatar({ archive, slug, name, color, kind }: { archive: ArchiveLookups; slug: string; name: string; color: string; kind: 'album' | 'discography' }) {
   const lead = leadPhoto(archive.media, slug)
   const all = archive.media.byArtist.get(slug) ?? []
   const caption = (p: Photo) => photoCaption(p, { aboutAct: slug, ...captionLookups(archive) })
-  const viewer = usePhotoViewer(caption, trackPhotoOpened(kind))
+  const viewer = useFrameOpener(archive, trackPhotoOpened(kind))
   const portrait = <Portrait name={name} image={archive.artistFacts(slug).meta?.image} color={color} className="ex-photo" />
   if (!lead) return portrait
   return (
@@ -52,7 +52,6 @@ function ActAvatar({ archive, slug, name, color, kind }: { archive: ArchiveLooku
       <PhotoButton className="ex-photo-btn" onOpen={() => viewer.open(all, all.indexOf(lead))} label={caption(lead)}>
         <FramedPhoto photo={lead} aspect={1} alt={caption(lead)} className="ex-photo" fallback={portrait} />
       </PhotoButton>
-      {viewer.element}
     </>
   )
 }
@@ -75,7 +74,7 @@ export function AlbumCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Alb
   const nightPhotos = live ? actPhotosOnNight(archive.media, live.date, performerSlug) : []
   const lookups = captionLookups(archive)
   const caption = (p: Photo) => photoCaption(p, { aboutAct: performerSlug, aboutDate: live?.date, ...lookups })
-  const viewer = usePhotoViewer(caption, trackPhotoOpened('album'))
+  const viewer = useFrameOpener(archive, trackPhotoOpened('album'))
   const hits = live ? live.songs.filter(fromThis).length : 0
   const opening = live && normalizeArtistName(live.performer) !== live.headliner.slug
 
@@ -135,7 +134,6 @@ export function AlbumCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Alb
           </DeepLink>
         )}
       </div>
-      {viewer.element}
     </Frame>
   )
 }
@@ -213,7 +211,7 @@ export function ShowCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Show
   const slugs = c ? billSlugs(c) : [exhibit.headliner.slug]
   const lookups = captionLookups(archive)
   const caption = (p: Photo) => photoCaption(p, { aboutAct: exhibit.headliner.slug, aboutDate: date, ...lookups })
-  const viewer = usePhotoViewer(caption, trackPhotoOpened('show'))
+  const viewer = useFrameOpener(archive, trackPhotoOpened('show'))
 
   // One tile per act on the bill that I photographed, headliner first, each labelled with who it
   // is; the venue fills in when fewer than three acts are covered. At most three, all at the
@@ -336,7 +334,6 @@ export function ShowCard({ ex, exhibit, archive }: { ex: Exchange; exhibit: Show
           {exhibit.venue.name}
         </DeepLink>
       </div>
-      {viewer.element}
     </Frame>
   )
 }
