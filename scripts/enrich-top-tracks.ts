@@ -205,14 +205,6 @@ const SEARCH_ALIASES: Record<string, string> = {
   "Brian Setzer \u201968 Comeback Special": "Brian Setzer",
   "Brian Setzer and the Nashvillians": "Brian Setzer",
 
-  // The archive spells these two differently from every catalogue on earth.
-  // Corrected here rather than loosened in the matcher: a matcher slack enough
-  // to bridge "Weidlin"/"Wiedlin" also bridges things that are genuinely different.
-  // The concert data is what is actually wrong \u2014 see #275 follow-up. Chaka
-  // Khan was the third, fixed at the source in November 2026.
-  "Jane Weidlin": "Jane Wiedlin",
-  "Gene Loves Jezabel": "Gene Loves Jezebel",
-
   // The marquee said DJ Z-Trip; iTunes bills every track to "Z-Trip". Needed
   // even though his ID is pinned — the billing guard compares against the
   // search name, and a pinned ID does not exempt an artist from it.

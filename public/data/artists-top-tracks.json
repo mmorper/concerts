@@ -3799,8 +3799,8 @@
       }
     ]
   },
-  "gene-loves-jezabel": {
-    "name": "Gene Loves Jezabel",
+  "gene-loves-jezebel": {
+    "name": "Gene Loves Jezebel",
     "source": "itunes",
     "fetchedAt": "2026-10-25T16:13:11.599Z",
     "resolvedVia": "alias",
@@ -4599,8 +4599,8 @@
       }
     ]
   },
-  "jane-weidlin": {
-    "name": "Jane Weidlin",
+  "jane-wiedlin": {
+    "name": "Jane Wiedlin",
     "source": "itunes",
     "fetchedAt": "2026-10-25T16:13:23.054Z",
     "resolvedVia": "alias",

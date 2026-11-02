@@ -176,7 +176,7 @@
     },
     {
       "kind": "artist",
-      "slug": "jane-weidlin",
+      "slug": "jane-wiedlin",
       "name": "Jane Wiedlin",
       "channel": "bluesky",
       "handle": "janewiedlin.bsky.social",
@@ -186,7 +186,7 @@
     },
     {
       "kind": "artist",
-      "slug": "jane-weidlin",
+      "slug": "jane-wiedlin",
       "name": "Jane Wiedlin",
       "channel": "instagram",
       "handle": "janewiedlin",
@@ -231,7 +231,7 @@
     },
     {
       "kind": "artist",
-      "slug": "jane-weidlin",
+      "slug": "jane-wiedlin",
       "name": "Jane Wiedlin",
       "channel": "x",
       "handle": "janewiedlin",
@@ -4197,7 +4197,7 @@
     },
     {
       "kind": "artist",
-      "slug": "gene-loves-jezabel",
+      "slug": "gene-loves-jezebel",
       "name": "Gene Loves Jezebel"
     },
     {
@@ -4819,13 +4819,13 @@
     "artist:brian-setzer-and-the-nashvillians": "2026-08-29",
     "artist:bangles": "2026-08-29",
     "artist:stereo-mc-s": "2026-08-29",
-    "artist:jane-weidlin": "2026-08-29",
+    "artist:jane-wiedlin": "2026-08-29",
     "artist:new-morty-show": "2026-08-29",
     "artist:raveonettes": "2026-08-29",
     "artist:barroom-heroes": "2026-08-29",
     "artist:joan-jett-the-blackhearts": "2026-08-29",
     "artist:dj-z-trip": "2026-08-29",
-    "artist:gene-loves-jezabel": "2026-08-29",
+    "artist:gene-loves-jezebel": "2026-08-29",
     "artist:smoke-mirrors-sound-system": "2026-08-29",
     "artist:nick-heyward": "2026-10-25",
     "venue:union-stage": "2026-10-25"
