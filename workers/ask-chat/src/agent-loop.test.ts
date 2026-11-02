@@ -52,6 +52,32 @@ describe("system prompt — photos and clips", () => {
   });
 });
 
+describe("system prompt — style", () => {
+  const prompt = buildSystemPrompt("2026-08-19", []);
+
+  // The site sets the opening in large Playfair, and steps it down past 200 characters
+  // (src/components/ask/prose.ts, LEDE_MAX). The prompt asks for an opening that fits.
+  it("asks for a short opening the card sits under", () => {
+    expect(prompt).toContain("under 200 characters together");
+    expect(prompt).toContain("Never walk through the shows one by one");
+  });
+
+  // A side-by-side run dropped the Hollywood Bowl's openers once the reply got short. The
+  // cards don't all show openers, so the prompt names them as what the prose should keep.
+  it("keeps openers, media and the tool's caveats in the short version", () => {
+    expect(prompt).toContain("who opened, the photos and clips line, or a caveat the tool gives");
+  });
+
+  it("forbids hype and the tools' closing flourishes", () => {
+    expect(prompt).toContain("No praise or hype");
+    expect(prompt).toContain("not their closing flourishes");
+  });
+
+  it("no longer points at the footer it tells the model to drop", () => {
+    expect(prompt).not.toContain("Let the deep-link footer do the navigating");
+  });
+});
+
 describe("tool definitions — owner identity", () => {
   it("points get_artist_history at the artist, not at Mike", () => {
     const artist = TOOL_DEFS.find((t) => t.name === "get_artist_history");
