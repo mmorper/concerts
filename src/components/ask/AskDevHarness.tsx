@@ -118,10 +118,7 @@ export function AskDevHarness() {
         {fixtures && convo && fixtures.length > 0 && !archive.loading && <ConvoReplay fixtures={fixtures} archive={archive} />}
         {!convo && fixtures?.map((ex) => (
           <div key={ex.id}>
-            <div className="ask-q">
-              <span className="you">You</span>
-              <span className="q">&ldquo;{ex.question}&rdquo;</span>
-            </div>
+            <div className="ask-q">{ex.question}</div>
             {archive.loading ? <div style={{ opacity: 0.5, marginBottom: 24 }}>loading archive…</div> : <AskExhibit exchange={ex} archive={archive} />}
           </div>
         ))}
@@ -159,10 +156,7 @@ export function AskDevHarness() {
 
         {exchanges.map((ex) => (
           <div key={ex.id}>
-            <div className="ask-q">
-              <span className="you">You</span>
-              <span className="q">&ldquo;{ex.question}&rdquo;</span>
-            </div>
+            <div className="ask-q">{ex.question}</div>
             {archive.loading ? <div style={{ opacity: 0.5, marginBottom: 24 }}>loading archive…</div> : <AskExhibit exchange={ex} archive={archive} />}
           </div>
         ))}

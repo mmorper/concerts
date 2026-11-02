@@ -207,10 +207,7 @@ export function AskConversation({
           <div className="ask-transcript" ref={transcriptRef}>
             {exchanges.map((ex, i) => (
               <div key={ex.id} ref={i === exchanges.length - 1 ? lastTurnRef : undefined}>
-                <div className="ask-q">
-                  <span className="you">You</span>
-                  <span className="q">&ldquo;{ex.question}&rdquo;</span>
-                </div>
+                <div className="ask-q">{ex.question}</div>
                 <AskExhibit exchange={ex} archive={archive} />
               </div>
             ))}

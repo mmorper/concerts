@@ -225,7 +225,9 @@ Every banner, card and opener goes through the same check as the chips in Phase 
 answer it, it doesn't appear.
 
 **Build order:** type-ahead and the search box (done), then the response layout, then the banner, then the
-opening idea, then the Ask scene carousel.
+opening idea, then the Ask scene carousel. The response layout ships in two parts. First the shell
+every answer shares (done): a 920px panel, the prose above the exhibit, and no card box. Then the
+per-kind layouts in the table above.
 
 ---
 
