@@ -45,9 +45,6 @@ const BOT_USER_AGENTS = [
   'google-extended',
 ];
 
-// Routes that reach the scene fallback but are real pages, so they name themselves as canonical.
-const SELF_CANONICAL_PATHS = new Set(['/about', '/about-mcp']);
-
 // Cache same-origin JSON between requests so we don't pay fetch+parse on every bot hit.
 // Spike #110 measured cold-isolate CPU at 11–16 ms on venue routes (over the 10 ms free-tier limit);
 // the parse dominates. 300s TTL keeps SEO bots within acceptable staleness.
@@ -155,8 +152,9 @@ export default {
       return fetch(new Request(fresh.toString(), request));
     }
 
-    // Only process HTML requests from bots
-    if (!isBot(userAgent) || !isHTMLRequest(request)) {
+    // Only process HTML requests from bots. /about-mcp is a static file with its own title and
+    // card, so the scene fallback would only overwrite them.
+    if (!isBot(userAgent) || !isHTMLRequest(request) || url.pathname === '/about-mcp') {
       return fetch(request);
     }
 
@@ -185,6 +183,8 @@ export default {
     // Inject dynamic meta tags — pathname routes take precedence over query params
     if (url.pathname === '/how-it-works') {
       html = await injectHowItWorksMeta(html, url.origin, ctx);
+    } else if (url.pathname === '/about') {
+      html = await injectAboutMeta(html, url.origin, ctx);
     } else if (url.pathname === '/liner-notes') {
       html = await injectLinerNotesFeedMeta(html, url.origin, ctx);
     } else if (url.pathname.startsWith('/liner-notes/') && url.pathname !== '/liner-notes/rss') {
@@ -206,7 +206,7 @@ export default {
       html = await injectRegionMeta(html, region, url.origin, ctx);
     } else {
       // Scene-only or homepage — inject scene meta
-      html = await injectSceneMeta(html, scene, url.origin, ctx, url.pathname);
+      html = await injectSceneMeta(html, scene, url.origin, ctx);
     }
 
     // Preserve all original headers (CORS, CSP, security headers, etc.)
@@ -296,6 +296,37 @@ async function photoShareImage(photo, showDate, origin) {
 }
 
 /**
+ * How a night's card opens when the link names no one frame.
+ *
+ * The sitemap lists any night with media, and some of those have no setlist, so the card can only
+ * promise what this act's gatefold holds: its own frames and the room (`nightReel` in the app).
+ * Falls back to the setlist line, because a night reaches the sitemap with one or the other.
+ */
+async function nightLead(artistNormalized, date, origin, ctx) {
+  try {
+    const response = await cachedJsonFetch(`${origin}/data/media-index.json`, ctx);
+    if (!response.ok) return 'The setlist from';
+    const { assets = [] } = await response.json();
+    const aliases = await fetchArtistAliases(origin, ctx);
+    const act = canonicalArtist(aliases, artistNormalized);
+    const frames = assets.filter(
+      a =>
+        a.date === date &&
+        a.url &&
+        (a.subject !== 'artist' || canonicalArtist(aliases, a.artistNormalized) === act)
+    );
+    const hasStills = frames.some(a => a.kind !== 'video');
+    const hasClips = frames.some(a => a.kind === 'video');
+    if (hasStills && hasClips) return 'Photos and video from';
+    if (hasClips) return 'Video from';
+    return hasStills ? 'Photos from' : 'The setlist from';
+  } catch (error) {
+    console.warn(`Media index unavailable: ${error.message}`);
+    return 'The setlist from';
+  }
+}
+
+/**
  * Inject meta tags for one specific night (#193).
  *
  * A shared setlist link previously unfurled as the generic artist card — correct,
@@ -345,7 +376,11 @@ async function injectShowMeta(html, artistNormalized, showDate, origin, ctx, pho
 
     const title = `${artistName} at ${concert.venue} · ${longDate} | Morperhaus Concert Archives`;
     const photoImage = await photoShareImage(photo, concert.date, origin);
-    const lead = !photoImage ? 'The setlist from' : photo.endsWith('-video') ? 'A video from' : 'A photo from';
+    const lead = !photoImage
+      ? await nightLead(artistNormalized, concert.date, origin, ctx)
+      : photo.endsWith('-video')
+        ? 'A video from'
+        : 'A photo from';
     const description =
       `${lead} ${artistName} at ${concert.venue}, ${concert.cityState || concert.city} ` +
       `on ${longDate}, from a personal concert archive spanning four decades.`;
@@ -791,9 +826,43 @@ async function injectHowItWorksMeta(html, origin, ctx) {
 }
 
 /**
+ * Inject meta tags for /about
+ */
+async function injectAboutMeta(html, origin, ctx) {
+  try {
+    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
+    if (!concertsResponse.ok) return html;
+    const concertsData = await concertsResponse.json();
+
+    const concertCount = concertsData.concerts.length;
+    const years = concertsData.concerts.map(c => c.year);
+    const yearSpan = Math.max(...years) - Math.min(...years);
+
+    const title = `About | Morperhaus Concert Archives`;
+    const description = `The story behind ${concertCount} concerts across ${yearSpan}+ years. A personal archive of live music memories.`;
+    const pageUrl = `${origin}/about`;
+
+    html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
+    html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+    html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+    html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+    html = injectPageIdentity(html, title, pageUrl);
+
+    console.log(`[About Meta Injected]`);
+    return html;
+
+  } catch (error) {
+    console.error(`Error injecting about meta: ${error.message}`);
+    return html;
+  }
+}
+
+/**
  * Inject scene-specific meta tags (no entity deep link)
  */
-async function injectSceneMeta(html, scene, origin, ctx, pathname = '/') {
+async function injectSceneMeta(html, scene, origin, ctx) {
   try {
     // Fetch stats from concerts.json
     const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
@@ -834,20 +903,12 @@ async function injectSceneMeta(html, scene, origin, ctx, pathname = '/') {
         title: `Music Genres Explored | Morperhaus Concert Archives`,
         description: `How ${stats.concerts} concerts break down by genre. Explore the musical diversity of ${stats.lastYear - stats.firstYear}+ years of live shows.`,
       },
-      about: {
-        title: `About | Morperhaus Concert Archives`,
-        description: `The story behind ${stats.concerts} concerts across ${stats.lastYear - stats.firstYear}+ years. A personal archive of live music memories.`,
-      },
     };
 
     const meta = sceneMeta[scene] || sceneMeta.timeline;
     const pageUrl = scene ? `${origin}/?scene=${scene}` : origin;
     // A path the SPA merely answers with its shell stays with the homepage.
-    const canonicalUrl = scene
-      ? pageUrl
-      : SELF_CANONICAL_PATHS.has(pathname)
-        ? `${origin}${pathname}`
-        : `${origin}/`;
+    const canonicalUrl = scene ? pageUrl : `${origin}/`;
 
     // Replace meta tags
     html = html.replace(/<title>.*?<\/title>/, `<title>${escapeTitleText(meta.title)}</title>`);
