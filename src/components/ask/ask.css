@@ -573,4 +573,10 @@ img.chip-av { object-fit: cover; display: block; }
 @media (max-width: 767px) {
   .ask-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .ask-gal-tile:first-child { grid-column: span 3; grid-row: auto; aspect-ratio: 4 / 3; }
+  .ask-gal-tile .cap { padding: 16px 6px 6px; font-size: 11px; }
+  .ask-gal-tile:not(:first-child) .cap { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .ask-gal-tile .play { right: 6px; top: 6px; width: 24px; height: 24px; }
+  /* The way to the rest takes whatever its last row has left */
+  .ask-gal-tile.more:nth-child(3n) { grid-column: span 2; aspect-ratio: auto; }
+  .ask-gal-tile.more:nth-child(3n + 2) { grid-column: span 3; aspect-ratio: auto; min-height: 56px; }
 }
