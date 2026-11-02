@@ -250,8 +250,14 @@ the overlay. Each idea is a clip, a year or a familiar face (an act seen three t
 clip opens in its gatefold. A year asks "What did you see in 2017?" and a face asks "How many times
 have you seen X?". The kinds take turns, the order is shuffled once a day, and "Pull another" goes
 through every idea before one repeats. Every published crop is 4:5, which no wide banner holds
-whole, so the banner takes landscape frames only and shows the top of the crop. The opening idea
-puts On This Day at the front of this deck.
+whole, so the banner takes landscape frames only and shows the top of the crop.
+
+The opening idea is done. Shows from this date in earlier years lead the deck: a photographed
+night first, then the higher score from `scoreDay`, the same scoring the On This Day post uses.
+Clicking one asks "What did you see on this day?", which goes straight to `on_this_day`. The
+picture follows the ladder. A landscape photo fills the banner. A portrait one sits beside the text
+at its 4:5 crop, with the byline under the venue and the year large in the space. A sourced image,
+or the type-led tile, is a smaller square in the same place.
 
 ---
 

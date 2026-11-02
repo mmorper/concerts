@@ -463,6 +463,15 @@ img.chip-av { object-fit: cover; display: block; }
 .ask-band:disabled { cursor: default; }
 .ask-band > img, .ask-band > .ask-derived { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos-wide, 50% 30%); }
 .ask-band .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 10, 16, 0.9) 0%, rgba(8, 10, 16, 0.66) 40%, rgba(8, 10, 16, 0) 74%); }
+/* A portrait photo stands at the right edge at its 4:5 crop. A sourced image or the type-led tile
+   is a smaller square, so my photos still outrank it. */
+.ask-band.side, .ask-band.tile { background: #120f30; }
+.ask-band .pic { position: absolute; top: 0; right: 0; bottom: 0; aspect-ratio: 0.8; overflow: hidden; }
+.ask-band .pic > img, .ask-band .pic > .ask-derived { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos-wide, 50% 30%); }
+.ask-band.tile .pic { top: 50%; right: 26px; bottom: auto; height: 72%; aspect-ratio: 1; transform: translateY(-50%); border-radius: 10px; }
+.ask-band.side .shade, .ask-band.tile .shade { display: none; }
+.ask-band .by-line { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
+.ask-band .yr { position: absolute; left: 22px; top: 6px; font-family: 'Playfair Display', Georgia, serif; font-size: 150px; line-height: 1; letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.08); }
 .ask-band .txt { position: absolute; left: 26px; bottom: 24px; width: min(470px, 60%); display: flex; flex-direction: column; gap: 4px; }
 .ask-band .k { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #e0e7ff; }
 .ask-band .t { font-family: 'Playfair Display', Georgia, serif; font-size: 38px; line-height: 1.1; letter-spacing: -0.01em; }
@@ -485,6 +494,12 @@ img.chip-av { object-fit: cover; display: block; }
   .ask-band .t { font-size: 32px; }
   .ask-band .play { right: 16px; bottom: 18px; width: 54px; height: 54px; }
   .ask-band .by { left: 12px; right: auto; max-width: calc(100% - 24px); }
+  .ask-band.side .yr, .ask-band.tile .yr { display: none; }
+  .ask-band.side .by-line { color: rgba(255, 255, 255, 0.82); }
+  .ask-band.side .pic { left: 0; aspect-ratio: auto; }
+  .ask-band.side .pic > img { object-position: var(--pos-tall, 50% 30%); }
+  .ask-band.side .shade { display: block; }
+  .ask-band.tile .pic { top: 22px; left: 50%; right: auto; height: auto; width: 62%; transform: translateX(-50%); }
 }
 @media (prefers-reduced-motion: reduce) { .ask-band .play { transition: none; } .ask-band:hover .play { transform: none; } }
 

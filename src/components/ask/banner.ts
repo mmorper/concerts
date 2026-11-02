@@ -1,15 +1,17 @@
 // The ⌘K banner (global-ask-media Phase 6): one large picture under the box, and "Pull another".
-// Each idea is a clip, a year or a familiar face. A clip opens in its gatefold. The others ask a
-// question a tool is known to answer, so a banner never offers what Ask can't give back.
+// It opens on a show from this date in an earlier year, when there is one. Then come the clips,
+// years and familiar faces. A clip opens in its gatefold. The others ask a question a tool is
+// known to answer, so a banner never offers what Ask can't give back.
 //
 // The order is shuffled once a day, the same for everyone, and "Pull another" goes through every
 // idea before it repeats one. Nothing rotates on a timer.
 
 import type { Concert } from '@/types/concert'
-import { frameLink, joinNames, type Clip, type MediaIndex, type Photo } from './media'
+import { scoreDay, showsOnDay } from '../../../scripts/on-this-day/detect'
+import { frameLink, joinNames, leadPhoto, nightPhoto, type Clip, type MediaIndex, type Photo } from './media'
 import type { SearchEntry } from './search'
 
-export type BannerKind = 'clip' | 'year' | 'act'
+export type BannerKind = 'today' | 'clip' | 'year' | 'act'
 
 export interface BannerIdea {
   kind: BannerKind
@@ -26,6 +28,14 @@ export interface BannerIdea {
   question?: string
   /** The act in the picture, for the byline. */
   act?: string
+  /** The night the idea is about. My photo from any other night says so in its byline. */
+  aboutDate?: string
+  /** With no photo of mine, the act's sourced image. It sits beside the text, smaller. */
+  sourced?: string
+  /** The genre behind the type-led tile, the last step of the ladder. */
+  genre?: string
+  /** A show on this date sets its year large in the space beside the picture. */
+  year?: string
 }
 
 /** Width ÷ height of the banner on desktop. On a phone it is taller, which any frame survives. */
@@ -34,18 +44,20 @@ export const BANNER_BOX = 2.2
 export const FAMILIAR_SHOWS = 3
 
 export interface BannerSources {
+  concerts: Concert[]
   media: MediaIndex
   searchEntries: SearchEntry[]
   concertByDate: (date: string) => Pick<Concert, 'venue' | 'headliner' | 'headlinerNormalized'> | null
-  artistFacts: (slug: string) => { count: number; firstYear?: number; lastYear?: number }
+  artistFacts: (slug: string) => { count: number; firstYear?: number; lastYear?: number; meta?: { image?: string } | null }
 }
 
 /**
- * A frame the wide banner can hold. Every published crop is 4:5, so no crop fits a 2.2 box whole:
+ * A frame the wide banner can fill. Every published crop is 4:5, so no crop fits a 2.2 box whole:
  * the box shows the top of the crop, where the face is (`focalPosition`). A landscape frame gives
- * it room. A portrait one would leave a thin slice, so it stays out of the banner.
+ * it room. A portrait one would leave a thin slice, so the rotation skips it, and a show on this
+ * date sets it beside the text at the crop's own shape.
  */
-const fitsBanner = (p: Photo) => p.width / p.height >= 1.3
+export const fillsBanner = (p: Photo) => p.width / p.height >= 1.3
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
 
@@ -73,7 +85,7 @@ function yearIdeas({ media, searchEntries, concertByDate }: BannerSources): Bann
     if (e.kind !== 'year') return []
     const year = e.name
     const nights = [...media.byDate.keys()].filter((d) => d.startsWith(`${year}-`)).sort()
-    const frames = nights.flatMap((d) => media.byDate.get(d) ?? []).filter((p) => p.subject === 'artist' && fitsBanner(p))
+    const frames = nights.flatMap((d) => media.byDate.get(d) ?? []).filter((p) => p.subject === 'artist' && fillsBanner(p))
     const photo = frames.find((p) => p.hero) ?? frames[0]
     if (!photo) return []
     // The act in the picture first, then the year's other photographed headliners.
@@ -104,7 +116,7 @@ function actIdeas({ media, searchEntries, artistFacts }: BannerSources): BannerI
     if (!slug) return []
     const facts = artistFacts(slug)
     if (facts.count < FAMILIAR_SHOWS || !facts.firstYear || !facts.lastYear) return []
-    const frames = (media.byArtist.get(slug) ?? []).filter(fitsBanner)
+    const frames = (media.byArtist.get(slug) ?? []).filter(fillsBanner)
     const photo = frames.find((p) => p.signature) ?? frames[0]
     if (!photo) return []
     const span = facts.firstYear === facts.lastYear ? `in ${facts.firstYear}` : `from ${facts.firstYear} to ${facts.lastYear}`
@@ -121,6 +133,42 @@ function actIdeas({ media, searchEntries, artistFacts }: BannerSources): BannerI
       },
     ]
   })
+}
+
+/**
+ * The shows on this date in earlier years: a photographed night first, then the one On This Day
+ * scores higher. The score is the social post's own (`scoreDay`), taken one show at a time.
+ */
+function todayIdeas({ concerts, media, artistFacts }: BannerSources, day: string): BannerIdea[] {
+  const today = new Date(`${day}T12:00:00Z`)
+  const publishYear = today.getUTCFullYear()
+  return showsOnDay(concerts, today)
+    .map((show) => {
+      const age = publishYear - Number(show.date.slice(0, 4))
+      const night = nightPhoto(media, show)
+      const score = scoreDay({ day: day.slice(5), publishYear, shows: [show], ages: [age] }, concerts).score
+      return { show, age, night, score }
+    })
+    .sort((a, b) => Number(!!b.night) - Number(!!a.night) || b.score - a.score)
+    .map(({ show, age, night }) => {
+      // The ladder: my photo from that night, then mine of the act from another night, then
+      // the act's sourced image, then the type-led tile.
+      const photo = night?.photo ?? leadPhoto(media, show.headlinerNormalized) ?? undefined
+      return {
+        kind: 'today' as const,
+        key: `today:${show.id}`,
+        kicker: `${age === 1 ? 'One year' : `${age} years`} ago tonight`,
+        title: show.headliner,
+        sub: [show.venue, show.cityState].filter(Boolean).join(' · '),
+        photo,
+        sourced: photo ? undefined : artistFacts(show.headlinerNormalized).meta?.image,
+        question: 'What did you see on this day?',
+        act: show.headlinerNormalized,
+        aboutDate: show.date,
+        genre: show.genre,
+        year: show.date.slice(0, 4),
+      }
+    })
 }
 
 /** A small seeded generator, so a day's order is the same in every browser. */
@@ -146,13 +194,13 @@ function shuffle<T>(list: T[], rand: () => number): T[] {
 }
 
 /**
- * Every idea, in the day's order. The kinds take turns (a clip, a year, a face), so two pulls in
- * a row are never the same kind while more than one kind is left.
+ * Every idea, in the day's order. This date's shows lead. After them the kinds take turns (a clip,
+ * a year, a face), so two pulls in a row are never the same kind while more than one kind is left.
  */
 export function bannerDeck(sources: BannerSources, day: string): BannerIdea[] {
   const rand = seeded(day)
   const piles = [clipIdeas(sources), yearIdeas(sources), actIdeas(sources)].map((p) => shuffle(p, rand))
-  const deck: BannerIdea[] = []
+  const deck: BannerIdea[] = todayIdeas(sources, day)
   for (let i = 0; piles.some((p) => i < p.length); i++) {
     for (const pile of piles) if (i < pile.length) deck.push(pile[i])
   }

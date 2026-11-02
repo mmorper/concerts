@@ -5,6 +5,7 @@ import type { SearchEntry } from './search'
 
 // The hydration surface the exhibit cards draw on (subset of useArchiveData's return).
 export interface ArchiveLookups {
+  concerts: Concert[]
   concertById: (id: string) => Concert | null
   concertByDate: (date: string) => Concert | null
   media: MediaIndex
