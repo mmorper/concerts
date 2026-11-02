@@ -153,6 +153,7 @@ Generate it from the repo root:
 ```bash
 npm run generate:narrations -- --dry-run   # report what would regenerate, no spend
 npm run generate:narrations                # generate (Claude Haiku; ~$13 for a full cold run)
+npm run generate:narrations -- --rehash    # accept the current text after the inputs change, no spend
 ```
 
 It's hash-based — only entities whose facts changed regenerate, so steady state is a no-op.

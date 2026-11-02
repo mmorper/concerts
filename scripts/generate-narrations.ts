@@ -16,6 +16,12 @@
  *   npm run generate:narrations -- --kind=venues       # one kind only
  *   npm run generate:narrations -- --limit=5           # cap entities (cost control)
  *   npm run generate:narrations -- --force             # regen everything (or bump PROMPT_VERSION)
+ *   npm run generate:narrations -- --rehash            # accept today's text as current, no spend
+ *
+ * 🔴 `--force` DISCARDS HAND CORRECTIONS. Narrations are fact-checked and corrected in the JSON
+ * (the 2026-11 audit changed 84 fields). `--rehash` is the way to change the inputs or the
+ * prompt without losing them: it records the new hashes and leaves the text alone. Only use it
+ * when the text has been checked against the new inputs.
  */
 
 import { createHash } from "node:crypto";
@@ -23,6 +29,15 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { config } from "dotenv";
 import Anthropic from "@anthropic-ai/sdk";
+import {
+  buildArtistInputs,
+  buildVenueInputs,
+  type Entity,
+  type EntityInput,
+  type NarrationAliases,
+  type NarrationConcert,
+  type NarrationVenueMeta,
+} from "./narrations/inputs.ts";
 
 // Load .env so `npm run generate:narrations` picks up ANTHROPIC_API_KEY locally
 // (matches the other scripts). In CI the key comes from the workflow's env block.
@@ -33,7 +48,7 @@ config();
 // on the sibling social-copy prompt: 699 of 700 tokens spent thinking, no answer.
 const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 400;
-const PROMPT_VERSION = 2; // bump to force a full regen after a prompt rewrite
+const PROMPT_VERSION = 3; // bump to force a full regen after a prompt rewrite
 
 const DATA_DIR = join(process.cwd(), "public", "data");
 const NARRATIONS_DIR = join(DATA_DIR, "narrations");
@@ -53,18 +68,12 @@ interface NarrationRecord {
 }
 type NarrationFile = Record<string, NarrationRecord>;
 
-// Hash-input shapes — exactly what we send to the model, so prose and hash never drift.
-type EntityInput = Record<string, unknown>;
-interface Entity {
-  slug: string;
-  input: EntityInput;
-}
-
 // ---------- args ----------
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry-run");
 const FORCE = args.includes("--force");
+const REHASH = args.includes("--rehash");
 const limitArg = args.find((a) => a.startsWith("--limit="));
 const LIMIT = limitArg ? Number(limitArg.split("=")[1]) : Infinity;
 const kindArg = args.find((a) => a.startsWith("--kind="));
@@ -88,98 +97,20 @@ function hashInput(input: EntityInput): string {
 
 // ---------- entity builders ----------
 
-interface VenueMeta {
-  name: string;
-  cityState: string;
-  status?: string;
-  closedDate?: string;
-  notes?: string;
-  stats?: {
-    totalConcerts?: number;
-    firstEvent?: string;
-    lastEvent?: string;
-    uniqueArtists?: number;
-  };
-  concerts?: { headliner: string; date: string }[];
+const today = new Date().toISOString().slice(0, 10);
+
+function readConcerts(): NarrationConcert[] {
+  return readJson<{ concerts: NarrationConcert[] }>(join(DATA_DIR, "concerts.json")).concerts;
 }
 
-function topN(counts: Map<string, number>, n: number): string[] {
-  return [...counts.entries()]
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .slice(0, n)
-    .map(([k]) => k);
-}
-
-// Venue hash inputs (spec): name, cityState, status, closedDate, notes, stats.*,
-// top-3 headliners from concerts[].
 function buildVenues(): Entity[] {
-  const venues = readJson<Record<string, VenueMeta>>(join(DATA_DIR, "venues-metadata.json"));
-  return Object.entries(venues).map(([slug, v]) => {
-    const headliners = new Map<string, number>();
-    for (const c of v.concerts ?? []) headliners.set(c.headliner, (headliners.get(c.headliner) ?? 0) + 1);
-    const sorted = [...(v.concerts ?? [])].sort((a, b) => a.date.localeCompare(b.date));
-    return {
-      slug,
-      input: {
-        name: v.name,
-        cityState: v.cityState,
-        status: v.status ?? null,
-        closedDate: v.closedDate ?? null,
-        notes: v.notes ?? null,
-        totalConcerts: v.stats?.totalConcerts ?? (v.concerts?.length ?? 0),
-        firstEvent: v.stats?.firstEvent ?? null,
-        firstHeadliner: sorted[0]?.headliner ?? null,
-        lastEvent: v.stats?.lastEvent ?? null,
-        lastHeadliner: sorted[sorted.length - 1]?.headliner ?? null,
-        uniqueArtists: v.stats?.uniqueArtists ?? null,
-        topHeadliners: topN(headliners, 3),
-      },
-    };
-  });
+  const venues = readJson<Record<string, NarrationVenueMeta>>(join(DATA_DIR, "venues-metadata.json"));
+  return buildVenueInputs(venues, readConcerts(), today);
 }
 
-interface Concert {
-  headliner: string;
-  headlinerNormalized: string;
-  venue: string;
-  year: number;
-  date: string;
-}
-
-// Artist hash inputs (spec): name, concert count, dateRange first–last, top venue +
-// count, top year.
 function buildArtists(): Entity[] {
-  const { concerts } = readJson<{ concerts: Concert[] }>(join(DATA_DIR, "concerts.json"));
-  const byArtist = new Map<string, Concert[]>();
-  for (const c of concerts) {
-    const list = byArtist.get(c.headlinerNormalized) ?? [];
-    list.push(c);
-    byArtist.set(c.headlinerNormalized, list);
-  }
-  return [...byArtist.entries()].map(([slug, shows]) => {
-    const sorted = [...shows].sort((a, b) => a.date.localeCompare(b.date));
-    const venueCounts = new Map<string, number>();
-    const yearCounts = new Map<string, number>();
-    for (const s of shows) {
-      venueCounts.set(s.venue, (venueCounts.get(s.venue) ?? 0) + 1);
-      yearCounts.set(String(s.year), (yearCounts.get(String(s.year)) ?? 0) + 1);
-    }
-    const topVenue = topN(venueCounts, 1)[0];
-    return {
-      slug,
-      input: {
-        name: shows[0].headliner,
-        count: shows.length,
-        firstYear: sorted[0].year,
-        firstVenue: sorted[0].venue,
-        lastYear: sorted[sorted.length - 1].year,
-        lastVenue: sorted[sorted.length - 1].venue,
-        topVenue,
-        topVenueCount: venueCounts.get(topVenue) ?? 0,
-        topYear: Number(topN(yearCounts, 1)[0]),
-      },
-    };
-  });
+  const aliases = readJson<NarrationAliases>(join(DATA_DIR, "artist-aliases.json"));
+  return buildArtistInputs(readConcerts(), aliases, today);
 }
 
 // ---------- generation ----------
@@ -233,6 +164,22 @@ async function runKind(kind: Kind): Promise<void> {
   const entities = kind === "venues" ? buildVenues() : buildArtists();
   const existing = readNarrations(kind);
 
+  if (REHASH) {
+    const out: NarrationFile = { ...existing };
+    let stamped = 0;
+    for (const e of entities) {
+      const record = out[e.slug];
+      if (!record) continue;
+      out[e.slug] = { ...record, inputHash: hashInput(e.input), promptVersion: PROMPT_VERSION };
+      stamped++;
+    }
+    if (!DRY_RUN) {
+      writeFileSync(join(NARRATIONS_DIR, `${kind}.json`), JSON.stringify(out, null, 2) + "\n", "utf-8");
+    }
+    console.log(`[${kind}] rehashed ${stamped} of ${entities.length} entities, text unchanged`);
+    return;
+  }
+
   const stale = entities.filter((e) => {
     const hash = hashInput(e.input);
     return FORCE || existing[e.slug]?.inputHash !== hash;
@@ -275,11 +222,11 @@ async function runKind(kind: Kind): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  if (!process.env.ANTHROPIC_API_KEY && !DRY_RUN) {
+  if (!process.env.ANTHROPIC_API_KEY && !DRY_RUN && !REHASH) {
     throw new Error("ANTHROPIC_API_KEY is required (or pass --dry-run).");
   }
   PROMPT = readFileSync(PROMPT_PATH, "utf-8");
-  client = new Anthropic();
+  client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY ?? "unused" });
 
   for (const kind of KINDS) {
     await runKind(kind);

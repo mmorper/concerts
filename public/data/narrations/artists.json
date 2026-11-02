@@ -4,971 +4,971 @@
       "context": "I only caught Adam Ant twice, bookends nearly a decade apart — Irvine Meadows in 1984, then The Coach House in 1993.",
       "closingArc": "Two shows, two very different rooms, and nine years of silence in between that I never quite filled in."
     },
-    "inputHash": "sha256:610d92ff1b82ec4ced2c3e3fb4b2cbedd25d07411e07f674af10d60609f0d788",
+    "inputHash": "sha256:38cbba663c9061e301e7f0f87aae74ae130746bc66e793b51c4ff06c27eb068c",
     "generatedAt": "2026-09-07T01:04:57.246Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "thompson-twins": {
     "narration": {
       "context": "I only caught Thompson Twins three times: at Irvine Meadows in 1984 and again in 1985, and then not until a show at Pavilion Theatre in 2026.",
       "closingArc": "Forty-one years between the last Irvine Meadows date and Pavilion Theatre — I didn't expect that gap to ever close, but it did."
     },
-    "inputHash": "sha256:8add27f617ca2d20c41c0e5636d1e4b0b8c8a41abbefae81ec0a57a17751cbd0",
+    "inputHash": "sha256:cc929b3b6fe9f02b199540ddcb1f41c37e7475468700212bbf72fd484eb466e5",
     "generatedAt": "2026-09-07T01:04:59.660Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "billy-idol": {
     "narration": {
       "context": "I saw Billy Idol just once, at Irvine Meadows in 1984, right at the start of this whole archive.",
       "closingArc": "One night, one venue, no repeat — just a single 1984 snapshot that never asked for a second visit."
     },
-    "inputHash": "sha256:b5d6eddea58677757bf15fd690d55210987aeea1e2a7bdb896f6c0447e7e0dcc",
+    "inputHash": "sha256:e1d19bc733ea8309c35413ed1c9c83685ab03a3f54dfb999facced94d4e56294",
     "generatedAt": "2026-09-07T01:05:01.786Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "echo-and-the-bunnymen": {
     "narration": {
       "context": "I saw Echo and the Bunnymen three times, and the gap says everything — once at Irvine Meadows in 1984, on The Cure's bill at Hyundai Pavilion in 2003, then at The Black Cat in 2010.",
       "closingArc": "Twenty-six years from the first show to the last is its own kind of loyalty, even if it doesn't look like it on paper."
     },
-    "inputHash": "sha256:89871fb7cbb2f2b4faeead1760083dd90b4eb93e07b6161e4960ec3f8c006d07",
+    "inputHash": "sha256:60f1f5d930e8fb4f0e9fa91561a35f2ae97c2562b67e70f2fbc5cf8ebfdef594",
     "generatedAt": "2026-09-07T01:05:04.031Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "depeche-mode": {
     "narration": {
       "context": "I first saw Depeche Mode at Irvine Meadows in 1985, and across five shows I'd follow them all the way to 2023 at the Kia Forum.",
       "closingArc": "Nearly four decades between that first show and the last one at the Forum, with stops at The Rose Bowl, Dodger Stadium and Staples Center in between — proof I kept showing up whenever they came through."
     },
-    "inputHash": "sha256:a0deaf99394cf7310c323a7c16f14f9b31b38917707e1186891a41629b228f6c",
+    "inputHash": "sha256:61f8564239d341dd05b7d038879e162453ec685a7bda621d654a93cd9ed50866",
     "generatedAt": "2026-09-07T01:05:06.645Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "stryper": {
     "narration": {
       "context": "I saw Stryper exactly once, at Knott's Berry Farm in 1985, and that's the whole of my history with them.",
       "closingArc": "Just one night, one venue, one year — no return trip, just a single show that stayed a single show."
     },
-    "inputHash": "sha256:cf41b7ca6cfde5bdb8742727d3cd92cb6b50616243cd84172468e0a1b04efb09",
+    "inputHash": "sha256:e39ccd168099103bfffd282db3c7543751e04757428cd7d2216ffe34f9daaa76",
     "generatedAt": "2026-09-07T01:05:08.685Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "howard-jones": {
     "narration": {
       "context": "I first caught Howard Jones at Irvine Meadows in 1985 and was still catching him nearly four decades later at YouTube Theatre in 2024, six shows spread across that span.",
       "closingArc": "Almost forty years between the first show and the last, and somehow it still counts as the same story."
     },
-    "inputHash": "sha256:0320f60b53511b1b27bce7d0a2ca54bc068c5b985b8dec83d348e7bb15b945a2",
+    "inputHash": "sha256:032273be95008534007d77ef40cab73b7b7213827919cf6b4eaac4dc6057764a",
     "generatedAt": "2026-09-07T01:05:10.902Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "tears-for-fears": {
     "narration": {
       "context": "I saw Tears For Fears four times, starting at Pacific Amphitheatre in 1985, with two shows at the Universal Amphitheater in 1993 and 2005, and last at Kia Forum in 2022.",
       "closingArc": "Almost four decades between the first show and the last, with two nights at the Universal Amphitheater in between — and then a long, quiet gap before they came back around."
     },
-    "inputHash": "sha256:14f04ebcb79886f489e5939ed964119a41b044742218d49d3944a6563b77af37",
+    "inputHash": "sha256:36d16b1ccacc79ab08bea9834851f0bce3e0a2f049a6de9a3f7145ff5d8240e3",
     "generatedAt": "2026-09-07T01:05:13.581Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "new-order": {
     "narration": {
       "context": "I only caught New Order twice, but the gap says something: once at Irvine Meadows in 1985, then not again until the Hollywood Bowl in 2022.",
       "closingArc": "Thirty-seven years between shows is a strange way to follow a band, but there we both still were."
     },
-    "inputHash": "sha256:bd0124dba0a5612480f12bab4c29bbedd62fdb01cbc3afb9fb74fe19a4c9e96f",
+    "inputHash": "sha256:e6d3a93faba1db8dabdcca841612621960c793044a30432dd13d718008b61cb7",
     "generatedAt": "2026-09-07T01:05:15.859Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "wham": {
     "narration": {
       "context": "I only caught Wham! once, in 1985 at Hollywood Park Racetrack — a single night, no repeats.",
       "closingArc": "Sometimes one show is the whole story, and this was one of those times."
     },
-    "inputHash": "sha256:9d13af37f724e730fb8eabef19c6f3432675141be76d94b3c0211506aa7fd72d",
+    "inputHash": "sha256:c1e6830ec2507bd9bb709fb8b5f6dc74d9a5e96e182c2bcf513c0f906b3c480b",
     "generatedAt": "2026-09-07T01:05:17.931Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "bruce-springsteen": {
     "narration": {
       "context": "I saw Bruce Springsteen exactly once, in 1985, at the Los Angeles Memorial Coliseum.",
       "closingArc": "One night, one venue, no repeats — just a single 1985 show I'm glad I didn't skip."
     },
-    "inputHash": "sha256:c81c5c0328b8191fb8f70311fbdd73cbe4c6431660662f54251362f4f94ae74e",
+    "inputHash": "sha256:e8f175bbf7117cb5c933436735ab1f6717ed6a5053b3dc218c43f12bc7bea98e",
     "generatedAt": "2026-09-07T01:05:19.940Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-alarm": {
     "narration": {
       "context": "I only caught The Alarm twice, in 1986 at UCLA and again in 2018 on The Human League's bill at Huntington State Beach.",
       "closingArc": "Two visits, two venues — one night at UCLA and one at Huntington State Beach thirty-two years later, and that's all the archive holds."
     },
-    "inputHash": "sha256:acc79d2c28e22982e5eb4b8f2e7d600b30739ad1da4804dd8a6a6463d650a881",
+    "inputHash": "sha256:d8eaddc6ed1c3d8a49bfeb0aefd7170deaec78e00df2775371ae9e4ef1744cee",
     "generatedAt": "2026-09-07T01:05:21.969Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "blancmange": {
     "narration": {
       "context": "I only caught Blancmange twice — a night at Crawford Hall in 1986, then not until they opened for Thompson Twins at Pavilion Theatre in 2026.",
       "closingArc": "Sometimes one show isn't the whole story, and this one didn't stay put in 1986 at Crawford Hall — more than forty years later they were opening at Pavilion Theatre."
     },
-    "inputHash": "sha256:89b94a8ac479c5897c855c938af03843f5edcd9e142dd39a24d924016f151c6a",
+    "inputHash": "sha256:37b5f77c914703541dd50bd1d7ba3ef7ae94faa087bde1debc02c9a0ced62a46",
     "generatedAt": "2026-09-07T01:05:24.083Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "beach-boys": {
     "narration": {
       "context": "I only caught the Beach Boys twice, starting at Pacific Amphitheatre in 1986 and closing out two years later at Arizona Veterans Memorial Coliseum in 1988.",
       "closingArc": "A short, tidy pair of shows across the late '80s — not a habit, just two nights that happened to bookend each other."
     },
-    "inputHash": "sha256:b5c6b964e5361af066ef7ed01de5726650007ba82db63d56fbf34a483cd622e2",
+    "inputHash": "sha256:cc774f4a1cf3da2bd503f1a8326fe044daf1f828d976d208cc4741a7511bce5c",
     "generatedAt": "2026-09-07T01:05:26.309Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-art-of-noise": {
     "narration": {
       "context": "I only caught The Art of Noise twice, bookends really — first at Pacific Amphitheatre in 1986, then not again until Paradise Rock Club in 1999.",
       "closingArc": "Thirteen years between shows is a long gap to leave unexplained, but somehow it fit."
     },
-    "inputHash": "sha256:5620c8e4c121f58982aff9de42f7fa4811f4ea1197209ef46fe9655147fee1f6",
+    "inputHash": "sha256:37ab00572a44bc2c97e3bc7a9df450ba16dda8ba1f7ce85a6457befd6407f9ff",
     "generatedAt": "2026-09-07T01:05:28.822Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "run-dmc": {
     "narration": {
       "context": "I only caught Run DMC once, in 1987 at Pacific Amphitheatre, and that single night is the whole of it.",
       "closingArc": "No return engagement, just one show at one venue — sometimes that's all a year gives you."
     },
-    "inputHash": "sha256:c0891d4d63f992cc3dd886467144fe144f1895d07cb4172b118368ee42f20fb5",
+    "inputHash": "sha256:b27a0280e079b81828641543998b15b7ceb2c7147c9408d12dced9ac025aeca7",
     "generatedAt": "2026-09-07T01:05:31.025Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "oingo-boingo": {
     "narration": {
       "context": "I only caught Oingo Boingo twice — first at Caliente Racetrack in 1987, then at Irvine Meadows the following year.",
       "closingArc": "Just a quick pair of nights, one year apart, and then they were gone from my calendar."
     },
-    "inputHash": "sha256:fbc0677a67d0db6b0481346eebd0886c2455ea19d80b6dc1d45a7dbc53a84c72",
+    "inputHash": "sha256:ecb4145b966794b03cf239d3328c508b91b67c934e046b93cb6f341329afc5d9",
     "generatedAt": "2026-09-07T01:05:33.090Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "duran-duran": {
     "narration": {
       "context": "I only caught Duran Duran four times, starting at Irvine Meadows in 1987, then on The Cure's bill in 2003, at Nokia Center in 2008, and last at MGM National Harbor in 2017.",
       "closingArc": "Thirty years apart, those two shows bookend a band I clearly didn't chase, but never quite let go of either."
     },
-    "inputHash": "sha256:a77f682b2dc8650c33d2d4f96877ec8d1316612eae6cbc07dbf8fda886655665",
+    "inputHash": "sha256:82e4ae1c6d81e08c395a52b518dc9699ae2cf45b79013708f921280750673349",
     "generatedAt": "2026-09-07T01:05:35.497Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "no-doubt": {
     "narration": {
       "context": "I only caught No Doubt once, back in 1988, at of all places Disneyland.",
       "closingArc": "A single show, a single year, a single venue — sometimes that's the whole story."
     },
-    "inputHash": "sha256:76a3b6998defb121871b45fc4cd29f7f4ec727927bf02419819e3060cd10ef2c",
+    "inputHash": "sha256:52a4993351e5d63ed152f5ab502bb06ca9139c9b3afed5702dcb942e3d2a37b1",
     "generatedAt": "2026-09-07T01:05:37.596Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "ub40": {
     "narration": {
       "context": "I only caught UB40 twice, and the gap says everything — once at Pacific Amphitheatre in 1988, then not again until the Peacock Theater in 2023.",
       "closingArc": "Thirty-five years apart, two shows bookending most of my concertgoing life, and I still can't tell you why I let that gap happen."
     },
-    "inputHash": "sha256:984eb85a57b9349c1b2b8b52e4dbab1f86306dc5a6db0f2a715627b944b59cae",
+    "inputHash": "sha256:17d0f66c83a94b24d59054f75757994c3c16fa312fdad009a427001ce73949e5",
     "generatedAt": "2026-09-07T01:05:40.070Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "ziggy-marley": {
     "narration": {
       "context": "I saw Ziggy Marley twice, at Mesa Amphitheatre in 1988 and on Peter Gabriel's bill at the Olympic Velodrome in 1993.",
       "closingArc": "Two nights, two venues, no third trip — just a 1988 show and a 1993 return that stayed a pair."
     },
-    "inputHash": "sha256:259df2bd223aece80e7c0a805c8a00eaa4a417c6709f427b78e5faccacd39ce7",
+    "inputHash": "sha256:c3caeb96366c21bece9231a7625648a6c7b4c91dba27060cb29a9752c6e3342a",
     "generatedAt": "2026-09-07T01:05:42.017Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "george-michael": {
     "narration": {
       "context": "I only caught George Michael once, in 1988 at Irvine Meadows, a single night that never repeated.",
       "closingArc": "Sometimes one show is the whole story, and this was mine with him."
     },
-    "inputHash": "sha256:2138db931e34247e24705c8a3da8cfd5ed60a85130c53673bb45ad3667485e0a",
+    "inputHash": "sha256:bfc2a990756c170944b27d58972139685b599706b1f3a871ca529db7079d2231",
     "generatedAt": "2026-09-07T01:05:44.106Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "tone-loc": {
     "narration": {
       "context": "I saw Tone Loc exactly once, in 1990 at Jets — a single show, no repeats, no build-up.",
       "closingArc": "Sometimes one night at one venue is the whole story, and this is one of those times."
     },
-    "inputHash": "sha256:f2062b324c664c0d9d7bc5ed6e68d1325390d1b3fdfce049a843b8c3aec06928",
+    "inputHash": "sha256:204c89960200293a7a8a63bac768bc61f9d32392af4dbe7c219f9ad7dd5f2625",
     "generatedAt": "2026-09-07T01:05:46.104Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "erasure": {
     "narration": {
       "context": "I only caught Erasure twice, and both shows landed in the same year, 1990 — first at the Kia Forum, then out at Irvine Meadows.",
       "closingArc": "A quick, contained pair of shows, not a habit I kept up — just one bright year and then nothing."
     },
-    "inputHash": "sha256:301ee1991ab5673e2b45cd8a56ffa567e0635ac09be12cbbd55084a9c8b82856",
+    "inputHash": "sha256:5112085403e35eb52b0d58ce9d1a185cc5c878325278ef7ac397809bb55ac7cf",
     "generatedAt": "2026-09-07T01:05:48.568Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "jesus-jones": {
     "narration": {
       "context": "I only caught Jesus Jones once, at the Hollywood Palladium in 1990.",
       "closingArc": "A single night, no return visits — just one show that stayed a one-off in my history with them."
     },
-    "inputHash": "sha256:caab516ba2f2430ed87d4c860e4895c79b831936a26cc0440b0eb270bb79eb12",
+    "inputHash": "sha256:b5c3a024e387329e9b2fb046625665189b24698c91586017e5fbea3baff1d75d",
     "generatedAt": "2026-09-07T01:05:50.572Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "social-distortion": {
     "narration": {
       "context": "I first caught Social Distortion at Cal State Fullerton back in 1990, and somehow kept catching them clear through to The Belasco in 2024 — eight shows spread across 34 years.",
       "closingArc": "The 9:30 Club got two of those nights, but really this was a band I just kept circling back to, decade after decade, wherever they turned up."
     },
-    "inputHash": "sha256:1039fc4525cd4cccad49bb5f3015f8d52c12085e18c7e17496fa41f7c7568c03",
+    "inputHash": "sha256:70629919ad4da7d7f7b01666ca68d9fb7a5461a64bbdb95b9bb1f7328a2773ac",
     "generatedAt": "2026-09-07T01:05:53.214Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "bell-biv-devoe": {
     "narration": {
       "context": "I caught Bell Biv DeVoe exactly once, at the Kia Forum in 1991.",
       "closingArc": "A single night, one venue, no return trip — just a snapshot of 1991."
     },
-    "inputHash": "sha256:d98da3fbd4fef5f59db02f29bb8be8ec9cd201d21d73467e26d9c2ab99bfae00",
+    "inputHash": "sha256:01ceab3ba01e1c3e89a33ce40003cb6a865882b5fee2b00b2b40a9283387edb9",
     "generatedAt": "2026-09-07T01:05:55.825Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "maxi-priest": {
     "narration": {
       "context": "I saw Maxi Priest twice, both in 1991, first at Pacific Amphitheatre and then on Burning Spear's bill at Long Beach Arena.",
       "closingArc": "Just the one return engagement — two nights in 1991, Pacific Amphitheatre and Long Beach Arena, three months apart."
     },
-    "inputHash": "sha256:d649fb93640096bd22409caf06c68b20617676182705d5a18bd9b1fcb9ba1b98",
+    "inputHash": "sha256:f3c172d6b747c3ec2bba608013e031e1edd877661b440dd639301e1b7510bba9",
     "generatedAt": "2026-09-07T01:05:57.934Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "jimmy-buffett": {
     "narration": {
       "context": "I saw Jimmy Buffett three times, always at Irvine Meadows, starting in 1991 and closing out in 1997.",
       "closingArc": "Same artist, same amphitheater, every single time — Irvine Meadows was just where Jimmy Buffett happened, for me, from 1991 to 1997."
     },
-    "inputHash": "sha256:f3b77eda71367f3cd32b0fb6fbe0958298a1108a89833d5b6496f4f4484e729b",
+    "inputHash": "sha256:458485d8f0abdedec7ae3e5ceb6129c9945e00a51671814d5e3f2019e9acbe1f",
     "generatedAt": "2026-09-07T01:06:00.153Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "burning-spear": {
     "narration": {
       "context": "I saw Burning Spear just once, in 1991 at Long Beach Arena, and that single night is the whole of my history with him.",
       "closingArc": "No returns, no repeats — just one show that stands alone on the shelf."
     },
-    "inputHash": "sha256:8db92503822e5eb82525404b43b777e8d42670aed21229da2c31ad8d9caf2d60",
+    "inputHash": "sha256:9879fccb3bda9808152d081865c48184c600cb40b766ffe86909049b98346d80",
     "generatedAt": "2026-09-07T01:06:02.204Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "sting": {
     "narration": {
       "context": "I saw Sting exactly once, in 1991 at the Pacific Amphitheatre.",
       "closingArc": "No repeats, no return trips — just one night that never asked for a second."
     },
-    "inputHash": "sha256:9876772fd7fd057f08f3d1450be91502e26dc86282c379c5b6799c2d58697538",
+    "inputHash": "sha256:219ef2a1584acde181e6cbb2ca726b819062992aa4a82db9660dfcf5953379e0",
     "generatedAt": "2026-09-07T01:06:04.235Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "siouxsie-and-the-banshees": {
     "narration": {
       "context": "I caught Siouxsie and the Banshees exactly once, in 1991 at the Universal Amphitheater.",
       "closingArc": "No returns, no repeats — just one night that had to stand for all of it."
     },
-    "inputHash": "sha256:b63e958ee4400c5f43402ecabdccd69d6f88bbe7a97f9dbb9ba80de2feb7292f",
+    "inputHash": "sha256:13c84b84cdebb122d17059973256974f47ef7f8a160dee90bd6c2f9a5da9c4b4",
     "generatedAt": "2026-09-07T01:06:06.319Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-smithereens": {
     "narration": {
       "context": "I only caught The Smithereens four times, starting on Siouxsie and the Banshees' bill at the Universal Amphitheater in 1991, then The Celebrity Theatre in 1992, and after a long stretch The Hamilton Live in 2013 and the Birchmere in 2016.",
       "closingArc": "Twenty-five years between bookends is a strange gap for just four shows, but that's the kind of loose, occasional thread this one turned out to be."
     },
-    "inputHash": "sha256:ca1f537082daadc573f63cf4537cb4c762d4820014f55f886dfe80e3d6ba4d3b",
+    "inputHash": "sha256:a233129e3f5590fc2f318b92a88979bf738a92b7a6584671689e49520ecc243d",
     "generatedAt": "2026-09-07T01:06:08.833Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "peter-gabriel": {
     "narration": {
       "context": "I only crossed paths with Peter Gabriel twice: once in 1993 at the Olympic Velodrome, and again a decade later, in 2003, at Irvine Meadows.",
       "closingArc": "Two shows, ten years apart, and no real pattern to speak of — just a pair of nights that happened to bookend a decade."
     },
-    "inputHash": "sha256:62b97843a79e2c8d882448e296e1122c4868af5634cdb621efa5f66d0053e88d",
+    "inputHash": "sha256:89a6a55d88b3d4073113173c338f4bac566049fdbc07d6142d654512c9d29be2",
     "generatedAt": "2026-09-07T01:06:11.074Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "violent-femmes": {
     "narration": {
       "context": "I only caught the Violent Femmes twice, at the Hollywood Palladium in 1995 and on The Cure's bill at Hyundai Pavilion in 2003.",
       "closingArc": "No third trip, no third date — just one night at the Palladium and one at Hyundai Pavilion, and that's all my records hold."
     },
-    "inputHash": "sha256:0162ee4aef73b7ec3e7c394d1b84f10389da85af4b2c0989754fa6660b520c3c",
+    "inputHash": "sha256:7535d01ca265f924c2e3b973a0f34303153f71a7717a05c1d4963604b3dfe910",
     "generatedAt": "2026-09-07T01:06:13.301Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-brian-setzer-orchestra": {
     "narration": {
       "context": "I caught The Brian Setzer Orchestra four times between 1995 and 2017, starting at the Hard Rock Cafe and finishing more than two decades later at the Warner Theatre.",
       "closingArc": "Four shows spread across 22 years — not a habit, just a band I kept circling back to."
     },
-    "inputHash": "sha256:4ddfb3e9d3a012469620124a37ee8c4c693761854c01d0e65ca4c0a2ae46a462",
+    "inputHash": "sha256:fadd3c0ecc82e0424022cf2703811897ec15242fb7912dbcf6527a64757588b6",
     "generatedAt": "2026-09-07T01:06:15.540Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "big-audio-dynamite": {
     "narration": {
       "context": "I only caught Big Audio Dynamite once, at The Galaxy Theatre in 1995.",
       "closingArc": "One night, one venue, no encore in my history — just a single show that stayed put in 1995."
     },
-    "inputHash": "sha256:b1062e27ac2f1d881ccfc0bc39b62b9c05f73a278ace84743f45231e6a131985",
+    "inputHash": "sha256:5982303aa734801080b8694c76a8e2d44a14ac6ba1ab37262e2937dac685c324",
     "generatedAt": "2026-09-07T01:06:17.709Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "pat-dinizio": {
     "narration": {
       "context": "I saw Pat DiNizio just once, at The Coach House in 1998 — no return trips, no other venues, just that one night.",
       "closingArc": "Some artists I followed for decades; this one is a single entry in the ledger, and it's stayed exactly that."
     },
-    "inputHash": "sha256:652b01b0092023ee6491c354b48680398f24abc518c59bd72ed7e808b498be7d",
+    "inputHash": "sha256:ed65bb0663afdb1592a9a9861438f243e4e36f6f9340478dd2a9d2d9428188f5",
     "generatedAt": "2026-09-07T01:06:20.006Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "alien-fashion-show": {
     "narration": {
       "context": "I only caught Alien Fashion Show once, at Club Caprice in 1999, and that single night is the whole of my history with them.",
       "closingArc": "No return visits, no other venues — just one show that stayed a one-off."
     },
-    "inputHash": "sha256:7103aec3f4b8b79a5152ca4c8429a9030b5157b22ae39b8b02a58db884b03827",
+    "inputHash": "sha256:df097b58d6b7cda7ac1c405755423efd924038003c067cc2a2f638bee57808f7",
     "generatedAt": "2026-09-07T01:06:22.120Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "brian-setzer-68-comeback-special": {
     "narration": {
       "context": "I caught the Brian Setzer '68 Comeback Special exactly once, in 2000 at The Coach House, one of seven nights I've logged with Brian Setzer under one name or another.",
       "closingArc": "No repeat of this billing, though six other rooms with Brian Setzer — just one night that stayed a single, self-contained memory."
     },
-    "inputHash": "sha256:7442cd1607eb221d8dc1aed106448b7b2565b01cd5f8629269ce7da05fb07e40",
+    "inputHash": "sha256:2f181d3638bf222ab877c7163dd00eedcc1865cd4aedab71ab34b4579ef6bbf5",
     "generatedAt": "2026-09-07T01:06:24.199Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "elton-john": {
     "narration": {
       "context": "I only caught Elton John once, in 2001 at the Kia Forum, a single night with no repeats before or after.",
       "closingArc": "Just the one show, but the Kia Forum was the right room for it, and I never needed a second visit to remember it."
     },
-    "inputHash": "sha256:0e4a1fc85b42a13083e920b495647888a20b52e668667ff4843292871be0a3c3",
+    "inputHash": "sha256:ec61a1a65c67ccea205dc8eafc2585471e736b0344f03c5e86947a727d0fab03",
     "generatedAt": "2026-09-07T01:06:26.436Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-human-league": {
     "narration": {
       "context": "I only caught The Human League three times, starting at The Grove of Anaheim back in 2003 and, remarkably, still going as of a 2026 date at the Hollywood Bowl.",
       "closingArc": "Twenty-three years between the first show and the last, with just one night in between — a band I checked in on rather than followed."
     },
-    "inputHash": "sha256:3c936925b7c8c5787d19d5497098e015ddc0f70e9bc59ecb674c55f8bf1d21c9",
+    "inputHash": "sha256:0f14f97f692b768b209ca7ad198efa4d6e2c9a7707e0d19c8ef165df1bac52e1",
     "generatedAt": "2026-09-07T01:06:28.962Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "joe-jackson": {
     "narration": {
       "context": "I saw Joe Jackson four times over the years, starting at House of Blues Anaheim in 2003 and eventually landing at the Orpheum Theatre by 2022.",
       "closingArc": "Nearly two decades stretched between that first Anaheim night and the last time I caught him at the Orpheum, but I kept showing up."
     },
-    "inputHash": "sha256:729accc32cb9f1c49b640ae46f7580b7d945f2aedb81195bb48e34fcd38a308c",
+    "inputHash": "sha256:dfc96ba5bf0a5e782575a8f921109a97db051c3eae64db5b61f30239a4102697",
     "generatedAt": "2026-09-07T01:06:31.234Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-cure": {
     "narration": {
       "context": "I only caught The Cure twice in twenty years — once at Hyundai Pavilion in 2003, then not again until the Hollywood Bowl in 2023.",
       "closingArc": "Two shows, two decades apart, bookending a band I apparently didn't need to see often to keep close."
     },
-    "inputHash": "sha256:82003a7501f9635e6348b0600923f72dd3eb7e7e50c75726f3bb4d258e6472e4",
+    "inputHash": "sha256:bc0f3abe9ce0767ba1d24ee70d9e4e9662e8701f64615bde194bca29c0c570bb",
     "generatedAt": "2026-09-07T01:06:33.530Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "garbage": {
     "narration": {
       "context": "I caught Garbage six times between 2005 and 2022, starting at Pacific Amphitheatre and closing out, seventeen years later, opening for Tears For Fears at Kia Forum.",
       "closingArc": "No single room ever became mine with this band — just six scattered nights across seventeen years, bookended by two Southern California stages."
     },
-    "inputHash": "sha256:28f1c8b42c661797ce1f32890c9193da4c01dd277e3c2de3bdd0e05d25109b38",
+    "inputHash": "sha256:13a1d88eb107808a909c0ca0612471d1e07a3c48780e5b27d76afd929f1bdaa7",
     "generatedAt": "2026-09-07T01:06:36.154Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "joe-satriani": {
     "narration": {
       "context": "I caught Joe Satriani exactly once, in 2006 at The Grove of Anaheim, and that's the whole story.",
       "closingArc": "No return trip, just one night that stayed a one-off."
     },
-    "inputHash": "sha256:434e7222c713c00a6e52fc01d707a4af89c49d2741bbd1bbde0e81eef873ccde",
+    "inputHash": "sha256:99550cd1c93b022cdf65f1ab3557df5b6de51a9ebaa71d541375c7723eccff04",
     "generatedAt": "2026-09-07T01:06:38.146Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "devo": {
     "narration": {
       "context": "I only caught Devo twice, seventeen years apart — once at The Grove of Anaheim in 2006, and once at YouTube Theatre in 2023.",
       "closingArc": "Two shows, two very different rooms, and a long quiet stretch in between where I just wondered if I'd see them again."
     },
-    "inputHash": "sha256:3e8adcfbab116d2e9601088b6e3913fbee0564041c571e2ca84c00d8ebd64756",
+    "inputHash": "sha256:7f829e550635a56f26aa3f1ba3a3f060a38e6fc9fb43566116ee491e83ff54d5",
     "generatedAt": "2026-09-07T01:06:40.346Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-tubes": {
     "narration": {
       "context": "I only caught The Tubes once, at The Coach House in 2007, a single night with no follow-up.",
       "closingArc": "Sometimes one show is the whole story, and this is one of those — no return trip, just that one night at The Coach House."
     },
-    "inputHash": "sha256:bd89c1ae2144b1769f615b6f9d6cdb448fb67475f0749f960e8f9b18ae96ab45",
+    "inputHash": "sha256:57678c50d400b16e0b35c956762f991bea4e49d81e8992c4ff619098a98d8940",
     "generatedAt": "2026-09-07T01:06:42.433Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "berlin": {
     "narration": {
       "context": "I caught Berlin five times, starting as an opener at Hyundai Pavilion in 2003, then headlining The Coach House in 2007 and again in 2008, Rams Head Center Stage in 2014, and opening at Pacific Amphitheatre in 2022.",
       "closingArc": "A two-night habit at The Coach House in 2007 and 2008 turned into a gap of more than five years before Rams Head Center Stage, and an opening slot for Culture Club in 2022 closed it out."
     },
-    "inputHash": "sha256:af0ed24c978f3efd6409708d7f0eb2b0a30dc1ef5a02c7a283bcfaa5f9d43ce8",
+    "inputHash": "sha256:d69ec5d13fb367ac6b6dbd333e13bfa10c7bcf1b134d18d9b302d941af3309bc",
     "generatedAt": "2026-09-07T01:06:44.918Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "lee-rocker": {
     "narration": {
       "context": "I saw Lee Rocker three times between 2007 and 2019, starting at The Galaxy Theatre and eventually landing at The Coach House.",
       "closingArc": "A dozen years, three shows, no fixed home venue — just a headliner I kept catching wherever he turned up."
     },
-    "inputHash": "sha256:565e5363fc4dbf929692de0fb1d7df65b3f846bbd88512f27d0bd1cbf2ab4130",
+    "inputHash": "sha256:2492df549e5f960750f0e7f1d01104787a53b9b6e86c8ed7b9656e48b740ed39",
     "generatedAt": "2026-09-07T01:06:47.281Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "stray-cats": {
     "narration": {
       "context": "I only caught the Stray Cats twice, and both times it was at Pacific Amphitheatre — once in 2008, then again a decade later in 2018.",
       "closingArc": "A full ten years apart, but the same stage both times, like the venue was holding a spot for them."
     },
-    "inputHash": "sha256:c3aeaf3286d4a5e4358c1b221591a51b575f1d870a0ae8cdea2d8c554ef198ce",
+    "inputHash": "sha256:10ed3771dec61b01fcf072e69b26fb33603976536663a7a4c0ec0d1e492b9e2e",
     "generatedAt": "2026-09-07T01:06:49.504Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "yaz": {
     "narration": {
       "context": "Yaz passed through my history exactly once — a single night at Pacific Amphitheatre in 2008.",
       "closingArc": "No return trips, just one show that stands alone in 2008."
     },
-    "inputHash": "sha256:027221ec3477ea9c1ad9edc64345c2e30f71a979bf2501470d46a8d59b785b5b",
+    "inputHash": "sha256:3dd8bcbadc505e26da32d4314884d31830080e93856957165ad8ca7b9bafaccb",
     "generatedAt": "2026-09-07T01:06:51.447Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-english-beat": {
     "narration": {
       "context": "I caught The English Beat ten times between 2003 and 2024, starting with an opening slot at The Grove of Anaheim and following them all the way to Pacific Amphitheatre.",
       "closingArc": "Twenty-one years, one band, and a string of different rooms — proof I kept showing up whenever they came back around."
     },
-    "inputHash": "sha256:d6575e5fc68812a81ce6937b2c9124e3047b2c387903fc50effc7ecaeff75473",
+    "inputHash": "sha256:99ad597a71e4a84d1f4b8e4ecf6a1000a2564421a81322d926805649d724e22d",
     "generatedAt": "2026-09-07T01:06:53.835Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "mike-ness": {
     "narration": {
       "context": "I only caught Mike Ness once, in 2008, at The Coach House.",
       "closingArc": "One night, one room, no repeat — just a single show that stayed a single show."
     },
-    "inputHash": "sha256:2721838744ccd109f90f8ac374c4a9813b1ab7e2901a82f5bc8dc30450e4edd9",
+    "inputHash": "sha256:2839d447a7e110bd4bb91d3b6dd711da5744d9bb9cd47090c9ec9b1c26d07ec2",
     "generatedAt": "2026-09-07T01:06:55.864Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "brian-setzer-and-the-nashvillians": {
     "narration": {
       "context": "I saw Brian Setzer and the Nashvillians exactly once, in 2009 at Doheny, but that was one of seven Brian Setzer nights under different billings between 1995 and 2024.",
       "closingArc": "No repeat bookings under this name — just one night at Doheny in a run of seven Brian Setzer shows that went from Hard Rock Cafe in 1995 to The Wiltern in 2024."
     },
-    "inputHash": "sha256:d6c93592abc3367c9b92522c4f9ffd84b19f162708783bbb1dccf04b353482d6",
+    "inputHash": "sha256:4adce60c6f3e919ac10ba109a141e4dd1de8d4d1a89344548c07f72f9ea29fe9",
     "generatedAt": "2026-09-07T01:06:57.850Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "rob-thomas": {
     "narration": {
       "context": "I saw Rob Thomas exactly once, in 2009 at EagleBank Arena.",
       "closingArc": "No repeat visits, no other venues — just a single night that stands alone in my records."
     },
-    "inputHash": "sha256:c121a8541090d6eff510b2d27463b661c97f9a3299f5d1a7f92ce4aabf8fe2cb",
+    "inputHash": "sha256:7162ac7dd44d11e98b70abcd9952daf970235a6b4b1ee36a60da80c02858f2a2",
     "generatedAt": "2026-09-07T01:07:00.167Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "bad-religion": {
     "narration": {
       "context": "I caught Bad Religion four times, twice headlining the 9:30 Club in 2011 and 2013, then as an opener at Pier 6 Pavillion in 2014 and Huntington State Beach in 2018.",
       "closingArc": "Same band, same room, two years apart at the 9:30 Club, then two more nights on other bands' bills — seven and a half years in all."
     },
-    "inputHash": "sha256:e8bcd972afd6a510736e894847c69282acff69ab353805e095bd65afff4aa03f",
+    "inputHash": "sha256:1e8537f9f83b37c2b3d0e6f369f9d5863d97300f69240e8455c2970aff798094",
     "generatedAt": "2026-09-07T01:07:02.211Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-dollyrots": {
     "narration": {
       "context": "I caught The Dollyrots twice in 2011, headlining The Ballroom in May and opening for The Go-Go's at Wolftrap in June.",
       "closingArc": "One return trip, five weeks later — The Ballroom in May, then Wolftrap in June, and that was the whole of it."
     },
-    "inputHash": "sha256:433209de3cca23d909bbb0a357ca54b529722d633e6716e6c25a7a776107f4d5",
+    "inputHash": "sha256:8c8178a05ffa77dfd72e0cef601763a0425b6f261d55086a41c8f5e3234aba6b",
     "generatedAt": "2026-09-07T01:07:04.251Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-go-go-s": {
     "narration": {
       "context": "The Go-Go's only show in my history was a single night at Wolftrap in 2011.",
       "closingArc": "No repeats, no return trips — just one evening that stayed exactly what it was."
     },
-    "inputHash": "sha256:7d113b21156c8b837a9099788341e732fa1f2e3f2d3444cd735fe0ed696d7444",
+    "inputHash": "sha256:c0a81f611c7f32cb64cc74ef0d3c93b9ed70ca61c3c10fc0ec830b5b5282f666",
     "generatedAt": "2026-09-07T01:07:06.177Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "squeeze": {
     "narration": {
       "context": "Squeeze passed through my concertgoing life three times, opening at Caliente Racetrack in 1987 and Pacific Amphitheatre in 1991, then headlining Rams Head Live! Baltimore in 2012.",
       "closingArc": "Three nights, three venues, nearly twenty-five years from first to last — sometimes that's the whole story."
     },
-    "inputHash": "sha256:d0dda52feb75ccded671223818e83af6f38dc0a30ec0709f92536f0a922f943c",
+    "inputHash": "sha256:bc456b72a44c0b54c32faaa86db6dddc5ec099aa48b80d7f2f2ffa6c354a0653",
     "generatedAt": "2026-09-07T01:07:08.238Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "red-hot-chili-peppers": {
     "narration": {
       "context": "I only caught Red Hot Chili Peppers once, in 2012 at Capitol One Arena, a single night with no repeats before or after.",
       "closingArc": "Just the one show, no return trip — sometimes that's all a band and I get."
     },
-    "inputHash": "sha256:95737cc16c8c318e7253aa025d9b3886290c08b9753e568c580657041db4b9f2",
+    "inputHash": "sha256:76df8c78630530b1c4e1e0b6632f2acd9e26b650e7c3bbaf2e8af48515347539",
     "generatedAt": "2026-09-07T01:07:10.473Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-cult": {
     "narration": {
       "context": "I only caught The Cult once, in 2012 at The Fillmore Silver Spring, a single night that never turned into a habit.",
       "closingArc": "No returns, no repeat visits — just one show that stands alone in the ledger."
     },
-    "inputHash": "sha256:980e6ac394a87a6c3b04338033ad3ad1972bd5059f312479fd19220880273dd2",
+    "inputHash": "sha256:71ce4d464142d6f6aa3b99d4c685ce22d4b518703a945520a84ba7b1ffd59be9",
     "generatedAt": "2026-09-07T01:07:12.601Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "dropkick-murphys": {
     "narration": {
       "context": "I caught Dropkick Murphys twice in the DC area — first at the 9:30 Club in 2013, then at The Fillmore Silver Spring in 2015.",
       "closingArc": "Just two shows, two years apart, but each one in a room built for that kind of noise."
     },
-    "inputHash": "sha256:e429914baf26288f1073cd8993830f9bb733b5285881c5e65570d52937f4a16a",
+    "inputHash": "sha256:d63eea247c51cb6834e2a6e7a500865e060582d4314e7acea6ff99457dd1b4ae",
     "generatedAt": "2026-09-07T01:07:14.658Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "rancid": {
     "narration": {
       "context": "I caught Rancid twice — headlining The Fillmore Silver Spring in 2013 and opening at Huntington State Beach in 2018.",
       "closingArc": "Just two shows, two venues, five years apart — sometimes that's the whole story."
     },
-    "inputHash": "sha256:9f82f64a00ae5612ae3819e5a416869c8064a75b831d00e6e9b3e582ed0fede0",
+    "inputHash": "sha256:03843995c5c1a26d639b2a9f845b08a4390a79d1a3918a517d0fa613dd39257f",
     "generatedAt": "2026-09-07T01:07:16.640Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "gary-numan": {
     "narration": {
       "context": "I only caught Gary Numan three times, starting at The Black Cat in 2013 and following him to the 9:30 Club, where I'd end up twice before it was over in 2018.",
       "closingArc": "A brief run, but the 9:30 Club became the place I kept landing to see him, right up to that last night in 2018."
     },
-    "inputHash": "sha256:3153a0835a140792360e828b42fb4facc3c16297359eea59a3802955988b277f",
+    "inputHash": "sha256:cad26b113b1cc5333adc0a9e9f52599e3299ce834567773e092e77a630711aba",
     "generatedAt": "2026-09-07T01:07:19.248Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "kraftwerk": {
     "narration": {
       "context": "I only caught Kraftwerk twice — once at the 9:30 Club in 2014, then again eight years later at The Shrine Auditorium in 2022.",
       "closingArc": "Two shows, two coasts, eight years apart — a rare band I never saw often, but never quite let go of either."
     },
-    "inputHash": "sha256:097d9e5344f4f7a335244b0e3f96f9e288b74e38cc0c7a9e8985282bf3348a28",
+    "inputHash": "sha256:f5847a567c4204ae668dfe48b59a7b33d452f42ddc1c78a1b2ee3986130d1735",
     "generatedAt": "2026-09-07T01:07:21.680Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "snarky-puppy": {
     "narration": {
       "context": "I only caught Snarky Puppy three times, a tight little run from 2014 to 2016 that started at The Hamilton Live and ended at the Bethesda Jazz and Blues Club.",
       "closingArc": "Two of those three nights were at The Hamilton Live, in 2014 and 2015, like I'd found the right room and just needed to keep returning to it before the story quietly moved on."
     },
-    "inputHash": "sha256:16a4ff4ac4d7feb5a1463e6cb992673f2f116ae8fdcd6e456eff741920fd1f01",
+    "inputHash": "sha256:7936f39a444b9c860dece1e711e6de0f90b3aa5d28dcb9eb41d99c2aed3755b7",
     "generatedAt": "2026-09-07T01:07:24.303Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-offspring": {
     "narration": {
       "context": "I caught The Offspring twice, headlining Pier 6 Pavillion in 2014 and opening at Huntington State Beach in 2018, and that was that.",
       "closingArc": "One return trip, four years on — Pier 6 in 2014, then Huntington State Beach in 2018."
     },
-    "inputHash": "sha256:d4391cd17a62b3953a2d4c3131578957ba9937efc6088c01abf722e3354a4574",
+    "inputHash": "sha256:a7bb8dc667b170db38d4b12f145dea15a0a38d3887e2bcbc0010e425caaf5a4a",
     "generatedAt": "2026-09-07T01:07:26.827Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "streetlight-manifesto": {
     "narration": {
       "context": "I caught Streetlight Manifesto five times between 2014 and 2023, starting at The Fillmore Silver Spring and eventually landing at The Wiltern, with a pair of those shows anchored at House of Blues Anaheim in 2019 and 2022.",
       "closingArc": "Nine years between the first show and the last, but those two nights at House of Blues Anaheim in 2019 and 2022 are still the closest thing I have to a home base for this band."
     },
-    "inputHash": "sha256:498fa4cebf2668c6401c264c8e7fb8da100d3eb4c0d5163b85fb2f498b0d3ea7",
+    "inputHash": "sha256:206912d4002baf937a88ddf647adfdf0e1b83f03561df7ff212bc65c1348faed",
     "generatedAt": "2026-09-07T01:07:29.474Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-head-and-the-heart": {
     "narration": {
       "context": "I saw The Head and the Heart just once, in 2014 at DAR Constitution Hall.",
       "closingArc": "No repeats, no return trip — just one night that stands alone in the archive."
     },
-    "inputHash": "sha256:ce5b764b10d592b0852c52f7817c74ddcd5ac1783d6c36092f225f60cdb92566",
+    "inputHash": "sha256:36256f281fab2f6869b6bee9ece65a7d0338c1b1e719e78f4497f40ff83c925b",
     "generatedAt": "2026-09-07T01:07:31.579Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "royal-blood": {
     "narration": {
       "context": "I only caught Royal Blood three times, with a pair of shows at the 9:30 Club in 2015 and 2017 before the trail picked up again in 2022 at House of Blues Anaheim.",
       "closingArc": "Two nights at the 9:30 Club in 2015 and 2017 turned out to be the heart of it, with Anaheim arriving five years later like a distant echo."
     },
-    "inputHash": "sha256:ce311ca4f96d6f773feeb0530dbfecdedfcf6f3bbf7af3d4b4381615a438a19a",
+    "inputHash": "sha256:a3b6647deb8a1a4ac9b032126563f70d77e168281e7f9013f6e67c247d256058",
     "generatedAt": "2026-09-07T01:07:34.085Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "foo-fighters": {
     "narration": {
       "context": "I only caught the Foo Fighters twice — once at RFK Stadium in 2015, then again at The Anthem in 2017.",
       "closingArc": "A big stadium show and a smaller room two years later, and that was the whole of it."
     },
-    "inputHash": "sha256:3986ffe660c79e1febb9d7639bc61227427aa857c58a2578f85537038844a28e",
+    "inputHash": "sha256:5a1e4c91c38894d80302fef3450bb26e2df33552d0b24a5fa6182f356f1afc24",
     "generatedAt": "2026-09-07T01:07:36.406Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "dirty-heads": {
     "narration": {
       "context": "I caught Dirty Heads just once, in 2016 at The Fillmore Silver Spring, and that's the whole of it.",
       "closingArc": "No returns, no pattern — just one night in 2016 that stands on its own."
     },
-    "inputHash": "sha256:da99eb53d3b9508381a163eee7c5fd8ff9c6ca1ade16a60b29eee3346c33eaf8",
+    "inputHash": "sha256:ff2ba256aec4c4fa6194019e14023da62de45edba233cfd003528ae26935d215",
     "generatedAt": "2026-09-07T01:07:38.459Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "prophets-of-rage": {
     "narration": {
       "context": "Prophets of Rage crossed my path exactly once, at EagleBank Arena in 2016, and that's the whole of it.",
       "closingArc": "One night, one venue, no return trip — just a single sharp memory from 2016."
     },
-    "inputHash": "sha256:cdf969ee18ff3c8aae7cc24ab8cebf252559395e4b92fdeb9314fc0e2798ffd0",
+    "inputHash": "sha256:84522f2a257b689b2c7af62028614bfb20c0f6851d9bf5b2071fb71473be83d2",
     "generatedAt": "2026-09-07T01:07:40.613Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-roots": {
     "narration": {
       "context": "I only caught The Roots once, in 2016, at the National Museum of African American History and Culture.",
       "closingArc": "Just the one night, in a room unlike anywhere else I saw a show — sometimes a single date is enough to remember exactly where you were."
     },
-    "inputHash": "sha256:70ee6515ffd5c254162ba5f8ff4ec26d1a9f8084f6949db29ef5c51c507cdd43",
+    "inputHash": "sha256:37e25201124694c2096fd1c132381a65f253fc229f7e242a6ecc3bf5cdf6dd9b",
     "generatedAt": "2026-09-07T01:07:43.009Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "midnight-oil": {
     "narration": {
       "context": "I caught Midnight Oil just once, in 2017 at The Fillmore Silver Spring.",
       "closingArc": "A single night, no repeats — sometimes one show is the whole story."
     },
-    "inputHash": "sha256:105630c0c2f2cb7051b8cf64b4bea880022787592e1b8faef99463ff9c9e1a94",
+    "inputHash": "sha256:d494fd1515f8b3c0c73ecd08a12678eb74a2bc9be8fe3a9729cd6d69f20fe0ba",
     "generatedAt": "2026-09-07T01:07:44.935Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-skints": {
     "narration": {
       "context": "I only caught The Skints twice, starting at DC9 Nightclub in 2017 and catching up with them again at Mozambique in 2019.",
       "closingArc": "Two shows, two different rooms — not a habit, just a couple of good nights that happened to line up two years apart."
     },
-    "inputHash": "sha256:744b051f6504ba96b549c9e00f06cbc9aad547379682fd28f3ce65859fa2a8a9",
+    "inputHash": "sha256:cccc9bf8db1cc212543eb064f21221757919dad752c5b8ac6e3de37f54a04e33",
     "generatedAt": "2026-09-07T01:07:47.180Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "blondie": {
     "narration": {
       "context": "I only caught Blondie once, in 2017 at Wolftrap, a single night with no runners-up before or after.",
       "closingArc": "No repeat visits, no other rooms — just that one 2017 evening at Wolftrap standing in for the whole of it."
     },
-    "inputHash": "sha256:8c6ced1eb2e802e3548f571886d398a7df1e5145019182410d5c58026467ab51",
+    "inputHash": "sha256:5ffa57f38033d45851dca7173ccc806440f4dbaa627b6fd381cc3a4e11c7d717",
     "generatedAt": "2026-09-07T01:07:49.557Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "alison-moyet": {
     "narration": {
       "context": "I saw Alison Moyet twice, in 2017 at Sixth & I Synagogue and again in 2026, opening for The Human League at the Hollywood Bowl.",
       "closingArc": "Sometimes two shows at two venues, nearly nine years apart, are the whole story, and this is one of those cases."
     },
-    "inputHash": "sha256:d7c8ca22dd8d7f0ddef161caf3a86f55d4ac29ad57206a28ed644ebed2ace7b0",
+    "inputHash": "sha256:25762ee2532e44c1b7211e817eee6a11e83da9e0bde9a300dab55f694ffb4a05",
     "generatedAt": "2026-09-07T01:07:51.788Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "bat-fangs": {
     "narration": {
       "context": "I only caught Bat Fangs once, in 2017 at The Anthem — no return visits, just that single night.",
       "closingArc": "Sometimes one show is the whole story, and this one stayed a one-off."
     },
-    "inputHash": "sha256:d03249c8f14b32c181dd0e04ebca475c86305a7aa77983563cd165fc5f20e802",
+    "inputHash": "sha256:b1a1e376dc8a6bd05588ade189450f61119edacb0303f22819d5221ff707c404",
     "generatedAt": "2026-09-07T01:07:54.143Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "colin-hay": {
     "narration": {
       "context": "I only caught Colin Hay once, in 2017 at the Lincoln Theatre, no repeats before or since.",
       "closingArc": "Just one night, one room — the kind of single, self-contained show that doesn't ask for a follow-up."
     },
-    "inputHash": "sha256:b01c70588b2b212da33aed0f57a0c421461360a0d5ec00eeffdfa6bbe1251be4",
+    "inputHash": "sha256:bc6603c23dc4a7ffc238ff52e36e44ed715fe8138883050d08140d92b09b6485",
     "generatedAt": "2026-09-07T01:07:56.321Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "beck": {
     "narration": {
       "context": "Beck only crossed my path once, in 2018, at The Anthem.",
       "closingArc": "No return visits, no pattern to trace — just one night that stands entirely on its own."
     },
-    "inputHash": "sha256:c10a4c0021cdaef6a90f9c5aa571186f621c81f05dc5fb4586a51ed7472cb5cf",
+    "inputHash": "sha256:ce06ca8eafde5b47f9777b4421e6b1434189a989af36a31e98b3d6864908eacd",
     "generatedAt": "2026-09-07T01:07:58.526Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "u2": {
     "narration": {
       "context": "I only caught U2 once, in 2018 at Capital One Center, and that single night is the whole of my history with them.",
       "closingArc": "No repeats, no build-up — just one show that stands entirely on its own."
     },
-    "inputHash": "sha256:4908fce530ef8cc3a701d07de3874fed39a9cc56498edcbb93ec044c230df134",
+    "inputHash": "sha256:9b9b7d0a0208c120f54c8383577e627ad833af92656737c0edd9959674f50c42",
     "generatedAt": "2026-09-07T01:08:00.686Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "foals": {
     "narration": {
       "context": "I only caught Foals three times, starting at The Shrine Auditorium in 2019 and wrapping up at The Belasco in 2023.",
       "closingArc": "A short, scattered run across four years and three different rooms, never quite settling into one venue long enough to call it a habit."
     },
-    "inputHash": "sha256:52ba34107bae702a7d2bc32a7145ecd1d482951c1fcd1fa16e4e35d75f894b3e",
+    "inputHash": "sha256:98d9f1c33d09b7c2aaf01b334e274a7c1c1b2e8925109cddcead8f61ee4d53c2",
     "generatedAt": "2026-09-07T01:08:02.968Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-interrupters": {
     "narration": {
       "context": "I caught The Interrupters twice, opening at Huntington State Beach in 2018 and headlining The Observatory in 2019.",
       "closingArc": "Two nights, two venues, under six months apart — just a pair of good shows that stayed a pair."
     },
-    "inputHash": "sha256:f6ad0a1b27703b69323757ac22618ca862f7f63ca74095f234857ea0e6771e32",
+    "inputHash": "sha256:f0bcdddbfc46872a2e3e6a4e87d610bc03b29ec1dc7bbce4b3a678a158cd2961",
     "generatedAt": "2026-09-07T01:08:04.999Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "bandits-of-the-acoustic-revolution": {
     "narration": {
       "context": "I only caught Bandits of the Acoustic Revolution once, in 2019 at the Dolby Theatre, and that single night is the whole of what I've got.",
       "closingArc": "No return visits, no other rooms — just one show that came and went."
     },
-    "inputHash": "sha256:a99048490e1b2162e7ee2d9cd09c7214a988c3af6e4e4b7fd3bd29cfdc1ec272",
+    "inputHash": "sha256:1b35a0721b7b14fdd79df84da9b0e37e79525c2dd058e9d5b2e69728f838a684",
     "generatedAt": "2026-09-07T01:08:07.239Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "lenny-kravitz": {
     "narration": {
       "context": "I only caught Lenny Kravitz once, at The Shrine Auditorium in 2019.",
       "closingArc": "Just the one night, no return trip — a single show that stayed a single show."
     },
-    "inputHash": "sha256:6670b3fb423f99ea9d427ed17cec85ecd2c6ed643e32d1d6cdd6773c26a22635",
+    "inputHash": "sha256:f237fb4ffea76e9b04f19cfcd1b55660d074d3f810e96d1cebb1a0c2da32523f",
     "generatedAt": "2026-09-07T01:08:09.193Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-aquabats": {
     "narration": {
       "context": "I only caught The Aquabats! once, in 2021 at Pacific Amphitheatre.",
       "closingArc": "One night, one venue, no repeats — just a single show that stands on its own."
     },
-    "inputHash": "sha256:7d66c649542c69da0066a651c5024f24620ab381c86806d83c057ed626d4b929",
+    "inputHash": "sha256:23112db40e1fd553b78ea7294a15f1ce61506e16b4614f67c6b7c11e5647ffff",
     "generatedAt": "2026-09-07T01:08:11.362Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "future-islands": {
     "narration": {
       "context": "I only caught Future Islands once, at House of Blues Anaheim in 2021, a single night with no prelude and no encore visit.",
       "closingArc": "Sometimes one show is the whole story, and this one stayed exactly that — a single, complete moment I never went back to repeat."
     },
-    "inputHash": "sha256:152256f67be946d9f509eccdd4ae883f6f7549e03b18c1cca3fb9d8f06c84818",
+    "inputHash": "sha256:a32def9ea23507e99c0490742d20cd67661bdebfec3668f929278fd0ed601cac",
     "generatedAt": "2026-09-07T01:08:13.885Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "x": {
     "narration": {
       "context": "I only caught X twice, both times at Pacific Amphitheatre, first in 2022 and again the following year.",
       "closingArc": "A short, tidy history — same band, same stage, two years running, nothing more."
     },
-    "inputHash": "sha256:4f94b75b392ae01c121354e61daeedd4e24986811f96c72c0247dc24cc5de075",
+    "inputHash": "sha256:78163fcc1841b9c960232d97fd20cc7ba2139f7c19894af2760bc2d000d1d81d",
     "generatedAt": "2026-09-07T01:08:15.838Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "culture-club": {
     "narration": {
       "context": "Culture Club only crossed my path once, in 2022, at Pacific Amphitheatre.",
       "closingArc": "One night, one venue, no repeats — just a single show I'm glad I caught."
     },
-    "inputHash": "sha256:afbb6b33a3e9b3b147c71106c88ba3a569d2557b4e86deba3b43fb598c0e484b",
+    "inputHash": "sha256:51ec8d9bef6261348abe2bf87b8c0268adddc0e4dabdbfcd0d467a9baf6c6eff",
     "generatedAt": "2026-09-07T01:08:17.832Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "peter-hook-and-the-light": {
     "narration": {
       "context": "I saw Peter Hook and the Light exactly once, in 2022, at the Theatre at the Ace Hotel.",
       "closingArc": "One night, one room, no repeats — sometimes that's all a show needs to be."
     },
-    "inputHash": "sha256:dc9209916753215e17b2d332574285e50bcb9fcb0332962a22f3c8213cfef1ad",
+    "inputHash": "sha256:92403c25fc4b591700e043673144fe1d80d66241aac37c2feedac5bfc3eadd27",
     "generatedAt": "2026-09-07T01:08:19.988Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "gorillaz": {
     "narration": {
       "context": "I only caught Gorillaz once, in 2022 at YouTube Theatre — a single night, no repeats.",
       "closingArc": "Sometimes one show is the whole story, and this is one of those cases."
     },
-    "inputHash": "sha256:1de905bc0745f412bccbb8ff69b61390c39d392a308e0a04eebaeae4816da3f7",
+    "inputHash": "sha256:56cd151525cfa51d18c6bd1da4e8699b19e48807661ee6daab9d7acd00a564da",
     "generatedAt": "2026-09-07T01:08:22.233Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "heaven-17": {
     "narration": {
       "context": "I caught Heaven 17 exactly once, in 2022 at The Observatory — a single night and nothing more.",
       "closingArc": "No return engagement, just one show that stands alone on its own in the record."
     },
-    "inputHash": "sha256:36ac47532fea26b0ffeac54860c7fb6a8c6bd67437eaefc0c1a5abf4edd9a31c",
+    "inputHash": "sha256:9b4a22cc4507a14f815cc3a1f849dcfad92eca0eefe0e7b1d26b6afc04625c6f",
     "generatedAt": "2026-09-07T01:08:24.388Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "danny-elfman": {
     "narration": {
       "context": "I've only caught Danny Elfman twice — once at the Hollywood Bowl in 2022, then again years later at The Fillmore Silver Spring in 2026.",
       "closingArc": "Two shows, four years apart, on opposite coasts — a rare sighting rather than a habit."
     },
-    "inputHash": "sha256:33dc1e813e0ad88ca25251ebdf1949111e807778b0f79fc0210cbb39da2b9937",
+    "inputHash": "sha256:bdfbf3812f71867267685b512100440c3dc91f509988e6b9c1927be53dfe2a0f",
     "generatedAt": "2026-09-07T01:08:26.435Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "dr-sick": {
     "narration": {
       "context": "I only caught Dr Sick once, at 21st Amendment in 2023, a single night with no history before or since.",
       "closingArc": "Sometimes one show is the whole story, and this is one of those."
     },
-    "inputHash": "sha256:03b8ac4459adb7eab2bc8671b85267c9564a6a4bee56fa6e858593c41a7a501a",
+    "inputHash": "sha256:d90ba27e835894b053c48e104d60aeacd1180368a394aca06e47bf0cfb4f93b6",
     "generatedAt": "2026-09-07T01:08:28.617Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "crowded-house": {
     "narration": {
       "context": "I caught Crowded House twice — first on Peter Gabriel's bill at the Olympic Velodrome in 1993, then headlining The Wiltern in 2023.",
       "closingArc": "Two shows, nearly thirty years apart, and the second one was theirs."
     },
-    "inputHash": "sha256:7731c9fb3126fca5de4fde0f6606386f0f597f155d4d129cc87eed0cd571299f",
+    "inputHash": "sha256:dc961a931b0c3cd9f13c7b8118ae1b0c5d54c7379c9572141f20cc5d9e249454",
     "generatedAt": "2026-09-07T01:08:30.605Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "kasabian": {
     "narration": {
       "context": "I only caught Kasabian once, in 2023 at The Belasco — no long history here, just a single night.",
       "closingArc": "Sometimes one show is the whole story, and this one stayed a single, self-contained memory."
     },
-    "inputHash": "sha256:13fb71cb2fba78f207cb9f0d4e86abc7cca0fc873d0b3757b2e938f5ebdb6639",
+    "inputHash": "sha256:31c6dd8313af758dcd899e9f72d61fdc5a7068ab423523c4794745a6ee25ddbe",
     "generatedAt": "2026-09-07T01:08:32.945Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "umphrey-s-mcgee": {
     "narration": {
       "context": "Umphrey's McGee only crossed my path once, in 2024, when I caught them at the 9:30 Club.",
       "closingArc": "Sometimes one night at one room is the whole story, and this is one of those."
     },
-    "inputHash": "sha256:9b4b704a3cc5aa18dea2d1ab3b0f52e06469e67e47baa35d0ef5281e78f3d2fe",
+    "inputHash": "sha256:bc5411815b3a70ff7adf035f97371d01b9a46498a275ea7ac1108424ee4eee1c",
     "generatedAt": "2026-09-07T01:08:35.061Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "brian-setzer": {
     "narration": {
       "context": "I've caught Brian Setzer seven times under one billing or another, from The Brian Setzer Orchestra at the Hard Rock Cafe in 1995 to The Wiltern in 2024.",
       "closingArc": "Seven shows across nearly twenty-nine years — he stayed a habit, not a one-off."
     },
-    "inputHash": "sha256:b6ac8a9d589be6046d4d6a50132e31f4837abc1c3efda9d72b6c039577bd74eb",
+    "inputHash": "sha256:c583b62e64e79c574decc9304fe5fa788da0b76c25759d5b1dedd76c5d0eb248",
     "generatedAt": "2026-09-07T01:08:37.137Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "cold-war-kids": {
     "narration": {
       "context": "I only caught Cold War Kids once, in 2024 at The Observatory — a single night, nothing more to compare it to.",
       "closingArc": "No history to trace here, just one show that came and went at The Observatory."
     },
-    "inputHash": "sha256:78640a731b162545c95c2747331fd45f3f4a51397bf957b6c82376fa96549be6",
+    "inputHash": "sha256:7911eb7afb1c108ba93b59a4ffac69e1f12e7b6fd532f99cef0cad228927fef0",
     "generatedAt": "2026-09-07T01:08:39.187Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "klangphonics": {
     "narration": {
       "context": "I only caught Klangphonics once, at The Roxy in 2025 — a single date with no history before or since.",
       "closingArc": "Sometimes one night at one room is the whole story, and this is that story."
     },
-    "inputHash": "sha256:5bd4cbe74d7fecee1ebd460d5f5cee3e02e4522db2db78c2d9acd71ea9cbb780",
+    "inputHash": "sha256:165c5698216421c1e35a422e2f242360d5050654c811c2218b9e72b9038744a2",
     "generatedAt": "2026-09-07T01:08:41.504Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "molchat-doma": {
     "narration": {
       "context": "I saw Molchat Doma exactly once, in 2025 at the Hollywood Palladium.",
       "closingArc": "No returns, no repeats — just one night at the Palladium, and that's the whole story so far."
     },
-    "inputHash": "sha256:b0de19e9f5cacf61fec5f056fe547d533339572c12f63ff0df52e8a72a359a9a",
+    "inputHash": "sha256:02360cbb8b8ea0743fd5d3246e930b14e4aaa4661fa6adb750ccd6723840c825",
     "generatedAt": "2026-09-07T01:08:43.516Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "the-black-keys": {
     "narration": {
       "context": "I only caught The Black Keys once, in 2025 at MGM Music Hall at Fenway — no long history here, just the one night.",
       "closingArc": "Sometimes one show is the whole story, and this is one of those times."
     },
-    "inputHash": "sha256:00050d899b8cb2862bb4a6018c14279f52b428f94480879d6172fbf1ef09895a",
+    "inputHash": "sha256:cbd962da9b6374256a347f0d20766698f2ae6ab8495d69f404000e653cdc8828",
     "generatedAt": "2026-09-07T01:08:45.686Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "david-byrne": {
     "narration": {
       "context": "I caught David Byrne exactly once, at the Dolby Theatre in 2025 — a single, recent entry in the archive with no history before it.",
       "closingArc": "Sometimes there's no arc yet, just one night at the Dolby Theatre and the sense that it might be the start of something."
     },
-    "inputHash": "sha256:a6fe2cb9aca98844f091cd313c3bb197ebce570d9a88fad5071d95522516fddb",
+    "inputHash": "sha256:16a3cd559a60421bdf725c300e0d45283d77487124926a7b48cdd9de0a4715cd",
     "generatedAt": "2026-09-07T01:08:48.103Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "nile-rodgers": {
     "narration": {
       "context": "Just one night with Nile Rodgers, at Pacific Amphitheatre in 2026 — my history with him begins and ends right there.",
       "closingArc": "Sometimes one show is the whole story, and this is the one I've got."
     },
-    "inputHash": "sha256:03b7d68786e0805ec9843a4de1b558308e6b7dbefdafa037c955e8b6b49c86e4",
+    "inputHash": "sha256:4ba38d0871d47ce4e693bda200beb155276b2db62fa9d873713cccc0ed6d92cb",
     "generatedAt": "2026-09-07T01:08:50.161Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "pinhead-gunpowder": {
     "narration": {
       "context": "My one night with Pinhead Gunpowder is November 11, 2026, at Garden Amp.",
       "closingArc": "A single date, a single venue, and no other history with them in the archive."
     },
-    "inputHash": "sha256:4659999f55947cb7c6aff86f41ef317cc68cd25d539421c00bc3b499b1aa5038",
+    "inputHash": "sha256:32066e79b95e3617d1bb412d406077d1848986b35aa83fbed88ff6f424de67c2",
     "generatedAt": "2026-09-07T01:08:52.187Z",
-    "promptVersion": 2
+    "promptVersion": 3
   },
   "nick-heyward": {
     "narration": {
       "context": "My one night with Nick Heyward is in March 2027, at Union Stage.",
       "closingArc": "Just the one date, at Union Stage, and nothing before it."
     },
-    "inputHash": "sha256:ff579db83bb03b7ac26f53eac69b553f8e8d34a537528c7e905808348cd1b720",
+    "inputHash": "sha256:4dc30b8b75cb05dfffd13157e7d00861b4ac923982c0458a6a838a7c58a5e420",
     "generatedAt": "2026-10-26T13:59:38.960Z",
-    "promptVersion": 2
+    "promptVersion": 3
   }
 }
