@@ -357,6 +357,88 @@ describe('meta-injector worker', () => {
     })
   })
 
+  describe('pages with no scene of their own', () => {
+    const concerts = { concerts: [{ date: '2026-09-16', year: 2026 }, { date: '1984-04-27', year: 1984 }] }
+
+    function serve() {
+      vi.mocked(fetch).mockImplementation(async (input) => {
+        const url = String(input?.url ?? input)
+        if (url.includes('/data/concerts.json')) return new Response(JSON.stringify(concerts), { status: 200 })
+        return htmlResponse(PAGE)
+      })
+    }
+
+    it('gives /about its own title, not the timeline card', async () => {
+      serve()
+      const body = await (await worker.fetch(req('/about'), {}, ctx)).text()
+      expect(body).toContain('<title>About | Morperhaus Concert Archives</title>')
+      expect(body).toContain('<meta property="twitter:title" content="About | Morperhaus Concert Archives" />')
+      expect(body).toContain('<meta property="twitter:url" content="https://concerts.morperhaus.org/about" />')
+      expect(body).toContain('The story behind 2 concerts across 42+ years.')
+    })
+
+    it('leaves the static /about-mcp page exactly as it was served', async () => {
+      serve()
+      const body = await (await worker.fetch(req('/about-mcp'), {}, ctx)).text()
+      expect(body).toBe(PAGE)
+    })
+  })
+
+  describe('a night with no frame named', () => {
+    const concerts = {
+      concerts: [
+        { date: '2016-09-03', headliner: 'Howard Jones', headlinerNormalized: 'howard-jones', venue: 'The Hamilton', city: 'Washington' },
+      ],
+    }
+    const LINK = '/?scene=artists&artist=howard-jones&show=2016-09-03'
+    const still = { kind: 'image', date: '2016-09-03', url: '/images/shows/a.jpg', subject: 'artist', artistNormalized: 'howard-jones' }
+    const clip = { kind: 'video', date: '2016-09-03', url: 'https://media.morperhaus.org/videos/a.mp4', subject: 'artist', artistNormalized: 'howard-jones' }
+    const room = { kind: 'image', date: '2016-09-03', url: '/images/shows/b.jpg', subject: 'venue', artistNormalized: null }
+    const opener = { ...still, artistNormalized: 'the-opener' }
+    const unpublished = { ...clip, url: null }
+
+    async function description(assets, link = LINK) {
+      vi.mocked(fetch).mockImplementation(async (input) => {
+        const url = String(input?.url ?? input)
+        if (url.includes('/data/concerts.json')) return new Response(JSON.stringify(concerts), { status: 200 })
+        if (url.includes('/data/media-index.json')) return new Response(JSON.stringify({ assets }), { status: 200 })
+        if (url.includes('/data/')) return new Response('{}', { status: 200 })
+        return htmlResponse(PAGE)
+      })
+      const body = await (await worker.fetch(req(link), {}, ctx)).text()
+      return body.match(/<meta name="description" content="([^"]*)"/)[1]
+    }
+
+    it.each([
+      ['stills', [still], 'Photos from Howard Jones'],
+      ['the room alone', [room], 'Photos from Howard Jones'],
+      ['a clip alone', [clip], 'Video from Howard Jones'],
+      ['stills and a clip', [still, clip], 'Photos and video from Howard Jones'],
+    ])('names what the gatefold holds: %s', async (_, assets, lead) => {
+      expect(await description(assets)).toContain(lead)
+    })
+
+    it('does not promise another act\'s frames', async () => {
+      expect(await description([opener])).toContain('The setlist from')
+    })
+
+    it('does not count a clip that was never published', async () => {
+      expect(await description([unpublished])).toContain('The setlist from')
+    })
+
+    it('keeps the setlist line when the media index will not load', async () => {
+      vi.mocked(fetch).mockImplementation(async (input) => {
+        const url = String(input?.url ?? input)
+        if (url.includes('/data/concerts.json')) return new Response(JSON.stringify(concerts), { status: 200 })
+        if (url.includes('/data/media-index.json')) return new Response('nope', { status: 200 })
+        if (url.includes('/data/')) return new Response('{}', { status: 200 })
+        return htmlResponse(PAGE)
+      })
+      const body = await (await worker.fetch(req(LINK), {}, ctx)).text()
+      expect(body).toContain('The setlist from Howard Jones')
+    })
+  })
+
   describe('artist meta counts billings, not headliners', () => {
     // The one exception to the "content is deliberately under-tested" rule at the
     // top of this file. A wrong count is not a card that degrades — it is a card

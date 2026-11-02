@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://concerts.morperhaus.org/</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=timeline</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=ask</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=venues</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=geography</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=genres</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -1336,31 +1336,108 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=thompson-twins&amp;show=2026-09-16</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-05.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-06.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-07.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-08.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-09.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-10.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-thompson-twins-11.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-venue-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-venue-02.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=blancmange&amp;show=2026-09-16</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-blancmange-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-blancmange-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-16-blancmange-04.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=danny-elfman&amp;show=2026-09-14</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-05.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-06.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-07.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-08.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=nile-rodgers&amp;show=2026-07-31</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-05.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-06.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-07.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-08.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-09.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-10.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-human-league&amp;show=2026-06-04</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-05.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-06.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-07.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-08.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-09.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-10.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-11.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-12.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-13.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-14.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-15.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-16.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-the-human-league-17.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-venue-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-venue-02.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=alison-moyet&amp;show=2026-06-04</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-alison-moyet-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-alison-moyet-04.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=soft-cell&amp;show=2026-06-04</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-soft-cell-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2026-06-04-soft-cell-02.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=david-byrne&amp;show=2025-11-20</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-11-20-david-byrne-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-11-20-david-byrne-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-11-20-david-byrne-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-11-20-david-byrne-05.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-black-keys&amp;show=2025-08-16</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-08-16-the-black-keys-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-08-16-venue-01.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-clark-jr&amp;show=2025-08-16</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-08-16-gary-clark-jr-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=molchat-doma&amp;show=2025-03-07</loc>
@@ -1371,11 +1448,15 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=klangphonics&amp;show=2025-03-01</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2025-03-01-klangphonics-02.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2024-12-06</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-12-06-social-distortion-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-12-06-social-distortion-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-12-06-social-distortion-03.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=cold-war-kids&amp;show=2024-11-16</loc>
@@ -1386,11 +1467,29 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=howard-jones&amp;show=2024-08-20</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-08-20-howard-jones-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-08-20-howard-jones-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-08-20-howard-jones-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-08-20-howard-jones-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-08-20-howard-jones-05.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=haircut-100&amp;show=2024-08-20</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-08-20-haircut-100-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-08-20-haircut-100-02.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=abc&amp;show=2024-08-20</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=brian-setzer&amp;show=2024-02-27</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2024-02-27-brian-setzer-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=umphrey-s-mcgee&amp;show=2024-02-15</loc>
@@ -1401,66 +1500,110 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=kasabian&amp;show=2023-11-22</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-22-kasabian-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-22-kasabian-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-22-kasabian-05.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-22-kasabian-06.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=devo&amp;show=2023-11-16</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-16-devo-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-16-devo-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-16-devo-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-11-16-devo-04.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=streetlight-manifesto&amp;show=2023-09-23</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-09-23-venue-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=x&amp;show=2023-07-30</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-30-x-01.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-english-beat&amp;show=2023-07-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-30-the-english-beat-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=ub40&amp;show=2023-07-21</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-21-ub40-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foals&amp;show=2023-07-18</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-18-foals-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-18-foals-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-18-foals-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-18-foals-05.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-18-foals-06.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-18-venue-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-07-18-venue-02.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-cure&amp;show=2023-05-24</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-24-the-cure-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-24-the-cure-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-24-the-cure-04.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-24-the-cure-05.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=crowded-house&amp;show=2023-05-09</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-09-crowded-house-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-09-crowded-house-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-09-crowded-house-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-09-venue-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-09-venue-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-05-09-venue-03.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=depeche-mode&amp;show=2023-03-28</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2023-03-28-depeche-mode-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2022-12-08</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2022-12-08-social-distortion-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foals&amp;show=2022-11-16</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2022-11-16-venue-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=danny-elfman&amp;show=2022-10-28</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2022-10-28-danny-elfman-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=new-order&amp;show=2022-10-07</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=pet-shop-boys&amp;show=2022-10-07</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2022-10-07-pet-shop-boys-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=heaven-17&amp;show=2022-10-01</loc>
@@ -1491,6 +1634,7 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=joe-jackson&amp;show=2022-06-10</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2022-06-10-venue-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=tears-for-fears&amp;show=2022-06-04</loc>
@@ -1526,6 +1670,8 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=garbage&amp;show=2019-05-16</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2019-05-16-garbage-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2019-05-16-garbage-02.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-interrupters&amp;show=2019-04-14</loc>
@@ -1541,11 +1687,21 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=streetlight-manifesto&amp;show=2018-11-03</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2018-11-03-streetlight-manifesto-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=social-distortion&amp;show=2018-10-28</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2018-10-28-social-distortion-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2018-10-28-social-distortion-02.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bad-religion&amp;show=2018-10-28</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2018-10-28-bad-religion-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2018-10-28-bad-religion-02.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-numan&amp;show=2018-09-21</loc>
@@ -1556,6 +1712,7 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=stray-cats&amp;show=2018-08-17</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2018-08-17-stray-cats-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=u2&amp;show=2018-06-17</loc>
@@ -1566,6 +1723,7 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-human-league&amp;show=2018-05-12</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2018-05-12-the-human-league-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=beck&amp;show=2018-04-27</loc>
@@ -1576,11 +1734,13 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-numan&amp;show=2017-12-09</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-12-09-gary-numan-02.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-brian-setzer-orchestra&amp;show=2017-11-25</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=colin-hay&amp;show=2017-10-21</loc>
@@ -1591,16 +1751,23 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foo-fighters&amp;show=2017-10-12</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-10-12-foo-fighters-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-10-12-foo-fighters-02.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bat-fangs&amp;show=2017-10-08</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-10-08-bat-fangs-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-10-08-venue-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-10-08-venue-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-10-08-venue-03.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=alison-moyet&amp;show=2017-09-11</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-09-11-alison-moyet-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=blondie&amp;show=2017-08-03</loc>
@@ -1616,6 +1783,7 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=royal-blood&amp;show=2017-06-06</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2017-06-06-royal-blood-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=midnight-oil&amp;show=2017-05-09</loc>
@@ -1626,6 +1794,14 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-roots&amp;show=2016-09-24</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=howard-jones&amp;show=2016-09-03</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2016-09-03-howard-jones-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2016-09-03-howard-jones-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2016-09-03-venue-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-smithereens&amp;show=2016-08-26</loc>
@@ -1651,6 +1827,14 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foo-fighters&amp;show=2015-07-04</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2015-07-04-foo-fighters-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2015-07-04-venue-01.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=trouble-funk&amp;show=2015-07-04</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2015-07-04-trouble-funk-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=snarky-puppy&amp;show=2015-06-15</loc>
@@ -1683,6 +1867,25 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bad-religion&amp;show=2014-07-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2014-07-30-bad-religion-01.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=pennywise&amp;show=2014-07-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2014-07-30-pennywise-01.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-vandals&amp;show=2014-07-30</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2014-07-30-the-vandals-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2014-07-30-the-vandals-02.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=snarky-puppy&amp;show=2014-06-25</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
@@ -1691,21 +1894,32 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=berlin&amp;show=2014-05-02</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2014-05-02-berlin-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2014-05-02-venue-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=kraftwerk&amp;show=2014-04-04</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2014-04-04-kraftwerk-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-numan&amp;show=2013-10-27</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2013-10-27-gary-numan-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=rancid&amp;show=2013-06-19</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2013-06-19-rancid-01.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=transplants&amp;show=2013-06-19</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2013-06-19-transplants-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=garbage&amp;show=2013-03-24</loc>
@@ -1728,9 +1942,25 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=howard-jones&amp;show=2012-07-05</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2012-07-05-howard-jones-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2012-07-05-howard-jones-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2012-07-05-venue-01.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-cult&amp;show=2012-06-12</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2012-06-12-the-cult-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2012-06-12-the-cult-02.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=against-me&amp;show=2012-06-12</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2012-06-12-against-me-01.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=red-hot-chili-peppers&amp;show=2012-05-10</loc>
@@ -1741,6 +1971,21 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=squeeze&amp;show=2012-04-27</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-dollyrots&amp;show=2011-06-10</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2011-06-10-the-dollyrots-01.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-dollyrots&amp;show=2011-05-06</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2011-05-06-the-dollyrots-01.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2011-05-06-the-dollyrots-02.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2011-05-06-the-dollyrots-03.jpg</image:loc></image:image>
+    <image:image><image:loc>https://concerts.morperhaus.org/images/shows/2011-05-06-the-dollyrots-04.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=bad-religion&amp;show=2011-04-26</loc>
@@ -1921,6 +2166,270 @@
     <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=thompson-twins&amp;show=1984-05-12</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=blancmange&amp;show=2026-09-16&amp;photo=blancmange-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-09-16-blancmange-01.jpg?v=d5642b2a1f78</video:thumbnail_loc>
+      <video:title>Blancmange: Blind Vision</video:title>
+      <video:description>Blancmange playing &quot;Blind Vision&quot; at Pavilion Theatre, Glasgow, UK on September 16, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-09-16-blancmange-01.mp4?v=8bdf0c48b8e3</video:content_loc>
+      <video:duration>17</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=blancmange&amp;show=2026-09-16&amp;photo=blancmange-02-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-09-16-blancmange-02.jpg?v=92a97449436a</video:thumbnail_loc>
+      <video:title>Blancmange: Don&apos;t Tell Me</video:title>
+      <video:description>Blancmange playing &quot;Don&apos;t Tell Me&quot; at Pavilion Theatre, Glasgow, UK on September 16, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-09-16-blancmange-02.mp4?v=040ae99fc96d</video:content_loc>
+      <video:duration>33</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=thompson-twins&amp;show=2026-09-16&amp;photo=thompson-twins-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-09-16-thompson-twins-01.jpg?v=850f91cd21c0</video:thumbnail_loc>
+      <video:title>Thompson Twins: Lies</video:title>
+      <video:description>Thompson Twins playing &quot;Lies&quot; at Pavilion Theatre, Glasgow, UK on September 16, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-09-16-thompson-twins-01.mp4?v=760e809c7035</video:content_loc>
+      <video:duration>40</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=thompson-twins&amp;show=2026-09-16&amp;photo=thompson-twins-02-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-09-16-thompson-twins-02.jpg?v=e300378077c2</video:thumbnail_loc>
+      <video:title>Thompson Twins: In the Name of Love</video:title>
+      <video:description>Thompson Twins playing &quot;In the Name of Love&quot; at Pavilion Theatre, Glasgow, UK on September 16, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-09-16-thompson-twins-02.mp4?v=048f3f9a1c60</video:content_loc>
+      <video:duration>22</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=danny-elfman&amp;show=2026-09-14&amp;photo=danny-elfman-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-09-14-danny-elfman-01.jpg?v=6693f7db1572</video:thumbnail_loc>
+      <video:title>Danny Elfman: Nothing to Fear (But Fear Itself)</video:title>
+      <video:description>Danny Elfman playing &quot;Nothing to Fear (But Fear Itself)&quot; at The Fillmore Silver Spring, Silver Spring, Maryland on September 14, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-09-14-danny-elfman-01.mp4?v=b73d359ebeb9</video:content_loc>
+      <video:duration>20</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=danny-elfman&amp;show=2026-09-14&amp;photo=danny-elfman-02-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-09-14-danny-elfman-02.jpg?v=ca0116c67dd5</video:thumbnail_loc>
+      <video:title>Danny Elfman: Only a Lad</video:title>
+      <video:description>Danny Elfman playing &quot;Only a Lad&quot; at The Fillmore Silver Spring, Silver Spring, Maryland on September 14, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-09-14-danny-elfman-02.mp4?v=59be8af924ce</video:content_loc>
+      <video:duration>55</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=nile-rodgers&amp;show=2026-07-31&amp;photo=nile-rodgers-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-01.jpg?v=e58b3e91e731</video:thumbnail_loc>
+      <video:title>Nile Rodgers: Good Times / Jam / Rapper&apos;s Delight</video:title>
+      <video:description>Nile Rodgers playing &quot;Good Times / Jam / Rapper&apos;s Delight&quot; at Pacific Amphitheatre, Costa Mesa, California on July 31, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-07-31-nile-rodgers-01.mp4?v=ca90d149198a</video:content_loc>
+      <video:duration>17</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=nile-rodgers&amp;show=2026-07-31&amp;photo=nile-rodgers-02-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-02.jpg?v=5204b5201dc2</video:thumbnail_loc>
+      <video:title>Nile Rodgers: China Girl</video:title>
+      <video:description>Nile Rodgers playing &quot;China Girl&quot; at Pacific Amphitheatre, Costa Mesa, California on July 31, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-07-31-nile-rodgers-02.mp4?v=0016c2a1e979</video:content_loc>
+      <video:duration>16</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=nile-rodgers&amp;show=2026-07-31&amp;photo=nile-rodgers-03-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-07-31-nile-rodgers-03.jpg?v=d53230ae5acd</video:thumbnail_loc>
+      <video:title>Nile Rodgers: Get Lucky</video:title>
+      <video:description>Nile Rodgers playing &quot;Get Lucky&quot; at Pacific Amphitheatre, Costa Mesa, California on July 31, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-07-31-nile-rodgers-03.mp4?v=b0ee40a3c87a</video:content_loc>
+      <video:duration>26</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=alison-moyet&amp;show=2026-06-04&amp;photo=alison-moyet-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-06-04-alison-moyet-01.jpg?v=d4070086fe1c</video:thumbnail_loc>
+      <video:title>Alison Moyet: Nobody&apos;s Diary</video:title>
+      <video:description>Alison Moyet playing &quot;Nobody&apos;s Diary&quot; at Hollywood Bowl, Hollywood, California on June 4, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-06-04-alison-moyet-01.mp4?v=2d2fdcf10047</video:content_loc>
+      <video:duration>36</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=alison-moyet&amp;show=2026-06-04&amp;photo=alison-moyet-02-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-06-04-alison-moyet-02.jpg?v=13ad523d6e12</video:thumbnail_loc>
+      <video:title>Alison Moyet: Don&apos;t Go</video:title>
+      <video:description>Alison Moyet playing &quot;Don&apos;t Go&quot; at Hollywood Bowl, Hollywood, California on June 4, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-06-04-alison-moyet-02.mp4?v=9a8ff560b9bd</video:content_loc>
+      <video:duration>21</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-human-league&amp;show=2026-06-04&amp;photo=the-human-league-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2026-06-04-the-human-league-01.jpg?v=e296a66bcde5</video:thumbnail_loc>
+      <video:title>The Human League: Seconds</video:title>
+      <video:description>The Human League playing &quot;Seconds&quot; at Hollywood Bowl, Hollywood, California on June 4, 2026. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2026-06-04-the-human-league-01.mp4?v=83fde13d84e4</video:content_loc>
+      <video:duration>31</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=david-byrne&amp;show=2025-11-20&amp;photo=david-byrne-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2025-11-20-david-byrne-01.jpg?v=e8d3fb73cba5</video:thumbnail_loc>
+      <video:title>David Byrne: This Must Be the Place (Naive Melody)</video:title>
+      <video:description>David Byrne playing &quot;This Must Be the Place (Naive Melody)&quot; at Dolby Theatre, Hollywood, California on November 20, 2025. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2025-11-20-david-byrne-01.mp4?v=3081a3adcdf9</video:content_loc>
+      <video:duration>38</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=klangphonics&amp;show=2025-03-01&amp;photo=klangphonics-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2025-03-01-klangphonics-01.jpg?v=fbc6694d4fd2</video:thumbnail_loc>
+      <video:title>Klangphonics: Holocene</video:title>
+      <video:description>Klangphonics playing &quot;Holocene&quot; at The Roxy, Hollywood, California on March 1, 2025. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2025-03-01-klangphonics-01.mp4?v=b88393d508cd</video:content_loc>
+      <video:duration>14</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=abc&amp;show=2024-08-20&amp;photo=abc-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2024-08-20-abc-01.jpg?v=5d8c8364a622</video:thumbnail_loc>
+      <video:title>ABC: Poison Arrow</video:title>
+      <video:description>ABC playing &quot;Poison Arrow&quot; at YouTube Theatre, Inglewood, California on August 20, 2024. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2024-08-20-abc-01.mp4?v=7aa7bfeb2bfc</video:content_loc>
+      <video:duration>15</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=haircut-100&amp;show=2024-08-20&amp;photo=haircut-100-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2024-08-20-haircut-100-01.jpg?v=551e4125ee9c</video:thumbnail_loc>
+      <video:title>Haircut 100: Love Plus One</video:title>
+      <video:description>Haircut 100 playing &quot;Love Plus One&quot; at YouTube Theatre, Inglewood, California on August 20, 2024. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2024-08-20-haircut-100-01.mp4?v=d4dcd0d7a0b0</video:content_loc>
+      <video:duration>29</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=kasabian&amp;show=2023-11-22&amp;photo=kasabian-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2023-11-22-kasabian-01.jpg?v=662f700fb190</video:thumbnail_loc>
+      <video:title>Kasabian: Empire</video:title>
+      <video:description>Kasabian playing &quot;Empire&quot; at The Belasco, Los Angeles, California on November 22, 2023. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2023-11-22-kasabian-01.mp4?v=055f567b41f0</video:content_loc>
+      <video:duration>20</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=kasabian&amp;show=2023-11-22&amp;photo=kasabian-02-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2023-11-22-kasabian-02.jpg?v=e5c100dd9a40</video:thumbnail_loc>
+      <video:title>Kasabian: You&apos;re in Love With a Psycho</video:title>
+      <video:description>Kasabian playing &quot;You&apos;re in Love With a Psycho&quot; at The Belasco, Los Angeles, California on November 22, 2023. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2023-11-22-kasabian-02.mp4?v=213013513466</video:content_loc>
+      <video:duration>31</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=foals&amp;show=2023-07-18&amp;photo=foals-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2023-07-18-foals-01.jpg?v=5e7430ff2d57</video:thumbnail_loc>
+      <video:title>Foals: What Went Down</video:title>
+      <video:description>Foals playing &quot;What Went Down&quot; at The Belasco, Los Angeles, California on July 18, 2023. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2023-07-18-foals-01.mp4?v=a5bb9ead92c7</video:content_loc>
+      <video:duration>49</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=the-cure&amp;show=2023-05-24&amp;photo=the-cure-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2023-05-24-the-cure-01.jpg?v=68162650b9b5</video:thumbnail_loc>
+      <video:title>The Cure: A Forest</video:title>
+      <video:description>The Cure playing &quot;A Forest&quot; at Hollywood Bowl, Hollywood, California on May 24, 2023. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2023-05-24-the-cure-01.mp4?v=b536b9b0c722</video:content_loc>
+      <video:duration>30</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=gary-numan&amp;show=2017-12-09&amp;photo=gary-numan-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2017-12-09-gary-numan-01.jpg?v=19ec23f0087f</video:thumbnail_loc>
+      <video:title>Gary Numan: The Fall</video:title>
+      <video:description>Gary Numan playing &quot;The Fall&quot; at 9:30 Club, Washington, District of Columbia on December 9, 2017. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2017-12-09-gary-numan-01.mp4?v=89bf14e48f3f</video:content_loc>
+      <video:duration>30</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/?scene=artists&amp;artist=howard-jones&amp;show=2016-09-03&amp;photo=howard-jones-01-video</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://media.morperhaus.org/posters/2016-09-03-howard-jones-01.jpg?v=87cf5c8b2ebe</video:thumbnail_loc>
+      <video:title>Howard Jones: The Human Touch</video:title>
+      <video:description>Howard Jones playing &quot;The Human Touch&quot; at The Hamilton Live, Washington, District of Columbia on September 3, 2016. Filmed by Mike Morper.</video:description>
+      <video:content_loc>https://media.morperhaus.org/videos/2016-09-03-howard-jones-01.mp4?v=a9edc1c3deae</video:content_loc>
+      <video:duration>15</video:duration>
+    </video:video>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/?scene=venues&amp;venue=pacific-amphitheatre</loc>
@@ -2724,373 +3233,373 @@
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes.xml</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/concert-150-my-150th-show</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/gwen-stefani-walked-on-for-the-brian-setzer-orchestra</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/thompson-twins-in-1984-what-was-in-the-air</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/ziggy-marley-17-4-years-before-love-is-my-religion</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/garbage-17-songs-from-the-album-that-shares-their-name-live</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/3-concerts-in-12-days</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/social-distortion-1-4-years-before-born-to-kill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/notorious-nile-rodgers-and-duran-duran-39-years-apart</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/july-31-40-years-since-the-art-of-noise</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/pacific-amphitheatre-16-shows-over-5-decades-2</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/july-16-40-years-since-beach-boys</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/house-of-blues-anaheim-6-shows-over-3-decades-2</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/june-21-35-years-since-jimmy-buffett</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/no-doubt-caught-once-never-again</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/run-dmc-caught-once-never-again</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/sting-days-after-nevermind-dropped</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/april-15-40-years-since-blancmange</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/april-12-40-years-since-the-alarm</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-22-years-of-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/march-22-13-years-since-bad-religion</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/blancmange-caught-once-never-again</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/march-23-21-years-since-social-distortion</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/tears-for-fears-17-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/erasure-days-before-violator-dropped</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/echo-and-the-bunnymen-26-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/bruce-springsteen-caught-once-never-again</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/ub40-35-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-a-jazz-blues-outlier-in-a-rock-electronic-reggae-arch</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-days-after-the-bends-dropped</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/social-distortion-14-more-2018-festival-bill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/depeche-mode-18-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/universal-amphitheater-5-shows-before-it-was-demolished</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-cure-14-more-2003-festival-bill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/howard-jones-17-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/irvine-meadows-16-shows-before-it-was-demolished</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/peter-gabriel-11-more-1993-festival-bill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/new-order-37-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/billy-idol-caught-once-never-again</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/thompson-twins-in-1984-the-year-of-1984-los-angeles-summer-olympics</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/duran-duran-21-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/stryper-caught-once-never-again</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-human-league-8-more-2018-festival-bill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-smithereens-21-years-between-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/wham-caught-once-never-again</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/foo-fighters-9-more-2015-festival-bill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/depeche-mode-38-years-of-shows-2</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/howard-jones-39-years-of-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/maxi-priest-6-more-1991-festival-bill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/social-distortion-34-years-of-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/oingo-boingo-5-more-1987-festival-bill</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/crowded-house-from-opener-to-headliner</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/my-west-coast-chapter-26-concerts-over-11-years</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/squeeze-from-opener-to-headliner</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/tears-for-fears-37-years-of-shows</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/universal-amphitheater-5-shows-over-3-decades</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/irvine-meadows-16-shows-over-3-decades</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/liner-notes/kia-forum-5-shows-over-3-decades</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/how-it-works</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://concerts.morperhaus.org/about-mcp</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

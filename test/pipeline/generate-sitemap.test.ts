@@ -229,6 +229,154 @@ describe('generate-sitemap.ts', () => {
     })
   })
 
+  // A show's stills and clips only reach image and video search if the sitemap names them, and a
+  // night with media but no setlist would otherwise never be listed at all.
+  describe('Media entries', () => {
+    const headlinerStill = {
+      kind: 'image',
+      url: '/images/shows/2023-08-20-new-order-01.jpg',
+      date: '2023-08-20',
+      artist: 'New Order',
+      artistNormalized: 'new-order',
+      subject: 'artist',
+    }
+    const room = {
+      kind: 'image',
+      url: '/images/shows/2023-08-20-venue-01.jpg',
+      date: '2023-08-20',
+      artist: null,
+      artistNormalized: null,
+      subject: 'venue',
+    }
+    const openerStill = {
+      kind: 'image',
+      url: '/images/shows/2023-08-20-pet-shop-boys-01.jpg',
+      date: '2023-08-20',
+      artist: 'Pet Shop Boys',
+      artistNormalized: 'pet-shop-boys',
+      subject: 'artist',
+    }
+    const clip = {
+      kind: 'video',
+      url: 'https://media.morperhaus.org/videos/2023-08-20-new-order-01.mp4?v=abc&x=1',
+      date: '2023-08-20',
+      artist: 'New Order',
+      artistNormalized: 'new-order',
+      subject: 'artist',
+      duration: 14.6,
+      poster: 'https://media.morperhaus.org/posters/2023-08-20-new-order-01.jpg?v=def',
+      song: 'Blue Monday',
+    }
+    const concerts = {
+      concerts: mockConcertsData.concerts.map((c) =>
+        c.id === 'concert-3' ? { ...c, headliner: 'New Order', venue: '9:30 Club', cityState: 'Washington, DC' } : c,
+      ),
+    }
+    const CARD = '2023-08-20-new-order-01-video.jpg'
+
+    // clearAllMocks keeps an implementation, and every suite after this one reads a fixed file list.
+    afterEach(() => {
+      ;(fs as any).existsSync.mockImplementation(() => false)
+    })
+
+    async function sitemapWith(assets: unknown[], { card = true, cardName = CARD, aliases = null as unknown } = {}) {
+      const mockFs = fs as any
+      const present = (p: string) =>
+        p.includes('media-index.json') || (aliases !== null && p.includes('artist-aliases.json')) || (card && p.includes(cardName))
+      mockFs.existsSync.mockImplementation(present)
+      mockFs.readFileSync.mockImplementation((filePath: string) => {
+        if (filePath.includes('media-index.json')) return JSON.stringify({ assets })
+        if (filePath.includes('artist-aliases.json')) return JSON.stringify(aliases)
+        if (filePath.includes('concerts.json')) return JSON.stringify(concerts)
+        if (filePath.includes('artists-metadata.json')) return JSON.stringify(mockArtistsData)
+        if (filePath.includes('venues-metadata.json')) return JSON.stringify(mockVenuesData)
+        throw new Error('File not found')
+      })
+      let xml = ''
+      mockFs.writeFileSync.mockImplementation((_: string, content: string) => {
+        xml = content
+      })
+      const { generateSitemap } = await import('../../scripts/generate-sitemap')
+      await generateSitemap()
+      return xml
+    }
+
+    const entryFor = (xml: string, loc: string) => xml.split('<url>').find((chunk) => chunk.includes(`<loc>${loc}</loc>`))
+    const SHOW = 'https://concerts.morperhaus.org/?scene=artists&amp;artist=new-order&amp;show=2023-08-20'
+    const OPENER_SHOW = 'https://concerts.morperhaus.org/?scene=artists&amp;artist=pet-shop-boys&amp;show=2023-08-20'
+    const CLIP = `${SHOW}&amp;photo=new-order-01-video`
+
+    it('declares the image and video namespaces', async () => {
+      const xml = await sitemapWith([])
+      expect(xml).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"')
+      expect(xml).toContain('xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"')
+    })
+
+    it('lists a night with media and no setlist', async () => {
+      const xml = await sitemapWith([headlinerStill])
+      expect(entryFor(xml, SHOW)).toContain(
+        '<image:loc>https://concerts.morperhaus.org/images/shows/2023-08-20-new-order-01.jpg</image:loc>',
+      )
+    })
+
+    it('puts the room on the headliner and an opener on its own page', async () => {
+      const xml = await sitemapWith([room, openerStill])
+      expect(entryFor(xml, SHOW)).toContain('2023-08-20-venue-01.jpg')
+      expect(entryFor(xml, SHOW)).not.toContain('pet-shop-boys-01.jpg')
+      expect(entryFor(xml, OPENER_SHOW)).toContain('pet-shop-boys-01.jpg')
+    })
+
+    it('files an aliased billing under the headliner it merges with', async () => {
+      const xml = await sitemapWith(
+        [{ ...headlinerStill, artistNormalized: 'new-order-live' }],
+        { aliases: { sameAct: [{ canonical: 'new-order', billings: ['new-order', 'new-order-live'] }] } },
+      )
+      expect(entryFor(xml, SHOW)).toContain('2023-08-20-new-order-01.jpg')
+      expect(xml).not.toContain('artist=new-order-live')
+    })
+
+    it('gives a clip its own URL with a complete video block', async () => {
+      const entry = entryFor(await sitemapWith([clip]), CLIP)
+      expect(entry).toContain('<video:title>New Order: Blue Monday</video:title>')
+      expect(entry).toContain(
+        '<video:description>New Order playing &quot;Blue Monday&quot; at 9:30 Club, Washington, DC on August 20, 2023. Filmed by Mike Morper.</video:description>',
+      )
+      expect(entry).toContain('<video:thumbnail_loc>https://media.morperhaus.org/posters/2023-08-20-new-order-01.jpg?v=def</video:thumbnail_loc>')
+      expect(entry).toContain('<video:content_loc>https://media.morperhaus.org/videos/2023-08-20-new-order-01.mp4?v=abc&amp;x=1</video:content_loc>')
+      expect(entry).toContain('<video:duration>15</video:duration>')
+    })
+
+    it('credits the act on the clip, never the headliner', async () => {
+      const opener = {
+        ...clip,
+        url: 'https://media.morperhaus.org/videos/2023-08-20-pet-shop-boys-01.mp4',
+        artist: 'Pet Shop Boys',
+        artistNormalized: 'pet-shop-boys',
+        song: null,
+      }
+      const xml = await sitemapWith([opener], { cardName: '2023-08-20-pet-shop-boys-01-video.jpg' })
+      expect(xml).toContain('<video:title>Pet Shop Boys, August 20, 2023</video:title>')
+      expect(xml).toContain('artist=pet-shop-boys&amp;show=2023-08-20&amp;photo=pet-shop-boys-01-video')
+    })
+
+    it('leaves out a clip with no share image, whose link names its show as canonical', async () => {
+      const xml = await sitemapWith([clip], { card: false })
+      expect(xml).not.toContain('photo=')
+      expect(xml).not.toContain('<video:video>')
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('1 skipped'))
+    })
+
+    it('leaves out media that was never published', async () => {
+      const xml = await sitemapWith([{ ...clip, url: null }, { ...headlinerStill, url: null }])
+      expect(xml).not.toContain('show=2023-08-20')
+    })
+
+    it('counts every URL it wrote', async () => {
+      const xml = await sitemapWith([clip])
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining(`Total URLs: ${xml.split('<url>').length - 1}`))
+    })
+  })
+
   describe('URL Generation', () => {
     it('should generate homepage URL with priority 1.0', async () => {
       const mockFs = fs as any
@@ -813,7 +961,7 @@ describe('generate-sitemap.ts', () => {
 
       expect(writtenXml).toMatch(/^<\?xml version="1\.0" encoding="UTF-8"\?>/)
       expect(writtenXml).toContain(
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
       )
       expect(writtenXml).toContain('</urlset>')
     })
