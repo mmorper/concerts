@@ -326,6 +326,13 @@ describe('meta-injector worker', () => {
       expect(await headOf(path)).toContain(canonical(`${SITE}${path}`))
     })
 
+    it('gives the Ask scene its own title, not the timeline card', async () => {
+      const body = await headOf('/?scene=ask')
+      expect(body).toContain('<title>Ask the Archive | Morperhaus Concert Archives</title>')
+      expect(body).toContain('property="og:title" content="Ask the Archive | Morperhaus Concert Archives"')
+      expect(body).toContain(canonical(`${SITE}/?scene=ask`))
+    })
+
     it('leaves the homepage canonical on the homepage', async () => {
       expect(await headOf('/')).toContain(canonical(`${SITE}/`))
     })

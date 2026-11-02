@@ -10,8 +10,8 @@
   },
   "thompson-twins": {
     "narration": {
-      "context": "I only caught Thompson Twins three times, but the story starts in 1984 at Irvine Meadows, where I saw them twice that same year, and doesn't pick up again until a lone show at Pavilion Theatre in 2026.",
-      "closingArc": "Forty-two years between the last Irvine Meadows date and Pavilion Theatre — I didn't expect that gap to ever close, but it did."
+      "context": "I only caught Thompson Twins three times: at Irvine Meadows in 1984 and again in 1985, and then not until a show at Pavilion Theatre in 2026.",
+      "closingArc": "Forty-one years between the last Irvine Meadows date and Pavilion Theatre — I didn't expect that gap to ever close, but it did."
     },
     "inputHash": "sha256:8add27f617ca2d20c41c0e5636d1e4b0b8c8a41abbefae81ec0a57a17751cbd0",
     "generatedAt": "2026-09-07T01:04:59.660Z",

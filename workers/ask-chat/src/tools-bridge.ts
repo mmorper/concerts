@@ -333,8 +333,8 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
     case "get_archive_info": {
       const data = await getConcerts(e, bgCtx);
       if (!data) return { text: DATA_UNAVAILABLE };
-      const facts = await getFacts(e, bgCtx);
-      return { text: archiveInfo(data.concerts, facts) }; // plain
+      const [facts, aliasData] = await Promise.all([getFacts(e, bgCtx), getArtistAliases(e, bgCtx)]);
+      return { text: archiveInfo(data.concerts, facts, buildAliasIndex(aliasData)) }; // plain
     }
 
     case "search_concerts": {
