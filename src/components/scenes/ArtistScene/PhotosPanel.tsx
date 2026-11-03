@@ -18,7 +18,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, Link2, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Share, X } from 'lucide-react'
 import { usePhotoViewer } from '../../ask/AskMedia'
 import {
   bylineDate,
@@ -109,7 +109,6 @@ export function PhotosPanel({
   const { share, status: shareStatus } = useShareLink({
     url: item ? absoluteUrl(photoDeepLink(artistSlug, concert.date, mediaId(item))) : '',
     title: `${artistName} at ${concert.venue}`,
-    isPhone,
     analyticsEvent: {
       name: 'photo_link_shared',
       params: mediaParams
@@ -165,10 +164,10 @@ export function PhotosPanel({
           onClick={share}
           className={OVERLAY_BUTTON}
           style={{ background: CHIP_BACKGROUND }}
-          aria-label={`Copy link to this ${isClip(item) ? 'video' : 'photo'}`}
-          title="Copy link"
+          aria-label={`Share this ${isClip(item) ? 'video' : 'photo'}`}
+          title="Share"
         >
-          <Link2 size={18} />
+          <Share size={18} />
         </button>
         {(shareStatus === 'copied' || shareStatus === 'error') && (
           <div

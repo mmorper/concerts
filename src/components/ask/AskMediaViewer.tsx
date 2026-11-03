@@ -11,6 +11,7 @@
 //   • a night of several: a bar with the place and the count, the stage, the credits, a strip
 
 import { useEffect, useRef } from 'react'
+import { Share } from 'lucide-react'
 import { useMediaReel } from '@/hooks/useMediaReel'
 import { useShareLink } from '@/hooks/useShareLink'
 import { absoluteUrl, setlistDeepLink } from '@/utils/deepLinks'
@@ -35,7 +36,6 @@ import {
 } from './media'
 
 const SWIPE_THRESHOLD = 40
-const isPhoneWidth = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 767px)').matches
 
 function BackButton({ onClose, buttonRef }: { onClose: () => void; buttonRef: React.RefObject<HTMLButtonElement> }) {
   return (
@@ -49,13 +49,6 @@ function BackButton({ onClose, buttonRef }: { onClose: () => void; buttonRef: Re
   )
 }
 
-function ShareMark() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M8 10V2M5 5l3-3 3 3M3 9v4h10V9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
 
 function Thumb({ item, current, onPick }: { item: ReelItem; current: boolean; onPick: () => void }) {
   const fallback = <DerivedArt name={item.artist ?? 'The room'} color={DEFAULT_GENRE_COLOR} />
@@ -99,7 +92,6 @@ export function AskMediaViewer({ viewer, archive, onClose }: { viewer: AskViewer
   const { share, status } = useShareLink({
     url: item ? absoluteUrl(frameLink(item, headliner)) : '',
     title: night ? `${title} at ${night.venue}` : title,
-    isPhone: isPhoneWidth(),
     analyticsEvent: { name: 'photo_link_shared', params: { ...mediaParams, surface: 'ask' } },
   })
 
@@ -145,7 +137,7 @@ export function AskMediaViewer({ viewer, archive, onClose }: { viewer: AskViewer
   const onWhole = () => analytics.trackEvent('ask_deeplink_clicked', { kind: 'media_viewer', target_scene: 'artists' })
   const shareButton = (
     <button type="button" className="ask-viewer-share" onClick={share} aria-label={`Share this ${isClip(item) ? 'clip' : 'photo'}`}>
-      <ShareMark />
+      <Share size={14} aria-hidden="true" />
       <span aria-live="polite">{status === 'copied' ? 'Copied' : status === 'error' ? 'Copy failed' : 'Share'}</span>
     </button>
   )

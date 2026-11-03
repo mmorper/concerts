@@ -11,12 +11,17 @@
  * share sheet was offered at all, and on how success was reported. Callers now
  * supply a URL and a label; everything else is one behaviour.
  *
- * Behaviour differs deliberately by surface, not by component:
- *   - Phone: navigator.share() when available, clipboard as fallback. Sharing on
- *     a phone means sending to a person, and the OS sheet is its own confirmation.
+ * Behaviour differs deliberately by device, not by component:
+ *   - Touch (phone or iPad): navigator.share() when available, clipboard as
+ *     fallback. Sharing there means sending to a person, and the OS sheet is its
+ *     own confirmation.
  *   - Desktop: clipboard, with the caller rendering an inline confirmation.
  *
- * Feature detection for navigator.share happens *inside* the phone branch.
+ * The device is the hook's own call (`wantsShareSheet`), not the caller's. It
+ * used to be the caller's `isPhone`, a width check, so an iPad, wider than a
+ * phone, copied the link while every phone got the sheet.
+ *
+ * Feature detection for navigator.share happens *inside* the touch branch.
  * Detecting it alone would hand desktop Safari a share sheet while desktop
  * Chrome got a clipboard copy — same app, same click, different behaviour.
  */
@@ -37,8 +42,6 @@ interface UseShareLinkOptions {
   title: string
   /** Optional share-sheet body text. */
   text?: string
-  /** Phone offers the native sheet; desktop copies. */
-  isPhone?: boolean
   /** Optional GA event fired on each attempt, with method/succeeded merged in. */
   analyticsEvent?: { name: string; params?: Record<string, unknown> }
 }
@@ -92,11 +95,28 @@ export async function writeToClipboard(
   }
 }
 
+/**
+ * A touch device with a share sheet: every phone, and an iPad. A touch screen is the primary
+ * pointer on both. iPadOS Safari asks for desktop sites and calls itself a Mac, and with a
+ * trackpad attached its primary pointer is fine, so it is told apart from a real Mac by its touch
+ * points (a Mac has none). A desktop with navigator.share still copies.
+ */
+export function wantsShareSheet(
+  // Injectable for the same reason as writeToClipboard: the tests run in node.
+  env: { nav?: Navigator; win?: Pick<Window, 'matchMedia'> } = {}
+): boolean {
+  const nav = env.nav ?? (typeof navigator !== 'undefined' ? navigator : undefined)
+  const win = env.win ?? (typeof window !== 'undefined' ? window : undefined)
+  if (!nav || typeof nav.share !== 'function') return false
+  const touchFirst = !!win?.matchMedia?.('(pointer: coarse)').matches
+  const iPad = /Macintosh/.test(nav.userAgent ?? '') && (nav.maxTouchPoints ?? 0) > 1
+  return touchFirst || iPad
+}
+
 export function useShareLink({
   url: baseUrl,
   title,
   text,
-  isPhone = false,
   analyticsEvent,
 }: UseShareLinkOptions): UseShareLink {
   const [status, setStatus] = useState<ShareStatus>('idle')
@@ -122,6 +142,7 @@ export function useShareLink({
   const share = useCallback(async (urlOverride?: unknown) => {
     const url = typeof urlOverride === 'string' ? urlOverride : baseUrl
     haptics.light()
+    const sheet = wantsShareSheet()
 
     const track = (method: 'share_sheet' | 'clipboard', succeeded: boolean) => {
       if (!analyticsEvent) return
@@ -129,11 +150,12 @@ export function useShareLink({
         ...analyticsEvent.params,
         method,
         succeeded,
-        device_type: isPhone ? 'mobile' : 'desktop',
+        // 'mobile' is any touch device with a sheet, an iPad included, as it was named before.
+        device_type: sheet ? 'mobile' : 'desktop',
       })
     }
 
-    if (isPhone && typeof navigator !== 'undefined' && navigator.share) {
+    if (sheet) {
       try {
         await navigator.share({ title, text, url })
         track('share_sheet', true)
@@ -156,7 +178,7 @@ export function useShareLink({
     const ok = await writeToClipboard(url)
     track('clipboard', ok)
     flash(ok ? 'copied' : 'error')
-  }, [baseUrl, title, text, isPhone, analyticsEvent, flash])
+  }, [baseUrl, title, text, analyticsEvent, flash])
 
   return { share, status }
 }

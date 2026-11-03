@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest'
-import { writeToClipboard } from '../../src/hooks/useShareLink'
+import { wantsShareSheet, writeToClipboard } from '../../src/hooks/useShareLink'
 
 /** Minimal document stand-in — vitest runs these in the node environment. */
 function fakeDoc(execResult: boolean, onAppend?: (n: unknown) => void) {
@@ -69,21 +69,31 @@ describe('clipboard write with the iOS fallback', () => {
 
 describe('surface selection', () => {
   // The rule the four old implementations disagreed on: the share sheet is
-  // gated on isPhone AND availability — never on availability alone, which
-  // would give desktop Safari a sheet while desktop Chrome copied.
-  const wantsSheet = (isPhone: boolean, hasShare: boolean) => isPhone && hasShare
+  // gated on a touch device AND availability — never on availability alone,
+  // which would give desktop Safari a sheet while desktop Chrome copied.
+  const IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15'
+  const MAC = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Version/18.0 Safari/605.1.15'
+  const device = (userAgent: string, { touchPoints = 0, coarse = false, share = true } = {}) => ({
+    nav: { userAgent, maxTouchPoints: touchPoints, share: share ? vi.fn() : undefined } as unknown as Navigator,
+    win: { matchMedia: (q: string) => ({ matches: q === '(pointer: coarse)' && coarse }) } as unknown as Pick<Window, 'matchMedia'>,
+  })
 
   it('offers the sheet on a phone that supports it', () => {
-    expect(wantsSheet(true, true)).toBe(true)
+    expect(wantsShareSheet(device(IPHONE, { touchPoints: 5, coarse: true }))).toBe(true)
+  })
+
+  it('offers the sheet on an iPad, which calls itself a Mac', () => {
+    // With a trackpad attached its primary pointer is fine, so only its touch points give it away.
+    expect(wantsShareSheet(device(MAC, { touchPoints: 5, coarse: false }))).toBe(true)
   })
 
   it('copies on a phone without share support', () => {
-    expect(wantsSheet(true, false)).toBe(false)
+    expect(wantsShareSheet(device(IPHONE, { touchPoints: 5, coarse: true, share: false }))).toBe(false)
   })
 
   it('copies on desktop even where navigator.share exists', () => {
     // Desktop Safari has navigator.share; desktop Chrome does not. Feature
     // detection alone would make the same click behave differently.
-    expect(wantsSheet(false, true)).toBe(false)
+    expect(wantsShareSheet(device(MAC))).toBe(false)
   })
 })
