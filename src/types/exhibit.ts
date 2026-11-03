@@ -261,11 +261,31 @@ export interface Chip {
   input: Record<string, string>
 }
 
+/**
+ * A signed answer, as the Worker hands it over on `done` (workers/ask-chat/src/share.ts). The site
+ * never builds or edits one: it posts this back unchanged to /api/ask/share to get a link.
+ */
+export interface SignedShare {
+  snapshot: SharedAnswer
+  sig: string
+}
+
+/** A shared answer as stored: what /api/ask/share/<id> returns. */
+export interface SharedAnswer {
+  v: 1
+  question: string
+  prose: string
+  exhibit: Exhibit
+  /** YYYY-MM-DD */
+  answeredOn: string
+  followUp: boolean
+}
+
 // SSE events streamed by POST /api/ask/chat (see the worker's index.ts header).
 export type AskEvent =
   | { type: 'token'; text: string }
   | { type: 'tool'; name: string }
   | { type: 'exhibit'; exhibit: Exhibit; chips?: Chip[] }
   | { type: 'refusal'; message: string }
-  | { type: 'done'; fraction: number }
+  | { type: 'done'; fraction: number; share?: SignedShare }
   | { type: 'error'; message: string }

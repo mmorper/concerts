@@ -11,6 +11,8 @@ import { SearchMark } from './AskMedia'
 import { AskSearchMatches, optionId } from './AskSearchMatches'
 import { MIN_QUERY, searchArchive, songAnswer } from './search'
 import { AskCrate } from './AskCrate'
+import { AskShareButton, answeredOnLabel, canShare } from './AskShare'
+import type { AskNotice } from './AskProvider'
 import type { Chip, Exhibit } from '@/types/exhibit'
 import { analytics } from '@/services/analytics'
 
@@ -31,6 +33,8 @@ export interface AskConversationProps {
   dockEnd?: React.ReactNode
   /** Adds an answer the site already holds. Without it a song match follows its link. */
   onShow?: (question: string, prose: string, exhibit: Exhibit) => void
+  /** A shared link that couldn't open, said above the empty state. */
+  notice?: AskNotice | null
 }
 
 export function AskConversation({
@@ -44,6 +48,7 @@ export function AskConversation({
   inputRef,
   dockEnd,
   onShow,
+  notice,
 }: AskConversationProps) {
   const [input, setInput] = useState('')
   // Which row the arrow keys are on. -1 is the box itself, so Enter asks the words as typed.
@@ -176,38 +181,73 @@ export function AskConversation({
             a blank void (#189). Typing replaces it with matches, and the first question replaces it
             with the transcript. */}
         {empty ? (
-          !matching && crate && <AskCrate archive={archive} onAsk={submit} surface="overlay" />
+          !matching && (
+            <>
+              {notice && (
+                <p className="ask-notice" role="status">
+                  {notice.text}
+                  {notice.retry && (
+                    <>
+                      {' '}
+                      <button type="button" className="ask-own" onClick={notice.retry}>
+                        Try again
+                      </button>
+                    </>
+                  )}
+                </p>
+              )}
+              {crate && <AskCrate archive={archive} onAsk={submit} surface="overlay" />}
+            </>
+          )
         ) : (
           <div className="ask-transcript" ref={transcriptRef}>
             {exchanges.map((ex, i) => (
               <div key={ex.id} ref={i === exchanges.length - 1 ? lastTurnRef : undefined}>
                 <div className="ask-q">{ex.question}</div>
                 <AskExhibit exchange={ex} archive={archive} />
-                {/* Only under the newest answer: an older one's next step has been taken or passed. */}
-                {i === exchanges.length - 1 && ex.status === 'done' && !busy && ex.chips?.length ? (
-                  <div className="chips ask-followups" role="group" aria-label="Ask next">
-                    {ex.chips.map((chip, n) => (
-                      <button
-                        key={chip.label}
-                        type="button"
-                        className="chip"
-                        onClick={() => {
-                          analytics.trackEvent('ask_suggested_prompt_clicked', {
-                            prompt: chip.label,
-                            position: n,
-                            source: 'chip',
-                            exhibit_kind: ex.exhibit?.kind ?? 'none',
-                          })
-                          setInput('')
-                          setActive(-1)
-                          onAsk(chip.label, chip)
-                        }}
-                      >
-                        {chip.label}
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
+                {ex.shared && (
+                  <p className="ask-answered-on">
+                    {answeredOnLabel(ex.shared.answeredOn)} ·{' '}
+                    <button type="button" className="ask-own" onClick={() => ref.current?.focus()}>
+                      Ask your own
+                    </button>
+                  </p>
+                )}
+                {/* The line under an answer: its follow-ups, then Share at the end. Follow-ups only
+                    under the newest answer, since an older one's next step has been taken or passed. */}
+                {(() => {
+                  const chips = i === exchanges.length - 1 && ex.status === 'done' && !busy ? (ex.chips ?? []) : []
+                  if (!chips.length && !canShare(ex)) return null
+                  return (
+                    <div className="ask-after">
+                      {chips.length > 0 && (
+                        <div className="chips ask-followups" role="group" aria-label="Ask next">
+                          {chips.map((chip, n) => (
+                            <button
+                              key={chip.label}
+                              type="button"
+                              className="chip"
+                              onClick={() => {
+                                analytics.trackEvent('ask_suggested_prompt_clicked', {
+                                  prompt: chip.label,
+                                  position: n,
+                                  source: 'chip',
+                                  exhibit_kind: ex.exhibit?.kind ?? 'none',
+                                })
+                                setInput('')
+                                setActive(-1)
+                                onAsk(chip.label, chip)
+                              }}
+                            >
+                              {chip.label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      <AskShareButton exchange={ex} />
+                    </div>
+                  )
+                })()}
               </div>
             ))}
           </div>

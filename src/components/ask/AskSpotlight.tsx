@@ -8,7 +8,7 @@ import { useAsk } from './AskProvider'
 import { AskConversation } from './AskConversation'
 
 export function AskSpotlight() {
-  const { open, close, exchanges, busy, ask, show, archive } = useAsk()
+  const { open, close, exchanges, busy, ask, show, archive, notice } = useAsk()
   const paletteRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -101,6 +101,7 @@ export function AskSpotlight() {
           archive={archive}
           onAsk={ask}
           onShow={show}
+          notice={notice}
           crate
           autoFocus
           inputRef={inputRef}

@@ -2,7 +2,7 @@
  * Deep-link URL builders and parsers
  *
  * SINGLE SOURCE OF TRUTH for deep-link URL shape in the SPA.
- * The prose contract is docs/DEEP_LINKING.md (v1.3); the machine-readable
+ * The prose contract is docs/DEEP_LINKING.md (v1.4); the machine-readable
  * contract is test/fixtures/deep-link-urls.json, which this module is
  * asserted against.
  *
@@ -77,6 +77,28 @@ export function mediaId(item: { kind: string; date: string; url: string }): stri
   const file = item.url.split('/').pop()?.split('?')[0] ?? ''
   const stem = file.replace(/\.[^.]+$/, '').replace(`${item.date}-`, '')
   return item.kind === 'video' ? `${stem}-video` : stem
+}
+
+/**
+ * `/?scene=ask&answer=Ab3dE5fG7hJ9` — one shared Ask answer, reopened word for word. The id is
+ * the share Worker's (workers/ask-chat/src/share.ts): 12 base62 characters of the snapshot's hash.
+ */
+export function askAnswerDeepLink(id: string): string {
+  return `/?scene=ask&answer=${encodeURIComponent(id)}`
+}
+
+/** A share id as the Worker mints it. Anything else is never fetched. */
+export function isValidShareId(value: string | null | undefined): value is string {
+  return !!value && /^[0-9A-Za-z]{12}$/.test(value)
+}
+
+/**
+ * `/?scene=ask&artist=the-cure&song=a-forest` — a song card, rebuilt on the site from
+ * song-index.json with no network call. The song slug is normalizeArtistName of its title, the
+ * same rule artist slugs follow.
+ */
+export function askSongDeepLink(artistSlug: string, songSlug: string): string {
+  return `/?scene=ask&artist=${encodeURIComponent(artistSlug)}&song=${encodeURIComponent(songSlug)}`
 }
 
 /**

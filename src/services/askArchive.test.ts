@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { streamAskTurn } from './askArchive'
+import { createShare, fetchShare, streamAskTurn } from './askArchive'
 import type { AskEvent } from '@/types/exhibit'
 
 const sse = (...frames: Array<[string, unknown]>) =>
@@ -33,5 +33,44 @@ describe('streamAskTurn — follow-up chips', () => {
     await streamAskTurn([turn], () => {}, { ensureSession: async () => 'tok' })
     const body = JSON.parse(String(fetchMock.mock.calls[0][1].body))
     expect(body.turns[0]).toEqual(turn)
+  })
+})
+
+describe('shared answers', () => {
+  const snapshot = { v: 1, question: 'Have you seen The Cure?', prose: 'Six times.', exhibit: { kind: 'plain' }, answeredOn: '2026-11-02', followUp: false }
+
+  it('keeps the signed share from done exactly as sent', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => sse(['done', { fraction: 0, share: { snapshot, sig: 'abc' } }])))
+    const events: AskEvent[] = []
+    await streamAskTurn([{ role: 'user', text: 'The Cure' }], (e) => events.push(e), { ensureSession: async () => 'tok' })
+    expect(events[0]).toEqual({ type: 'done', fraction: 0, share: { snapshot, sig: 'abc' } })
+  })
+
+  it('leaves done alone when there is nothing to share', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => sse(['done', { fraction: 0.5 }])))
+    const events: AskEvent[] = []
+    await streamAskTurn([{ role: 'user', text: 'The Cure' }], (e) => events.push(e), { ensureSession: async () => 'tok' })
+    expect(events[0]).toEqual({ type: 'done', fraction: 0.5 })
+  })
+
+  it('posts the signed share back unchanged and returns its id', async () => {
+    const fetchMock = vi.fn(async (_url: string, _init?: RequestInit) => Response.json({ id: 'Ab3dE5fG7hJ9' }))
+    vi.stubGlobal('fetch', fetchMock)
+    const share = { snapshot, sig: 'abc' } as never
+    expect(await createShare(share)).toBe('Ab3dE5fG7hJ9')
+    expect(String(fetchMock.mock.calls[0][0])).toMatch(/\/api\/ask\/share$/)
+    expect(JSON.parse(String(fetchMock.mock.calls[0][1]!.body))).toEqual(share)
+  })
+
+  it('throws when the Worker refuses the share', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => Response.json({ error: 'nope' }, { status: 403 })))
+    await expect(createShare({ snapshot, sig: 'abc' } as never)).rejects.toThrow('nope')
+  })
+
+  it('reads a shared answer, and reports a missing one as missing', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => Response.json(snapshot)))
+    expect(await fetchShare('Ab3dE5fG7hJ9')).toEqual(snapshot)
+    vi.stubGlobal('fetch', vi.fn(async () => Response.json({ error: 'not_found' }, { status: 404 })))
+    expect(await fetchShare('Ab3dE5fG7hJ9')).toBe('missing')
   })
 })

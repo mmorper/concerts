@@ -48,6 +48,20 @@
     "notes": "One still or video from a night. The show link plus `photo`, which is the published filename without its date. A video ends in -video. Only the SPA emits and reads this."
   },
 
+  "askAnswer": {
+    "input": { "id": "Ab3dE5fG7hJ9" },
+    "url": "/?scene=ask&answer=Ab3dE5fG7hJ9",
+    "notes": "One shared Ask answer. The id is 12 base62 characters minted by the ask-chat Worker's /share. The SPA reads it back from /api/ask/share/<id>."
+  },
+
+  "askSong": {
+    "input": { "slug": "the-cure", "song": "a-forest" },
+    "url": "/?scene=ask&artist=the-cure&song=a-forest",
+    "notes": "A song card in Ask, rebuilt from song-index.json with no network call. `song` is normalizeArtistName of the title."
+  },
+
+  "invalidShareIds": ["", "short", "Ab3dE5fG7hJ9X", "../../etc/pa", "Ab3dE5fG7h-9"],
+
   "invalidPhotoValues": [
     "",
     "Thompson-Twins",

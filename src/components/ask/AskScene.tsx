@@ -10,12 +10,15 @@ import { analytics } from '@/services/analytics'
 import { haptics } from '@/utils/haptics'
 import { SearchMark } from './AskMedia'
 import { AskCrate } from './AskCrate'
+import { useOpenSharedLink } from './AskShare'
 import './ask.css'
 
 export function AskScene() {
   const { openSpotlight, activate, archive } = useAsk()
   const ref = useRef<HTMLElement>(null)
   const viewed = useRef(false)
+  // A shared answer or song link (?scene=ask&answer=… / &song=…) opens the overlay on it.
+  useOpenSharedLink()
 
   // Lazily warm the archive data + session the first time the scene scrolls into view (so other
   // visitors who never reach the end don't pay for the fetch). Mirrors how /ask used to activate().

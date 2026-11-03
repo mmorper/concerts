@@ -44,7 +44,8 @@ interface UseShareLinkOptions {
 }
 
 interface UseShareLink {
-  share: () => Promise<void>
+  /** Shares `url`, or the string passed here when the link is only known at click time. */
+  share: (urlOverride?: unknown) => Promise<void>
   /** Drives an inline confirmation. Never route this through the toast system. */
   status: ShareStatus
 }
@@ -92,7 +93,7 @@ export async function writeToClipboard(
 }
 
 export function useShareLink({
-  url,
+  url: baseUrl,
   title,
   text,
   isPhone = false,
@@ -115,7 +116,11 @@ export function useShareLink({
     timeoutRef.current = setTimeout(() => setStatus('idle'), CONFIRM_MS)
   }, [])
 
-  const share = useCallback(async () => {
+  // `urlOverride` is for a link that exists only after the click: an Ask answer gets its id from
+  // the Worker when it's first shared. Callers that pass `share` straight to onClick hand it the
+  // click event, so only a string counts.
+  const share = useCallback(async (urlOverride?: unknown) => {
+    const url = typeof urlOverride === 'string' ? urlOverride : baseUrl
     haptics.light()
 
     const track = (method: 'share_sheet' | 'clipboard', succeeded: boolean) => {
@@ -151,7 +156,7 @@ export function useShareLink({
     const ok = await writeToClipboard(url)
     track('clipboard', ok)
     flash(ok ? 'copied' : 'error')
-  }, [url, title, text, isPhone, analyticsEvent, flash])
+  }, [baseUrl, title, text, isPhone, analyticsEvent, flash])
 
   return { share, status }
 }

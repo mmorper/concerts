@@ -3,7 +3,7 @@
 // (#141) render `exchanges`; this hook is UI-agnostic.
 
 import { useCallback, useRef, useState } from 'react'
-import type { Chip, Exhibit } from '@/types/exhibit'
+import type { Chip, Exhibit, SignedShare } from '@/types/exhibit'
 import { streamAskTurn, type Turn } from '@/services/askArchive'
 import { analytics } from '@/services/analytics'
 
@@ -16,6 +16,10 @@ export interface Exchange {
   exhibit: Exhibit | null
   /** One or two follow-ups the Worker offered with the card. */
   chips?: Chip[]
+  /** The Worker's signed copy of this answer, for the Share button. Absent when it can't be shared. */
+  share?: SignedShare
+  /** Set when this answer was opened from a shared link: its id, and the day it was first given. */
+  shared?: { id: string; answeredOn: string }
   status: ExchangeStatus
   message?: string // refusal / error copy
 }
@@ -86,7 +90,9 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
                 analytics.trackEvent('ask_refused', { turn_index: history.length / 2 })
                 break
               case 'done':
-                patch(id, (x) => (x.status === 'streaming' ? { ...x, status: 'done' } : x))
+                patch(id, (x) =>
+                  x.status === 'streaming' ? { ...x, status: 'done', ...(event.share ? { share: event.share } : {}) } : x,
+                )
                 break
               case 'error':
                 patch(id, (x) => ({ ...x, status: 'error', message: event.message }))
@@ -130,10 +136,12 @@ export function useAskArchive(options: UseAskArchiveOptions = {}) {
 
   // An answer the site already holds, like a song picked from the matches. It joins the transcript
   // as a finished turn with no model call, and its prose becomes history for a follow-up question.
+  // `shared` marks an answer reopened from a shared link, so it can say when it was given and be
+  // shared on with the same link.
   const show = useCallback(
-    (question: string, prose: string, exhibit: Exhibit) => {
+    (question: string, prose: string, exhibit: Exhibit, shared?: { id: string; answeredOn: string }) => {
       if (busy) return
-      setExchanges((xs) => [...xs, { id: nextId(), question, prose, exhibit, status: 'done' }])
+      setExchanges((xs) => [...xs, { id: nextId(), question, prose, exhibit, status: 'done', ...(shared ? { shared } : {}) }])
       analytics.trackEvent('ask_exhibit_shown', { kind: exhibit.kind })
     },
     [busy],

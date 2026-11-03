@@ -1,7 +1,7 @@
 # Deep Linking Guide
 
-**Version:** 1.3 (v1.9.0+)
-**Last Updated:** 2026-11-01
+**Version:** 1.4 (v1.9.0+)
+**Last Updated:** 2026-11-02
 
 ---
 
@@ -157,6 +157,23 @@ https://concerts.morperhaus.org/?scene=artists&artist=thompson-twins&show=2026-0
 - For bots, the meta-injector Worker adds JSON-LD (`nightObjects`). A clip's link carries one `VideoObject`. Every other show link, a still's included, carries an `ImageObject` for each still its gatefold holds, the room among them. Each credits the act on the asset and names Mike Morper as creator. There is no `license` field until the owner decides to offer one.
 - The sitemap lists every published clip at this link with a video entry, and carries each still as an image entry on its act's show URL. A night with media is listed even with no setlist. New media reaches the sitemap the next time `generate:sitemap` runs, which a data refresh does.
 - Build these with `photoDeepLink` and `mediaId` in `src/utils/deepLinks.ts`. Four surfaces emit them: the Photos panel's link button, On This Day posts that carry the owner's frame (`scripts/on-this-day/build.ts`), the `get_media` tool (`workers/mcp-server/src/media.ts`), and Ask's gallery, list rows and search matches (`src/components/ask/media.ts`, `frameLink`).
+
+---
+
+### Ask Share Links (Scene 6)
+
+The Share button under an Ask answer emits one of two shapes. Either opens the Ask overlay on the answer.
+
+```
+https://concerts.morperhaus.org/?scene=ask&answer=Ab3dE5fG7hJ9
+https://concerts.morperhaus.org/?scene=ask&artist=the-cure&song=a-forest
+```
+
+- `answer` reopens a model answer word for word. The id is 12 base62 characters minted by `POST /api/ask/share` in the ask-chat Worker, which stores only an answer it signed itself. The site reads it back from `/api/ask/share/<id>`. A missing id says "That answer isn't here any more" above the empty overlay, never a blank card.
+- `artist` + `song` rebuild a song card from `song-index.json` with no network call. `song` is `normalizeArtistName` of the title.
+- An answer opened from a shared link says when it was given ("Answered on November 2, 2026"), and its box is ready for a follow-up, which sends the shared answer as history.
+- Build these with `askAnswerDeepLink` and `askSongDeepLink` in `src/utils/deepLinks.ts`. The SPA is the only emitter and reader: `src/components/ask/AskShare.tsx`.
+- Previews for these links are Phase 3 of `docs/specs/future/global-ask-shareable-answers.md`. Until then a crawler sees the Ask scene's own title and description.
 
 ---
 
