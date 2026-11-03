@@ -203,6 +203,9 @@ jumping to one of them hid the rest. A new tab still gets the last night. Years 
 well.
 
 **The ⌘K banner.** One large photo banner under the box, with a "Pull another" button.
+*Superseded 2026-11-02: the owner preferred the Ask scene's design, so the ⌘K overlay now opens on
+the same crate carousel, four cards to a view. `AskBanner.tsx` is gone; the ideas still come from
+`banner.ts`.*
 Text never rotates on a timer: it would need a pause control and it reads as an ad.
 
 **The opening idea.** One per day, the same for everyone, chosen in this order:
@@ -338,6 +341,7 @@ link sits below it. The "Try asking" chips and `prompts.ts` are gone.
 
 ## Revision History
 
+- **2026-11-02:** The ⌘K overlay opens on the crate, not the single banner, from the owner's review of the live site
 - **2026-11-02:** Phase 5 built: follow-up chips, chosen and checked by the Worker
 - **2026-11-02:** A song match opens a song card in Ask, from the owner's review of the live search
 - **2026-11-02:** Imagery ladder and the full set of response layouts added to Phase 6

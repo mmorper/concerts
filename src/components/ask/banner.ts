@@ -197,8 +197,9 @@ function shuffle<T>(list: T[], rand: () => number): T[] {
  * Every idea, in the day's order. This date's shows lead. After them the kinds take turns (a clip,
  * a year, a face), so two pulls in a row are never the same kind while more than one kind is left.
  *
- * `fits` picks the frames a year or a face may use. The wide banner takes landscape frames only.
- * The Ask scene's crate cards are tall, so they take any frame.
+ * `fits` picks the frames a year or a face may use. The default, landscape frames only, is what a
+ * wide picture needs. The crate's cards are tall, in the scene and the ⌘K overlay, so the crate
+ * passes one that takes any frame.
  */
 export function bannerDeck(sources: BannerSources, day: string, fits: (p: Photo) => boolean = fillsBanner): BannerIdea[] {
   const rand = seeded(day)
