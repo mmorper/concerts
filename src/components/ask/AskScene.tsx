@@ -54,10 +54,6 @@ export function AskScene() {
           <br />
           Now ask me about it.
         </h1>
-        <p className="ask-scene-sub">
-          Forty years of live music, in its own voice — 1984 to right now. Ask it the way you&rsquo;d
-          ask a friend who never misses a show.
-        </p>
 
         <button type="button" className="ask-scene-composer" onClick={openBlank} aria-label="Search or ask the archive">
           <SearchMark />

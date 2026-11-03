@@ -4,13 +4,12 @@ import { motion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 import { analytics } from '../services/analytics'
 import { useActiveScene } from '../hooks/useActiveScene'
-import { useAsk } from './ask/AskProvider'
 import { SCENE_MAP } from './changelog/constants'
 
 const NAV_LINKS = [
-  // Ask leads (#142). It OPENS THE SPOTLIGHT in place (⌘K-style), like the 5 rail scene dots which
-  // are also buttons — not a navigation. The /?scene=ask URL is addressable on its own (App.tsx
-  // deep-links it; /ask redirects to it), so CTAs/shared links don't need this to be an anchor.
+  // Ask leads (#142). Like the rail's scene dots it's a button that scrolls to its scene, not a
+  // navigation. The /?scene=ask URL is addressable on its own (App.tsx deep-links it; /ask
+  // redirects to it), so CTAs/shared links don't need this to be an anchor.
   { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked', ask: true },
   { to: '/liner-notes', label: 'Liner Notes', event: 'liner_notes_nav_clicked' },
   { to: '/whats-playing', label: "What's Playing", event: 'whats_playing_nav_clicked' },
@@ -32,7 +31,6 @@ export function SceneNavigation() {
   // Shared scroll observer (#142) — the rail and the wayfinding dock read the same source so they
   // can never disagree on the active scene.
   const { scene: activeScene, isScrolling } = useActiveScene({ sceneCount: ASK_SCENE })
-  const { openSpotlight } = useAsk()
   const [revealedLabel, setRevealedLabel] = useState<number | null>(null)
 
   // Dismiss any revealed dot-label as soon as the user starts scrolling.
@@ -98,17 +96,18 @@ export function SceneNavigation() {
           viewport middle. "Ask the Archive" (above) and "Liner Notes" (below) are floated out of
           flow, so their unequal heights never shift the dots off center. */}
       <div className="relative flex flex-col gap-3 items-center">
-        {/* Ask the Archive — opens the Spotlight over the current scene (#142). Brightens when you're
-            on the Ask scene (scene 6), so it doubles as the "you're here" cue. */}
+        {/* Ask the Archive — goes to the Ask scene (scene 6), like the dots go to theirs. It used to
+            open the ⌘K overlay over the current scene, which read as a broken link: a label that
+            names a scene should take you to it. ⌘K and `/` still open the overlay from anywhere.
+            Brightens when you're on the Ask scene, so it doubles as the "you're here" cue. */}
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center gap-2.5">
           <button
             type="button"
             className="group flex items-center justify-center min-w-[44px]"
-            aria-label="Ask the Archive"
+            aria-label="Go to Ask the Archive"
             onClick={() => {
-              haptics.light()
               analytics.trackEvent('ask_archive_nav_clicked', { surface: 'rail', from_scene: activeScene })
-              openSpotlight('rail')
+              scrollToScene(ASK_SCENE)
             }}
           >
             <span
@@ -209,8 +208,8 @@ export function SceneNavigation() {
               from_scene: activeScene,
               ...(isAsk ? { surface: 'navmobile' } : external ? { surface: 'mobile' } : {}),
             })
-            // Ask opens the Spotlight (full-screen sheet on phones) instead of navigating (#142).
-            if (isAsk) openSpotlight('navmobile')
+            // Ask goes to the Ask scene, the same as the desktop rail.
+            if (isAsk) scrollToScene(ASK_SCENE)
           }
           return (
             <Fragment key={link.to}>

@@ -646,9 +646,8 @@ img.chip-av { object-fit: cover; display: block; }
 }
 .ask-scene-wrap { width: min(620px, 94vw); }
 .ask-scene-kicker { font-size: 11.5px; letter-spacing: 0.22em; text-transform: uppercase; color: #818cf8; font-weight: 600; margin-bottom: 18px; }
-.ask-scene h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px, 5vw, 52px); line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 16px; color: #fff; }
-/* text-wrap:balance evens line lengths so no single word dangles. */
-.ask-scene-sub { font-size: 17px; line-height: 1.55; color: rgba(255, 255, 255, 0.72); max-width: 62ch; margin: 0 auto 32px; text-wrap: balance; }
+/* No subtitle under it: the headline is the whole invitation, and the box below says what to type. */
+.ask-scene h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px, 5vw, 52px); line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 32px; color: #fff; }
 
 /* Composer — a button styled like the Spotlight input; clicking blooms the overlay open in place. */
 .ask-scene-composer {

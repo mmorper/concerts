@@ -11,7 +11,7 @@ import { useArchiveData } from '@/hooks/useArchiveData'
 import type { ArchiveLookups } from './types'
 import { analytics } from '@/services/analytics'
 
-export type AskOpenSurface = 'kbd' | 'rail' | 'navmobile' | 'scene' | 'prompt'
+export type AskOpenSurface = 'kbd' | 'scene' | 'prompt'
 
 interface AskContextValue {
   open: boolean
