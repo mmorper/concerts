@@ -650,6 +650,11 @@ img.chip-av { object-fit: cover; display: block; }
    A native scroll-snap row, so a phone swipes it; the arrows page it by one view. Each card wears
    the banner's face (.ask-band and its parts), resized here. */
 .ask-crate { width: min(1140px, 94vw); margin-top: 36px; text-align: left; }
+/* Wherever the scene rail shows (768px and up) it sits 32px from the right edge and is 44px wide.
+   The crate keeps 88px clear on BOTH sides, so it never runs under the rail and stays centered. */
+@media (min-width: 768px) {
+  .ask-crate { width: min(1140px, calc(100vw - 176px)); }
+}
 .ask-crate-h { margin: 0 0 14px 50px; font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: 24px; color: #fff; }
 .ask-crate-row { display: flex; align-items: center; gap: 10px; }
 .ask-crate-arrow {
@@ -665,6 +670,14 @@ img.chip-av { object-fit: cover; display: block; }
 }
 .ask-crate-track::-webkit-scrollbar { display: none; }
 .ask-crate-track > li { flex: 0 0 calc((100% - 48px) / 5); scroll-snap-align: start; }
+/* Fewer cards to a view as the screen narrows, so each stays about 170px or wider and its text
+   fits: four on an iPad held sideways, three upright. A phone's one is set further down. */
+@media (min-width: 768px) and (max-width: 1179px) {
+  .ask-scene .ask-crate-track > li, .ask-scene .ask-crate-card.loading { flex-basis: calc((100% - 36px) / 4); }
+}
+@media (min-width: 768px) and (max-width: 959px) {
+  .ask-scene .ask-crate-track > li, .ask-scene .ask-crate-card.loading { flex-basis: calc((100% - 24px) / 3); }
+}
 .ask-crate-card.ask-band { aspect-ratio: 0.8; max-height: none; border-radius: 12px; }
 .ask-crate-card.loading { display: block; aspect-ratio: 0.8; border-radius: 12px; background: rgba(255, 255, 255, 0.06); list-style: none; flex: 0 0 calc((100% - 48px) / 5); }
 .ask-crate-card.ask-band > img, .ask-crate-card.ask-band .pic > img { object-position: var(--pos-tall, 50% 30%); }
