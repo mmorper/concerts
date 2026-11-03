@@ -2,9 +2,9 @@
 
 ## Quick Start
 
-**Version:** v6.2.0 (Production)
+**Version:** v6.3.0 (Production)
 **Status:** Live at concerts.morperhaus.org
-**Last Sync:** 2026-10-31
+**Last Sync:** 2026-11-02
 
 ### Commands
 
@@ -119,7 +119,16 @@ docs/
 - ✅ One archive-stats derivation replaces six; `validate:docs` now guards the shape, not just the prose (#295)
 - ✅ Dashboard can see attribution coverage; `lastBuildAt` moves when the resolver runs (#289)
 
-**v6.2.0 Production (Latest — 2026-10-31):**
+**v6.3.0 Production (Latest — 2026-11-02):**
+
+- ✅ Photos panel — a night's photos and clips slide out of the gatefold: full bleed, card credits, share links, hosted video on R2, a phone layout; each act's own frames plus the room (#602–#618)
+- ✅ Ask rebuilt search-first: matches as you type, answers led by a picture and a Playfair line, a layout per answer kind, the crate as a carousel and as ⌘K's empty state (#628–#659)
+- ✅ Media inside Ask — `AskMediaViewer` shows the whole night over the answer; gatefold and Ask share `useMediaReel`, media events carry `surface` (#666)
+- ✅ Shareable answers — signed snapshots in `ASK_SHARES` KV, Share button, previews by subject, phone share sheets previewed too (#660–#662, #667)
+- ✅ Follow-up chips (#655); answers in place, leaving Ask keeps the conversation (#665); search reaches shows abroad (#664)
+- ✅ One share icon (lucide `Share`) everywhere; `useShareLink` picks the share sheet on any touch device, iPad included (#668)
+
+**v6.2.0 (2026-10-31):**
 
 - ✅ Ask answers with media — my photographs framed on their `media:crop` box with per-act/per-night attribution, Cover Art Archive sleeves, Deezer portraits, venue photos; personal → sourced → derived ladder at selection and load time (#593)
 - ✅ Six new exhibit kinds: `album`, `discography`, `show`, `era`, `shape`, `songs`; artist choice chips with faces; photo lightbox (Esc never reaches the Spotlight)
@@ -138,6 +147,7 @@ docs/
 
 **Recent Releases:**
 
+- **v6.3.0** (2026-11-02): The whole night — Photos panel with 150 photos and 22 clips from 46 nights; Ask rebuilt search-first with media playing inside it; shareable answers with subject previews; follow-up chips; one share icon and the share sheet on iPad
 - **v6.2.0** (2026-10-31): Ask the Archive answers with pictures — photos, album sleeves, venue photos; album/discography/night/era/shape/songs cards and a photo viewer (#593)
 - **v6.1.0** (2026-10-31): The archive posts itself — Bluesky + Mastodon syndication with On This Day (#323); claim check on every note and post (#529); personal media pipeline, 129 photos + 15 clips from 44 shows; Instagram wired, inert pending credentials; liner-notes empty-run fix and Ask album questions (#317, PR #591); Sonnet 5, TypeScript 7, SDK 1.x
 - **v6.0.0** (2026-08-10): Song → album attribution — `song-albums.json` at 89.7% across three tiers (#276/#282); `road-tested` + `most-witnessed-album` detectors and MCP setlist annotation (#277); liner-note footers play their subject song (#299); 12 artists' wrong-band audio fixed and Re-Flex's discography corrected (#275/#300); one archive-stats derivation (#295); dashboard attribution stage (#289)
@@ -268,4 +278,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-10-31 by Claude Code for v6.2.0 release*
+*Last updated: 2026-11-02 by Claude Code for v6.3.0 release*

@@ -1,6 +1,6 @@
 # Ask the Archive: Shareable Answers
 
-**Status:** Planned
+**Status:** Phases 1–3 shipped in v6.3.0 (#660, #661, #662; phone previews #667). Phase 4 (owner controls) remains.
 **Target Version:** next
 **Priority:** High
 **Estimated Complexity:** High

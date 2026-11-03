@@ -1,6 +1,6 @@
 # Roadmap
 
-## Current State (v6.2.0)
+## Current State (v6.3.0)
 
 - **185 concerts** spanning 1984-2027
 - **258 artists** (including openers) with 100% imagery coverage
@@ -10,11 +10,29 @@
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
 - **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
 - **Syndication**: a liner note a day plus On This Day, on Bluesky and Mastodon
-- **Latest**: Ask the Archive answers with pictures — my photographs, album sleeves, venue photos
+- **Latest**: the whole night — 150 of my photos and 22 clips in the gatefold and inside Ask; Ask rebuilt around search, with shareable answers
 
 ---
 
 ## Recently Completed
+
+### ✅ Ask the Archive — Search-First Redesign, Media Viewer & Shareable Answers (v6.3.0)
+
+**Status**: Released 2026-11-02 — #628–#668
+**Specs**: [global-ask-media.md](specs/future/global-ask-media.md) (Phase 4 remains), [global-ask-shareable-answers.md](specs/future/global-ask-shareable-answers.md) (Phase 4 remains)
+
+Ask opens as a search box with matches as you type; answers lead with a picture and a Playfair line, with a layout per answer kind. Photos and clips play inside Ask, the whole night in a strip. Follow-up chips under each answer. Any answer can be shared: a signed snapshot reopens it word for word, and its link previews as its subject, phones included. One share icon everywhere, with the share sheet on phones and iPads.
+
+---
+
+### ✅ Photos & Clips in the Gatefold (v6.3.0)
+
+**Status**: Released 2026-11-02 — #602–#618
+**Spec**: [global-media-workflow.md](specs/future/global-media-workflow.md)
+
+A night's photos slide out of the gatefold like its setlist: full bleed, with card credits, share links and hosted video. Each act sees its own frames and the room. Every still and clip has a share image, and show pages tell search engines what media they hold.
+
+---
 
 ### ✅ Media in Ask the Archive Answers (v6.2.0)
 
@@ -174,16 +192,6 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 
 ## Short-Term Roadmap
 
-### Ask the Archive — Shareable Answers
-
-**Status**: Planned
-**Spec**: [global-ask-shareable-answers.md](specs/future/global-ask-shareable-answers.md)
-
-A share button on every Ask answer with a card, and a link that reopens it word for word, with a
-proper preview. Opening a shared answer costs no model call.
-
----
-
 ### Social Syndication — Liner Notes & On This Day (v7.0.0)
 
 **Status**: In Progress — Bluesky and Mastodon live since v6.1.0; Instagram wired, awaiting credentials
@@ -217,15 +225,6 @@ Make the T2 (venue photo), T3 (artist photo), and T4 (album art) thumbnails in t
 **Issue**: [#69](https://github.com/mmorper/concerts/issues/69)
 
 Opener artist genre coverage is 62% vs 93% for headliners. Root cause: opener artists are present in `artists-metadata.json` but not enriched at the same level. Affects `genre-outlier` detector and any future genre-based analysis.
-
----
-
-### llm.txt — Page Structure & Semantic Hierarchy (#30)
-
-**Status**: Planned
-**Issue**: [#30](https://github.com/mmorper/concerts/issues/30)
-
-Add page structure and H1/H2 hierarchy documentation to `llm.txt` to help AI assistants better understand the site's organization. Low-effort (~15 min).
 
 ---
 

@@ -4,7 +4,7 @@ Comprehensive testing infrastructure for data pipeline integrity, scene interact
 
 **Status:** Windows 1-6 Complete (305 tests passing)
 **Last Updated:** 2026-01-14
-**Related Spec:** [docs/specs/future/global-comprehensive-testing-suite.md](../docs/specs/future/global-comprehensive-testing-suite.md)
+**Related Spec:** [docs/specs/implemented/global-comprehensive-testing-suite.md](../docs/specs/implemented/global-comprehensive-testing-suite.md)
 
 ---
 
@@ -285,7 +285,7 @@ describe('Concert data processing', () => {
 
 ## Related Documentation
 
-- [Comprehensive Testing Suite Spec](../docs/specs/future/global-comprehensive-testing-suite.md)
+- [Comprehensive Testing Suite Spec](../docs/specs/implemented/global-comprehensive-testing-suite.md)
 - [Data Pipeline Documentation](../docs/DATA_PIPELINE.md)
 - [Design System Skill](../.claude/skills/design-system/SKILL.md)
 - [Data Schema Skill](../.claude/skills/data-schema/SKILL.md)

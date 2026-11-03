@@ -379,7 +379,7 @@ I need to continue implementing the Comprehensive Testing Suite for Morperhaus C
 - Implement the spec AS WRITTEN - it's the source of truth
 
 **Key References:**
-- Full Design Spec: docs/specs/future/global-comprehensive-testing-suite.md (check Implementation Status section)
+- Full Design Spec: docs/specs/implemented/global-comprehensive-testing-suite.md (check Implementation Status section)
 - Test Infrastructure: vitest.config.ts, test/setup.ts (already created)
 - Test README: test/README.md (comprehensive guide)
 - Data Pipeline Documentation: docs/DATA_PIPELINE.md

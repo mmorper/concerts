@@ -298,5 +298,5 @@ mcp-server `/mcp` and CI to fail until every home is updated. Know the matrix be
 
 - [`api-setup.md`](./api-setup.md) — how to obtain each API key/credential.
 - `workers/ask-chat/wrangler.toml` — inline secret list + Access identifiers.
-- `docs/specs/future/global-ask-the-archive-chat/SPEC.md` §"Kill switch" — the ask-chat
+- `docs/specs/implemented/global-ask-the-archive-chat/SPEC.md` §"Kill switch" — the ask-chat
   cost/abuse controls those secrets gate.

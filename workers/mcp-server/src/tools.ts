@@ -1790,7 +1790,7 @@ interface QueryResult {
  *
  * Shipping album-eras.json whole was never an option: ~154K tokens, over four times the
  * entire current context. This projection is ~4.1K (+11.5% on the concerts payload), which
- * is what made the decision easy — see docs/specs/future/global-query-era-context.md for
+ * is what made the decision easy — see docs/specs/implemented/global-query-era-context.md for
  * the measurement and the options weighed against it.
  *
  * Tuples, not objects: the keys would cost more than the values. Field order is documented

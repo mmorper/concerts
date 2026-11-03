@@ -338,7 +338,7 @@ describe("careerShape", () => {
 // `query` shipped concerts.json and nothing else, so the freeform tool was blind to the
 // album-cycle join. These pin the projection's contract: the tuple order the prompt
 // documents, the absent-data behaviour, and the size budget the decision rested on.
-// See docs/specs/future/global-query-era-context.md.
+// See docs/specs/implemented/global-query-era-context.md.
 describe("projectEras", () => {
   it("returns null when there is no era data, so the block is omitted rather than sent empty", () => {
     // An empty map would read to the model as "no album data exists for these shows" —
