@@ -119,10 +119,8 @@ In `workers/ask-chat/src/index.ts`:
 
 New file: `workers/ask-chat/src/share.ts` for signing, verifying, ids and the store/read logic.
 
-**Done** (Phase 1), with one step left for the owner: the `ASK_SHARES` namespace has to be created
-(`npx wrangler kv namespace create ASK_SHARES`) and its id pasted into `wrangler.toml`, where the
-binding waits commented out. Until then no answer is offered for sharing and `/share` answers 503,
-so the Worker is safe to deploy without it.
+**Done** (Phase 1). The `ASK_SHARES` namespace was created 2026-11-02 and is bound in
+`wrangler.toml`. Unbound, no answer is offered for sharing and `/share` answers 503.
 
 ### Phase 2: the button, and opening a link
 
