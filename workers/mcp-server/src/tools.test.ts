@@ -305,6 +305,30 @@ describe("search_concerts", () => {
     expect(text).toContain("Nobody At All");
     expect(text).toMatchSnapshot();
   });
+
+  // There is no country field: a show abroad has its country in `state` ("UK", "Mexico").
+  const withAbroad = () => [
+    ...archive(),
+    mk("1987-06-30", "Oingo Boingo", "Caliente Racetrack", { city: "Tijuana", state: "Mexico", cityState: "Tijuana, Mexico" }),
+    mk("2026-09-16", "Thompson Twins", "Pavilion Theatre", { city: "Glasgow", state: "UK", cityState: "Glasgow, UK" }),
+  ];
+
+  it("finds the shows outside the US, and says so", () => {
+    const { text, matches } = searchConcerts(withAbroad(), { abroad: true });
+    expect(matches.map((c) => c.city)).toEqual(["Tijuana", "Glasgow"]);
+    expect(text).toContain("2 concerts matching outside the US");
+  });
+
+  it("finds only the shows inside the US with abroad false, DC included", () => {
+    const dc = mk("1998-04-27", "The Cure", "9:30 Club", { city: "Washington", state: "District of Columbia", cityState: "Washington, DC" });
+    const { matches } = searchConcerts([...withAbroad(), dc], { abroad: false, limit: 25 });
+    expect(matches.some((c) => c.state === "UK" || c.state === "Mexico")).toBe(false);
+    expect(matches.map((c) => c.city)).toContain("Washington");
+  });
+
+  it("finds a show by its country through the city filter", () => {
+    expect(searchConcerts(withAbroad(), { city: "UK" }).matches.map((c) => c.city)).toEqual(["Glasgow"]);
+  });
 });
 
 // ---------- get_artist_history ----------

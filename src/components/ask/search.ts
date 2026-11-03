@@ -46,6 +46,8 @@ export interface SearchEntry {
   shows: number
   fold: string
   squashed: string
+  /** A venue's city and state or country, folded, so "Glasgow" or "UK" finds the room. */
+  placeFold?: string
 }
 
 export interface SearchSources {
@@ -78,9 +80,9 @@ export function fold(s: string): string {
     .trim()
 }
 
-function entry(fields: Omit<SearchEntry, 'fold' | 'squashed'>): SearchEntry {
+function entry({ place, ...fields }: Omit<SearchEntry, 'fold' | 'squashed' | 'placeFold'> & { place?: string }): SearchEntry {
   const folded = fold(fields.name)
-  return { ...fields, fold: folded, squashed: folded.replace(/ /g, '') }
+  return { ...fields, fold: folded, squashed: folded.replace(/ /g, ''), ...(place ? { placeFold: fold(place) } : {}) }
 }
 
 // Openers have no metadata row of their own, so the name comes from a bill they were on.
@@ -119,6 +121,7 @@ export function buildSearchEntries({ byArtist, byVenue, artists, venues, media, 
       kind: 'venue',
       name: shows[0].venue,
       sub: `${shows[0].cityState} · ${plural(shows.length, 'show')}`,
+      place: shows[0].cityState,
       href: venueDeepLink(slug),
       image: venueSourcedPhoto(venues[slug]),
       media: 0,
@@ -200,11 +203,14 @@ export function songAnswer(song: SongRow): { question: string; prose: string; ex
   }
 }
 
-// 0: the name starts with it, 1: a word in it does, 2: it's in there somewhere, null: no match.
+// 0: the name starts with it, 1: a word in it does, 2: it's in there somewhere, 3: a venue's
+// place does, null: no match.
 function tier(e: SearchEntry, q: string, squashed: string): number | null {
   if (e.fold.startsWith(q) || e.fold.startsWith(`the ${q}`)) return 0
   if (e.fold.includes(` ${q}`)) return 1
   if (e.squashed.includes(squashed)) return 2
+  // 3: a venue's town or country, at the start of a word, after every name match.
+  if (e.placeFold && (e.placeFold.startsWith(q) || e.placeFold.includes(` ${q}`))) return 3
   return null
 }
 

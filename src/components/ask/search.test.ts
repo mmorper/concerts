@@ -132,6 +132,26 @@ describe('buildSearchEntries', () => {
     expect(hits[0].href).toContain('photo=the-cure-01-video')
   })
 
+  it('finds a venue by its town or country, which is not in its name', () => {
+    const glasgow = concert({ venue: 'Pavilion Theatre', venueNormalized: 'pavilion-theatre', cityState: 'Glasgow, UK', headliner: 'Thompson Twins', headlinerNormalized: 'thompson-twins' })
+    const entries = entriesFor([concert({}), glasgow])
+    expect(searchArchive(entries, 'glasgow').map((e) => e.name)).toEqual(['Pavilion Theatre'])
+    expect(searchArchive(entries, 'uk').map((e) => e.name)).toEqual(['Pavilion Theatre'])
+  })
+
+  it('ranks a place match below any name match', () => {
+    // The Hollywood Bowl is in Los Angeles; a band named for the city still leads.
+    const entries = entriesFor([concert({}), concert({ id: 'd', date: '2019-01-01', year: 2019, headliner: 'Los Lobos', headlinerNormalized: 'los-lobos', venue: 'The Forum', venueNormalized: 'the-forum' })])
+    const names = searchArchive(entries, 'los').map((e) => e.name)
+    expect(names[0]).toBe('Los Lobos')
+    expect(names).toContain('Hollywood Bowl')
+  })
+
+  it('matches a place only at the start of a word', () => {
+    // "ngel" is inside "Los Angeles" but starts no word in it.
+    expect(searchArchive(entriesFor([concert({})]), 'ngel')).toEqual([])
+  })
+
   it('keeps a cover of a filmed song as its own row', () => {
     const media = buildMediaIndex([clip])
     const songs = [song({ name: 'A Forest', act: 'Tribute', slug: 'tribute' })]
