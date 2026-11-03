@@ -25,6 +25,12 @@ import {
   fmtDate,
   agePhrase,
   monthsPhrase,
+  wholeNightReel,
+  viewerTitle,
+  viewerKicker,
+  viewerCredit,
+  clipLength,
+  longDate,
   type MediaAsset,
   type Photo,
 } from './media'
@@ -142,6 +148,65 @@ describe('a night in the Photos panel', () => {
     expect(mediaId(tom as Photo)).toBe('thompson-twins-10')
     expect(mediaId({ ...clip, url: clip.url! })).toBe('thompson-twins-01-video')
     expect(mediaId({ ...tom, url: '/images/shows/2026-09-16-thompson-twins-01.jpg' })).toBe('thompson-twins-01')
+  })
+})
+
+describe('a whole night in Ask’s viewer', () => {
+  const at = (file: string, rest: Partial<MediaAsset> = {}): MediaAsset => ({
+    kind: 'image', url: `/images/shows/2026-09-16-${file}.jpg`, date: '2026-09-16', artist: 'Thompson Twins',
+    artistNormalized: 'thompson-twins', subject: 'artist', order: 1, width: 1536, height: 2048, ...rest,
+  })
+  const tom = at('thompson-twins-10', { hero: true })
+  const neil = at('blancmange-02', { artist: 'Blancmange', artistNormalized: 'blancmange' })
+  const room = at('venue-01', { artist: null, artistNormalized: null, subject: 'venue' })
+  const stray = at('someone-else-01', { artist: 'Someone Else', artistNormalized: 'someone-else' })
+  const lies: MediaAsset = { ...at('x'), kind: 'video', url: 'https://media.example/2026-09-16-thompson-twins-01.mp4', song: 'Lies', duration: 40 }
+  const blind: MediaAsset = { ...lies, url: 'https://media.example/2026-09-16-blancmange-01.mp4', artist: 'Blancmange', artistNormalized: 'blancmange', song: 'Blind Vision', duration: 17 }
+  const glasgow = buildMediaIndex([room, neil, blind, stray, lies, tom])
+  const bill = { date: '2026-09-16', headlinerNormalized: 'thompson-twins', openers: ['Blancmange'] }
+  const night = { venue: 'Pavilion Theatre', city: 'Glasgow', headliner: 'Thompson Twins', headlinerNormalized: 'thompson-twins', openers: ['Blancmange'] }
+
+  it('runs the bill in order, each act’s stills then its clips, then anyone unbilled, then the room', () => {
+    const file = (r: { url: string }) => r.url.split('/').pop()
+    expect(wholeNightReel(glasgow, bill).map(file)).toEqual([
+      '2026-09-16-thompson-twins-10.jpg', '2026-09-16-thompson-twins-01.mp4',
+      '2026-09-16-blancmange-02.jpg', '2026-09-16-blancmange-01.mp4',
+      '2026-09-16-someone-else-01.jpg', '2026-09-16-venue-01.jpg',
+    ])
+  })
+
+  it('is empty for a night with nothing', () => {
+    expect(wholeNightReel(glasgow, { ...bill, date: '1984-05-12' })).toEqual([])
+  })
+
+  it('titles a clip by its song, a frame by its act, and the room as the room', () => {
+    const reel = wholeNightReel(glasgow, bill)
+    expect(reel.map(viewerTitle)).toEqual(['Thompson Twins', '“Lies”', 'Blancmange', '“Blind Vision”', 'Someone Else', 'The room'])
+  })
+
+  it('says what kind of frame it is, and when it is the only one', () => {
+    const [still, clip] = wholeNightReel(glasgow, bill)
+    expect(viewerKicker(still, 6)).toBe('A photo')
+    expect(viewerKicker(still, 1)).toBe('A photo · the only one from this night')
+    expect(viewerKicker(clip, 6)).toBe('A clip · 0:40 · with sound')
+    expect(clipLength(65.4)).toBe('1:05')
+  })
+
+  it('credits an opener’s frame to their spot on the bill, never to the headliner', () => {
+    const reel = wholeNightReel(glasgow, bill)
+    expect(reel.map((r) => viewerCredit(r, night))).toEqual([
+      'My photo · Pavilion Theatre, Glasgow · Sep 16, 2026',
+      'Thompson Twins · My video · Pavilion Theatre, Glasgow · Sep 16, 2026',
+      'My photo · opening for Thompson Twins · Pavilion Theatre, Glasgow · Sep 16, 2026',
+      'Blancmange · My video · opening for Thompson Twins · Pavilion Theatre, Glasgow · Sep 16, 2026',
+      // Not on the bill, so no claim about the bill.
+      'My photo · Pavilion Theatre, Glasgow · Sep 16, 2026',
+      'My photo · Pavilion Theatre, Glasgow · Sep 16, 2026',
+    ])
+  })
+
+  it('writes the bar’s date in full', () => {
+    expect(longDate('2026-09-16')).toBe('September 16, 2026')
   })
 })
 

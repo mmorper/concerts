@@ -296,14 +296,18 @@ See complete list in: `docs/specs/implemented/global-analytics-tracking.md` (lin
 
 ### Scene-Specific Events
 
-**Media (Photos panel, Scene 5):**
+**Media (Photos panel, Scene 5, and Ask's media viewer):**
 - `photos_button_clicked` — The Photos button on a concert row
 - `media_viewed` — Every frame shown, however it was reached: `photo`, `media_kind` (photo, video),
-  `view_source` (button, deep_link, paging)
-- `clip_played` — First play of a clip per view. A pause and a resume are one play
-- `clip_completed` — A clip reached its end
+  `view_source` (button, deep_link, paging), `surface` (`gatefold`, `ask`). In Ask, `artist_name`
+  is the act in the frame (the headliner for the room), since Ask shows the whole night
+- `clip_played` — First play of a clip per view. A pause and a resume are one play. Has `surface`
+- `clip_completed` — A clip reached its end. Has `surface`
 - `artist_photo_opened` — A still opened in the full-size viewer
-- `photo_link_shared` — A frame's link was copied or shared
+- `photo_link_shared` — A frame's link was copied or shared. Ask's viewer adds `surface: ask`
+
+The four `surface` events come from one hook, `src/hooks/useMediaReel.ts`, so the gatefold and Ask
+count a view the same way. `surface` needs registering as a GA4 custom dimension (#617).
 
 GA's enhanced measurement only sees YouTube embeds, so a hosted `<video>` reports nothing unless it
 fires these itself.
@@ -312,7 +316,10 @@ fires these itself.
 - `ask_search_match_clicked` — A match in the type-ahead list: `result_kind` (band, venue, year,
   clip, song), `position`, `search_term`. A match costs no model call, so `ask_question_sent` never
   sees it. A band, venue, year or song match opens its card in Ask, which fires `ask_exhibit_shown`
-  (`kind`: artist, venue, list, song). A clip match leaves for its gatefold
+  (`kind`: artist, venue, list, song). A clip match opens Ask's media viewer
+- `ask_deeplink_clicked` with `kind: media_viewer` — "The whole night" in Ask's media viewer, which
+  leaves for the gatefold. Opening a photo or clip from a card no longer leaves Ask: it fires
+  `ask_photo_opened` or `ask_deeplink_clicked` as before, then `media_viewed` with `surface: ask`
 - `ask_opened` — `surface` (`kbd`, `scene`, `prompt`, `shared`, `return`). `return` is "Back to
   Ask", or the browser's Back to the page Ask was left from
 - `ask_closed` — `reason` (`dismiss`, `promote`, `leave`), `turn_count`. `leave` means a link in an

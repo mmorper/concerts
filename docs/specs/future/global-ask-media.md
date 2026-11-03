@@ -110,6 +110,22 @@ Shipped in #628:
 This drops the shared `ClipPlayer`, so the panel's `<video>` block and its events (#616, #617) stay
 as they are. Clip plays all happen in the gatefold, so the GA dimensions need no `surface` param.
 
+**Reversed 2026-11-02: media plays inside Ask.** Leaving Ask for a page change, just to look at a
+photo, buried the answer. The owner asked for media in the Ask modal, approved the mocks on the
+design canvas ("Media in Ask": a solo photo, a solo clip, a night of both), and this replaced the
+behaviour above:
+
+- A photo or clip from any card, a gallery tile or a clip match opens `AskMediaViewer.tsx` over the
+  answers. It shows the whole night (`wholeNightReel`): every act on the bill in billing order, then
+  the room. An opener's frame says "opening for" the headliner (`viewerByline`).
+- The old dead end is gone: the viewer pages, plays clips, shares the frame's link, and links on to
+  the gatefold ("The whole night") for the setlist and the bill. Back, or Esc, returns to the answer
+  scrolled where it was. A frame Ask can't find still opens in its gatefold.
+- The gatefold panel and the viewer share `useMediaReel`, so their events match, and the events now
+  carry `surface` (`gatefold`, `ask`). That adds `surface` to the GA dimension list in #617.
+- Every link Ask emits is unchanged: `photoDeepLink` still opens the frame in its gatefold from
+  outside Ask. Ask only intercepts the click.
+
 For the gallery in Phase 2: build links with `photoDeepLink` and `mediaId`, and never change the
 `mediaId` format. The Worker, the sitemap and every share link depend on it. `artist` is the act
 whose gatefold holds the frame, by canonical slug, so an opener's frame opens in the opener's

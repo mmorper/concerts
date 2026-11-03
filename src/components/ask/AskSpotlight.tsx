@@ -14,7 +14,8 @@ import { AskConversation } from './AskConversation'
  * Ask" (or the browser's Back, to the page Ask was opened on) brings it back as it was.
  */
 export function AskSpotlight() {
-  const { open, close, leave, returnTo, openSpotlight, exchanges, busy, ask, show, archive, notice } = useAsk()
+  const { open, close, leave, returnTo, openSpotlight, exchanges, busy, ask, show, archive, notice, viewer, openMedia, closeViewer } =
+    useAsk()
   const paletteRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
@@ -48,6 +49,10 @@ export function AskSpotlight() {
     const url = new URL(a.href, window.location.href)
     if (url.origin !== window.location.origin) return
     e.preventDefault()
+    // One frame of a night plays here, over the answer, rather than in its gatefold.
+    const date = url.searchParams.get('show')
+    const photo = url.searchParams.get('photo')
+    if (date && photo && openMedia(date, photo)) return
     const target = url.pathname + url.search
     // A link to the page already behind Ask: no page change to notice, so step aside directly.
     if (target === at) leave(at)
@@ -63,7 +68,9 @@ export function AskSpotlight() {
         // Ask is the top layer, so Esc is Ask's alone. Without this the artist gatefold's own Esc
         // listener (on window, after this one on document) closed it too.
         e.stopPropagation()
-        close()
+        // An open photo or clip goes first, back to the answer. The next Esc closes Ask.
+        if (viewer) closeViewer()
+        else close()
         return
       }
       if (e.key === 'Tab') {
@@ -84,7 +91,7 @@ export function AskSpotlight() {
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, close])
+  }, [open, close, viewer, closeViewer])
 
   // Keyboard tracking without a global viewport change. #191 had to revert
   // `interactive-widget=resizes-content` because that meta resizes the whole app and broke the
@@ -144,7 +151,7 @@ export function AskSpotlight() {
         <div className="ask-spot-head">
           {/* Mobile back affordance — on a full-screen sheet there's no esc key or scrim to tap, so
               "esc" (kept for desktop) is replaced by a real ‹ control (#189). */}
-          <button type="button" className="ask-back" onClick={() => close()} aria-label="Back">
+          <button type="button" className="ask-back" onClick={() => (viewer ? closeViewer() : close())} aria-label="Back">
             &lsaquo;
           </button>
           <span className="ask-spot-mark">
@@ -160,6 +167,8 @@ export function AskSpotlight() {
           onAsk={ask}
           onShow={show}
           notice={notice}
+          viewer={viewer}
+          onCloseViewer={closeViewer}
           crate
           autoFocus
           inputRef={inputRef}
