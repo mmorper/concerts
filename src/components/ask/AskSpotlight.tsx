@@ -101,7 +101,7 @@ export function AskSpotlight() {
           archive={archive}
           onAsk={ask}
           onShow={show}
-          banner
+          crate
           autoFocus
           inputRef={inputRef}
           dockEnd={

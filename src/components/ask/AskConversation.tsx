@@ -1,5 +1,5 @@
 // The shared answer surface for "Ask the Archive" (#141): the search box + what it finds as you type
-// + the transcript of exhibits + the empty-state photo banner. UI-agnostic — the containers
+// + the transcript of exhibits + the empty-state crate. UI-agnostic — the containers
 // (Spotlight overlay, /ask canvas) own their outer chrome (scrim, gradient, header) and drop this
 // inside. One surface, so the dev harness, the overlay, and the full page render answers identically.
 
@@ -10,7 +10,7 @@ import { AskExhibit } from './AskExhibit'
 import { SearchMark } from './AskMedia'
 import { AskSearchMatches, optionId } from './AskSearchMatches'
 import { MIN_QUERY, searchArchive, songAnswer } from './search'
-import { AskBanner } from './AskBanner'
+import { AskCrate } from './AskCrate'
 import type { Chip, Exhibit } from '@/types/exhibit'
 import { analytics } from '@/services/analytics'
 
@@ -20,8 +20,8 @@ export interface AskConversationProps {
   archive: ArchiveLookups
   /** `chip` when the question is a follow-up the archive offered. */
   onAsk: (question: string, chip?: Chip) => void
-  /** Show the photo banner and "Pull another" until the first question. */
-  banner?: boolean
+  /** Show the crate of ideas, as in the Ask scene, until the first question. */
+  crate?: boolean
   placeholder?: string
   /** Focus the input on mount (overlay opens straight into a ready cursor). */
   autoFocus?: boolean
@@ -38,7 +38,7 @@ export function AskConversation({
   busy,
   archive,
   onAsk,
-  banner,
+  crate,
   placeholder = 'Search a band, venue, song or year, or ask anything',
   autoFocus,
   inputRef,
@@ -172,10 +172,11 @@ export function AskConversation({
       </div>
 
       <div className="ask-stage">
-        {/* Empty state: the photo banner, so a just-opened sheet never reads as a blank void (#189).
-            Typing replaces it with matches, and the first question replaces it with the transcript. */}
+        {/* Empty state: the crate, the same as the Ask scene's, so a just-opened sheet never reads as
+            a blank void (#189). Typing replaces it with matches, and the first question replaces it
+            with the transcript. */}
         {empty ? (
-          !matching && banner && <AskBanner archive={archive} busy={busy} onAsk={submit} />
+          !matching && crate && <AskCrate archive={archive} onAsk={submit} surface="overlay" />
         ) : (
           <div className="ask-transcript" ref={transcriptRef}>
             {exchanges.map((ex, i) => (

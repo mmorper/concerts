@@ -455,55 +455,28 @@ img.chip-av { object-fit: cover; display: block; }
    them clear of the scrollbar and esc. */
 .ask-transcript { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; padding-right: 32px; scrollbar-gutter: stable; }
 @media (max-width: 767px) { .ask-transcript { padding-right: 0; } }
-/* Empty state — the photo banner under the box, and "Pull another" (#189, Phase 6). The picture
-   is positioned on the owner's crop for each shape: --pos-wide on desktop, --pos-tall on a phone. */
-.ask-banner { flex: none; }
+/* A crate card's face (.ask-band and its parts). The crate rules further down size it for the scene
+   and for the overlay's empty state. */
 .ask-band {
-  position: relative; display: block; width: 100%; aspect-ratio: 2.2; max-height: 52vh; padding: 0; border: 0;
+  position: relative; display: block; width: 100%; padding: 0; border: 0;
   border-radius: 14px; overflow: hidden; background: #000; color: #fff; text-align: left; font: inherit;
   text-decoration: none; cursor: pointer;
 }
-.ask-band:disabled { cursor: default; }
-.ask-band > img, .ask-band > .ask-derived { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos-wide, 50% 30%); }
-.ask-band .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 10, 16, 0.9) 0%, rgba(8, 10, 16, 0.66) 40%, rgba(8, 10, 16, 0) 74%); }
-/* A portrait photo stands at the right edge at its 4:5 crop. A sourced image or the type-led tile
-   is a smaller square, so my photos still outrank it. */
-.ask-band.side, .ask-band.tile { background: #120f30; }
-.ask-band .pic { position: absolute; top: 0; right: 0; bottom: 0; aspect-ratio: 0.8; overflow: hidden; }
-.ask-band .pic > img, .ask-band .pic > .ask-derived { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos-wide, 50% 30%); }
-.ask-band.tile .pic { top: 50%; right: 26px; bottom: auto; height: 72%; aspect-ratio: 1; transform: translateY(-50%); border-radius: 10px; }
-.ask-band.side .shade, .ask-band.tile .shade { display: none; }
-.ask-band .by-line { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12.5px; color: rgba(255, 255, 255, 0.62); }
-.ask-band .yr { position: absolute; left: 22px; top: 6px; font-family: 'Playfair Display', Georgia, serif; font-size: 150px; line-height: 1; letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.08); }
-.ask-band .txt { position: absolute; left: 26px; bottom: 24px; width: min(470px, 60%); display: flex; flex-direction: column; gap: 4px; }
-.ask-band .k { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #e0e7ff; }
-.ask-band .t { font-family: 'Playfair Display', Georgia, serif; font-size: 38px; line-height: 1.1; letter-spacing: -0.01em; }
-.ask-band .s { font-size: 16px; color: rgba(255, 255, 255, 0.88); }
-.ask-band .by { position: absolute; right: 12px; top: 12px; display: flex; align-items: center; gap: 6px; max-width: 60%; padding: 4px 9px; border-radius: 6px; font-size: 12px; color: #fff; background: rgba(0, 0, 0, 0.55); }
-.ask-band .play { position: absolute; right: 22px; bottom: 22px; width: 56px; height: 56px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
+.ask-band > img, .ask-band > .ask-derived { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos-tall, 50% 30%); }
+.ask-band .shade { position: absolute; inset: 0; }
+/* A sourced image or the type-led tile is a smaller square, so my photos still outrank it. */
+.ask-band.tile { background: #120f30; }
+.ask-band .pic { position: absolute; overflow: hidden; }
+.ask-band .pic > img, .ask-band .pic > .ask-derived { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos-tall, 50% 30%); }
+.ask-band.tile .pic { aspect-ratio: 1; border-radius: 10px; }
+.ask-band.tile .shade { display: none; }
+.ask-band .by-line { display: flex; gap: 6px; }
+.ask-band .txt { position: absolute; display: flex; flex-direction: column; }
+.ask-band .k { font-weight: 600; text-transform: uppercase; color: #e0e7ff; }
+.ask-band .t { font-family: 'Playfair Display', Georgia, serif; letter-spacing: -0.01em; }
+.ask-band .s { color: rgba(255, 255, 255, 0.88); }
+.ask-band .play { position: absolute; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
 .ask-band:hover .play { transform: scale(1.06); }
-.ask-band:focus-visible, .ask-pull:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
-.ask-banner-foot { display: flex; justify-content: flex-end; margin-top: 10px; }
-.ask-pull {
-  min-height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(165, 180, 252, 0.55);
-  background: rgba(255, 255, 255, 0.06); color: #e0e7ff; font: inherit; font-size: 15px; cursor: pointer;
-}
-.ask-pull:hover { background: rgba(255, 255, 255, 0.12); }
-@media (max-width: 767px) {
-  .ask-band { aspect-ratio: 0.9; max-height: 56vh; }
-  .ask-band > img, .ask-band > .ask-derived { object-position: var(--pos-tall, 50% 30%); }
-  .ask-band .shade { background: linear-gradient(180deg, rgba(8, 10, 16, 0) 40%, rgba(8, 10, 16, 0.92) 86%); }
-  .ask-band .txt { left: 18px; right: 84px; bottom: 18px; width: auto; }
-  .ask-band .t { font-size: 32px; }
-  .ask-band .play { right: 16px; bottom: 18px; width: 54px; height: 54px; }
-  .ask-band .by { left: 12px; right: auto; max-width: calc(100% - 24px); }
-  .ask-band.side .yr, .ask-band.tile .yr { display: none; }
-  .ask-band.side .by-line { color: rgba(255, 255, 255, 0.82); }
-  .ask-band.side .pic { left: 0; aspect-ratio: auto; }
-  .ask-band.side .pic > img { object-position: var(--pos-tall, 50% 30%); }
-  .ask-band.side .shade { display: block; }
-  .ask-band.tile .pic { top: 22px; left: 50%; right: auto; height: auto; width: 62%; transform: translateX(-50%); }
-}
 @media (prefers-reduced-motion: reduce) { .ask-band .play { transition: none; } .ask-band:hover .play { transform: none; } }
 
 .ask-dock-row { flex: none; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
@@ -693,6 +666,12 @@ img.chip-av { object-fit: cover; display: block; }
 .ask-crate-card .play svg { width: 13px; height: 15px; }
 .ask-crate-card.tile .pic { top: 14px; left: 50%; right: auto; height: auto; width: 62%; transform: translateX(-50%); }
 .ask-crate-card .yr { display: none; }
+/* The same crate as the overlay's empty state, under the box. The panel is narrower than the scene,
+   so four cards to a view keep each one the size it is in the scene. A phone keeps one. */
+.ask-convo .ask-crate { width: 100%; margin-top: 4px; }
+@media (min-width: 768px) {
+  .ask-convo .ask-crate-track > li, .ask-convo .ask-crate-card.loading { flex-basis: calc((100% - 36px) / 4); }
+}
 @media (max-width: 767px) {
   .ask-crate { margin-top: 28px; }
   .ask-crate-h { margin-left: 0; text-align: center; font-size: 22px; }

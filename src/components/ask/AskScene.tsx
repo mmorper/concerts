@@ -66,7 +66,7 @@ export function AskScene() {
 
       </div>
 
-      <AskCrate archive={archive} onAsk={openWith} />
+      <AskCrate archive={archive} onAsk={openWith} surface="scene" />
 
       <div className="ask-scene-wrap">
         <p className="ask-scene-funnel">

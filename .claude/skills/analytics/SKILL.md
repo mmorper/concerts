@@ -314,9 +314,11 @@ fires these itself.
   sees it. A song match then opens its card in Ask, which fires `ask_exhibit_shown` with
   `kind: song`
 - `ask_suggested_prompt_clicked` — An idea or a follow-up that asks for the visitor: `prompt`,
-  `position`, `source` (`banner`, `crate`, `chip`). A banner or crate idea adds `idea_kind`, and a
-  follow-up chip adds `exhibit_kind`, the card it sat under. The question then fires
-  `ask_question_sent` as usual
+  `position`, `source` (`crate`, `chip`). A crate idea adds `idea_kind` and `surface` (`scene`, or
+  `overlay` for the ⌘K empty state), and a follow-up chip adds `exhibit_kind`, the card it sat
+  under. The question then fires `ask_question_sent` as usual. `source: banner` is historical: the
+  ⌘K overlay showed one banner before it showed the crate
+- `ask_crate_paged` — An arrow on the crate: `direction` (`next`, `previous`), `surface`
 
 **Timeline (Scene 1):**
 - `timeline_year_selected`
