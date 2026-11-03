@@ -386,7 +386,26 @@ export interface SearchParams {
   limit?: number;
   /** v5.4 (#271) — where the show sat in the artist's album cycle. */
   cycleBucket?: CycleBucket;
+  /** true: only shows outside the United States. false: only shows inside it. */
+  abroad?: boolean;
 }
+
+/**
+ * The fifty states and DC, as concerts.json spells them. A show's `state` holds its country when
+ * it isn't in one ("UK", "Mexico"), so a state not on this list is a show abroad. There is no
+ * country field, and "outside the US" had no answer until this.
+ */
+const US_STATES = new Set([
+  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
+  "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+  "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+  "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+  "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
+  "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
+  "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
+]);
+
+export const isAbroad = (c: Pick<Concert, "state">): boolean => !US_STATES.has(c.state);
 
 const CYCLE_LABEL: Record<CycleBucket, string> = {
   fresh: "on a brand-new record (under 90 days out)",
@@ -436,6 +455,7 @@ export function searchConcerts(
       if (params.genre && !c.genre.toLowerCase().includes(params.genre.toLowerCase())) {
         return false;
       }
+      if (typeof params.abroad === "boolean" && isAbroad(c) !== params.abroad) return false;
       if (cycleFilterActive) {
         const era = eras!.concerts[c.id];
         if (!era?.cycleBucket) {
@@ -452,6 +472,8 @@ export function searchConcerts(
   if (params.artist) bits.push(`"${params.artist}"`);
   if (params.genre) bits.push(params.genre);
   if (params.city) bits.push(params.city);
+  if (params.abroad === true) bits.push("outside the US");
+  if (params.abroad === false) bits.push("in the US");
   if (params.month) bits.push(MONTHS[params.month - 1]);
   if (params.year) bits.push(String(params.year));
   else if (params.decade) bits.push(`the ${params.decade}`);
@@ -1885,7 +1907,8 @@ export function registerTools(server: McpServer, env: Env): void {
         year: z.number().int().optional(),
         month: z.number().int().min(1).max(12).optional(),
         decade: z.enum(["1980s", "1990s", "2000s", "2010s", "2020s"]).optional(),
-        city: z.string().optional(),
+        city: z.string().optional().describe("A city, or a state or country as the archive spells it: 'Glasgow', 'California', 'UK'."),
+        abroad: z.boolean().optional().describe("true for shows outside the United States, false for shows inside it."),
         genre: z.string().optional(),
         limit: z.number().int().min(1).max(25).optional(),
         cycleBucket: z

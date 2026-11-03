@@ -89,7 +89,8 @@ export const TOOL_DEFS = [
         year: { type: "integer" },
         month: { type: "integer", minimum: 1, maximum: 12, description: "Calendar month across all years, e.g. 6 for every June show." },
         decade: { type: "string", enum: ["1980s", "1990s", "2000s", "2010s", "2020s"] },
-        city: { type: "string" },
+        city: { type: "string", description: "A city, or a state or country as the archive spells it: 'Glasgow', 'California', 'UK'." },
+        abroad: { type: "boolean", description: "true for shows outside the United States, false for shows inside it." },
         genre: { type: "string" },
         cycleBucket: {
           type: "string",
@@ -410,6 +411,7 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
         city: input.city ? str(input.city) : undefined,
         genre: input.genre ? str(input.genre) : undefined,
         cycleBucket: input.cycleBucket ? str(input.cycleBucket) : undefined,
+        abroad: typeof input.abroad === "boolean" ? input.abroad : undefined,
         limit: num(input.limit) ?? 25, // chat list-exhibit wants the full set; MCP default stays 10
       } as Parameters<typeof searchConcerts>[1], eras);
       if (!matches.length) return { text }; // plain ("nothing matching")
@@ -418,7 +420,8 @@ export async function dispatchTool(env: Env, name: string, input: Input): Promis
       const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       const m = num(input.month);
       const monthName = m && m >= 1 && m <= 12 ? MONTHS[m - 1] : undefined;
-      const filters = [input.artist, input.genre, input.city, monthName, input.year, input.decade].filter(Boolean).map(str);
+      const place = input.abroad === true ? "outside the US" : input.abroad === false ? "in the US" : undefined;
+      const filters = [input.artist, input.genre, input.city, place, monthName, input.year, input.decade].filter(Boolean).map(str);
       const title = `${matches.length} ${matches.length === 1 ? "concert" : "concerts"}${filters.length ? ` · ${filters.join(", ")}` : ""}`;
       return { text: noted + timingNote(matches, todayISO()), exhibit: { kind: "list", title, rows: matches.map(concertRow) } };
     }
