@@ -319,6 +319,12 @@ fires these itself.
   under. The question then fires `ask_question_sent` as usual. `source: banner` is historical: the
   ⌘K overlay showed one banner before it showed the crate
 - `ask_crate_paged` — An arrow on the crate: `direction` (`next`, `previous`), `surface`
+- `ask_answer_shared` — The Share button under an answer: `exhibit_kind`, `link_kind` (`answer`,
+  `song`), and from `useShareLink` `method` (`share_sheet`, `clipboard`) and `succeeded`. `method:
+  none, succeeded: false` means the Worker wouldn't store the answer
+- `ask_shared_answer_opened` — A shared link opened its answer: `exhibit_kind`, `link_kind`
+- `ask_shared_answer_missing` — A shared link that couldn't open: `link_kind`. The overlay says so
+  instead of showing a blank card
 
 **Timeline (Scene 1):**
 - `timeline_year_selected`

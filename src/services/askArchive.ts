@@ -2,7 +2,7 @@
 // into typed AskEvent callbacks. The exhibit-rendering layer consumes these; container shells
 // (Spotlight overlay / `/ask` canvas) and the Turnstile session exchange are #141.
 
-import type { AskEvent, Chip } from '@/types/exhibit'
+import type { AskEvent, Chip, SharedAnswer, SignedShare } from '@/types/exhibit'
 
 export interface Turn {
   role: 'user' | 'assistant'
@@ -86,6 +86,29 @@ export async function getStatus(): Promise<{ mode: 'on' | 'paused' | 'determinis
   } catch {
     return null
   }
+}
+
+/**
+ * Store a signed answer and get its share id (workers/ask-chat/src/share.ts). The same answer
+ * always gets the same id, so a second click re-shares rather than writing again.
+ */
+export async function createShare(share: SignedShare): Promise<string> {
+  const res = await fetch(`${BASE}/api/ask/share`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(share),
+  })
+  const body = (await res.json().catch(() => ({}))) as { id?: string; error?: string }
+  if (!res.ok || !body.id) throw new Error(body.error || `share failed: ${res.status}`)
+  return body.id
+}
+
+/** A shared answer, or 'missing' when there's none by that id. Throws on a network failure. */
+export async function fetchShare(id: string): Promise<SharedAnswer | 'missing'> {
+  const res = await fetch(`${BASE}/api/ask/share/${encodeURIComponent(id)}`)
+  if (res.status === 404) return 'missing'
+  if (!res.ok) throw new Error(`share read failed: ${res.status}`)
+  return (await res.json()) as SharedAnswer
 }
 
 export interface StreamOpts {
@@ -196,8 +219,12 @@ function parseFrame(frame: string): AskEvent | null {
     }
     case 'refusal':
       return { type: 'refusal', message: String(payload.message ?? '') }
-    case 'done':
-      return { type: 'done', fraction: Number(payload.fraction ?? 0) }
+    case 'done': {
+      // Kept exactly as sent: the Worker checks its signature over these bytes' content.
+      const s = payload.share as { snapshot?: unknown; sig?: unknown } | undefined
+      const share = s && s.snapshot && typeof s.sig === 'string' ? (s as SignedShare) : undefined
+      return { type: 'done', fraction: Number(payload.fraction ?? 0), ...(share ? { share } : {}) }
+    }
     case 'error':
       return { type: 'error', message: String(payload.message ?? '') }
     default:

@@ -132,7 +132,7 @@ builds its link directly.
 
 - the question in the box
 - the prose, then the exhibit, laid out as on the night it was given
-- one line under it: "Answered on 2 November 2026 · Ask your own"
+- one line under it: "Answered on November 2, 2026 · Ask your own"
 
 The box is ready for a follow-up. A follow-up sends the shared turn as history, the same way any
 second turn does.
@@ -147,6 +147,17 @@ A network failure shows a retry. Neither shows a blank card.
 `src/utils/deepLinks.ts`. Add both shapes to `test/fixtures/deep-link-urls.json` and to
 `docs/DEEP_LINKING.md`, with Ask as an emitter. The song slug uses the same normalization as artist
 slugs.
+
+**Done** (Phase 2), in `src/components/ask/AskShare.tsx`. How it came out:
+- Share sits at the end of the line under an answer, after any follow-up chips. A song card, an
+  answer reopened from a shared link (which shares on with the same link), and an answer the Worker
+  signed all get it.
+- `useShareLink`'s `share()` takes the link at click time, since a model answer's id comes back
+  from `/share`. On a phone the share sheet opens after that round trip; a browser that no longer
+  counts it as the click falls back to copying the link.
+- The date reads "Answered on November 2, 2026", the order the site's bylines use. "Ask your own"
+  is a button that puts the cursor in the box, wherever the box is.
+- A link opened in the overlay is read by `useOpenSharedLink`, which the Ask scene mounts.
 
 ### Phase 3: previews
 
@@ -185,7 +196,7 @@ rung 2 of the ladder.
 
 | Event | Params |
 |---|---|
-| `ask_answer_shared` | `exhibit_kind`, `link_kind` (`answer`, `song`), `method` (`native`, `copy`) |
+| `ask_answer_shared` | `exhibit_kind`, `link_kind` (`answer`, `song`), `method` (`share_sheet`, `clipboard`, or `none` when the Worker refused), `succeeded` |
 | `ask_shared_answer_opened` | `exhibit_kind`, `link_kind` |
 | `ask_shared_answer_missing` | `link_kind` |
 

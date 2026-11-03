@@ -19,7 +19,25 @@ import {
   isValidShowDate,
   resolveShow,
   absoluteUrl,
+  askAnswerDeepLink,
+  askSongDeepLink,
+  isValidShareId,
 } from '../../src/utils/deepLinks'
+
+describe('Ask share links match the shared fixture', () => {
+  it('builds a shared answer link', () => {
+    expect(askAnswerDeepLink(fixture.askAnswer.input.id)).toBe(fixture.askAnswer.url)
+  })
+
+  it('builds a song card link', () => {
+    expect(askSongDeepLink(fixture.askSong.input.slug, fixture.askSong.input.song)).toBe(fixture.askSong.url)
+  })
+
+  it('accepts only a 12-character base62 share id', () => {
+    expect(isValidShareId(fixture.askAnswer.input.id)).toBe(true)
+    for (const bad of fixture.invalidShareIds) expect(isValidShareId(bad)).toBe(false)
+  })
+})
 
 describe('deep-link builders match the shared fixture', () => {
   it('builds artist links', () => {

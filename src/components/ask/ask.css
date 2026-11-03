@@ -63,8 +63,22 @@
 .chip:hover { background: rgba(255, 255, 255, 0.13); }
 .chip .d { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
 /* Follow-ups under the newest answer. A long act or room name wraps rather than running off a phone. */
-.ask-followups { margin-top: 14px; }
+/* The line under an answer: follow-up chips, then Share pushed to the end. */
+.ask-after { display: flex; align-items: flex-start; gap: 12px; margin-top: 14px; }
+.ask-followups { flex: 1; min-width: 0; margin-bottom: 0; }
 .ask-followups .chip { white-space: normal; text-align: left; font-family: inherit; }
+.ask-share {
+  margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px;
+  border: 0; border-radius: 999px; background: none; color: rgba(255, 255, 255, 0.72); font: inherit; font-size: 13px; cursor: pointer;
+}
+.ask-share:hover:not(:disabled) { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.ask-share:disabled { cursor: default; opacity: 0.7; }
+.ask-share:focus-visible, .ask-own:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+/* A shared link that couldn't open, above the empty overlay. */
+.ask-notice { margin: 0 0 14px; padding: 10px 14px; border-radius: 10px; background: rgba(255, 255, 255, 0.06); font-size: 14px; color: rgba(255, 255, 255, 0.85); }
+/* Under an answer opened from a shared link: when it was given, and the way to ask your own. */
+.ask-answered-on { margin: 12px 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+.ask-own { border: 0; padding: 0; background: none; color: #a5b4fc; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 
 .deep { display: inline-block; font-size: 14px; color: #fff; text-decoration: none; opacity: 0.9; }
 .deep:hover { opacity: 1; }

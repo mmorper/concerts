@@ -11,7 +11,13 @@ import { useArchiveData } from '@/hooks/useArchiveData'
 import type { ArchiveLookups } from './types'
 import { analytics } from '@/services/analytics'
 
-export type AskOpenSurface = 'kbd' | 'scene' | 'prompt'
+export type AskOpenSurface = 'kbd' | 'scene' | 'prompt' | 'shared'
+
+/** A line above the empty overlay, for a shared link that couldn't open. `retry` when trying again may help. */
+export interface AskNotice {
+  text: string
+  retry?: () => void
+}
 
 interface AskContextValue {
   open: boolean
@@ -25,8 +31,10 @@ interface AskContextValue {
   exchanges: Exchange[]
   busy: boolean
   ask: (q: string) => void
-  /** Add an answer the site already holds, with no model call (a song picked from the matches). */
-  show: (question: string, prose: string, exhibit: Exhibit) => void
+  /** Add an answer the site already holds, with no model call (a song picked from the matches, or a shared answer). */
+  show: (question: string, prose: string, exhibit: Exhibit, shared?: { id: string; answeredOn: string }) => void
+  notice: AskNotice | null
+  setNotice: (n: AskNotice | null) => void
   reset: () => void
   archive: ArchiveLookups & { loading: boolean }
   // Marks Ask as "used" so the archive data begins loading (the /ask route calls this on mount).
@@ -37,6 +45,7 @@ const AskContext = createContext<AskContextValue | null>(null)
 
 export function AskProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
+  const [notice, setNotice] = useState<AskNotice | null>(null)
   // Archive data is deferred until Ask is first touched (open or /ask), so other pages don't fetch.
   const [active, setActive] = useState(false)
   const { ensureSession } = useAskSession()
@@ -75,6 +84,7 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
       // Clear the transcript on a plain dismiss (esc / scrim / esc button) so each open starts
       // fresh; skip clearing when promoting to the full view, which carries the conversation.
       if (opts?.clear !== false) reset()
+      setNotice(null)
       // Restore focus to the trigger (esc returns you exactly where you were).
       const el = restoreFocusRef.current
       if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus())
@@ -83,8 +93,8 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
   )
 
   const value = useMemo<AskContextValue>(
-    () => ({ open, openSpotlight, close, exchanges, busy, ask, show, reset, archive, activate }),
-    [open, openSpotlight, close, exchanges, busy, ask, show, reset, archive, activate],
+    () => ({ open, openSpotlight, close, exchanges, busy, ask, show, notice, setNotice, reset, archive, activate }),
+    [open, openSpotlight, close, exchanges, busy, ask, show, notice, reset, archive, activate],
   )
 
   return <AskContext.Provider value={value}>{children}</AskContext.Provider>
