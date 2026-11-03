@@ -60,6 +60,9 @@ export function AskSpotlight() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
+        // Ask is the top layer, so Esc is Ask's alone. Without this the artist gatefold's own Esc
+        // listener (on window, after this one on document) closed it too.
+        e.stopPropagation()
         close()
         return
       }

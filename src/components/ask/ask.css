@@ -75,9 +75,11 @@
 .ask-share:disabled { cursor: default; opacity: 0.7; }
 .ask-share:focus-visible, .ask-own:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
 /* "Back to Ask": while an answer's link has the visitor elsewhere, the conversation waits here.
-   Bottom centre, clear of the rail; on a phone it sits above the bottom nav. */
+   Bottom centre, clear of the rail; on a phone it sits above the bottom nav. Above the artist
+   gatefold (99998), whose full-screen backdrop closes it on any tap: under it, the first tap on
+   this button only closed the gatefold. */
 .ask-return {
-  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 45;
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 100001;
   display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px;
   background: rgba(30, 27, 75, 0.94); border: 1px solid rgba(165, 180, 252, 0.45); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
@@ -409,9 +411,9 @@ img.chip-av { object-fit: cover; display: block; }
   .ask-era-cover { width: 80px; }
 }
 
-/* Lightbox — above the Spotlight (2000) and its scrim. */
+/* Lightbox — above the Spotlight (100020) and its scrim. */
 .ask-lightbox {
-  position: fixed; inset: 0; z-index: 100010; display: flex; flex-direction: column;
+  position: fixed; inset: 0; z-index: 100025; display: flex; flex-direction: column;
   background: #07060f; color: #fff; font-family: 'Source Sans 3', system-ui, sans-serif;
   padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); animation: ask-fade-in 0.15s ease both;
 }
@@ -561,9 +563,10 @@ img.chip-av { object-fit: cover; display: block; }
 
 /* ---- Container B — Spotlight overlay (summoned over a scene; esc restores) ---- */
 .ask-spotlight-scrim {
-  /* Above scene overlays (the Map scene's title/tabs use z-[1000]/z-[1001]) so the modal isn't
-     pierced by scene chrome. The Turnstile challenge layer (.ts-gate) sits above this. */
-  position: fixed; inset: 0; z-index: 2000;
+  /* Above every scene layer, the artist gatefold included (99998, its flying tile 99999 and close
+     hint 100000), so "Back to Ask" from a gatefold opens Ask on top in one tap. The Turnstile
+     challenge layer (.ts-gate) and the photo lightbox sit above this. */
+  position: fixed; inset: 0; z-index: 100020;
   background: rgba(15, 12, 40, 0.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   display: flex; align-items: flex-start; justify-content: center;
   padding: 6vh 16px 16px; animation: ask-scrim-in 0.18s ease both;
@@ -733,7 +736,7 @@ img.chip-av { object-fit: cover; display: block; }
 /* Turnstile mount — centered, above the overlay (z 60). With appearance:interaction-only the
    widget paints nothing unless a challenge is actually required, so no frame of our own here;
    Turnstile carries its own challenge UI when it appears. */
-.ts-gate { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2100; }
+.ts-gate { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 100030; }
 
 /* The gallery card: a lead frame, then a grid. Every tile links to that frame in its gatefold. */
 .ask-gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
