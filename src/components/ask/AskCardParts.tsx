@@ -10,7 +10,8 @@ import { analytics } from '@/services/analytics'
 import type { Exchange } from '@/hooks/useAskArchive'
 import type { EntityRef, Exhibit } from '@/types/exhibit'
 import type { ArchiveLookups } from './types'
-import { frameLink, type CaptionContext, type Photo } from './media'
+import { frameLink, mediaId, type CaptionContext, type Photo } from './media'
+import { useAsk } from './AskProvider'
 import { DerivedArt, LadderImage } from './AskMedia'
 
 export const sceneOf = (deepLink: string): string => new URLSearchParams(deepLink.split('?')[1] ?? '').get('scene') ?? ''
@@ -75,19 +76,21 @@ export const trackPhotoOpened = (kind: Exhibit['kind']) => (p: Photo) =>
   analytics.trackEvent('ask_photo_opened', { kind, subject: p.subject, date: p.date })
 
 /**
- * Opens a photo where it lives: that exact frame in its gatefold, beside the night's clips and
- * setlist. A full-screen viewer here was a dead end, with no way on to the video.
+ * Opens a photo in Ask's own viewer, with the rest of its night, so the answer stays one tap
+ * away. The viewer links on to the gatefold for the setlist and the bill.
  *
- * It moves within the site rather than reloading the page, so Ask keeps the conversation and can
- * offer the way back (AskSpotlight). A page load threw the conversation away.
+ * A frame the archive doesn't hold falls back to its gatefold. That moves within the site rather
+ * than reloading the page, so Ask keeps the conversation and can offer the way back.
  */
 export function useFrameOpener(archive: ArchiveLookups, onOpen?: (p: Photo) => void) {
   const navigate = useNavigate()
+  const { openMedia } = useAsk()
   return {
     open: (photos: Photo[], index: number) => {
       const photo = photos[index]
       if (!photo) return
       onOpen?.(photo)
+      if (openMedia(photo.date, mediaId(photo))) return
       navigate(frameLink(photo, archive.concertByDate(photo.date)?.headlinerNormalized ?? ''))
     },
   }

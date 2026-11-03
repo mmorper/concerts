@@ -210,6 +210,83 @@ export function nightReel(ix: MediaIndex, date: string, actSlug: string): ReelIt
   return [...own, ...ownClips, ...room]
 }
 
+/**
+ * Everything from a night, for Ask's viewer, which is not one act's gatefold: each act on the bill
+ * in billing order (its stills, then its clips), then the room. An act tagged in the index but
+ * missing from the bill still shows, after the bill, so no frame is ever dropped.
+ */
+export function wholeNightReel(ix: MediaIndex, night: NightLike): ReelItem[] {
+  const stills = ix.byDate.get(night.date) ?? []
+  const clips = ix.clipsByDate.get(night.date) ?? []
+  const acts = billSlugs(night)
+  for (const item of [...stills, ...clips]) {
+    if (item.subject === 'artist' && item.artistNormalized && !acts.includes(item.artistNormalized)) acts.push(item.artistNormalized)
+  }
+  const reel: ReelItem[] = acts.flatMap((act) => [
+    ...stills.filter((p) => p.subject === 'artist' && p.artistNormalized === act),
+    ...clips.filter((c) => c.artistNormalized === act),
+  ])
+  const placed = new Set(reel)
+  return [...reel, ...stills.filter((p) => !placed.has(p)), ...clips.filter((c) => !placed.has(c))]
+}
+
+/** "0:40", a clip's length. */
+export function clipLength(seconds: number): string {
+  const s = Math.max(0, Math.round(seconds))
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+}
+
+/** "September 16, 2026". Calendar date, so never shifted by a timezone. */
+export function longDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+}
+
+export interface ViewerNight {
+  venue: string
+  city: string
+  headliner: string
+  headlinerNormalized: string
+  openers?: string[]
+}
+
+/** The small line over a frame in Ask's viewer: "A photo", "A clip · 0:40 · with sound". */
+export function viewerKicker(item: ReelItem, total: number): string {
+  if (isClip(item)) return ['A clip', item.duration ? clipLength(item.duration) : null, 'with sound'].filter(Boolean).join(' · ')
+  return total === 1 ? 'A photo · the only one from this night' : 'A photo'
+}
+
+/** The frame's title: the song for a clip, else the act in it, else the room. */
+export function viewerTitle(item: ReelItem): string {
+  if (isClip(item) && item.song) return `“${item.song}”`
+  if (item.subject !== 'artist') return 'The room'
+  return item.artist ?? (isClip(item) ? 'A clip' : 'A photo')
+}
+
+/**
+ * Whose frame it is: "My photo", "Thompson Twins · My video". A clip names its act, since its
+ * title is the song. An opener's frame says whose bill it was on, so no frame reads as the
+ * headliner's.
+ */
+export function viewerByline(item: ReelItem, night: ViewerNight): string {
+  const clip = isClip(item)
+  const opener =
+    item.subject === 'artist' && !!item.artistNormalized && (night.openers ?? []).some((o) => normalizeArtistName(o) === item.artistNormalized)
+  return [
+    clip && item.subject === 'artist' ? item.artist : null,
+    clip ? 'My video' : 'My photo',
+    opener ? `opening for ${night.headliner}` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+}
+
+/** The credit under a frame: whose it is, then where and when. */
+export function viewerCredit(item: ReelItem, night: ViewerNight): string {
+  return [viewerByline(item, night), [night.venue, night.city].filter(Boolean).join(', '), fmtDate(item.date)].join(' · ')
+}
+
 export { mediaId }
 
 /** One night's still or clip by its `mediaId`, or null if the index doesn't hold it. */

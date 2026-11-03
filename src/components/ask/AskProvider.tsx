@@ -9,6 +9,7 @@ import type { Exhibit } from '@/types/exhibit'
 import { useAskSession } from '@/hooks/useAskSession'
 import { useArchiveData } from '@/hooks/useArchiveData'
 import type { ArchiveLookups } from './types'
+import { mediaId, wholeNightReel, type ReelItem } from './media'
 import { analytics } from '@/services/analytics'
 
 export type AskOpenSurface = 'kbd' | 'scene' | 'prompt' | 'shared' | 'return'
@@ -32,6 +33,14 @@ const writeReturn = (at: string | null) => {
   } catch {
     /* storage unavailable: the button just won't outlive the page */
   }
+}
+
+/** A night's photos and clips, open in Ask over the answer that led to them. */
+export interface AskViewerState {
+  date: string
+  reel: ReelItem[]
+  /** `mediaId` of the frame it opened on. */
+  initialId: string
 }
 
 /** A line above the empty overlay, for a shared link that couldn't open. `retry` when trying again may help. */
@@ -62,6 +71,11 @@ interface AskContextValue {
   setNotice: (n: AskNotice | null) => void
   reset: () => void
   archive: ArchiveLookups & { loading: boolean }
+  /** The night's photos and clips, when one is open over the answer. */
+  viewer: AskViewerState | null
+  /** Opens a frame in Ask, with the rest of its night. False when the archive doesn't hold it. */
+  openMedia: (date: string, id: string) => boolean
+  closeViewer: () => void
   // Marks Ask as "used" so the archive data begins loading (the /ask route calls this on mount).
   activate: () => void
 }
@@ -74,13 +88,37 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
   // Archive data is deferred until Ask is first touched (open or /ask), so other pages don't fetch.
   const [active, setActive] = useState(false)
   const { ensureSession } = useAskSession()
-  const { exchanges, busy, ask, show, reset } = useAskArchive({ ensureSession, persist: true })
+  const { exchanges, busy, ask: askArchive, show: showAnswer, reset } = useAskArchive({ ensureSession, persist: true })
+  const [viewer, setViewer] = useState<AskViewerState | null>(null)
+  const closeViewer = useCallback(() => setViewer(null), [])
   const [returnTo, setReturnTo] = useState<string | null>(readReturn)
   const setReturn = useCallback((at: string | null) => {
     setReturnTo(at)
     writeReturn(at)
   }, [])
   const archive = useArchiveData(active)
+
+  // A new question goes back to the answers, where it lands.
+  const ask = useCallback<typeof askArchive>((...args) => {
+    setViewer(null)
+    return askArchive(...args)
+  }, [askArchive])
+  const show = useCallback<typeof showAnswer>((...args) => {
+    setViewer(null)
+    return showAnswer(...args)
+  }, [showAnswer])
+
+  const openMedia = useCallback(
+    (date: string, id: string) => {
+      const night = archive.concertByDate(date)
+      if (!night) return false
+      const reel = wholeNightReel(archive.media, night)
+      if (!reel.some((item) => mediaId(item) === id)) return false
+      setViewer({ date, reel, initialId: id })
+      return true
+    },
+    [archive],
+  )
 
   // Where the overlay was opened from, so close() can restore focus there.
   const restoreFocusRef = useRef<HTMLElement | null>(null)
@@ -106,6 +144,7 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
     (from: string) => {
       setOpen(false)
       setNotice(null)
+      setViewer(null)
       setReturn(from)
       analytics.trackEvent('ask_closed', { reason: 'leave', turn_count: exchanges.length })
     },
@@ -129,6 +168,7 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
         setReturn(null)
       }
       setNotice(null)
+      setViewer(null)
       // Restore focus to the trigger (esc returns you exactly where you were).
       const el = restoreFocusRef.current
       if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus())
@@ -137,8 +177,8 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
   )
 
   const value = useMemo<AskContextValue>(
-    () => ({ open, openSpotlight, close, leave, returnTo, exchanges, busy, ask, show, notice, setNotice, reset, archive, activate }),
-    [open, openSpotlight, close, leave, returnTo, exchanges, busy, ask, show, notice, reset, archive, activate],
+    () => ({ open, openSpotlight, close, leave, returnTo, exchanges, busy, ask, show, notice, setNotice, reset, archive, viewer, openMedia, closeViewer, activate }),
+    [open, openSpotlight, close, leave, returnTo, exchanges, busy, ask, show, notice, reset, archive, viewer, openMedia, closeViewer, activate],
   )
 
   return <AskContext.Provider value={value}>{children}</AskContext.Provider>

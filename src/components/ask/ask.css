@@ -792,3 +792,88 @@ img.chip-av { object-fit: cover; display: block; }
   .ask-gallery.after-clip .ask-gal-tile:first-child { grid-column: auto; aspect-ratio: 1; }
   .ask-gallery.after-clip .ask-gal-tile.more { grid-column: auto; aspect-ratio: 1; min-height: 0; }
 }
+
+/* A night's photos and clips, inside Ask over the answer (AskMediaViewer). It covers the answers
+   rather than replacing them, so Back finds the answer scrolled where it was. */
+.ask-stage.viewing { min-height: min(640px, 72vh); }
+.ask-stage.viewing > :not(.ask-viewer):not(.ask-matches) { visibility: hidden; }
+.ask-viewer {
+  position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; min-height: 0;
+  border-radius: 14px; overflow: hidden; background: #0b0920; color: #fff; animation: ask-fade-in 0.15s ease both;
+}
+.ask-viewer-back {
+  flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px 0 10px;
+  border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.06); color: #e0e7ff;
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.ask-viewer-back:hover { background: rgba(255, 255, 255, 0.12); }
+.ask-viewer-back .short { display: none; }
+.ask-viewer-bar { flex: none; display: flex; align-items: center; gap: 12px; padding: 8px 14px 8px 8px; }
+.ask-viewer-bar .where { flex: 1; min-width: 0; text-align: center; font-size: 15px; color: rgba(255, 255, 255, 0.82); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ask-viewer-bar .count { flex: none; font-size: 14px; font-variant-numeric: tabular-nums; color: rgba(255, 255, 255, 0.72); }
+.ask-viewer-stage { position: relative; flex: 1 1 auto; min-height: 180px; background: #000; }
+.ask-viewer-stage > img, .ask-viewer-stage > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+.ask-viewer-arrow {
+  position: absolute; top: 50%; margin-top: -24px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(8, 10, 16, 0.6); cursor: pointer;
+}
+.ask-viewer-arrow:hover { background: rgba(8, 10, 16, 0.85); }
+.ask-viewer-arrow.prev { left: 14px; }
+.ask-viewer-arrow.next { right: 14px; }
+.ask-viewer-cap { flex: none; display: flex; align-items: center; gap: 20px; padding: 12px 20px 10px; }
+.ask-viewer-cap .txt { min-width: 0; margin-right: auto; display: flex; flex-direction: column; gap: 3px; }
+.ask-viewer .k { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #c7d2fe; }
+.ask-viewer-cap .t { font-family: 'Playfair Display', Georgia, serif; font-size: 26px; line-height: 1.1; }
+.ask-viewer-cap .c { font-size: 14px; color: rgba(255, 255, 255, 0.78); }
+.ask-viewer-whole { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 600; color: #c7d2fe; text-decoration: none; }
+.ask-viewer-whole:hover { color: #fff; }
+.ask-viewer-share {
+  flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px;
+  border: 1px solid rgba(165, 180, 252, 0.45); border-radius: 999px; background: none; color: #fff;
+  font: inherit; font-size: 14px; cursor: pointer;
+}
+.ask-viewer-share:hover { background: rgba(255, 255, 255, 0.08); }
+.ask-viewer-strip { flex: none; display: flex; gap: 8px; padding: 0 20px 16px; overflow-x: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.ask-viewer-thumb { position: relative; flex: none; width: 78px; height: 78px; padding: 0; border: 0; border-radius: 9px; overflow: hidden; background: #000; color: #fff; cursor: pointer; }
+.ask-viewer-thumb > img, .ask-viewer-thumb > .ask-derived { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0.62; transition: opacity 0.15s ease; }
+.ask-viewer-thumb:hover > img, .ask-viewer-thumb[aria-current='true'] > img, .ask-viewer-thumb[aria-current='true'] > .ask-derived { opacity: 1; }
+.ask-viewer-thumb[aria-current='true'] { outline: 3px solid #a5b4fc; outline-offset: -3px; }
+.ask-viewer-thumb .dur {
+  position: absolute; left: 6px; bottom: 6px; display: flex; align-items: center; gap: 4px; padding: 2px 6px;
+  border-radius: 6px; background: rgba(8, 10, 16, 0.75); font-size: 11px; font-weight: 600;
+}
+.ask-viewer-back:focus-visible, .ask-viewer-arrow:focus-visible, .ask-viewer-whole:focus-visible,
+.ask-viewer-share:focus-visible, .ask-viewer-thumb:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 3px; }
+/* One portrait photo: the photo beside its credits. */
+.ask-viewer.solo { display: grid; grid-template-columns: minmax(0, 46%) minmax(0, 1fr); }
+.ask-viewer-pic { position: relative; margin: 0; overflow: hidden; background: #000; }
+.ask-viewer-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.ask-viewer-info { min-width: 0; display: flex; flex-direction: column; padding: 22px 36px 28px; }
+.ask-viewer-info .grow { flex-grow: 1; }
+.ask-viewer-info .t { margin: 12px 0 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(30px, 4vw, 48px); line-height: 1.04; letter-spacing: -0.015em; }
+.ask-viewer-info .place { margin: 4px 0 0; font-size: 18px; line-height: 1.4; color: rgba(255, 255, 255, 0.88); }
+.ask-viewer-info .t + .place { margin-top: 12px; }
+.ask-viewer-info .by { margin: 18px 0 0; display: flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255, 255, 255, 0.72); }
+.ask-viewer-info .foot { margin-top: 28px; padding-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+@media (prefers-reduced-motion: reduce) { .ask-viewer { animation: none; } .ask-viewer-thumb > img { transition: none; } }
+@media (max-width: 767px) {
+  .ask-stage.viewing { min-height: 0; }
+  .ask-viewer { border-radius: 0; }
+  .ask-viewer-back { padding: 0 12px 0 8px; font-size: 15px; background: none; }
+  .ask-viewer-back .long { display: none; }
+  .ask-viewer-back .short { display: inline; }
+  .ask-viewer-bar { padding: 0 8px; }
+  .ask-viewer-bar .where { display: none; }
+  .ask-viewer-bar .count { margin-left: auto; padding-right: 10px; }
+  .ask-viewer-arrow { display: none; }
+  .ask-viewer-cap { flex-wrap: wrap; gap: 0 16px; padding: 14px 18px 0; }
+  .ask-viewer-cap .txt { flex-basis: 100%; }
+  .ask-viewer-strip { padding: 6px 18px 12px; }
+  .ask-viewer-thumb { width: 64px; height: 64px; border-radius: 8px; }
+  .ask-viewer.solo { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  .ask-viewer-info { padding: 12px 18px 16px; }
+  .ask-viewer-info .grow { display: none; }
+  .ask-viewer-info .t { font-size: 30px; }
+  .ask-viewer-info .place { font-size: 16px; }
+  .ask-viewer-info .foot { margin-top: 14px; padding-top: 12px; }
+}

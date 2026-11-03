@@ -30,6 +30,7 @@ import {
   type Photo,
   type ReelItem
 } from '../../ask/media'
+import { useMediaReel } from '../../../hooks/useMediaReel'
 import { useShareLink } from '../../../hooks/useShareLink'
 import { absoluteUrl, photoDeepLink } from '../../../utils/deepLinks'
 import { haptics } from '../../../utils/haptics'
@@ -71,28 +72,16 @@ export function PhotosPanel({
 }: PhotosPanelProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const touchX = useRef<number | null>(null)
-  const [index, setIndex] = useState(() => {
-    const at = initialId ? reel.findIndex((item) => mediaId(item) === initialId) : -1
-    return at === -1 ? 0 : at
-  })
   const [isClosing, setIsClosing] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  // How the next frame is reached. Only the first can be anything but paging.
-  const viewSource = useRef<'button' | 'deep_link' | 'paging'>(initialId ? 'deep_link' : 'button')
-  // A pause and a resume are one play, so each view of a clip counts once.
-  const clipPlayed = useRef(false)
-  const clipCompleted = useRef(false)
-
-  const many = reel.length > 1
-  const item = reel[index]
+  const { index, item, many, go, isPlaying, onClipPlay, onClipPause, onClipEnded, mediaParams } = useMediaReel({
+    reel,
+    initialId,
+    date: concert.date,
+    artistName,
+    surface: 'gatefold'
+  })
   const stills = useMemo(() => reel.filter((r): r is Photo => !isClip(r)), [reel])
-  const itemId = item ? mediaId(item) : ''
-  const mediaKind = item && isClip(item) ? 'video' : 'photo'
-  const mediaParams = useMemo(
-    () => ({ artist_name: artistName, concert_date: concert.date, photo: itemId }),
-    [artistName, concert.date, itemId]
-  )
 
   const caption = useCallback(
     (p: Photo) =>
@@ -127,25 +116,6 @@ export function PhotosPanel({
     }
   })
 
-  // The panel opens without a click on a share link and pages without a request, so this is the
-  // one place that sees every frame. Paging back to a frame is a new view of it.
-  useEffect(() => {
-    if (!mediaParams.photo) return
-    analytics.trackEvent('media_viewed', { ...mediaParams, media_kind: mediaKind, view_source: viewSource.current })
-    viewSource.current = 'paging'
-    clipPlayed.current = false
-    clipCompleted.current = false
-  }, [mediaParams, mediaKind])
-
-  const go = useCallback(
-    (step: number) => {
-      haptics.light()
-      setIsPlaying(false)
-      setIndex((i) => (i + step + reel.length) % reel.length)
-    },
-    [reel.length]
-  )
-
   // Focus close button when panel opens (accessibility), as SetlistPanel does
   // Desktop only, as with the setlist overlay. On a phone the panel starts off-screen, and Safari
   // scrolled the modal sideways to reach a focused button, leaving the whole panel shifted and
@@ -176,15 +146,6 @@ export function PhotosPanel({
     return () => window.removeEventListener('keydown', onKey)
   }, [go, many])
 
-  // Fetch the neighbouring stills now, so paging lands on a photo rather than a blank frame
-  useEffect(() => {
-    if (!many) return
-    for (const step of [1, -1]) {
-      const near = reel[(index + step + reel.length) % reel.length]
-      if (!isClip(near)) new Image().src = near.url
-    }
-  }, [index, many, reel])
-
   const handleClose = () => {
     haptics.light()
     setIsClosing(true)
@@ -192,20 +153,6 @@ export function PhotosPanel({
   }
 
   if (!item) return null
-
-  const handleClipPlay = () => {
-    setIsPlaying(true)
-    if (clipPlayed.current) return
-    clipPlayed.current = true
-    analytics.trackEvent('clip_played', { ...mediaParams, song: item.song ?? undefined })
-  }
-
-  const handleClipEnded = () => {
-    setIsPlaying(false)
-    if (clipCompleted.current) return
-    clipCompleted.current = true
-    analytics.trackEvent('clip_completed', { ...mediaParams, song: item.song ?? undefined })
-  }
 
   const aspect = isPhone ? PHONE_ASPECT : 1
   const footerHidden = isClip(item) && isPlaying
@@ -259,9 +206,9 @@ export function PhotosPanel({
           className="photos-panel-frame block w-full h-full"
           style={{ objectFit: 'contain' }}
           aria-label={`Video of ${item.artist ?? artistName} at ${concert.venue}`}
-          onPlay={handleClipPlay}
-          onPause={() => setIsPlaying(false)}
-          onEnded={handleClipEnded}
+          onPlay={onClipPlay}
+          onPause={onClipPause}
+          onEnded={onClipEnded}
         />
       ) : (
         <button

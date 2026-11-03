@@ -12,7 +12,8 @@ import { AskSearchMatches, optionId } from './AskSearchMatches'
 import { MIN_QUERY, matchAnswer, searchArchive, songAnswer } from './search'
 import { AskCrate } from './AskCrate'
 import { AskShareButton, answeredOnLabel, canShare } from './AskShare'
-import type { AskNotice } from './AskProvider'
+import type { AskNotice, AskViewerState } from './AskProvider'
+import { AskMediaViewer } from './AskMediaViewer'
 import type { Chip, Exhibit } from '@/types/exhibit'
 import { analytics } from '@/services/analytics'
 
@@ -35,6 +36,9 @@ export interface AskConversationProps {
   onShow?: (question: string, prose: string, exhibit: Exhibit) => void
   /** A shared link that couldn't open, said above the empty state. */
   notice?: AskNotice | null
+  /** A night's photos and clips, shown over the answers until `onCloseViewer`. */
+  viewer?: AskViewerState | null
+  onCloseViewer?: () => void
 }
 
 export function AskConversation({
@@ -49,6 +53,8 @@ export function AskConversation({
   dockEnd,
   onShow,
   notice,
+  viewer,
+  onCloseViewer,
 }: AskConversationProps) {
   const [input, setInput] = useState('')
   // Which row the arrow keys are on. -1 is the box itself, so Enter asks the words as typed.
@@ -86,6 +92,13 @@ export function AskConversation({
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     box.scrollTo({ top: Math.max(0, top - 4), behavior: reduce ? 'auto' : 'smooth' })
   }, [lastId, lastAnswered])
+
+  // A clip picked from the matches opens over them, so the list closes with the words that found it.
+  useEffect(() => {
+    if (!viewer) return
+    setInput('')
+    setActive(-1)
+  }, [viewer])
 
   const submit = (q: string) => {
     const trimmed = q.trim()
@@ -142,6 +155,8 @@ export function AskConversation({
                 setInput(e.target.value)
                 setActive(-1)
                 setDismissed(false)
+                // Typing is searching again, which happens over the answers.
+                if (viewer) onCloseViewer?.()
               }}
               onKeyDown={onKeyDown}
               placeholder={pending ? '' : placeholder}
@@ -176,7 +191,11 @@ export function AskConversation({
         {dockEnd}
       </div>
 
-      <div className="ask-stage">
+      <div className={`ask-stage ${viewer ? 'viewing' : ''}`}>
+        {/* Over the answers rather than in place of them, so Back finds the answer where it was. */}
+        {viewer && onCloseViewer && (
+          <AskMediaViewer key={`${viewer.date}-${viewer.initialId}`} viewer={viewer} archive={archive} onClose={onCloseViewer} />
+        )}
         {/* Empty state: the crate, the same as the Ask scene's, so a just-opened sheet never reads as
             a blank void (#189). Typing replaces it with matches, and the first question replaces it
             with the transcript. */}
