@@ -13,7 +13,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
-import { Link2 } from 'lucide-react'
+import { Share } from 'lucide-react'
 import type { Setlist } from '../../../types/setlist'
 import type { ArtistConcert } from './types'
 import { haptics } from '../../../utils/haptics'
@@ -57,7 +57,6 @@ export function SetlistPanel({
     url: absoluteUrl(setlistDeepLink(artistSlug, concert.date)),
     title: `${artistName} at ${concert.venue}`,
     text: `${artistName} at ${concert.venue} — the setlist`,
-    isPhone,
     analyticsEvent: {
       name: 'setlist_link_shared',
       params: { artist_name: artistName, concert_date: concert.date, venue_name: concert.venue }
@@ -151,9 +150,10 @@ export function SetlistPanel({
           </button>
 
           {/* Share Link Button (#196).
-              Deliberately identical to the artist copy-link in
-              ConcertHistoryPanel: same Link2 glyph at 18px, same 44px touch
-              target, same tooltip confirmation. Copying a link is one pattern —
+              Deliberately identical to the artist share in
+              ConcertHistoryPanel: the same Share glyph as every share on the
+              site, at 18px, same 44px touch target, same tooltip confirmation.
+              Sharing a link is one pattern —
               what differs between here and there is *what* gets linked, and
               that belongs in the aria-label, not the icon.
               Sits left of the close button with a gap: close discards the panel
@@ -163,11 +163,11 @@ export function SetlistPanel({
               <button
                 onClick={share}
                 className="absolute top-[10px] right-[50px] w-11 h-11 flex items-center justify-center text-[#4a4a40]/60 hover:text-[#1DB954] transition-colors duration-150 touchable-subtle"
-                aria-label={`Copy link to this setlist — ${artistName} at ${concert.venue}`}
-                title="Copy link"
+                aria-label={`Share this setlist — ${artistName} at ${concert.venue}`}
+                title="Share"
                 style={{ zIndex: 30 }}
               >
-                <Link2 size={18} />
+                <Share size={18} />
               </button>
 
               {/* Copy confirmation — a local tooltip, not the toast system.

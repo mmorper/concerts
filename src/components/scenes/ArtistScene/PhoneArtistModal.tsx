@@ -12,7 +12,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-import { X, Link2, History, Calendar, Music, Camera } from 'lucide-react'
+import { X, Share, History, Calendar, Music, Camera } from 'lucide-react'
 import { useShareLink } from '../../../hooks/useShareLink'
 import { artistDeepLink, setlistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 import { getGenreColor } from '../../../constants/colors'
@@ -253,7 +253,6 @@ export function PhoneArtistModal({
   const { share: shareArtist, status: artistShareStatus } = useShareLink({
     url: absoluteUrl(artistDeepLink(artist?.normalizedName ?? '')),
     title: artist?.name ?? '',
-    isPhone: true,
     analyticsEvent: { name: 'artist_link_shared', params: { artist_name: artist?.name ?? '' } }
   })
 
@@ -445,10 +444,10 @@ export function PhoneArtistModal({
                 <button
                   onClick={handleCopyLink}
                   className="flex-shrink-0 w-11 h-11 text-gray-500 hover:text-white active:text-white transition-colors flex items-center justify-center touch-manipulation"
-                  aria-label={`Copy link to ${artist.name}`}
+                  aria-label={`Share ${artist.name}`}
                   type="button"
                 >
-                  <Link2 size={18} />
+                  <Share size={18} />
                 </button>
 
                 {/* Copy confirmation toast */}
@@ -798,7 +797,6 @@ function SetlistOverlay({
     url: absoluteUrl(setlistDeepLink(artistSlug, concert.date)),
     title: `${artistName} at ${concert.venue}`,
     text: `${artistName} at ${concert.venue} — the setlist`,
-    isPhone: true,
     analyticsEvent: {
       name: 'setlist_link_shared',
       params: { artist_name: artistName, concert_date: concert.date, venue_name: concert.venue }
@@ -842,11 +840,10 @@ function SetlistOverlay({
             </p>
           </div>
           <div className="relative flex items-start gap-1 -mr-2 -mt-2">
-            {/* Share (#196). Same Link2 glyph at 18px as the artist copy-link
-                elsewhere in this modal — one pattern, one icon. The share
-                sheet vs clipboard difference is behaviour, not iconography,
-                and the artist link right beside it is a Link2, so internal
-                consistency wins over a marginally more precise glyph.
+            {/* Share (#196). The same Share glyph at 18px as the artist share
+                in this modal and every other share on the site — one pattern,
+                one icon. The share sheet vs clipboard difference is behaviour,
+                not iconography.
                 stopPropagation matters: the overlay root listens for a
                 right-swipe to close and this sits where that gesture starts. */}
             {canShare && (
@@ -856,10 +853,10 @@ function SetlistOverlay({
                   share()
                 }}
                 className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
-                aria-label={`Share link to this setlist — ${artistName} at ${concert.venue}`}
-                title="Copy link"
+                aria-label={`Share this setlist — ${artistName} at ${concert.venue}`}
+                title="Share"
               >
-                <Link2 size={18} />
+                <Share size={18} />
               </button>
             )}
             <button

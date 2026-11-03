@@ -8,6 +8,7 @@
 // Everything else (a refusal, a plain answer, a question back) has no button.
 
 import { useEffect, useRef, useState } from 'react'
+import { Share } from 'lucide-react'
 import type { Exchange } from '@/hooks/useAskArchive'
 import { useShareLink } from '@/hooks/useShareLink'
 import { createShare, fetchShare } from '@/services/askArchive'
@@ -29,7 +30,6 @@ export function knownShareLink(ex: Exchange): string | null {
 /** Whether an answer gets a Share button at all. */
 export const canShare = (ex: Exchange): boolean => ex.status === 'done' && (!!knownShareLink(ex) || !!ex.share)
 
-const isPhoneWidth = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 767px)').matches
 
 export function AskShareButton({ exchange }: { exchange: Exchange }) {
   const known = knownShareLink(exchange)
@@ -47,7 +47,6 @@ export function AskShareButton({ exchange }: { exchange: Exchange }) {
     url: known ? absoluteUrl(known) : (made ?? ''),
     title: exchange.question,
     text: `${exchange.question} — Ask the Archive`,
-    isPhone: isPhoneWidth(),
     analyticsEvent: { name: 'ask_answer_shared', params: { exhibit_kind: exhibitKind, link_kind: linkKind } },
   })
 
@@ -83,19 +82,12 @@ export function AskShareButton({ exchange }: { exchange: Exchange }) {
 
   return (
     <button type="button" className="ask-share" onClick={onClick} disabled={working} aria-live="polite">
-      <ShareMark />
+      <Share size={14} aria-hidden="true" />
       {label}
     </button>
   )
 }
 
-function ShareMark() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M8 10V2M5 5l3-3 3 3M3 9v4h10V9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
 
 const MISSING = 'That answer isn’t here any more.'
 const UNREACHABLE = 'That answer didn’t load.'

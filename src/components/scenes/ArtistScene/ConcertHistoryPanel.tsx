@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
-import { Link2 } from 'lucide-react'
+import { Share } from 'lucide-react'
 import { useShareLink } from '../../../hooks/useShareLink'
 import { artistDeepLink, absoluteUrl } from '../../../utils/deepLinks'
 import { getGenreColor } from '../../../constants/colors'
@@ -77,7 +77,6 @@ export function ConcertHistoryPanel({
   const { share: handleCopyLink, status: shareStatus } = useShareLink({
     url: absoluteUrl(artistDeepLink(artist.normalizedName)),
     title: artist.name,
-    isPhone,
     analyticsEvent: { name: 'artist_link_shared', params: { artist_name: artist.name } }
   })
 
@@ -147,10 +146,10 @@ export function ConcertHistoryPanel({
             <button
               onClick={handleCopyLink}
               className="text-white/40 hover:text-white/90 transition-colors duration-150 flex-shrink-0 p-3 -m-3 min-w-[44px] min-h-[44px] flex items-center justify-center touchable-subtle"
-              aria-label={`Copy link to ${artist.name}`}
-              title="Copy link"
+              aria-label={`Share ${artist.name}`}
+              title="Share"
             >
-              <Link2 size={18} />
+              <Share size={18} />
             </button>
 
             {/* Copy confirmation tooltip */}

@@ -7,13 +7,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { format } from 'date-fns'
-import { Link2, Check } from 'lucide-react'
+import { Share, Check } from 'lucide-react'
 import type { LinerNotesPost, DeepLink } from '../../types/liner-notes'
 import { CATEGORY_ACCENT_COLORS, CATEGORY_LABELS, handleImageError } from './constants'
 import { LinerNoteMiniPlayer } from './LinerNoteMiniPlayer'
 import { useShareLink } from '../../hooks/useShareLink'
 import { absoluteUrl } from '../../utils/deepLinks'
-import { useGatefoldOrientation } from '../../hooks/useGatefoldOrientation'
 import { splitEmphasis } from '../../utils/prose'
 
 interface LinerNoteCardProps {
@@ -103,17 +102,13 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
 
   // #204 — was the fourth hand-rolled share in the app. Two behaviour changes
   // come with the shared hook, both deliberate:
-  //   - the sheet is now gated on isPhone rather than pure feature detection,
-  //     so desktop Safari and desktop Chrome stop behaving differently
+  //   - the sheet is now gated on a touch device rather than pure feature
+  //     detection, so desktop Safari and desktop Chrome stop behaving differently
   //   - clipboard failures now surface, and pick up the iOS execCommand
   //     fallback, instead of rejecting silently
-  // Same viewport signal the Artist scene uses to pick modal vs gatefold, so
-  // "is this a phone" means one thing across the app.
-  const { isPhone } = useGatefoldOrientation()
   const { share, status: shareStatus } = useShareLink({
     url: absoluteUrl(`/liner-notes/${post.slug}`),
     title: post.headline,
-    isPhone,
     analyticsEvent: { name: 'liner_note_shared', params: { slug: post.slug } }
   })
   const copied = shareStatus === 'copied'
@@ -207,8 +202,8 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
             </div>
             <button
               onClick={handleShare}
-              aria-label={copied ? 'Link copied!' : 'Copy link to this post'}
-              title={copied ? 'Copied!' : 'Copy link'}
+              aria-label={copied ? 'Link copied!' : 'Share this post'}
+              title={copied ? 'Copied!' : 'Share'}
               style={{
                 flexShrink: 0,
                 color: copied ? accentColor : '#6b7280',
@@ -225,7 +220,7 @@ export function LinerNoteCard({ post, index }: LinerNoteCardProps) {
             >
               {copied
                 ? <Check size={14} strokeWidth={2.5} />
-                : <Link2 size={14} strokeWidth={2} />
+                : <Share size={14} strokeWidth={2} />
               }
             </button>
           </div>

@@ -298,6 +298,19 @@ Two rules:
 </button>
 ```
 
+### Share (every surface)
+
+One icon for sharing, everywhere: lucide's `Share`, the box with an arrow up. Never `Link2` (a
+chain, which says "copy link") or `Share2` (three dots, which reads as Android). Every share goes
+through `useShareLink`, which opens the share sheet on a touch device (phone or iPad) and copies on
+a desktop, so the icon names the action, not one device's behaviour.
+
+- Icon only where space is tight (over a photo, beside a title): 18px, 44px target,
+  `aria-label="Share …"` naming what is shared, `title="Share"`.
+- Icon plus the word "Share" where it fits (under an Ask answer, in Ask's media viewer): 14px.
+- Confirm a desktop copy inline ("Copied!"), never with a toast. The share sheet is its own
+  confirmation.
+
 ---
 
 ## Spacing Standards
