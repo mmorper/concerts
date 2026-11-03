@@ -72,6 +72,15 @@ new_sqlite_classes = ["SpendCounter"]
 binding = "ASK_CONTROL"
 id = "9784703871e543f9aa6b0c3eea88fa91"
 
+# Shared answers, `share:<id>` → a signed snapshot (src/share.ts). Written only when someone shares
+# an answer; never expires. Until this is bound, no answer is offered for sharing and /share
+# answers 503, so the Worker ships safely without it. Create once:
+#   npx wrangler kv namespace create ASK_SHARES
+# then uncomment these three lines and paste the returned id.
+# [[kv_namespaces]]
+# binding = "ASK_SHARES"
+# id = "<id from the command above>"
+
 # Per-turn ledger (query + outcome + tokens + cost) → Analytics Engine. The durable spend + query
 # history the SpendCounter DO can't keep (it forgets at the UTC rollover). No migration needed.
 # Query it with the SQL API:  SELECT blob2 AS query, double5/1e6 AS usd FROM ask_turns WHERE ...
