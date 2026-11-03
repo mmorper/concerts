@@ -190,6 +190,17 @@ No image is rendered on demand in this phase.
 The song link gets the same branch with no fetch. Its title is "Song, by Act" and its image is
 rung 2 of the ladder.
 
+**Done** (Phase 3). How it came out:
+- A plain `fetch` from the meta-injector to another Worker on this zone fails, so it reads the
+  snapshot through an `ASK_CHAT` service binding to `morperhaus-ask-chat`, not `cachedJsonFetch`.
+- Titles end "· Ask the Archive | Morperhaus Concert Archives". The subject line per card kind is
+  in `answerSubject`: the act, "Act at Venue, year" for a night, "“Song”, by Act", and so on.
+- The image ladder gained a rung, so an act answer shows the owner's photo even with no night in
+  it: the frame named (a gallery's first), else the act's best frame from the answer's night, else
+  the act's lead frame (`leadPhoto`'s order: signature, then the newest night's hero, then its best
+  frame), else the sourced artist image, else the site card. The song link uses the same ladder.
+- A missing answer, a bad id or no binding falls back to the Ask scene's own card, with no `noindex`.
+
 ### Phase 4: owner controls
 
 - `ask:share` in `ASK_CONTROL`, `on` by default. When `off`, the button is hidden and `POST /share`

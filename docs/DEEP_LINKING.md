@@ -173,7 +173,7 @@ https://concerts.morperhaus.org/?scene=ask&artist=the-cure&song=a-forest
 - `artist` + `song` rebuild a song card from `song-index.json` with no network call. `song` is `normalizeArtistName` of the title.
 - An answer opened from a shared link says when it was given ("Answered on November 2, 2026"), and its box is ready for a follow-up, which sends the shared answer as history.
 - Build these with `askAnswerDeepLink` and `askSongDeepLink` in `src/utils/deepLinks.ts`. The SPA is the only emitter and reader: `src/components/ask/AskShare.tsx`.
-- Previews for these links are Phase 3 of `docs/specs/future/global-ask-shareable-answers.md`. Until then a crawler sees the Ask scene's own title and description.
+- Shared on social, both shapes preview as their subject: the act, night, room or song, with the owner's photo of that act when there is one (`injectSharedAnswerMeta` and `injectSharedSongMeta` in the meta-injector). The visitor's question never appears in a preview. Both are `noindex`, with the subject's own page as canonical.
 
 ---
 
