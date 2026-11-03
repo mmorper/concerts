@@ -100,8 +100,9 @@ its original numbers. The "Answered on" line covers the gap.
 
 In `workers/ask-chat/src/index.ts`:
 
-- When a turn ends with a shareable exhibit, the `done` event carries `share: { sig }`. The
-  signature is an HMAC over the canonical JSON of the snapshot, minus `sig`.
+- When a turn ends with a shareable exhibit, the `done` event carries `share: { snapshot, sig }`.
+  The signature is an HMAC over the canonical JSON of the snapshot (keys sorted at every depth).
+  The site posts both back unchanged, so it never has to rebuild the snapshot to match.
 - The key is derived from `SESSION_HMAC_KEY` as `HMAC(SESSION_HMAC_KEY, "ask-share-v1")`, so no new
   secret has to be set in every place keys live. Rotating the session key voids signatures not yet
   shared. Stored answers are unaffected, since they are already verified.
@@ -110,11 +111,16 @@ In `workers/ask-chat/src/index.ts`:
   - It writes `share:<id>` to a new KV namespace, `ASK_SHARES`, with no expiry.
   - The id is the first 12 base62 characters of the SHA-256 of the snapshot. Sharing the same
     answer twice gives the same link, and a retry writes nothing new.
-  - It uses the existing per-IP rate-limit binding, at 20 shares a day.
+  - It uses the existing per-IP rate-limit binding, keyed `share:<ip>`. That binding has one fixed
+    limit and period, so the "20 shares a day" first written here is that binding's limit instead.
+    A signature already means only real answers get in.
 - `GET /api/ask/share/<id>` returns the snapshot as JSON with `Cache-Control: public,
   max-age=86400`. An unknown or removed id is a 404.
 
-New file: `workers/ask-chat/src/share.ts` for signing, verifying, ids and the two handlers.
+New file: `workers/ask-chat/src/share.ts` for signing, verifying, ids and the store/read logic.
+
+**Done** (Phase 1). The `ASK_SHARES` namespace was created 2026-11-02 and is bound in
+`wrangler.toml`. Unbound, no answer is offered for sharing and `/share` answers 503.
 
 ### Phase 2: the button, and opening a link
 
@@ -261,6 +267,7 @@ A follow-up asked from a shared answer logs as an `ask_turns` row, like any turn
 
 ## Revision History
 
+- **2026-11-02:** Phase 1 built: signing on `done`, `POST /share` and `GET /share/<id>`
 - **2026-11-02:** Initial specification created
 - **Version:** 1.0.0
 - **Status:** Planned

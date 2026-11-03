@@ -3,8 +3,10 @@
 // loop, atomic DO cost cap, phone-flippable kill switch.
 //
 // Routes (under concerts.morperhaus.org/api/ask*):
-//   POST /api/ask/chat    — run a turn, stream the answer as SSE
-//   GET  /api/ask/status  — current mode + today's spend (JSON)
+//   POST /api/ask/chat        — run a turn, stream the answer as SSE
+//   GET  /api/ask/status      — current mode + today's spend (JSON)
+//   POST /api/ask/share       — store a signed answer snapshot; returns { id } (share.ts)
+//   GET  /api/ask/share/<id>  — a stored snapshot, public and cacheable; 404 when absent
 //
 // SSE events from /api/ask/chat (consumed by #140 frontend):
 //   token    { text }        — prose delta (stream into the exhibit's stable frame)
@@ -15,7 +17,8 @@
 //                              May carry `chips`: one or two follow-ups, each a tool + its input
 //                              (chips.ts). A turn that sends one back runs that tool first.
 //   refusal  { message }     — kill-switch / cap / backstop, graceful (never a 500)
-//   done     { fraction }    — turn complete (spend fraction of the daily cap)
+//   done     { fraction }    — turn complete (spend fraction of the daily cap). A shareable answer
+//                              adds `share: { snapshot, sig }`, which the site posts to /share.
 //   error    { message }     — unexpected failure
 //
 // SHIPS BEHIND A FLAG, NO END-USER UI. The Turnstile session gate + per-session/IP rate
@@ -29,6 +32,7 @@ import { runAgentTurn } from "./agent-loop.js";
 import { dispatchTool, loadChipData, pickDeterministicTool, readerProse } from "./tools-bridge.js";
 import { pickPrimaryExhibit, type Exhibit } from "./exhibits.js";
 import { offerChips, readChip, type Chip } from "./chips.js";
+import { readShare, SHARE_CACHE_CONTROL, signSnapshot, snapshotOf, storeShare } from "./share.js";
 import { issueSession, verifySession } from "./session.js";
 import { allow } from "./ratelimit.js";
 import { maybeTripwire } from "./notify.js";
@@ -93,6 +97,25 @@ function chipMessages(turns: Turn[], chip: Pick<Chip, "tool" | "input">, resultT
     { role: "assistant", content: [{ type: "tool_use", id: CHIP_TOOL_USE_ID, name: chip.tool, input: chip.input }] },
     { role: "user", content: [{ type: "tool_result", tool_use_id: CHIP_TOOL_USE_ID, content: resultText }] },
   ];
+}
+
+/**
+ * `{ share }` for the `done` event: the answer's snapshot, signed, which the site posts back to
+ * /share when someone shares it. Empty when the answer can't be shared or signing isn't set up.
+ * Best-effort, like the chips: a failure costs the share, never the answer.
+ */
+async function shareFor(env: Env, question: string, prose: string, exhibit: Exhibit, turns: Turn[], day: string) {
+  // No store, nothing to share into: offering a share that /share would refuse is worse than none.
+  if (!env.ASK_SHARES) return {};
+  try {
+    const turnIndex = turns.filter((t) => t.role === "user").length - 1;
+    const snap = snapshotOf({ question, prose, exhibit, day, turnIndex });
+    const share = snap && (await signSnapshot(env, snap));
+    return share ? { share } : {};
+  } catch (err) {
+    console.error("share signing failed (answer unaffected):", err);
+    return {};
+  }
 }
 
 /** The follow-ups for an answer. Best-effort: a failure costs the chips, never the answer. */
@@ -212,7 +235,7 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
           outcome = "deterministic";
           if (prose) await send("token", { text: prose });
           await send("exhibit", exhibit);
-          await send("done", { fraction: 0, deterministic: true });
+          await send("done", { fraction: 0, deterministic: true, ...(await shareFor(env, lastUserText, prose, exhibit, v.turns, day)) });
         } catch (err) {
           outcome = "refused"; // graceful refusal, not an unexpected error — keep the ledger honest
           console.error("deterministic turn failed:", err);
@@ -294,7 +317,7 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
       // Crossing a budget milestone (50/75/100%) → push a deep link to /ask/admin (once/day each).
       // Backgrounded.
       ctx.waitUntil(maybeTripwire(env, status, ctx));
-      await send("done", { fraction: status.fraction });
+      await send("done", { fraction: status.fraction, ...(await shareFor(env, lastUserText, result.text, exhibit, v.turns, day)) });
     } catch (err) {
       console.error("chat turn failed:", err);
       if (ticket) ctx.waitUntil(releaseTurn(env, ticket)); // charge nothing for a failed turn
@@ -323,6 +346,33 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext): Pr
 async function handleStatus(request: Request, env: Env): Promise<Response> {
   const mode = await getMode(env);
   return Response.json({ mode }, { headers: cors(request) });
+}
+
+// Store a shared answer (share.ts). No session needed: the signature is the gate, since only an
+// answer this Worker gave can pass it. The per-IP limiter keeps one visitor from filling KV.
+async function handleShare(request: Request, env: Env): Promise<Response> {
+  const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+  if (!(await allow(env.IP_LIMITER, `share:${ip}`, "ip"))) {
+    return Response.json({ error: "rate_limited" }, { status: 429, headers: cors(request) });
+  }
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "Bad JSON." }, { status: 400, headers: cors(request) });
+  }
+  const result = await storeShare(env, body);
+  if (!result.ok) return Response.json({ error: result.error }, { status: result.status, headers: cors(request) });
+  return Response.json({ id: result.id }, { headers: cors(request) });
+}
+
+// Read a shared answer. Public and cacheable: a snapshot never changes once stored.
+async function handleShareGet(request: Request, env: Env, id: string): Promise<Response> {
+  const snapshot = await readShare(env, id);
+  if (snapshot === null) return Response.json({ error: "not_found" }, { status: 404, headers: cors(request) });
+  return new Response(snapshot, {
+    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": SHARE_CACHE_CONTROL, ...cors(request) },
+  });
 }
 
 // Exchange a Turnstile token for a signed session token (required by /chat).
@@ -362,6 +412,12 @@ export default {
     }
     if (url.pathname === "/api/ask/status" && request.method === "GET") {
       return handleStatus(request, env);
+    }
+    if (url.pathname === "/api/ask/share" && request.method === "POST") {
+      return handleShare(request, env);
+    }
+    if (url.pathname.startsWith("/api/ask/share/") && request.method === "GET") {
+      return handleShareGet(request, env, url.pathname.slice("/api/ask/share/".length));
     }
 
     return new Response("Not found", { status: 404, headers: cors(request) });

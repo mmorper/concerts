@@ -15,6 +15,10 @@ export interface Env {
   SPEND_COUNTER: DurableObjectNamespace;
   // Kill-switch flag + small control state. `ask:mode` ∈ {on, paused, deterministic-only}.
   ASK_CONTROL: KVNamespace;
+  // Shared answers, `share:<id>` → the signed snapshot (share.ts). Written only when someone
+  // shares, never expires. Optional: unbound, the share endpoints answer 503 and no answer is
+  // offered for sharing.
+  ASK_SHARES?: KVNamespace;
 
   // Per-turn ledger (query + outcome + tokens + cost) for analytics + a future /dashboard. The
   // durable history the SpendCounter DO isn't. Optional: absent → telemetry is a no-op (see
