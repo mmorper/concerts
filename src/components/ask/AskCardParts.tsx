@@ -2,6 +2,7 @@
 // cards in AskRecordCards.tsx can share them without a circular import).
 
 import type { CSSProperties, ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { cleanProse, isShortLede } from './prose'
@@ -76,14 +77,18 @@ export const trackPhotoOpened = (kind: Exhibit['kind']) => (p: Photo) =>
 /**
  * Opens a photo where it lives: that exact frame in its gatefold, beside the night's clips and
  * setlist. A full-screen viewer here was a dead end, with no way on to the video.
+ *
+ * It moves within the site rather than reloading the page, so Ask keeps the conversation and can
+ * offer the way back (AskSpotlight). A page load threw the conversation away.
  */
 export function useFrameOpener(archive: ArchiveLookups, onOpen?: (p: Photo) => void) {
+  const navigate = useNavigate()
   return {
     open: (photos: Photo[], index: number) => {
       const photo = photos[index]
       if (!photo) return
       onOpen?.(photo)
-      window.location.assign(frameLink(photo, archive.concertByDate(photo.date)?.headlinerNormalized ?? ''))
+      navigate(frameLink(photo, archive.concertByDate(photo.date)?.headlinerNormalized ?? ''))
     },
   }
 }

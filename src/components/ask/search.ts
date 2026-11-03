@@ -3,7 +3,8 @@
 // where that thing lives. A question goes to the model only when the visitor asks it.
 
 import type { Concert } from '@/types/concert'
-import type { AlbumIdentity, SongExhibit } from '@/types/exhibit'
+import type { AlbumIdentity, Exhibit, SongExhibit } from '@/types/exhibit'
+import type { ArtistFacts, VenueFacts } from '@/hooks/useArchiveData'
 import { artistDeepLink, setlistDeepLink, timelineYearDeepLink, venueDeepLink } from '@/utils/deepLinks'
 import { normalizeArtistName } from '@/utils/normalize'
 import { actClips, fmtDate, frameLink, leadPhoto, venueSourcedPhoto, type MediaIndex, type Photo, type VenuePhotoMeta } from './media'
@@ -48,6 +49,8 @@ export interface SearchEntry {
   squashed: string
   /** A venue's city and state or country, folded, so "Glasgow" or "UK" finds the room. */
   placeFold?: string
+  /** A band's or a venue's slug, for its card in Ask. */
+  slug?: string
 }
 
 export interface SearchSources {
@@ -109,6 +112,7 @@ export function buildSearchEntries({ byArtist, byVenue, artists, venues, media, 
       name: actName(slug, shows, artists),
       sub: counts.join(' · '),
       href: artistDeepLink(slug),
+      slug,
       photo: leadPhoto(media, slug),
       image: artists[slug]?.image,
       media: photos + clips,
@@ -123,6 +127,7 @@ export function buildSearchEntries({ byArtist, byVenue, artists, venues, media, 
       sub: `${shows[0].cityState} · ${plural(shows.length, 'show')}`,
       place: shows[0].cityState,
       href: venueDeepLink(slug),
+      slug,
       image: venueSourcedPhoto(venues[slug]),
       media: 0,
       shows: shows.length,
@@ -184,6 +189,66 @@ export function buildSearchEntries({ byArtist, byVenue, artists, venues, media, 
  * A song picked from the matches, as a finished turn: the song as the question, a line of prose,
  * and its card. The prose is what a follow-up question sees as the answer.
  */
+/** "5 times, from 1985 to 2023", "twice, both in 2019", "once, in 1987". */
+function timesSpan(count: number, first?: number, last?: number): string {
+  const times = count === 1 ? 'once' : count === 2 ? 'twice' : `${count} times`
+  if (!first) return times
+  if (count === 1) return `${times}, in ${first}`
+  if (first === last) return `${times}, ${count === 2 ? 'both' : 'all'} in ${first}`
+  return `${times}, from ${first} to ${last}`
+}
+
+export interface MatchLookups {
+  concerts: Concert[]
+  artistFacts: (slug: string) => ArtistFacts
+  venueFacts: (slug: string) => VenueFacts
+}
+
+/**
+ * A band, venue or year picked from the matches, as a finished turn in Ask: the name as the
+ * question, a line of prose, and the card a question about it would get. Built from the site's
+ * own data, so it costs no model call, and the card's own link is the one way to leave Ask.
+ * Null for a clip, which can only play in its gatefold, and for a song (`songAnswer`).
+ */
+export function matchAnswer(e: SearchEntry, archive: MatchLookups): { question: string; prose: string; exhibit: Exhibit } | null {
+  if (e.kind === 'band' && e.slug) {
+    const f = archive.artistFacts(e.slug)
+    return {
+      question: e.name,
+      prose: `I've seen ${e.name} ${timesSpan(f.count, f.firstYear, f.lastYear)}.`,
+      exhibit: { kind: 'artist', entity: 'artist', slug: e.slug, name: e.name, deepLink: artistDeepLink(e.slug) },
+    }
+  }
+  if (e.kind === 'venue' && e.slug) {
+    const f = archive.venueFacts(e.slug)
+    return {
+      question: e.name,
+      prose: `I've been to ${e.name} ${timesSpan(f.count, f.firstYear, f.lastYear)}.`,
+      exhibit: { kind: 'venue', entity: 'venue', slug: e.slug, name: e.name, deepLink: venueDeepLink(e.slug) },
+    }
+  }
+  if (e.kind === 'year') {
+    const year = Number(e.name)
+    const nights = archive.concerts.filter((c) => c.year === year).sort((a, b) => a.date.localeCompare(b.date))
+    if (!nights.length) return null
+    return {
+      question: e.name,
+      prose: `I saw ${plural(nights.length, 'show')} in ${year}.`,
+      exhibit: {
+        kind: 'list',
+        title: `${plural(nights.length, 'concert')} · ${year}`,
+        rows: nights.map((c) => ({
+          concertId: c.id,
+          date: c.date,
+          artist: { entity: 'artist', slug: c.headlinerNormalized, name: c.headliner, deepLink: artistDeepLink(c.headlinerNormalized) },
+          venue: { entity: 'venue', slug: c.venueNormalized, name: c.venue, deepLink: venueDeepLink(c.venueNormalized) },
+        })),
+      },
+    }
+  }
+  return null
+}
+
 export function songAnswer(song: SongRow): { question: string; prose: string; exhibit: SongExhibit } {
   const n = song.dates.length
   const last = song.dates[0].slice(0, 4)

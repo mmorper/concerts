@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import type { Concert } from '@/types/concert'
 import { indexConcerts } from '@/hooks/useArchiveData'
 import { buildMediaIndex, EMPTY_MEDIA, type MediaAsset } from './media'
-import { buildSearchEntries, fold, MATCH_LIMIT, readSongIndex, searchArchive, songAnswer, type SearchSources, type SongRow } from './search'
+import { buildSearchEntries, fold, matchAnswer, MATCH_LIMIT, readSongIndex, searchArchive, songAnswer, type SearchSources, type SongRow } from './search'
 
 const concert = (over: Partial<Concert>): Concert =>
   ({
@@ -156,6 +156,47 @@ describe('buildSearchEntries', () => {
     const media = buildMediaIndex([clip])
     const songs = [song({ name: 'A Forest', act: 'Tribute', slug: 'tribute' })]
     expect(searchArchive(entriesFor([concert({})], { media, songs }), 'forest')).toHaveLength(2)
+  })
+})
+
+describe('matchAnswer — a match opens its card in Ask, with no model call', () => {
+  const nights = [
+    concert({}),
+    concert({ id: 'c2', date: '1989-08-03', year: 1989, venue: 'Dodger Stadium', venueNormalized: 'dodger-stadium' }),
+  ]
+  const lookups = {
+    concerts: nights,
+    artistFacts: () => ({ meta: null, shows: nights, count: 2, firstYear: 1989, lastYear: 2023 }),
+    venueFacts: () => ({ meta: null, shows: [nights[0]], count: 1, firstYear: 2023, lastYear: 2023 }),
+  }
+  const hit = (q: string) => searchArchive(entriesFor(nights), q)[0]
+
+  it('a band gets its artist card and how often I saw them', () => {
+    expect(matchAnswer(hit('cure'), lookups)).toEqual({
+      question: 'The Cure',
+      prose: "I've seen The Cure twice, from 1989 to 2023.",
+      exhibit: { kind: 'artist', entity: 'artist', slug: 'the-cure', name: 'The Cure', deepLink: '/?scene=artists&artist=the-cure' },
+    })
+  })
+
+  it('a venue gets its venue card', () => {
+    const a = matchAnswer(hit('hollywood'), lookups)
+    expect(a?.prose).toBe("I've been to Hollywood Bowl once, in 2023.")
+    expect(a?.exhibit).toMatchObject({ kind: 'venue', slug: 'hollywood-bowl' })
+  })
+
+  it('a year gets the list of that year’s shows', () => {
+    const a = matchAnswer(hit('1989'), lookups)
+    expect(a?.prose).toBe('I saw 1 show in 1989.')
+    expect(a?.exhibit).toMatchObject({ kind: 'list', title: '1 concert · 1989' })
+    expect(a?.exhibit.kind === 'list' && a.exhibit.rows.map((r) => r.date)).toEqual(['1989-08-03'])
+  })
+
+  it('a clip has no card here: it plays in its gatefold', () => {
+    const media = buildMediaIndex([clip])
+    const c = searchArchive(entriesFor([concert({})], { media }), 'forest')[0]
+    expect(c.kind).toBe('clip')
+    expect(matchAnswer(c, lookups)).toBeNull()
   })
 })
 

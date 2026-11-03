@@ -74,6 +74,21 @@
 .ask-share:hover:not(:disabled) { color: #fff; background: rgba(255, 255, 255, 0.08); }
 .ask-share:disabled { cursor: default; opacity: 0.7; }
 .ask-share:focus-visible, .ask-own:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+/* "Back to Ask": while an answer's link has the visitor elsewhere, the conversation waits here.
+   Bottom centre, clear of the rail; on a phone it sits above the bottom nav. */
+.ask-return {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 45;
+  display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px;
+  background: rgba(30, 27, 75, 0.94); border: 1px solid rgba(165, 180, 252, 0.45); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.ask-return-go, .ask-return-x { border: 0; background: none; color: #fff; font: inherit; cursor: pointer; min-height: 40px; border-radius: 999px; }
+.ask-return-go { padding: 0 16px 0 14px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+.ask-return-x { width: 40px; font-size: 18px; color: rgba(255, 255, 255, 0.7); }
+.ask-return-go:hover, .ask-return-x:hover { background: rgba(255, 255, 255, 0.1); }
+.ask-return-go:focus-visible, .ask-return-x:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+@media (max-width: 767px) { .ask-return { bottom: calc(60px + env(safe-area-inset-bottom)); } }
+
 /* A shared link that couldn't open, above the empty overlay. */
 .ask-notice { margin: 0 0 14px; padding: 10px 14px; border-radius: 10px; background: rgba(255, 255, 255, 0.06); font-size: 14px; color: rgba(255, 255, 255, 0.85); }
 /* Under an answer opened from a shared link: when it was given, and the way to ask your own. */

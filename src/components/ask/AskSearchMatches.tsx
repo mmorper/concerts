@@ -1,10 +1,11 @@
-// The list under the Ask box as you type. Every row links to where that thing lives, except a
-// song, which opens its card here. The last row hands the words to the model, so looking something
-// up never spends a model call.
+// The list under the Ask box as you type. A band, venue, year or song opens its card here, in Ask,
+// with no model call; leaving Ask is the card's own link, never a match. A clip still opens in its
+// gatefold, the only place it plays. Each row keeps its href, so a new tab goes straight there. The
+// last row hands the words to the model.
 
 import { analytics } from '@/services/analytics'
 import { FramedPhoto, LadderImage } from './AskMedia'
-import type { SearchEntry, SongRow } from './search'
+import type { SearchEntry } from './search'
 
 export const optionId = (listId: string, index: number) => `${listId}-${index}`
 
@@ -23,7 +24,7 @@ export function AskSearchMatches({
   over,
   busy,
   onAsk,
-  onSong,
+  onPick,
 }: {
   id: string
   query: string
@@ -33,8 +34,8 @@ export function AskSearchMatches({
   over: boolean
   busy: boolean
   onAsk: () => void
-  /** A song is heard on several nights, so it opens a card here rather than one of them. */
-  onSong?: (song: SongRow) => void
+  /** Opens a match's card in Ask. Returns false when the match has none (a clip), to follow its link. */
+  onPick?: (match: SearchEntry) => boolean
 }) {
   return (
     <div id={id} className={`ask-matches ${over ? 'over' : ''}`} role="listbox" aria-label="Matches in the archive">
@@ -49,12 +50,9 @@ export function AskSearchMatches({
           tabIndex={-1}
           onClick={(e) => {
             analytics.trackEvent('ask_search_match_clicked', { result_kind: m.kind, position: i, search_term: query })
-            // A new tab still gets the link: the last night it was heard.
+            // A new tab still gets the link. A plain click stays in Ask when the match has a card.
             const plain = !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) && e.button === 0
-            if (m.song && onSong && plain && !busy) {
-              e.preventDefault()
-              onSong(m.song)
-            }
+            if (plain && !busy && onPick?.(m)) e.preventDefault()
           }}
         >
           <span className="thumb">

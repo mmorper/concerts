@@ -311,8 +311,12 @@ fires these itself.
 **Ask the Archive (Scene 6):**
 - `ask_search_match_clicked` — A match in the type-ahead list: `result_kind` (band, venue, year,
   clip, song), `position`, `search_term`. A match costs no model call, so `ask_question_sent` never
-  sees it. A song match then opens its card in Ask, which fires `ask_exhibit_shown` with
-  `kind: song`
+  sees it. A band, venue, year or song match opens its card in Ask, which fires `ask_exhibit_shown`
+  (`kind`: artist, venue, list, song). A clip match leaves for its gatefold
+- `ask_opened` — `surface` (`kbd`, `scene`, `prompt`, `shared`, `return`). `return` is "Back to
+  Ask", or the browser's Back to the page Ask was left from
+- `ask_closed` — `reason` (`dismiss`, `promote`, `leave`), `turn_count`. `leave` means a link in an
+  answer took the visitor elsewhere and the conversation was kept for "Back to Ask"
 - `ask_suggested_prompt_clicked` — An idea or a follow-up that asks for the visitor: `prompt`,
   `position`, `source` (`crate`, `chip`). A crate idea adds `idea_kind` and `surface` (`scene`, or
   `overlay` for the ⌘K empty state), and a follow-up chip adds `exhibit_kind`, the card it sat
