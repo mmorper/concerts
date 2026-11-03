@@ -1,6 +1,21 @@
 {
   "releases": [
     {
+      "version": "6.3.0",
+      "date": "2026-11-02",
+      "title": "The Whole Night",
+      "description": "Open a show in the gatefold and its photos now slide out beside the setlist: my own frames from the night, full bleed, and the clips I filmed, with the sound on. Ask the Archive is rebuilt around search. Start typing a band, a venue, a song or a year and the matches are there before you finish. Ask a question and the answer leads with a picture. Tap a photo or a clip and it plays right inside Ask, with the rest of that night a swipe away. And any answer can be shared: the link opens it word for word, and the preview shows the photo.",
+      "route": "/?scene=ask",
+      "highlights": [
+        "150 of my photos and 22 clips from 46 nights, behind a Photos button on every night I photographed",
+        "Ask opens as a search box: bands, venues, songs and years match as you type",
+        "Photos and clips play inside Ask, the whole night in a strip, with the setlist one tap away",
+        "Share any answer: the link reopens it, and its preview shows the photo from the night",
+        "Each answer ends with a next question or two worth asking",
+        "Search reaches shows abroad, too. Try Glasgow"
+      ]
+    },
+    {
       "version": "6.2.0",
       "date": "2026-10-31",
       "title": "Mange Tout, 1984",

@@ -11,6 +11,8 @@ An interactive web app for exploring personal concert history. Six scenes—Time
 
 ## What's new
 
+**v6.3.0** 📸 The whole night. Open a show in the gatefold and my photos from it slide out beside the setlist, full bleed, along with the clips I filmed, sound on: 150 photos and 22 clips from 46 nights so far. Ask the Archive is rebuilt around search, so a band, a venue or a song turns up as you type. Tap a photo or a clip in an answer and it plays right there, the rest of the night a swipe away. And any answer can be shared, with the photo from the night as its preview. [Ask the archive](https://concerts.morperhaus.org/?scene=ask).
+
 **v6.2.0** 💿 Ask the archive which album "Blind Vision" came off and it used to answer with a sentence. Now it hands you the record — *Mange Tout*, Blancmange's second — and the night in Glasgow I heard it, with the other songs off that album marked in the set. Ask about a band and my own photograph from the night leads the answer, framed the way I cropped it and credited to whoever is actually in it. Ask what they played and you see everyone on the bill; ask about a room and you see the room. [Ask the archive](https://concerts.morperhaus.org/?scene=ask).
 
 **v6.1.0** 📣 The archive posts itself. One liner note a day, and on the anniversary of a night I was there, a post about that night — on Bluesky at [@concerts.morperhaus.org](https://bsky.app/profile/concerts.morperhaus.org) and on Mastodon at [@concertsmorperhaus@mastodon.social](https://mastodon.social/@concertsmorperhaus). Every line is fact-checked against the archive before it leaves, more of them carry my own photographs from the night, and Ask the Archive can now tell you which record a song came off. [Read the liner notes](https://concerts.morperhaus.org/liner-notes).
@@ -51,9 +53,9 @@ Six interactive scenes, each one a different lens on the same history:
 
 **[The Genres](https://concerts.morperhaus.org/?scene=genres)** — A sunburst chart breaking down our musical diet. Click into a genre to see every artist.
 
-**[The Artists](https://concerts.morperhaus.org/?scene=artists)** — Browse everyone we've seen, from headliners to openers. [Gatefold album art vibes](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) with artist photos, concert histories, setlist integration, and live tour dates with ticket links.
+**[The Artists](https://concerts.morperhaus.org/?scene=artists)** — Browse everyone we've seen, from headliners to openers. [Gatefold album art vibes](https://concerts.morperhaus.org/?scene=artists&artist=depeche-mode) with artist photos, concert histories, setlist integration, live tour dates with ticket links, and my own photos and clips from the nights I was there.
 
-**[Ask the Archive](https://concerts.morperhaus.org/?scene=ask)** — Forty years of shows, as a conversation. Ask in plain language—which venue we've been to most, who we saw twice in one year, what we played on repeat that summer—and get answers grounded in shows that actually happened, rendered as small exhibits rather than walls of text. Press ⌘K from anywhere.
+**[Ask the Archive](https://concerts.morperhaus.org/?scene=ask)** — Forty years of shows, as a search box that talks back. Type a band, a venue or a song and it finds it as you type; ask in plain language—which venue we've been to most, who we saw twice in one year—and get answers grounded in shows that actually happened, led by a photo from the night rather than a wall of text. Photos and clips play right in the answer, and any answer can be shared. Press ⌘K from anywhere.
 
 ## Where the data comes from
 

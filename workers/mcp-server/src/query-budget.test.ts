@@ -6,7 +6,7 @@
  * two-concert fixture guards nothing. The archive grows; this is what notices.
  *
  * Context: `query` now ships an album-era projection alongside concerts.json
- * (docs/specs/future/global-query-era-context.md). The decision to do that rested on a
+ * (docs/specs/implemented/global-query-era-context.md). The decision to do that rested on a
  * cost measurement, and this is that measurement, pinned so it can't quietly stop being
  * true. If one of these fails, the answer is not to loosen the assertion — it is to
  * re-open the spec's open question about raising QUERY_DAILY_TOKEN_CAP.
@@ -53,7 +53,7 @@ describe("query daily budget, against real data", () => {
       perCall,
       `per-call ${Math.round(perCall)} tokens vs ${Math.round(budgetPerCall)} budget — ` +
         "the archive has outgrown the query budget. Raise QUERY_DAILY_TOKEN_CAP (see " +
-        "docs/specs/future/global-query-era-context.md §Open question) rather than relaxing this.",
+        "docs/specs/implemented/global-query-era-context.md §Open question) rather than relaxing this.",
     ).toBeLessThan(budgetPerCall);
   });
 });

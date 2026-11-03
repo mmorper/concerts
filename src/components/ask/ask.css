@@ -1,5 +1,5 @@
 /* Exhibit styling — mirrors the visual model in
-   docs/specs/future/global-ask-the-archive-chat/mock-chat.html (dark register).
+   docs/specs/implemented/global-ask-the-archive-chat/mock-chat.html (dark register).
    Containers (#141) own layout/positioning; these are the card internals (#140). */
 
 /* One answer (Phase 6): a sentence or two in Playfair, then the exhibit as the largest thing on

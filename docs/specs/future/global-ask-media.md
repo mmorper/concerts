@@ -1,6 +1,6 @@
 # Ask the Archive: Photos and Clips
 
-**Status:** Planned
+**Status:** Phases 1–3, 5 and 6 shipped (v6.2.0–v6.3.0), and media now plays inside Ask (#666). Phase 4 ("show me something") remains.
 **Target Version:** next
 **Priority:** Medium
 **Estimated Complexity:** High

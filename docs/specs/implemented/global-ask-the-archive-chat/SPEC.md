@@ -1,6 +1,6 @@
 # Ask the Archive — In-App Conversational Client
 
-**Status:** Planned
+**Status:** Implemented — shipped in v5.0.0 (epic #138, closed); redesigned search-first in v6.3.0 (`docs/specs/future/global-ask-media.md`, Phase 6)
 **Target Version:** next major
 **Priority:** High
 **Estimated Complexity:** Large (backend service + frontend chat system + nav-system refactor)
