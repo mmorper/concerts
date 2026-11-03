@@ -152,13 +152,14 @@ export default {
       return fetch(new Request(fresh.toString(), request));
     }
 
-    // Only process HTML requests from bots. /about-mcp is a static file with its own title and
-    // card, so the scene fallback would only overwrite them.
-    if (!isBot(userAgent) || !isHTMLRequest(request) || url.pathname === '/about-mcp') {
+    // Only process HTML requests from bots, and links made to be shared. /about-mcp is a static
+    // file with its own title and card, so the scene fallback would only overwrite them.
+    const bot = isBot(userAgent);
+    if (!(bot || isSharedLink(url)) || !isHTMLRequest(request) || url.pathname === '/about-mcp') {
       return fetch(request);
     }
 
-    console.log(`[Bot Detected] ${userAgent.substring(0, 50)}... | ${url.pathname}${url.search}`);
+    if (bot) console.log(`[Bot Detected] ${userAgent.substring(0, 50)}... | ${url.pathname}${url.search}`);
 
     // Parse deep link parameters
     const scene = url.searchParams.get('scene');
@@ -218,7 +219,9 @@ export default {
 
     // Only override specific headers
     headers.set('Content-Type', 'text/html;charset=UTF-8');
-    headers.set('Cache-Control', 'public, max-age=3600'); // Cache bot responses for 1 hour
+    // Cache bot responses for 1 hour. A person keeps the origin's own caching, or a browser could
+    // hold an hour-old shell that names assets a deploy has since replaced.
+    if (bot) headers.set('Cache-Control', 'public, max-age=3600');
 
     // Return modified HTML with all original headers preserved
     return new Response(html, {
@@ -235,6 +238,19 @@ export default {
 function isBot(userAgent) {
   const ua = userAgent.toLowerCase();
   return BOT_USER_AGENTS.some(bot => ua.includes(bot));
+}
+
+/**
+ * A link made to be shared: an Ask answer or song, or one night or one frame of it. These get
+ * their preview whoever asks, because a phone builds a preview itself with an ordinary browser's
+ * User-Agent: the iOS share sheet does, and Messages sends that preview along with the link. Bots
+ * alone got the subject's card, so a link shared from an iPhone arrived with the site's default.
+ * A person gets the same app either way; only the head's tags differ.
+ */
+function isSharedLink(url) {
+  const scene = url.searchParams.get('scene');
+  if (scene === 'ask') return url.searchParams.has('answer') || url.searchParams.has('song');
+  return scene === 'artists' && url.searchParams.has('artist') && url.searchParams.has('show');
 }
 
 /**

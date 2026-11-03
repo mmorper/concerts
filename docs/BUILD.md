@@ -384,7 +384,7 @@ The worker sits in front of the Cloudflare Pages site and:
 4. **Injects Dynamic Meta Tags** into HTML `<head>`
 5. **Returns Personalized HTML** with entity-specific title, description, OG image
 
-**For Human Users**: Bypasses worker completely (no performance impact)
+**For Human Users**: Bypasses worker completely (no performance impact). Except on shared links (an Ask answer or song, or a night or frame: `isSharedLink`), which get the same tags for everyone, because a phone's share sheet builds the preview itself with a browser's user agent.
 
 #### Deep Link Patterns
 
