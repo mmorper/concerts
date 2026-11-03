@@ -1,6 +1,41 @@
 {
-  "generatedAt": "2026-10-30T13:42:10.629Z",
+  "generatedAt": "2026-11-03T14:44:59.907Z",
   "posts": [
+    {
+      "slug": "otd-2026-11-03",
+      "day": "11-03",
+      "showDate": "2018-11-03",
+      "age": 8,
+      "artist": "Streetlight Manifesto",
+      "artistNormalized": "streetlight-manifesto",
+      "venue": "The Observatory",
+      "venueNormalized": "the-observatory",
+      "city": "Santa Ana",
+      "score": 14,
+      "imageUrl": "/images/shows/2018-11-03-streetlight-manifesto-01.jpg",
+      "crop": {
+        "x": 0.2453,
+        "y": 0.0667,
+        "w": 0.5597,
+        "h": 0.9333
+      },
+      "tier": 1,
+      "source": "personal",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=streetlight-manifesto&show=2018-11-03&photo=streetlight-manifesto-01",
+      "cardPath": "public/og/on-this-day/otd-2026-11-03.png",
+      "social": {
+        "hook": "Streetlight Manifesto, round two of five, in a year crowded with other nights out.",
+        "caption": "Eight years ago today I saw Streetlight Manifesto at The Observatory for the second of five times. That same year also brought Beck and U2.",
+        "beats": [
+          "Streetlight Manifesto, show number 2 of 5 for me, at The Observatory in Santa Ana.",
+          "Filed under Ska, on a night that was one stop among many that year.",
+          "2018 also had me at Beck and U2, among other shows.",
+          "This was my second of four visits total to The Observatory."
+        ],
+        "authoredAt": "2026-11-03T14:44:07.371Z"
+      },
+      "publishedAt": "2026-11-03T14:44:59.907Z"
+    },
     {
       "slug": "otd-2026-10-30",
       "day": "10-30",
