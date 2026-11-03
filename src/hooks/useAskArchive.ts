@@ -2,7 +2,7 @@
 // SSE stream, and accumulates streaming prose + the composed exhibit per turn. Container shells
 // (#141) render `exchanges`; this hook is UI-agnostic.
 
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Chip, Exhibit, SignedShare } from '@/types/exhibit'
 import { streamAskTurn, type Turn } from '@/services/askArchive'
 import { analytics } from '@/services/analytics'
@@ -27,15 +27,50 @@ export interface Exchange {
 let seq = 0
 const nextId = () => `ex-${++seq}`
 
+/**
+ * The conversation, kept for the tab (sessionStorage), so opening a photo or a clip from an answer
+ * and coming back finds it as it was, even after a reload. Only finished turns are kept: one still
+ * streaming can't be resumed. A plain dismiss of the overlay clears it, as before.
+ */
+const STORE_KEY = 'ask:conversation'
+
+function loadExchanges(): Exchange[] {
+  try {
+    const raw = sessionStorage.getItem(STORE_KEY)
+    const xs = raw ? (JSON.parse(raw) as Exchange[]) : []
+    if (!Array.isArray(xs)) return []
+    // Restored ids must not collide with the next ones minted.
+    for (const x of xs) seq = Math.max(seq, Number(String(x.id).replace('ex-', '')) || 0)
+    return xs
+  } catch {
+    return []
+  }
+}
+
+function saveExchanges(xs: Exchange[]) {
+  try {
+    const done = xs.filter((x) => x.status !== 'streaming')
+    if (done.length) sessionStorage.setItem(STORE_KEY, JSON.stringify(done))
+    else sessionStorage.removeItem(STORE_KEY)
+  } catch {
+    /* storage unavailable: the conversation just won't outlive the page */
+  }
+}
+
 export interface UseAskArchiveOptions {
   // Lazily mint / silently re-mint the Turnstile-issued session (from useAskSession). Omitted in
   // the dev harness, which uses a pasted token.
   ensureSession?: (force?: boolean) => Promise<string | null>
+  /** Keep the conversation for the tab. The site's Ask does; the dev harness doesn't. */
+  persist?: boolean
 }
 
 export function useAskArchive(options: UseAskArchiveOptions = {}) {
-  const { ensureSession } = options
-  const [exchanges, setExchanges] = useState<Exchange[]>([])
+  const { ensureSession, persist = false } = options
+  const [exchanges, setExchanges] = useState<Exchange[]>(() => (persist ? loadExchanges() : []))
+  useEffect(() => {
+    if (persist) saveExchanges(exchanges)
+  }, [persist, exchanges])
   const [busy, setBusy] = useState(false)
   const abortRef = useRef<AbortController | null>(null)
 

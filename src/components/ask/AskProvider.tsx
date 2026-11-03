@@ -11,7 +11,28 @@ import { useArchiveData } from '@/hooks/useArchiveData'
 import type { ArchiveLookups } from './types'
 import { analytics } from '@/services/analytics'
 
-export type AskOpenSurface = 'kbd' | 'scene' | 'prompt' | 'shared'
+export type AskOpenSurface = 'kbd' | 'scene' | 'prompt' | 'shared' | 'return'
+
+/**
+ * Where the visitor was when an answer's link took them out of Ask, kept for the tab. While it's
+ * set, "Back to Ask" shows, and arriving back at that page (the browser's Back) reopens Ask.
+ */
+const RETURN_KEY = 'ask:return'
+const readReturn = (): string | null => {
+  try {
+    return sessionStorage.getItem(RETURN_KEY)
+  } catch {
+    return null
+  }
+}
+const writeReturn = (at: string | null) => {
+  try {
+    if (at) sessionStorage.setItem(RETURN_KEY, at)
+    else sessionStorage.removeItem(RETURN_KEY)
+  } catch {
+    /* storage unavailable: the button just won't outlive the page */
+  }
+}
 
 /** A line above the empty overlay, for a shared link that couldn't open. `retry` when trying again may help. */
 export interface AskNotice {
@@ -27,6 +48,10 @@ interface AskContextValue {
   // Dismissing the overlay clears the conversation (a fresh ask each open). Promotion to the
   // full /ask view passes { clear: false } so the conversation carries over instead.
   close: (opts?: { clear?: boolean }) => void
+  /** An answer's link took the visitor out of Ask, from page `from`. Hides Ask and keeps the conversation. */
+  leave: (from: string) => void
+  /** The page an answer's link was followed from, while the conversation waits. Null otherwise. */
+  returnTo: string | null
   // The conversation + controls (shared between overlay and /ask).
   exchanges: Exchange[]
   busy: boolean
@@ -49,7 +74,12 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
   // Archive data is deferred until Ask is first touched (open or /ask), so other pages don't fetch.
   const [active, setActive] = useState(false)
   const { ensureSession } = useAskSession()
-  const { exchanges, busy, ask, show, reset } = useAskArchive({ ensureSession })
+  const { exchanges, busy, ask, show, reset } = useAskArchive({ ensureSession, persist: true })
+  const [returnTo, setReturnTo] = useState<string | null>(readReturn)
+  const setReturn = useCallback((at: string | null) => {
+    setReturnTo(at)
+    writeReturn(at)
+  }, [])
   const archive = useArchiveData(active)
 
   // Where the overlay was opened from, so close() can restore focus there.
@@ -62,13 +92,24 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
       restoreFocusRef.current = (document.activeElement as HTMLElement) ?? null
       setActive(true)
       setOpen(true)
+      setReturn(null)
       // Warm a session in the background so the first answer doesn't wait on the challenge.
       void ensureSession()
       analytics.trackEvent('ask_opened', { surface })
       // A suggested prompt opens straight into its answer instead of an empty composer.
       if (prefill) ask(prefill)
     },
-    [ensureSession, ask],
+    [ensureSession, ask, setReturn],
+  )
+
+  const leave = useCallback(
+    (from: string) => {
+      setOpen(false)
+      setNotice(null)
+      setReturn(from)
+      analytics.trackEvent('ask_closed', { reason: 'leave', turn_count: exchanges.length })
+    },
+    [setReturn, exchanges.length],
   )
 
   const close = useCallback(
@@ -83,18 +124,21 @@ export function AskProvider({ children }: { children: React.ReactNode }) {
       })
       // Clear the transcript on a plain dismiss (esc / scrim / esc button) so each open starts
       // fresh; skip clearing when promoting to the full view, which carries the conversation.
-      if (opts?.clear !== false) reset()
+      if (opts?.clear !== false) {
+        reset()
+        setReturn(null)
+      }
       setNotice(null)
       // Restore focus to the trigger (esc returns you exactly where you were).
       const el = restoreFocusRef.current
       if (el && typeof el.focus === 'function') requestAnimationFrame(() => el.focus())
     },
-    [reset, exchanges.length],
+    [reset, exchanges.length, setReturn],
   )
 
   const value = useMemo<AskContextValue>(
-    () => ({ open, openSpotlight, close, exchanges, busy, ask, show, notice, setNotice, reset, archive, activate }),
-    [open, openSpotlight, close, exchanges, busy, ask, show, notice, reset, archive, activate],
+    () => ({ open, openSpotlight, close, leave, returnTo, exchanges, busy, ask, show, notice, setNotice, reset, archive, activate }),
+    [open, openSpotlight, close, leave, returnTo, exchanges, busy, ask, show, notice, reset, archive, activate],
   )
 
   return <AskContext.Provider value={value}>{children}</AskContext.Provider>

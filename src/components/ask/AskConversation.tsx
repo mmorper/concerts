@@ -9,7 +9,7 @@ import type { ArchiveLookups } from './types'
 import { AskExhibit } from './AskExhibit'
 import { SearchMark } from './AskMedia'
 import { AskSearchMatches, optionId } from './AskSearchMatches'
-import { MIN_QUERY, searchArchive, songAnswer } from './search'
+import { MIN_QUERY, matchAnswer, searchArchive, songAnswer } from './search'
 import { AskCrate } from './AskCrate'
 import { AskShareButton, answeredOnLabel, canShare } from './AskShare'
 import type { AskNotice } from './AskProvider'
@@ -261,13 +261,15 @@ export function AskConversation({
             over={!empty}
             busy={busy}
             onAsk={() => submit(input)}
-            onSong={
+            onPick={
               onShow &&
-              ((song) => {
-                const { question, prose, exhibit } = songAnswer(song)
+              ((m) => {
+                const answer = m.song ? songAnswer(m.song) : matchAnswer(m, archive)
+                if (!answer) return false
                 setInput('')
                 setActive(-1)
-                onShow(question, prose, exhibit)
+                onShow(answer.question, answer.prose, answer.exhibit)
+                return true
               })
             }
           />

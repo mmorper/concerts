@@ -4,13 +4,55 @@
 // Capped at ~70vh with internal scroll; "Open full view ↗" promotes the same conversation to /ask.
 
 import { useEffect, useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAsk } from './AskProvider'
 import { AskConversation } from './AskConversation'
 
+/**
+ * Leaving Ask never costs the conversation. A link in an answer moves within
+ * the site rather than reloading the page, Ask steps aside with the conversation kept, and "Back to
+ * Ask" (or the browser's Back, to the page Ask was opened on) brings it back as it was.
+ */
 export function AskSpotlight() {
-  const { open, close, exchanges, busy, ask, show, archive, notice } = useAsk()
+  const { open, close, leave, returnTo, openSpotlight, exchanges, busy, ask, show, archive, notice } = useAsk()
   const paletteRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const at = location.pathname + location.search
+  // The page Ask was opened on. A different one while it's open means a link took the visitor out.
+  const openedAt = useRef<string | null>(null)
+
+  useEffect(() => {
+    openedAt.current = open ? (openedAt.current ?? at) : null
+    // Only open/close moves this; a page change is handled below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
+
+  useEffect(() => {
+    if (open && openedAt.current !== null && at !== openedAt.current) {
+      leave(openedAt.current)
+    } else if (!open && returnTo === at && exchanges.length > 0) {
+      // Back to the page Ask was left from: the browser's Back reopens it where it was.
+      openSpotlight('return')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [at])
+
+  /** A same-site link in an answer moves within the site. A new tab, or another site, is left alone. */
+  const onLinkClick = (e: React.MouseEvent) => {
+    if (e.defaultPrevented) return
+    const a = (e.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null
+    if (!a || (a.target && a.target !== '_self')) return
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    const url = new URL(a.href, window.location.href)
+    if (url.origin !== window.location.origin) return
+    e.preventDefault()
+    const target = url.pathname + url.search
+    // A link to the page already behind Ask: no page change to notice, so step aside directly.
+    if (target === at) leave(at)
+    else navigate(target + url.hash)
+  }
 
   // Esc closes (restores focus to the trigger); Tab is trapped inside the palette.
   useEffect(() => {
@@ -18,6 +60,9 @@ export function AskSpotlight() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
+        // Ask is the top layer, so Esc is Ask's alone. Without this the artist gatefold's own Esc
+        // listener (on window, after this one on document) closed it too.
+        e.stopPropagation()
         close()
         return
       }
@@ -65,7 +110,19 @@ export function AskSpotlight() {
     }
   }, [open])
 
-  if (!open) return null
+  if (!open) {
+    if (!returnTo || exchanges.length === 0) return null
+    return (
+      <div className="ask-return" role="region" aria-label="Your Ask conversation">
+        <button type="button" className="ask-return-go" onClick={() => openSpotlight('return')}>
+          <span aria-hidden="true">&larr;</span> Back to Ask
+        </button>
+        <button type="button" className="ask-return-x" onClick={() => close()} aria-label="Clear the Ask conversation">
+          &times;
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -81,6 +138,7 @@ export function AskSpotlight() {
         role="dialog"
         aria-modal="true"
         aria-label="Ask the Archive"
+        onClick={onLinkClick}
       >
         {/* Phone only: the box leads on desktop, with esc beside it. */}
         <div className="ask-spot-head">
