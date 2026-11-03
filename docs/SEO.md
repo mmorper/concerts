@@ -464,7 +464,7 @@ Our SEO implementation consists of three integrated systems:
 
 **Bots Supported**: 20+ including Google, Bing, Facebook, Twitter, LinkedIn, ChatGPT, Claude, Perplexity
 
-**Performance**: Zero impact on human users (bypassed immediately)
+**Performance**: Zero impact on human users (bypassed immediately). Except on shared links (an Ask answer or song, or a night or frame: `isSharedLink`), which get the same tags for everyone, because a phone's share sheet builds the preview itself with a browser's user agent.
 
 ---
 

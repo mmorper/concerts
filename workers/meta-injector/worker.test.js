@@ -562,10 +562,15 @@ describe('meta-injector worker', () => {
         expect(body).not.toContain('twitter:player')
       })
 
-      it('reaches bots only', async () => {
-        serve({ assets: [clip] })
-        const res = await worker.fetch(req(CLIP, { ua: CHROME }), {}, ctx)
-        expect(await res.text()).toBe(PAGE)
+      // A shared link, so a person gets the same head as a bot: a phone builds the link's preview
+      // itself, with a browser's User-Agent (isSharedLink in worker.js).
+      it.each([CLIP, SHOW])('gives a person the same head as a bot on %s', async (path) => {
+        serve({ assets: [clip, own] })
+        const asBot = await (await worker.fetch(req(path), {}, ctx)).text()
+        serve({ assets: [clip, own] })
+        const asPerson = await (await worker.fetch(req(path, { ua: CHROME }), {}, ctx)).text()
+        expect(asPerson).not.toBe(PAGE)
+        expect(asPerson).toBe(asBot)
       })
     })
 
@@ -1010,6 +1015,44 @@ describe('meta-injector worker', () => {
       expect(tag(body, 'og:description')).toBe('I heard The Cure play “A Forest” 2 times, first in 1986 and last in 2023.')
       expect(tag(body, 'og:image')).toBe('https://concerts.morperhaus.org/og/shows/2023-05-24-the-cure-01.jpg')
       expect(body).toContain('<meta name="robots" content="noindex" />')
+    })
+
+    // The iOS share sheet builds a link's preview with Safari's own User-Agent, and Messages sends
+    // that preview with the link. Bots alone got the subject's card, so an answer shared from an
+    // iPhone arrived with the site's default.
+    const IPHONE =
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
+
+    it('gives a shared answer its card whoever asks, a phone’s share sheet included', async () => {
+      const env = { ASK_CHAT: askChat(Response.json(snapshot)) }
+      const body = await (await worker.fetch(req(`/?scene=ask&answer=${ID}`, { ua: IPHONE }), env, ctx)).text()
+
+      expect(tag(body, 'og:image')).toBe('https://concerts.morperhaus.org/og/shows/2023-05-24-the-cure-01.jpg')
+    })
+
+    it('previews a song link for a person too', async () => {
+      const body = await (await worker.fetch(req('/?scene=ask&artist=the-cure&song=a-forest', { ua: IPHONE }), {}, ctx)).text()
+
+      expect(tag(body, 'og:image')).toBe('https://concerts.morperhaus.org/og/shows/2023-05-24-the-cure-01.jpg')
+    })
+
+    it('keeps the origin’s caching for a person, so no browser holds a stale shell', async () => {
+      vi.mocked(fetch).mockImplementation(async (u, init) => {
+        const res = origin(u, init)
+        if (res.headers.get('Content-Type')?.includes('text/html')) res.headers.set('Cache-Control', 'no-cache')
+        return res
+      })
+      const env = { ASK_CHAT: askChat(Response.json(snapshot)) }
+      const res = await worker.fetch(req(`/?scene=ask&answer=${ID}`, { ua: IPHONE }), env, ctx)
+
+      expect(res.headers.get('Cache-Control')).toBe('no-cache')
+    })
+
+    it.each(['/?scene=ask', '/?scene=artists&artist=the-cure', '/'])('still passes %s straight through for a person', async (path) => {
+      const res = await worker.fetch(req(path, { ua: IPHONE }), {}, ctx)
+
+      expect(fetch).toHaveBeenCalledTimes(1)
+      expect(await res.text()).toBe(PAGE)
     })
   })
 })
