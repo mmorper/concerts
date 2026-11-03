@@ -916,4 +916,100 @@ describe('meta-injector worker', () => {
       expect(body).toContain('</html>')
     })
   })
+
+  // ── Shared Ask answers and song links (Phase 3 of the shareable answers spec) ──
+
+  describe('shared Ask links', () => {
+    const ID = 'Ab3dE5fG7hJ9'
+    const QUESTION = 'what about that weird band my ex loved'
+    const snapshot = {
+      v: 1,
+      question: QUESTION,
+      prose: 'I have seen [The Cure](/?scene=artists&artist=the-cure) **six** times. The first was 1986.',
+      exhibit: { kind: 'artist', entity: 'artist', slug: 'the-cure', name: 'The Cure', deepLink: '/?scene=artists&artist=the-cure' },
+      answeredOn: '2026-11-02',
+      followUp: false,
+    }
+    const cureStill = {
+      kind: 'image', url: '/images/shows/2023-05-24-the-cure-03.jpg', date: '2023-05-24',
+      artist: 'The Cure', artistNormalized: 'the-cure', subject: 'artist', order: 3,
+    }
+    const cureBest = { ...cureStill, url: '/images/shows/2023-05-24-the-cure-01.jpg', order: 1 }
+    const songIndex = { songs: [{ name: 'A Forest', act: 'The Cure', slug: 'the-cure', dates: ['2023-05-24', '1986-08-21'] }] }
+
+    /** The origin, by URL: the page, the two data files, and a share image for each frame that has one. */
+    function origin(urlOrReq, init) {
+      const url = String(urlOrReq?.url ?? urlOrReq)
+      if (url.endsWith('/data/media-index.json')) return Response.json({ assets: [cureStill, cureBest] })
+      if (url.endsWith('/data/song-index.json')) return Response.json(songIndex)
+      if (url.endsWith('/data/artist-aliases.json')) return Response.json({ sameAct: [] })
+      if (url.includes('/og/shows/') && init?.method === 'HEAD') {
+        return new Response(null, { status: 200, headers: { 'Content-Type': 'image/jpeg' } })
+      }
+      return htmlResponse(PAGE)
+    }
+
+    const askChat = (response) => ({ fetch: vi.fn(async () => response) })
+    const tag = (body, property) => body.match(new RegExp(`<meta property="${property}" content="([^"]*)"`))?.[1]
+
+    beforeEach(() => {
+      vi.mocked(fetch).mockImplementation(async (u, init) => origin(u, init))
+    })
+
+    it('titles a shared answer by its subject, never by the question', async () => {
+      const env = { ASK_CHAT: askChat(Response.json(snapshot)) }
+      const body = await (await worker.fetch(req(`/?scene=ask&answer=${ID}`), env, ctx)).text()
+
+      expect(tag(body, 'og:title')).toBe('The Cure · Ask the Archive | Morperhaus Concert Archives')
+      expect(body).not.toContain(QUESTION)
+    })
+
+    it('describes it with the first sentence of the answer, as plain text', async () => {
+      const env = { ASK_CHAT: askChat(Response.json(snapshot)) }
+      const body = await (await worker.fetch(req(`/?scene=ask&answer=${ID}`), env, ctx)).text()
+
+      expect(tag(body, 'og:description')).toBe('I have seen The Cure six times.')
+    })
+
+    it('shows the owner’s lead frame of the act, and asks the binding, not the zone', async () => {
+      const env = { ASK_CHAT: askChat(Response.json(snapshot)) }
+      const body = await (await worker.fetch(req(`/?scene=ask&answer=${ID}`), env, ctx)).text()
+
+      expect(tag(body, 'og:image')).toBe('https://concerts.morperhaus.org/og/shows/2023-05-24-the-cure-01.jpg')
+      expect(String(env.ASK_CHAT.fetch.mock.calls[0][0].url)).toBe(`https://concerts.morperhaus.org/api/ask/share/${ID}`)
+    })
+
+    it('is noindex, with the subject’s own page as canonical', async () => {
+      const env = { ASK_CHAT: askChat(Response.json(snapshot)) }
+      const body = await (await worker.fetch(req(`/?scene=ask&answer=${ID}`), env, ctx)).text()
+
+      expect(body).toContain('<meta name="robots" content="noindex" />')
+      expect(body).toContain('<link rel="canonical" href="https://concerts.morperhaus.org/?scene=artists&amp;artist=the-cure" />')
+      expect(tag(body, 'og:url')).toBe(`https://concerts.morperhaus.org/?scene=ask&amp;answer=${ID}`)
+    })
+
+    it('falls back to the Ask scene’s card for a missing answer, a bad id, or no binding', async () => {
+      for (const [path, env] of [
+        [`/?scene=ask&answer=${ID}`, { ASK_CHAT: askChat(Response.json({ error: 'not_found' }, { status: 404 })) }],
+        ['/?scene=ask&answer=../../etc', { ASK_CHAT: askChat(Response.json(snapshot)) }],
+        [`/?scene=ask&answer=${ID}`, {}],
+      ]) {
+        vi.mocked(fetch).mockImplementation(async (u, init) =>
+          String(u?.url ?? u).endsWith('/data/concerts.json') ? Response.json({ concerts: [] }) : origin(u, init)
+        )
+        const body = await (await worker.fetch(req(path), env, ctx)).text()
+        expect(tag(body, 'og:title')).toBe('Ask the Archive | Morperhaus Concert Archives')
+        expect(body).not.toContain('noindex')
+      }
+    })
+
+    it('previews a song link from the song index, with no binding needed', async () => {
+      const body = await (await worker.fetch(req('/?scene=ask&artist=the-cure&song=a-forest'), {}, ctx)).text()
+
+      expect(tag(body, 'og:title')).toBe('“A Forest”, by The Cure · Ask the Archive | Morperhaus Concert Archives')
+      expect(tag(body, 'og:description')).toBe('I heard The Cure play “A Forest” 2 times, first in 1986 and last in 2023.')
+      expect(tag(body, 'og:image')).toBe('https://concerts.morperhaus.org/og/shows/2023-05-24-the-cure-01.jpg')
+      expect(body).toContain('<meta name="robots" content="noindex" />')
+    })
+  })
 })

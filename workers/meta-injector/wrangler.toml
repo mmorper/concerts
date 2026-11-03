@@ -8,6 +8,12 @@ compatibility_date = "2024-01-01"
 # Account ID (get from Cloudflare Dashboard > Workers & Pages > Overview)
 account_id = "6db8591bbcba4588ae4ef9c3839cd209"
 
+# The ask-chat Worker, for shared answers' previews (`injectSharedAnswerMeta`). A plain fetch from
+# one Worker to another on this zone fails, so the snapshot is read through this binding.
+[[services]]
+binding = "ASK_CHAT"
+service = "morperhaus-ask-chat"
+
 # Route configuration
 # After deployment, configure routes in Cloudflare Dashboard:
 # Workers & Pages > concerts-meta-injector > Settings > Triggers > Add route

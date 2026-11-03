@@ -204,6 +204,10 @@ export default {
       html = await injectGenreMeta(html, genre, url.origin, ctx);
     } else if (scene === 'geography' && region) {
       html = await injectRegionMeta(html, region, url.origin, ctx);
+    } else if (scene === 'ask' && url.searchParams.get('answer')) {
+      html = await injectSharedAnswerMeta(html, url.searchParams.get('answer'), url, env, ctx);
+    } else if (scene === 'ask' && artist && url.searchParams.get('song')) {
+      html = await injectSharedSongMeta(html, artist, url.searchParams.get('song'), url, ctx);
     } else {
       // Scene-only or homepage — inject scene meta
       html = await injectSceneMeta(html, scene, url.origin, ctx);
@@ -873,6 +877,215 @@ async function injectGenreMeta(html, genreNormalized, origin, ctx) {
   } catch (error) {
     console.error(`Error injecting genre meta: ${error.message}`);
     return html;
+  }
+}
+
+// ── Shared Ask answers (global-ask-shareable-answers.md, Phase 3) ───────────
+//
+// A shared answer unfurls as its subject: the act, the night, the room, the song. Its title
+// names that subject and never the visitor's question, so typed text never becomes the site's
+// headline in a preview. The description is the answer's first sentence, the Worker's own words.
+// The image is the owner's share card of the subject when one exists, so every answer about an
+// act he photographed shows his photo, not the site card.
+//
+// Shared answers are `noindex`: they are visitors' questions. The canonical is the subject's own
+// page, so any search credit goes to the page that is indexed.
+
+const SHARE_ID = /^[0-9A-Za-z]{12}$/;
+const ASK_SUFFIX = ' · Ask the Archive | Morperhaus Concert Archives';
+
+/** "July 31, 2026". */
+const longDateOf = date =>
+  new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+/**
+ * The first sentence of the answer's prose, as plain text, cut on a word at 200 characters.
+ * The prose is markdown: links keep their text, and emphasis and headings drop their marks.
+ */
+function firstSentence(prose) {
+  const plain = String(prose ?? '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`#>]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const end = plain.search(/[.!?](\s|$)/);
+  const sentence = end === -1 ? plain : plain.slice(0, end + 1);
+  if (sentence.length <= 200) return sentence;
+  return `${sentence.slice(0, 200).replace(/\s+\S*$/, '')}…`;
+}
+
+/**
+ * What a shared answer is about, from its card: the line its preview is titled by, the act whose
+ * photo it shows, the night that photo should come from, and the subject's own page.
+ */
+function answerSubject(exhibit, origin) {
+  const artistPage = slug => `${origin}/?scene=artists&artist=${slug}`;
+  const nightPage = (slug, date) => `${artistPage(slug)}&show=${date}`;
+  const year = date => String(date).slice(0, 4);
+  switch (exhibit?.kind) {
+    case 'artist':
+      return { title: exhibit.name, act: exhibit.slug, canonical: artistPage(exhibit.slug) };
+    case 'venue':
+      return { title: exhibit.name, canonical: `${origin}/?scene=venues&venue=${exhibit.slug}` };
+    case 'show':
+      return {
+        title: `${exhibit.performer || exhibit.headliner?.name} at ${exhibit.venue?.name}, ${year(exhibit.date)}`,
+        act: exhibit.headliner?.slug,
+        date: exhibit.date,
+        canonical: nightPage(exhibit.headliner?.slug, exhibit.date),
+      };
+    case 'era':
+      return {
+        title: `${exhibit.artist?.name} at ${exhibit.venue?.name}, ${year(exhibit.date)}`,
+        act: exhibit.artist?.slug,
+        date: exhibit.date,
+        canonical: nightPage(exhibit.artist?.slug, exhibit.date),
+      };
+    case 'serendipity':
+      return { title: exhibit.artist?.name, act: exhibit.artist?.slug, canonical: artistPage(exhibit.artist?.slug) };
+    case 'song':
+      return { title: `“${exhibit.title}”, by ${exhibit.artist?.name}`, act: exhibit.artist?.slug, canonical: artistPage(exhibit.artist?.slug) };
+    case 'album':
+      return {
+        title: `${exhibit.album?.title}, by ${exhibit.artistName}`,
+        act: exhibit.artist?.slug,
+        canonical: exhibit.artist ? artistPage(exhibit.artist.slug) : null,
+      };
+    case 'discography':
+      return { title: `${exhibit.artist?.name}, record by record`, act: exhibit.artist?.slug, canonical: artistPage(exhibit.artist?.slug) };
+    case 'gallery': {
+      const first = exhibit.items?.[0];
+      return { title: exhibit.title, frame: first ? { id: first.id, date: first.date } : null };
+    }
+    case 'list':
+      return { title: exhibit.title, act: exhibit.rows?.[0]?.artist?.slug };
+    case 'acts':
+      return { title: 'The acts I’ve seen most', act: exhibit.acts?.[0]?.artist?.slug };
+    case 'songs':
+      return { title: 'The songs I’ve heard most', act: exhibit.songs?.[0]?.lastAct?.slug };
+    case 'shape':
+      return { title: 'Where I catch bands in their careers' };
+    default:
+      return { title: 'Ask the Archive' };
+  }
+}
+
+/**
+ * The owner's lead still of an act, the frame its card leads with in the app (`leadPhoto`): the
+ * `signature` mark, else the hero of the newest photographed night, else that night's best frame.
+ * With `date`, the best frame of that night. Null when he has no photo of them.
+ */
+function leadFrame(assets, act, aliases, date = null) {
+  const best = (a, b) => Number(!!b.hero) - Number(!!a.hero) || (a.order ?? 0) - (b.order ?? 0);
+  const stills = assets.filter(
+    a =>
+      a.kind === 'image' &&
+      a.url &&
+      a.subject === 'artist' &&
+      a.artistNormalized &&
+      canonicalArtist(aliases, a.artistNormalized) === act &&
+      (!date || a.date === date)
+  );
+  if (date) return [...stills].sort(best)[0] ?? null;
+  return stills.find(a => a.signature) ?? [...stills].sort((a, b) => b.date.localeCompare(a.date) || best(a, b))[0] ?? null;
+}
+
+/**
+ * The preview image for a subject: the owner's share card of its frame, else of the act on that
+ * night, else of the act on any night, else the act's sourced image, else the site card.
+ */
+async function subjectImage(subject, origin, ctx) {
+  if (subject.frame) {
+    const image = await photoShareImage(subject.frame.id, subject.frame.date, origin);
+    if (image) return image;
+  }
+  if (!subject.act) return `${origin}/og-image.jpg`;
+  try {
+    const response = await cachedJsonFetch(`${origin}/data/media-index.json`, ctx);
+    const { assets = [] } = response.ok ? await response.json() : {};
+    const aliases = await fetchArtistAliases(origin, ctx);
+    const act = canonicalArtist(aliases, subject.act);
+    const frame = (subject.date && leadFrame(assets, act, aliases, subject.date)) || leadFrame(assets, act, aliases);
+    const image = frame && (await photoShareImage(mediaId(frame), frame.date, origin));
+    if (image) return image;
+  } catch (error) {
+    console.warn(`Media index unavailable: ${error.message}`);
+  }
+  try {
+    const response = await cachedJsonFetch(`${origin}/data/artists-metadata.json`, ctx);
+    const meta = response.ok ? (await response.json())[subject.act] : null;
+    if (meta?.image) return meta.image;
+  } catch (error) {
+    console.warn(`Artist metadata unavailable: ${error.message}`);
+  }
+  return `${origin}/og-image.jpg`;
+}
+
+/** Write a shared link's card: title, description, image, its own URL, the canonical, and noindex. */
+function applyShareMeta(html, { title, description, imageUrl, pageUrl, canonicalUrl }) {
+  const set = (pattern, tag) => (html = html.replace(pattern, () => tag));
+  set(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
+  set(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+  set(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+  set(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+  set(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+  set(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`);
+  set(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+  set(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`);
+  html = injectPageIdentity(html, title, pageUrl, canonicalUrl);
+  return html.replace('</head>', () => '<meta name="robots" content="noindex" /></head>');
+}
+
+/**
+ * `?scene=ask&answer=<id>`: read the snapshot from the ask-chat Worker through the ASK_CHAT
+ * service binding. A plain fetch to another Worker on this zone fails, so the binding is the only
+ * way in. No binding, no snapshot, or a bad id: the Ask scene's own card, as before.
+ */
+async function injectSharedAnswerMeta(html, id, url, env, ctx) {
+  const fallback = () => injectSceneMeta(html, 'ask', url.origin, ctx);
+  if (!SHARE_ID.test(id) || !env?.ASK_CHAT) return fallback();
+  try {
+    const response = await env.ASK_CHAT.fetch(new Request(`${url.origin}/api/ask/share/${id}`));
+    if (!response.ok) return fallback();
+    const snapshot = await response.json();
+    const subject = answerSubject(snapshot.exhibit, url.origin);
+    const title = `${subject.title}${ASK_SUFFIX}`;
+    const description = firstSentence(snapshot.prose) || 'An answer from forty years of live music.';
+    const imageUrl = await subjectImage(subject, url.origin, ctx);
+    const pageUrl = `${url.origin}/?scene=ask&answer=${id}`;
+    console.log(`[Shared Answer Meta Injected] ${id} · ${snapshot.exhibit?.kind}`);
+    return applyShareMeta(html, { title, description, imageUrl, pageUrl, canonicalUrl: subject.canonical || `${url.origin}/?scene=ask` });
+  } catch (error) {
+    console.error(`Error injecting shared answer meta: ${error.message}`);
+    return fallback();
+  }
+}
+
+/**
+ * `?scene=ask&artist=<slug>&song=<slug>`: a song card, from song-index.json. The line under the
+ * title says what the card says: how many times, first and last.
+ */
+async function injectSharedSongMeta(html, artistSlug, songSlug, url, ctx) {
+  const fallback = () => injectSceneMeta(html, 'ask', url.origin, ctx);
+  try {
+    const response = await cachedJsonFetch(`${url.origin}/data/song-index.json`, ctx);
+    if (!response.ok) return fallback();
+    const { songs = [] } = await response.json();
+    const song = songs.find(s => s.slug === artistSlug && normalizeArtistName(s.name) === songSlug);
+    if (!song?.dates?.length) return fallback();
+    const n = song.dates.length;
+    const first = song.dates[n - 1].slice(0, 4);
+    const last = song.dates[0].slice(0, 4);
+    const when = n === 1 ? `once, on ${longDateOf(song.dates[0])}` : first === last ? `${n} times, all in ${last}` : `${n} times, first in ${first} and last in ${last}`;
+    const title = `“${song.name}”, by ${song.act}${ASK_SUFFIX}`;
+    const description = `I heard ${song.act} play “${song.name}” ${when}.`;
+    const imageUrl = await subjectImage({ act: artistSlug }, url.origin, ctx);
+    const pageUrl = `${url.origin}/?scene=ask&artist=${artistSlug}&song=${songSlug}`;
+    console.log(`[Shared Song Meta Injected] ${song.act} · ${song.name}`);
+    return applyShareMeta(html, { title, description, imageUrl, pageUrl, canonicalUrl: `${url.origin}/?scene=artists&artist=${artistSlug}` });
+  } catch (error) {
+    console.error(`Error injecting shared song meta: ${error.message}`);
+    return fallback();
   }
 }
 
