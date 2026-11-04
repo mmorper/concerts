@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-11-03T14:44:59.907Z",
+  "generatedAt": "2026-11-04T14:57:00.975Z",
   "posts": [
+    {
+      "slug": "otd-2026-11-04",
+      "day": "11-04",
+      "showDate": "1993-11-04",
+      "age": 33,
+      "artist": "Tears for Fears",
+      "artistNormalized": "tears-for-fears",
+      "venue": "Universal Amphitheater",
+      "venueNormalized": "universal-amphitheater",
+      "city": "Los Angeles",
+      "score": 8,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/4c802732227999ca78fdb5c8d76eae50/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/liner-notes/tears-for-fears-17-years-between-shows",
+      "linerNoteSlug": "tears-for-fears-17-years-between-shows",
+      "cardPath": "public/og/on-this-day/otd-2026-11-04.png",
+      "social": {
+        "hook": "Eight years between the first time I saw Tears for Fears and the second.",
+        "caption": "Thirty-three years ago today, that second show landed at Universal Amphitheater. A third wait, twelve years long, started before I saw them again in 2005.",
+        "beats": [
+          "Number one came in 1985.",
+          "Number two: November 4, 1993, at Universal Amphitheater.",
+          "That same year I also saw Adam Ant and Peter Gabriel.",
+          "Tears for Fears wouldn't return for another twelve years, until 2005."
+        ],
+        "authoredAt": "2026-11-04T14:56:41.608Z"
+      },
+      "publishedAt": "2026-11-04T14:57:00.975Z"
+    },
     {
       "slug": "otd-2026-11-03",
       "day": "11-03",
