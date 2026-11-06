@@ -62,9 +62,23 @@ pipeline takes over that nobody drives:
 ![Architecture of the Morperhaus Concert Archives: GitHub builds and proves every change, Cloudflare runs it](architecture.svg)
 
 Everything — a hand-written pull request, a Dependabot bump, the weekly data
-refresh, the prose jobs — becomes a commit on `main`. Six CI gates stand in
-front of it. Past them, Cloudflare Pages publishes the site and each of the
-four Workers redeploys itself, each gated on its own tests.
+refresh, the prose jobs, the photos — becomes a commit on `main`. Six CI gates
+stand in front of it. Past them, each of the four Workers redeploys itself,
+each gated on its own tests. Cloudflare Pages publishes the site when a
+release is tagged, not on every merge.
+
+One job runs on the Mac, not in GitHub. The media pipeline (`npm run media`)
+reads the Photos library without ever changing it, and commits the chosen
+stills like any other change — the cron jobs run on GitHub's Linux machines,
+where there is no Photos library, so a still they post has to be in the repo.
+No unattended job needs a clip, so `media:publish-video` uploads clips straight
+to an R2 bucket served at `media.morperhaus.org`. Only the line in `media-index.json` that points at a
+clip goes through `main`.
+
+Syndicate is the one path out. Before it posts a note to Bluesky or Mastodon,
+it checks every claim in the post against the archive. If the check fails or
+can't run, the post is held, not sent. Instagram is built and waits only on
+its credentials.
 
 Two things deliberately sit outside that pipeline: the Ask chat's kill switch
 and its spend cap live in Cloudflare KV, so they can be flipped from a phone
