@@ -458,23 +458,25 @@ export function GenreTreemap({
                   {tile.name}
                 </div>
 
-                {/* Year range */}
+                {/* Year range. Faded with an alpha color, never `opacity`: inside a
+                    foreignObject, Safari draws an opacity layer at unscaled SVG
+                    coordinates, so the line drifts off its tile. */}
                 {(effectiveVisibility.showAll || effectiveVisibility.showNameAndCount) &&
                   tile.years &&
                   tile.years.length > 0 && (
                     <div
-                      className="font-mono opacity-80 truncate w-full"
-                      style={{ fontSize: `${yearsFontSize}px`, textShadow }}
+                      className="font-mono truncate w-full"
+                      style={{ fontSize: `${yearsFontSize}px`, textShadow, color: `${effectiveTextColor}cc` }}
                     >
                       {formatYearRange(tile.years, currentYear)}
                     </div>
                   )}
 
-                {/* Show count */}
+                {/* Show count — alpha color, not `opacity`, for the same Safari reason */}
                 {(effectiveVisibility.showAll || effectiveVisibility.showNameAndCount) && (
                   <div
-                    className="font-sans opacity-75"
-                    style={{ fontSize: `${countFontSize}px`, textShadow }}
+                    className="font-sans"
+                    style={{ fontSize: `${countFontSize}px`, textShadow, color: `${effectiveTextColor}bf` }}
                   >
                     {tile.count} show{tile.count !== 1 ? 's' : ''}
                   </div>
