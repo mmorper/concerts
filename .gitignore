@@ -64,6 +64,7 @@ data/venues-to-classify.csv*
 .claude/todos/
 .claude/worktrees/
 .claude/scheduled-tasks/
+.claude/ms-context
 
 # Bug reports and debugging artifacts
 bugs/
