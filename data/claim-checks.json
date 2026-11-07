@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-06T17:09:33.145Z",
+  "updatedAt": "2026-11-07T16:05:04.678Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -195,23 +195,29 @@
     },
     {
       "slug": "march-22-13-years-since-bad-religion",
-      "hash": "cca0ba6e3cce21c1",
-      "checkedAt": "2026-11-06T17:09:33.145Z",
+      "hash": "752783811f298d5f",
+      "checkedAt": "2026-11-07T16:05:04.678Z",
       "issues": [
+        {
+          "field": "hook",
+          "sentence": "Three openers, one headliner, and Greg Graffin sounded like 1980 had never ended.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet contains no formation year for Bad Religion; the implied 1980 formation date is not sourced from the archive data, though it is likely true."
+        },
         {
           "field": "caption",
           "sentence": "Four bands, one night, and the headliner had been doing this for 33 years by then.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet gives no formation date or founding year for Bad Religion, so a 33-year tenure figure cannot be derived from it.",
-          "replacement": "Four bands, one night, and a headliner who'd been doing this since before most of the openers were born."
+          "evidence": "The '33 years' figure relies on an unconfirmed 1980 formation date not present anywhere in the fact sheet, making it an invented number."
         },
         {
-          "field": "beat",
+          "field": "beat3",
           "sentence": "Bad Religion formed in 1980.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no formation year for Bad Religion; this is an external historical claim (likely true but unverifiable from the archive data)."
+          "evidence": "No formation year appears in the fact sheet; this is an external historical claim not derivable from the archive data, though plausibly accurate."
         }
       ]
     },
@@ -615,22 +621,29 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "8315e381d1c22f42",
-      "checkedAt": "2026-11-06T17:08:38.261Z",
+      "hash": "55517a3f311c585f",
+      "checkedAt": "2026-11-07T16:04:16.703Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet's earliest discography entries for these acts are early-80s (Fear's 'The Record' 1982-05-16, Social Distortion's 'Mommy's Little Monster' 1983-02-01, T.S.O.L.'s 'Dance With Me' 1981-06); no formation years are given, and nothing supports 'late seventies.'"
+          "evidence": "Fact sheet gives no band formation dates for Fear, Bad Religion, T.S.O.L., etc.—only album release dates (e.g., Fear's first album 'The Record' 1982-05-16, Bad Religion's first album 1982-01-12), none in the late seventies. Cannot confirm 'late seventies' formation claim."
         },
         {
           "field": "beat 2",
           "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No birth years, formation years, or tenure figures are in the fact sheet to support a 'forty years' total."
+          "evidence": "No band formation or founding dates are given in the fact sheet, so 'forty years' is an invented figure with no supporting data."
+        },
+        {
+          "field": "beat 5",
+          "sentence": "Standing on that beach, I finally understood the patent.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "This states a concrete personal experience/location claim not covered by the OWNER-CONFIRMED PERSONAL FACTS section (which only confirms living in Orange County around 1992)."
         }
       ]
     },
@@ -684,30 +697,36 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "451cc4d4e2620652",
-      "checkedAt": "2026-11-06T17:09:11.589Z",
+      "hash": "d392e286fc592750",
+      "checkedAt": "2026-11-07T16:04:46.678Z",
       "issues": [
         {
-          "field": "caption",
+          "field": "Hook",
+          "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Radiohead's The Bends release date (March 13, 1995) is not in the fact sheet, which only covers Brian Setzer Orchestra and Hard Rock Cafe. This date is historically accurate as far as I can verify, but it is external to the archive data."
+        },
+        {
+          "field": "Caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Bends release date is not in the fact sheet; this is an external music-history claim about another artist. Believed true with high confidence but cannot be confirmed by archive data.",
-          "replacement": "Thirteen days earlier, Radiohead had put out The Bends."
+          "evidence": "Not sourced from the fact sheet, which contains no data on Radiohead. Historically this date appears correct, but cannot be confirmed from archive data."
         },
         {
-          "field": "beat",
+          "field": "Beat 1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Bends release date and the characterization of its significance are not in the fact sheet; external music-history claim, likely true but unconfirmed by archive data."
+          "evidence": "Radiohead/The Bends is not in the fact sheet at all; the release date appears accurate but is unverifiable against archive data."
         },
         {
-          "field": "beat",
+          "field": "Beat 3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No birth year, age, or stylistic-era figure for Setzer or the show is given in the fact sheet; '40 years' is unsupported.",
+          "evidence": "The fact sheet gives no birth year for Brian Setzer, so any age or age-difference figure is invented.",
           "replacement": "Setzer's was decades older."
         }
       ]
@@ -826,15 +845,15 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "fe9e463ece802190",
-      "checkedAt": "2026-11-06T17:08:57.290Z",
+      "hash": "36e58774caf42ae2",
+      "checkedAt": "2026-11-07T16:04:32.729Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Show dates are 1988-09-09 and 2023-07-21, a span of 34 years (not yet 35, since September hadn't been reached), per the EVERY SHOW BY UB40 list.",
+          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's 34 years and about 10 months, not a full 35 years.",
           "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 34 years after the first time."
         },
         {
@@ -842,24 +861,31 @@
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is 34 years, not 35, per the show dates on record.",
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years and about 10 months, not thirty-five full years.",
           "replacement": "Thirty-four years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
-          "field": "beat_3",
+          "field": "beat3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is 34 years, not 35, per the show dates on record.",
-          "replacement": "Thirty-four years went by before I bought another ticket."
+          "evidence": "Gap between 1988-09-09 and 2023-07-21 is 34 years and about 10 months, not thirty-five years.",
+          "replacement": "Thirty-four years went by before I went back."
         },
         {
-          "field": "beat_2",
-          "sentence": "The Labour of Love covers felt like they'd always existed.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "No setlist is on record for the 1988-09-09 Pacific Amphitheatre show; only the 2023-07-21 setlist is documented.",
-          "replacement": "Whatever they played that night felt like it had always existed."
+          "field": "beat3",
+          "sentence": "Thirty-five years went by before I bought another ticket.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet lists 'ticket stubs or any physical ticket detail' as not in the data; buying a ticket is not an owner-confirmed personal fact.",
+          "replacement": "Thirty-four years went by before I went back."
+        },
+        {
+          "field": "beat4",
+          "sentence": "That Birmingham-meets-Jamaica energy — the thing I'd wondered about in the parking lot — was exactly where I'd left it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The parking lot detail is a concrete personal memory not present in the fact sheet or owner-confirmed personal facts."
         }
       ]
     },
