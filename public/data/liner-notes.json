@@ -1,7 +1,101 @@
 {
-  "generatedAt": "2026-11-02T17:59:47.708Z",
-  "dataHash": "d37590cf",
+  "generatedAt": "2026-11-09T22:44:52.542Z",
+  "dataHash": "cb0fa738",
   "posts": [
+    {
+      "id": "opener-to-headliner-crowded-house",
+      "slug": "crowded-house-from-opener-to-headliner",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Crowded House: From Opener to Headliner",
+      "prose": "Opening slots are where you learn whether a band has staying power, and Crowded House answered that slowly. I caught them on September 18, 1993 at the Olympic Velodrome in Carson, California, opening for Peter Gabriel — one show, one setlist, nothing to suggest what was coming. Almost 29 years and 8 months later, I watched them headline The Wiltern in Los Angeles, and five songs bridged the gap: \"When You Come,\" \"Fall at Your Feet,\" \"Private Universe,\" \"Don't Dream It's Over,\" and \"Weather With You\" showed up in both sets. Same songs, completely different room — I went from standing in a stadium crowd waiting for Peter Gabriel to standing in a theater that existed just for them.",
+      "image": {
+        "url": "/images/shows/2023-05-09-crowded-house-02.jpg",
+        "alt": "Crowded House",
+        "source": "show",
+        "ref": "crowded-house",
+        "credit": "Mike Morper · 9 May 2023",
+        "shotOn": "2023-05-09",
+        "crop": {
+          "h": 0.8435,
+          "w": 0.9,
+          "x": 0.1,
+          "y": 0.1252
+        }
+      },
+      "audio": {
+        "trackName": "Don't Dream It's Over",
+        "artistName": "Crowded House",
+        "albumName": "Crowded House",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6d/07/2b/6d072b60-4bec-c854-5267-575e2ccc1a91/mzaf_4354817901169615291.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/91/42/09/91420918-380f-c05a-3225-78b27c792774/13UAEIM58114.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/dont-dream-its-over/1440822690?i=1440823110&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "crowded-house"
+      ],
+      "venues": [
+        "olympic-velodrome",
+        "the-wiltern"
+      ],
+      "years": [
+        1993,
+        2023
+      ],
+      "tags": [
+        "#opener-to-headliner",
+        "#career-arc",
+        "#same-song"
+      ],
+      "deepLinks": [
+        {
+          "label": "Crowded House",
+          "url": "/?scene=artists&artist=crowded-house",
+          "type": "artist"
+        },
+        {
+          "label": "Olympic Velodrome",
+          "url": "/?scene=venues&venue=olympic-velodrome",
+          "type": "venue"
+        },
+        {
+          "label": "The Wiltern",
+          "url": "/?scene=venues&venue=the-wiltern",
+          "type": "venue"
+        },
+        {
+          "label": "May 9, 2023",
+          "url": "/?scene=artists&artist=crowded-house&show=2023-05-09",
+          "type": "setlist"
+        },
+        {
+          "label": "1993",
+          "url": "/?scene=timeline&year=1993",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "peter-gabriel-11-more-1993-festival-bill",
+        "25-shows-in-a-row-on-the-west-coast-1989-1999"
+      ],
+      "score": 30,
+      "detector": "opener-to-headliner",
+      "publishedAt": "2026-11-09T22:44:52.542Z",
+      "factsAsOf": "2026-11-09T22:44:52.543Z",
+      "social": {
+        "hook": "I once watched Crowded House open for Peter Gabriel. They had no idea what was coming.",
+        "caption": "That was 1993, one set, nothing to suggest a headline slot. Almost 30 years later, five of the same songs turned up in their own show at The Wiltern.",
+        "beats": [
+          "September 18, 1993: Crowded House opens for Peter Gabriel at the Olympic Velodrome in Carson.",
+          "One setlist, one night, no sign of what it would become.",
+          "Almost 30 years later, they headline The Wiltern in Los Angeles.",
+          "Five songs crossed the gap, among them 'Don't Dream It's Over' and 'Weather With You'.",
+          "Same songs, a room that existed just for them this time."
+        ],
+        "authoredAt": "2026-11-09T22:44:52.546Z"
+      }
+    },
     {
       "id": "geographic-west-coast-1989",
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -941,7 +1035,7 @@
       "headline": "Pacific Amphitheatre: 17 Shows Over 5 Decades",
       "prose": "I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That's five decades under the same Costa Mesa sky, from the *Songs from the Big Chair* era straight through to a stage I still can't quite believe I was standing in front of in July 2026. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don't have a tidy reason why. I just know I never once regretted the drive.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLewwCFymAm2NMkdY0k3MXhN5gSQMmAiMor1LJ12nBHFl3BGGO7Cyf6GNDZMJEBMzmD27ooPJACxsK6OPlxSe8Xaf3BoN9MTOPqPOLTJueHeu9YKN1kHwuNmXvmmbEHgYFLhHygegA=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdB4jQ1l22vbw5g_uwIl4ay4_PrjTsiBxkTxmvdJCn2ZZouAer_uLQRUtaFdiM4KJvF0g3IVOoNiZPeOcJnxZRdSAuqv1JjeV_GZJPwgeiKyeD9q-I2rStZbxtUWaoIrrTcyKpaig=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -1123,7 +1217,7 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades under that name, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfjaPCTuXJ7MxKx2rQaQUIzYYoTNInFxEOTdC0xrJzCkY7G35o1dlZKHkJogmjL9QckRSCoE7kSCVtlek5VtfVdUBzYFh-votIXhCBafWEPesHhkW_IR9bihGswZqp3ItSpSZRjng=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdpXAyo1BnFCzA2vbOR9-CmCT1QNbBvw1dSEftusAp61Np3B-Y1KnlCiAkh1Fg4XzRzR_orkaMXeWiOWyPPewQaNeZUdDhzVjaC0o0g3Ptwn1oGpaJxCtU2R_rA2wWqYD6Phu3tag=s4800-h1200",
         "alt": "House of Blues Anaheim",
         "source": "venue",
         "ref": "house-of-blues-anaheim"
@@ -2069,7 +2163,7 @@
       "headline": "Erasure — Days Before Violator Dropped",
       "prose": "March 1990 was the moment synth-pop split into two futures — one heading for the dancefloor, the other for the stadium. I caught Erasure at the Forum just 8 days before Depeche Mode's Violator dropped, witnessing the last gasps of pure pop innocence before their darker cousins conquered the world. Andy Bell's voice soared through \"A Little Respect\" while somewhere across town, Dave Gahan was probably rehearsing \"Personal Jesus\" for arenas that would dwarf this moment. Sometimes the most significant concerts are the ones that capture a scene right before it changes forever.",
       "image": {
-        "url": "https://cdn-images.dzcdn.net/images/artist/9437fd22d1c4547e65708cbf21f08587/500x500-000000-80-0-0.jpg",
+        "url": "https://cdn-images.dzcdn.net/images/artist/1257f78c1c946f99aec96a6900070aa0/500x500-000000-80-0-0.jpg",
         "alt": "Erasure",
         "source": "artist",
         "ref": "erasure"
@@ -4265,7 +4359,7 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Bonafide was Maxi Priest's latest album, and he headlined a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLewwCFymAm2NMkdY0k3MXhN5gSQMmAiMor1LJ12nBHFl3BGGO7Cyf6GNDZMJEBMzmD27ooPJACxsK6OPlxSe8Xaf3BoN9MTOPqPOLTJueHeu9YKN1kHwuNmXvmmbEHgYFLhHygegA=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdB4jQ1l22vbw5g_uwIl4ay4_PrjTsiBxkTxmvdJCn2ZZouAer_uLQRUtaFdiM4KJvF0g3IVOoNiZPeOcJnxZRdSAuqv1JjeV_GZJPwgeiKyeD9q-I2rStZbxtUWaoIrrTcyKpaig=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -4449,7 +4543,7 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo four months out from BOI-NGO, The Bangles, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcTgPd4vAWoPOOsOBBt5uSTydefEjW__OjuM6zcUwzfj2SpzCVNm7kOm7SrqSAvFNs9SVGjDO5btk_JL367HkK1UxqTFblJUvSKidTHH25g65bOnfC9lLzvCtp8BLZdgWMNuj8-=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLc0h9NrxOEsSER_xFO31PX_QDALhnv2C3mvDAq1cgFVdV6RRseDgLXelAYUXeKBgA5_q4UzpnSdYR6-BNPl8Zy2fsrjFIh1ndz_xTlTf8xZ0ijLYVk4Wowmidv86QxFHi_0gUs9=s4800-h1200",
         "alt": "Caliente Racetrack",
         "source": "venue",
         "ref": "caliente-racetrack"
@@ -4533,92 +4627,6 @@
       }
     },
     {
-      "id": "opener-to-headliner-crowded-house",
-      "slug": "crowded-house-from-opener-to-headliner",
-      "category": "cultural",
-      "temporality": "evergreen",
-      "headline": "Crowded House: From Opener to Headliner",
-      "prose": "Crowded House's trajectory from Melbourne alt-rock darlings to enduring pop craftsmen spans the nearly 30 years between when I saw them open for Peter Gabriel at the Olympic Velodrome in 1993 and headline The Wiltern in 2023. That first show came around the time *Woodface* had established them as more than just Neil Finn's post-Split Enz project, but they were still very much the supporting act in a massive arena. Three decades later, watching them command their own stage at the Wiltern felt like witnessing the full arc of a band that never chased trends but simply outlasted them. Some artists earn their headliner status through persistence and craft rather than flash.",
-      "image": {
-        "url": "/images/shows/2023-05-09-crowded-house-02.jpg",
-        "alt": "Crowded House",
-        "source": "show",
-        "ref": "crowded-house",
-        "credit": "Mike Morper · 9 May 2023",
-        "shotOn": "2023-05-09",
-        "crop": {
-          "h": 0.8435,
-          "w": 0.9,
-          "x": 0.1,
-          "y": 0.1252
-        }
-      },
-      "audio": {
-        "trackName": "Don't Dream It's Over",
-        "artistName": "Crowded House",
-        "albumName": "Crowded House",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6d/07/2b/6d072b60-4bec-c854-5267-575e2ccc1a91/mzaf_4354817901169615291.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/91/42/09/91420918-380f-c05a-3225-78b27c792774/13UAEIM58114.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/dont-dream-its-over/1440822690?i=1440823110&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "crowded-house"
-      ],
-      "venues": [
-        "olympic-velodrome",
-        "the-wiltern"
-      ],
-      "years": [
-        1993,
-        2023
-      ],
-      "tags": [
-        "#opener-to-headliner",
-        "#career-arc"
-      ],
-      "deepLinks": [
-        {
-          "label": "Crowded House",
-          "url": "/?scene=artists&artist=crowded-house",
-          "type": "artist"
-        },
-        {
-          "label": "Olympic Velodrome",
-          "url": "/?scene=venues&venue=olympic-velodrome",
-          "type": "venue"
-        },
-        {
-          "label": "The Wiltern",
-          "url": "/?scene=venues&venue=the-wiltern",
-          "type": "venue"
-        },
-        {
-          "label": "1993",
-          "url": "/?scene=timeline&year=1993",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "squeeze-from-opener-to-headliner",
-        "depeche-mode-38-years-of-shows-2"
-      ],
-      "score": 38,
-      "detector": "opener-to-headliner",
-      "publishedAt": "2026-01-17T10:24:00.000Z",
-      "social": {
-        "hook": "Opener in 1993, headliner in 2023 — and five songs from that first set were still in the second.",
-        "caption": "I saw Crowded House open for Peter Gabriel in Carson when Woodface was barely two years old. Thirty years later they were headlining the Wiltern, and the craft that got them there hadn't changed.",
-        "beats": [
-          "September 1993: Crowded House were the support act for Peter Gabriel at the Olympic Velodrome.",
-          "One of eleven acts under Gabriel that day, they played nine songs — Don't Dream It's Over among them.",
-          "Thirty years later, the Wiltern. Their own stage, their own crowd, no one to open for.",
-          "They never chased a trend. They just kept playing until the room was theirs."
-        ],
-        "authoredAt": "2026-08-31T21:10:16.053Z"
-      }
-    },
-    {
       "id": "geographic-d-c-area-2009",
       "slug": "my-west-coast-chapter-26-concerts-over-11-years",
       "category": "personal",
@@ -4626,7 +4634,7 @@
       "headline": "50 Shows in a Row in the D.C. Area, 2009–2018",
       "prose": "For my first 25 years of shows, California was nearly the whole map: 71 of the first 76, starting with Adam Ant at Irvine Meadows in 1984. Then, from Rob Thomas at EagleBank Arena in November 2009 to Beck at The Anthem in April 2018, I saw 50 shows in a row in D.C., Maryland and Virginia, 11 of them at the 9:30 Club. Between Brian Setzer at Doheny in May 2009 and The Human League at Huntington State Beach in May 2018, I didn't see a single show in California. After that, 50 of the next 55 shows were back in California. Echo and the Bunnymen were one of the bands I saw on both coasts, Irvine Meadows in 1984 and The Black Cat in 2010 — the same band, a whole country apart.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeUhK-qbrtxgnUJGpdrzmA45aXDBSAhlavmGkq8QFcPzDqySWsDjaGrwJPL1Kc7c0lqYPY_4s8LO_Rp6gjhKf8bt2bs19Amt06bTsTWsv-DZGTlkG_AtIEbKMKFxYSZnpMhXU05=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeVL9WkiOt4wSUSzm_yn6XYFgvo4ngY9FUe_VP7fUmcqF-ewsppRTS5oORA5uKueE6Frvulb8RYNbcTzAV7XBZZEgO4Hs11WFSUu2vHN9QZmdLna4NVx6O5_KLfLujqP7L4YBbB=s4800-h1200",
         "alt": "EagleBank Arena",
         "source": "venue",
         "ref": "eaglebank-arena"
@@ -5173,7 +5181,7 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in March 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfl-ICtZbU_ISViT8qP3q1SwmIgrlYTEF-f3OZEr9DK6chm3Q23smeHQCfZiMmEsDSkzBaYXxrm-avqECUrzSI8Uk_G9-i-YSDS-fEnQbLHv217nhDkr6WrGQ6Bh5NjXunzx950Zw=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdarJUVcGJM8kmFqv-I8ZFHhjMp8F-U3iEmYzjRMYc4gJf98pHF7yuuztcvQQvYZx_mwjDWESkeCb8CJCGiK9ZN6YtMzgS5vRhQ8JhBbNvZgOR3Ic7HDOCUkxSEMA5HwZ9jAynQDg=s4800-h1200",
         "alt": "Kia Forum",
         "source": "venue",
         "ref": "kia-forum"
@@ -5256,9 +5264,9 @@
   ],
   "metadata": {
     "totalPosts": 59,
-    "totalGenerated": 99,
-    "averageScore": 37.9,
-    "lastPipelineRun": "2026-11-02T17:59:47.708Z",
+    "totalGenerated": 100,
+    "averageScore": 37.8,
+    "lastPipelineRun": "2026-11-09T22:44:52.542Z",
     "concertsAnalyzed": 183,
     "feedUrl": "/liner-notes.xml"
   }

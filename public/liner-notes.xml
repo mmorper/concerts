@@ -5,13 +5,24 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Nov 2026 17:59:47 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Nov 2026 22:44:52 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Crowded House: From Opener to Headliner</title>
+    <link>https://concerts.morperhaus.org/liner-notes/crowded-house-from-opener-to-headliner</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/crowded-house-from-opener-to-headliner</guid>
+    <pubDate>Mon, 09 Nov 2026 22:44:52 +0000</pubDate>
+    <description>Opening slots are where you learn whether a band has staying power, and Crowded House answered that slowly. I caught them on September 18, 1993 at the Olympic Velodrome in Carson, California, opening for Peter Gabriel — one show, one setlist, nothing to suggest what was coming. Almost 29 years and 8 months later, I watched them headline The Wiltern in Los Angeles, and five songs bridged the gap: &quot;When You Come,&quot; &quot;Fall at Your Feet,&quot; &quot;Private Universe,&quot; &quot;Don&apos;t Dream It&apos;s Over,&quot; and &quot;Weather With You&quot; showed up in both sets. Same songs, completely different room — I went from standing in a stadium crowd waiting for Peter Gabriel to standing in a theater that existed just for them.</description>
+    <category>#opener-to-headliner</category>
+    <category>#career-arc</category>
+    <category>#same-song</category>
+    <media:content url="/images/shows/2023-05-09-crowded-house-02.jpg" medium="image" />
+  </item>
   <item>
     <title>25 Shows in a Row on the West Coast, 1989–1999</title>
     <link>https://concerts.morperhaus.org/liner-notes/25-shows-in-a-row-on-the-west-coast-1989-1999</link>
@@ -119,7 +130,7 @@
     <description>I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That&apos;s five decades under the same Costa Mesa sky, from the Songs from the Big Chair era straight through to a stage I still can&apos;t quite believe I was standing in front of in July 2026. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don&apos;t have a tidy reason why. I just know I never once regretted the drive.</description>
     <category>#venue-loyalty</category>
     <category>#home-venue</category>
-    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLewwCFymAm2NMkdY0k3MXhN5gSQMmAiMor1LJ12nBHFl3BGGO7Cyf6GNDZMJEBMzmD27ooPJACxsK6OPlxSe8Xaf3BoN9MTOPqPOLTJueHeu9YKN1kHwuNmXvmmbEHgYFLhHygegA=s4800-h1200" medium="image" />
+    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLdB4jQ1l22vbw5g_uwIl4ay4_PrjTsiBxkTxmvdJCn2ZZouAer_uLQRUtaFdiM4KJvF0g3IVOoNiZPeOcJnxZRdSAuqv1JjeV_GZJPwgeiKyeD9q-I2rStZbxtUWaoIrrTcyKpaig=s4800-h1200" medium="image" />
   </item>
   <item>
     <title>July 16: 40 Years Since Beach Boys</title>
@@ -138,7 +149,7 @@
     <pubDate>Mon, 06 Jul 2026 12:07:53 +0000</pubDate>
     <description>I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who&apos;d been making records since before I probably knew what a record was. Six shows across three decades under that name, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.</description>
     <category>#venue-loyalty</category>
-    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLfjaPCTuXJ7MxKx2rQaQUIzYYoTNInFxEOTdC0xrJzCkY7G35o1dlZKHkJogmjL9QckRSCoE7kSCVtlek5VtfVdUBzYFh-votIXhCBafWEPesHhkW_IR9bihGswZqp3ItSpSZRjng=s4800-h1200" medium="image" />
+    <media:content url="https://lh3.googleusercontent.com/grass-cs/AABkmLdpXAyo1BnFCzA2vbOR9-CmCT1QNbBvw1dSEftusAp61Np3B-Y1KnlCiAkh1Fg4XzRzR_orkaMXeWiOWyPPewQaNeZUdDhzVjaC0o0g3Ptwn1oGpaJxCtU2R_rA2wWqYD6Phu3tag=s4800-h1200" medium="image" />
   </item>
   <item>
     <title>June 21: 35 Years Since Jimmy Buffett</title>
@@ -199,16 +210,6 @@
     <category>#anniversary</category>
     <category>#on-this-day</category>
     <media:content url="https://cdn-images.dzcdn.net/images/artist/6999c912b02ffbace7bd5377a3be8eda/500x500-000000-80-0-0.jpg" medium="image" />
-  </item>
-  <item>
-    <title>The Brian Setzer Orchestra: 22 Years of Shows</title>
-    <link>https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-22-years-of-shows</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/the-brian-setzer-orchestra-22-years-of-shows</guid>
-    <pubDate>Tue, 31 Mar 2026 22:51:47 +0000</pubDate>
-    <description>I remember discovering The Brian Setzer Orchestra at the Hard Rock Cafe in Newport Beach back in 1995, when swing revival was just starting to bubble up from the underground. That first show hooked me on Brian&apos;s rockabilly-meets-big-band sound, and I ended up catching them 4 times across 22 years, from that intimate club gig all the way to the Warner Theatre in DC in 2017. Four different venues, three different decades, but always that same electric energy when Brian strapped on his hollow-body Gretsch and the 17-piece orchestra kicked into high gear. There&apos;s something deeply satisfying about following an artist long enough to watch both of you age into the music.</description>
-    <category>#artist-longevity</category>
-    <category>#multi-decade</category>
-    <media:content url="/images/shows/2017-11-25-the-brian-setzer-orchestra-01.jpg" medium="image" />
   </item>
   </channel>
 </rss>
