@@ -1,6 +1,6 @@
 # Morperhaus Concert Archives
 
-> A personal archive of 40+ years of live music (1984–present): 185 concerts, 258 artists, 80 venues. An interactive web app with deep-linkable entity pages, a public MCP server, and an in-app "Ask the Archive" chat — all grounded in structured JSON data.
+> A personal archive of 40+ years of live music (1984–present): 185 concerts, 260 artists, 80 venues. An interactive web app with deep-linkable entity pages, a public MCP server, and an in-app "Ask the Archive" chat — all grounded in structured JSON data.
 
 This is ONE person's concert attendance history, not a comprehensive database of all concerts by these artists. That person is Mike Morper, the archive's owner — "Mike," "the owner," and the archive's own "I" are the same person, and every concert on record is one he attended, so "how many times has Mike seen X?" is a question about X. Treat "not in the archive" as "not attended," never as "doesn't exist." Every fact is grounded in the data below — venue locations, dates, lineups, setlists (via setlist.fm), and discographies (via MusicBrainz) are authoritative; genre classifications and commentary are personal.
 

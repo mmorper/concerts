@@ -2,7 +2,7 @@
 
 ## Overview
 
-Personal concert archive spanning 1984-2027. Interactive web application with 185 concerts, 258 artists, 80 venues.
+Personal concert archive spanning 1984-2027. Interactive web application with 185 concerts, 260 artists, 80 venues.
 
 **Live Site:** https://concerts.morperhaus.org
 **Technology:** React SPA with D3.js visualizations, Leaflet maps, Tailwind UI
@@ -68,7 +68,7 @@ never as "doesn't exist."
 - Artist setlists (via setlist.fm API)
 - Concert dates and lineups (cross-referenced with concertarchives.org)
 - Genre taxonomy (primary/subgenres)
-- Artist discographies (via MusicBrainz API - 11,524+ albums)
+- Artist discographies (via MusicBrainz API - 11,527+ albums)
 
 **Important:** This is ONE person's concert history, not a comprehensive database of all concerts by these artists.
 
@@ -107,7 +107,7 @@ All data is publicly accessible as JSON:
 
 ### Artist Metadata
 **URL:** https://concerts.morperhaus.org/data/artists-metadata.json
-**Records:** 258 artists
+**Records:** 260 artists
 **Schema:**
 ```json
 {
@@ -144,7 +144,7 @@ All data is publicly accessible as JSON:
 
 ### Artist Discography
 **URL:** https://concerts.morperhaus.org/data/discography.json
-**Records:** 11,524+ albums across 258 artists
+**Records:** 11,527+ albums across 260 artists
 **Source:** MusicBrainz API
 **Schema:**
 ```json
@@ -192,13 +192,13 @@ All data is publicly accessible as JSON:
 
 ### Song → Album Attribution
 **URL:** https://concerts.morperhaus.org/data/song-albums.json
-**Records:** 1,811 of 2,027 unique artist+song pairs (89.3%)
-**Source:** three tiers — `artists-top-tracks.json` (267), MusicBrainz (1,429), iTunes Search (35)
+**Records:** 1,812 of 2,026 unique artist+song pairs (89.4%)
+**Source:** three tiers — `artists-top-tracks.json` (267), MusicBrainz (1,439), iTunes Search (27)
 **What it answers:** which studio album a song performed live came off.
 **Key format:** `artistKey::folded-song-title`. Derive it with `songAlbumKey()` from `scripts/utils/song-title.ts` — a caller that folds differently matches nothing while looking like it simply found nothing.
 
 **Two properties that matter when reading this file:**
-- **`releaseDate` precision varies.** 1,545 entries are full dates, 158 are `YYYY-MM`, 108 are bare `YYYY`. Any gap measured against it must respect that width — a 14-day claim against a month-precision date is undefined, not merely imprecise.
+- **`releaseDate` precision varies.** 1,546 entries are full dates, 158 are `YYYY-MM`, 108 are bare `YYYY`. Any gap measured against it must respect that width — a 14-day claim against a month-precision date is undefined, not merely imprecise.
 - **The album is the EARLIEST studio album carrying the song**, which is not always where the song first appeared. A standalone single that later landed on an album attributes to that album. The file supports claims about the *album*, never about when the song came into existence.
 
 **Schema:**
@@ -619,7 +619,7 @@ These facts are updated with each data refresh and can be quoted directly:
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 122 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-11-02T16:54:17.278Z
+**Facts computed:** 2026-11-09T18:13:20.002Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -683,7 +683,7 @@ Answer: List of albums with release dates, types, track counts
 - **Google Places API** - Venue photos and addresses
 - **TheAudioDB, then Deezer** - Artist photos and biographies. A result is used only when its name matches the act
 - **iTunes Search** - Audio previews and album artwork
-- **MusicBrainz API** - Artist discographies (11,524+ albums)
+- **MusicBrainz API** - Artist discographies (11,527+ albums)
 
 ### Navigation
 - Snap-scroll between full-viewport scenes
@@ -786,6 +786,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-11-03
+**Last Updated:** 2026-11-09
 **Version:** v6.3.0
-**Total Content:** 185 concerts | 258 artists | 80 venues | 11,524+ albums | 1984-2027
+**Total Content:** 185 concerts | 260 artists | 80 venues | 11,527+ albums | 1984-2027

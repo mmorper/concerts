@@ -1814,5 +1814,19 @@
     "formed": "1977",
     "source": "theaudiodb",
     "fetchedAt": "2026-11-02T20:04:46.071Z"
+  },
+  "constant-insult": {
+    "name": "Constant Insult",
+    "image": "https://cdn-images.dzcdn.net/images/artist/3f3574ccb7796486aa386f82bad73b59/500x500-000000-80-0-0.jpg",
+    "genres": [],
+    "source": "deezer",
+    "fetchedAt": "2026-11-09T17:11:57.542Z"
+  },
+  "mermaid-island": {
+    "name": "Mermaid Island",
+    "image": "https://cdn-images.dzcdn.net/images/artist/d739083feabb002fbcb15a8840a95b67/500x500-000000-80-0-0.jpg",
+    "genres": [],
+    "source": "deezer",
+    "fetchedAt": "2026-11-09T17:11:58.006Z"
   }
 }

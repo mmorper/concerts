@@ -4675,7 +4675,10 @@
       "headlinerNormalized": "pinhead-gunpowder",
       "genre": "Punk Rock",
       "genreNormalized": "punk-rock",
-      "openers": [],
+      "openers": [
+        "Constant Insult",
+        "Mermaid Island"
+      ],
       "venue": "Garden Amp",
       "venueNormalized": "garden-amp",
       "city": "Garden Grove",
@@ -4718,7 +4721,7 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-11-02T16:51:11.221Z",
+    "lastUpdated": "2026-11-09T17:11:43.655Z",
     "totalConcerts": 185,
     "dateRange": {
       "earliest": "1984-04-27",

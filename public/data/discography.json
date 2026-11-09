@@ -52712,8 +52712,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-07T15:45:30.610Z",
-    "cachedAt": "2026-08-07T15:45:30.611Z"
+    "fetchedAt": "2026-11-09T17:12:37.034Z",
+    "cachedAt": "2026-11-09T17:12:37.034Z"
   },
   "the-head-and-the-heart": {
     "artistName": "The Head and the Heart",
@@ -138511,5 +138511,58 @@
     ],
     "fetchedAt": "2026-10-25T16:12:39.298Z",
     "cachedAt": "2026-10-25T16:12:39.299Z"
+  },
+  "constant-insult": {
+    "artistName": "Constant Insult",
+    "normalizedName": "constant-insult",
+    "mbid": "e3ba9db1-3c44-43fc-8dfb-41057a3a572d",
+    "albumCount": 2,
+    "albums": [
+      {
+        "id": "bb8a4aa7-f910-431a-ad44-3d37ce039bf6",
+        "title": "History in Shorthand",
+        "releaseDate": "2020-01-31",
+        "year": 2020,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/bb8a4aa7-f910-431a-ad44-3d37ce039bf6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b864ab2c-b488-4b0c-860e-12401881d555",
+        "title": "Constant Insult",
+        "releaseDate": "2015-09-04",
+        "year": 2015,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b864ab2c-b488-4b0c-860e-12401881d555/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-11-09T17:12:41.176Z",
+    "cachedAt": "2026-11-09T17:12:41.176Z"
+  },
+  "mermaid-island": {
+    "artistName": "Mermaid Island",
+    "normalizedName": "mermaid-island",
+    "mbid": "cda00a80-7647-401b-bfe5-b406a01e6aab",
+    "albumCount": 1,
+    "albums": [
+      {
+        "id": "9f4eb397-8d56-472e-8314-8c5e0b18cc8b",
+        "title": "Mermaid Island",
+        "releaseDate": "2026-06-12",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9f4eb397-8d56-472e-8314-8c5e0b18cc8b/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-11-09T17:12:43.183Z",
+    "cachedAt": "2026-11-09T17:12:43.183Z"
   }
 }

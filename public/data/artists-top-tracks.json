@@ -2952,19 +2952,11 @@
   "emf": {
     "name": "EMF",
     "source": "itunes",
-    "fetchedAt": "2026-08-09T17:08:53.424Z",
+    "fetchedAt": "2026-11-09T17:12:00.757Z",
     "resolvedVia": "search",
     "itunesArtistId": 532755,
     "itunesArtistName": "EMF",
     "tracks": [
-      {
-        "name": "Unbelievable",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a5/b7/5d/a5b75d01-f035-8cb8-f483-0f6c6b3ddcc7/mzaf_6935864327109377202.plus.aac.p.m4a",
-        "durationMs": 209773,
-        "albumName": "Countdown to the New Year",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/92/4d/39/924d39c3-c782-886e-7dbc-8438fa0f5242/14ULAIM00140.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/unbelievable/715577017?i=715577553&uo=4"
-      },
       {
         "name": "Children",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/97/29/a2/9729a261-bb06-c819-4e2c-7e0709ae0535/mzaf_7551256805206982349.plus.aac.p.m4a",
@@ -2974,20 +2966,20 @@
         "streamingUrl": "https://music.apple.com/us/album/children/1242337425?i=1242337446&uo=4"
       },
       {
-        "name": "Unbelievable",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ef/32/9a/ef329a41-079a-43d6-5745-21db5f9440ca/mzaf_13495923089564931358.plus.aac.p.m4a",
-        "durationMs": 209773,
-        "albumName": "Thumbplay Presents: The 90s",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/fa/d5/fd/fad5fd6e-e7d2-7ee0-d683-9b5c3628a670/13UABIM49270.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/unbelievable/1470680759?i=1470680764&uo=4"
-      },
-      {
         "name": "Unbelievable (2013 Remastered)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/28/fd/1c/28fd1c21-7722-cd0f-798a-2e71f1ddb7ff/mzaf_5454518272925218486.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/47/00/31/4700318d-9d6a-1c49-c580-364fdc23efcc/mzaf_14785949536788597687.plus.aac.p.m4a",
         "durationMs": 209907,
         "albumName": "Schubert Dip (2013 Remastered)",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/a8/e4/10/a8e41051-863a-6c86-a201-5650b85def62/cover.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/unbelievable-2013-remastered/1517590769?i=1517591613&uo=4"
+      },
+      {
+        "name": "Unbelievable",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/54/af/56/54af56e3-6db5-b7c5-efe5-8a3e9bec0651/mzaf_4630020994494126124.plus.aac.p.m4a",
+        "durationMs": 210867,
+        "albumName": "Coyote Ugly (Soundtrack from the Motion Picture)",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m06/d13/h10/s05.fvdzfulz.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/unbelievable/72267368?i=72267285&uo=4"
       },
       {
         "name": "Unbelievable",
@@ -2996,6 +2988,14 @@
         "albumName": "Cool '90s Hits",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/7e/91/de/7e91defa-c8ea-3d2a-2f09-b60741e84bae/13UADIM60832.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/unbelievable/716787198?i=716787335&uo=4"
+      },
+      {
+        "name": "Long Summer Days",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/19/2a/32/192a32a1-3f06-2cc6-d72c-232bff7b8938/mzaf_3428019816286466006.plus.aac.p.m4a",
+        "durationMs": 240067,
+        "albumName": "Schubert Dip",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/42/fd/2a/42fd2a6a-35f4-4682-e503-d82ba7d91314/cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/long-summer-days/1242337425?i=1242338112&uo=4"
       }
     ]
   },
@@ -10402,19 +10402,11 @@
   "no-doubt": {
     "name": "No Doubt",
     "source": "itunes",
-    "fetchedAt": "2026-09-28T15:02:43.768Z",
+    "fetchedAt": "2026-11-09T17:12:03.229Z",
     "resolvedVia": "search",
     "itunesArtistId": 1016512,
     "itunesArtistName": "No Doubt",
     "tracks": [
-      {
-        "name": "Just a Girl",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/53/b5/14/53b51497-2e19-8a3a-9f8b-8a61b6e54846/mzaf_12035895016809438438.plus.aac.p.m4a",
-        "durationMs": 209107,
-        "albumName": "Tragic Kingdom",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/fe/0a/68/fe0a687a-537e-e902-0778-90465c118f77/00602547870575.rgb.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/just-a-girl/1440845400?i=1440845532&uo=4"
-      },
       {
         "name": "Don't Speak",
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/87/52/52/8752529c-0125-c053-6c2c-73d1646adff6/mzaf_5525794060908135243.plus.aac.p.m4a",
@@ -10430,6 +10422,14 @@
         "albumName": "Tragic Kingdom",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/fe/0a/68/fe0a687a-537e-e902-0778-90465c118f77/00602547870575.rgb.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/spiderwebs/1440845400?i=1440845406&uo=4"
+      },
+      {
+        "name": "Just a Girl",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/53/b5/14/53b51497-2e19-8a3a-9f8b-8a61b6e54846/mzaf_12035895016809438438.plus.aac.p.m4a",
+        "durationMs": 209107,
+        "albumName": "Tragic Kingdom",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/fe/0a/68/fe0a687a-537e-e902-0778-90465c118f77/00602547870575.rgb.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/just-a-girl/1440845400?i=1440845532&uo=4"
       },
       {
         "name": "Hella Good",
@@ -12746,6 +12746,56 @@
         "albumName": "The Very Best of Nick Heyward & Haircut 100",
         "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/08/27/2b/08272b91-7a2d-7253-8ffc-df24a7607228/mzi.mbmmzhdw.jpg/100x100bb.jpg",
         "streamingUrl": "https://music.apple.com/us/album/whistle-down-the-wind/256002996?i=256003839&uo=4"
+      }
+    ]
+  },
+  "constant-insult": {
+    "name": "Constant Insult",
+    "source": "itunes",
+    "fetchedAt": "2026-11-09T17:11:59.733Z",
+    "resolvedVia": "search",
+    "itunesArtistId": 1038330669,
+    "itunesArtistName": "Constant Insult",
+    "tracks": [
+      {
+        "name": "Undercover",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/59/b6/23/59b623d5-d482-a43b-451e-7465c4380a62/mzaf_8222004641792757438.plus.aac.p.m4a",
+        "durationMs": 177980,
+        "albumName": "History in Shorthand",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/3c/4c/b1/3c4cb106-7b82-ce97-8e81-afe8e54b7bef/192641440618_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/undercover/1498865630?i=1498865632&uo=4"
+      },
+      {
+        "name": "Sir Dog",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/Music3/v4/e1/83/32/e18332ec-b899-e15c-b6c2-622aca787444/mzaf_228718192662152060.plus.aac.p.m4a",
+        "durationMs": 178815,
+        "albumName": "Constant Insult - EP",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music6/v4/67/ca/ce/67cace1d-edbc-f27f-7dc9-f09ac5aa9a47/889326375203_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/sir-dog/1038330667?i=1038330677&uo=4"
+      },
+      {
+        "name": "The Invitation",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/31/14/80/3114805c-72e2-fc0f-23cf-0b34b56e5062/mzaf_1230914207006426385.plus.aac.p.m4a",
+        "durationMs": 190720,
+        "albumName": "History in Shorthand",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/3c/4c/b1/3c4cb106-7b82-ce97-8e81-afe8e54b7bef/192641440618_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/the-invitation/1498865630?i=1498866044&uo=4"
+      },
+      {
+        "name": "Clever Medicine",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6c/9e/17/6c9e170f-4dbe-ec1f-b815-3eede1b8c245/mzaf_15377460472213331340.plus.aac.p.m4a",
+        "durationMs": 172947,
+        "albumName": "Clever Medicine - Single",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/35/ff/20/35ff20d5-232f-8ca7-8d8e-b6c2ef1bc639/823375522102_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/clever-medicine/6819880946?i=6819880954&uo=4"
+      },
+      {
+        "name": "Room For You",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/a7/33/3b/a7333b2b-c956-4634-0070-8d34ffea758a/mzaf_7019948028718630890.plus.aac.p.m4a",
+        "durationMs": 156438,
+        "albumName": "History in Shorthand",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/3c/4c/b1/3c4cb106-7b82-ce97-8e81-afe8e54b7bef/192641440618_Cover.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/room-for-you/1498865630?i=1498865771&uo=4"
       }
     ]
   }
