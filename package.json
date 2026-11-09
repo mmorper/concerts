@@ -92,15 +92,15 @@
     "syndicate:preview": "node --disable-warning=DEP0205 node_modules/.bin/tsx scripts/syndication/preview.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^1.3.0",
+    "@anthropic-ai/sdk": "^1.6.0",
     "@types/d3": "^7.4.3",
     "csv-parse": "^7.0.3",
-    "d3": "^7.9.0",
+    "d3": "^7.9.2",
     "date-fns": "^4.1.0",
     "dotenv": "^18.0.9",
     "framer-motion": "^11.15.0",
     "leaflet": "^1.9.4",
-    "lucide-react": "^1.65.0",
+    "lucide-react": "^1.70.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
@@ -108,16 +108,16 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.18.5",
     "remark-gfm": "^4.0.1",
-    "zustand": "^5.0.16"
+    "zustand": "^5.1.0"
   },
   "devDependencies": {
     "@axe-core/puppeteer": "^4.14.0",
-    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/postcss": "^4.3.5",
     "@types/leaflet": "^1.9.14",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^6.1.2",
-    "@vitest/coverage-v8": "^5.0.5",
+    "@vitejs/plugin-react": "^6.2.1",
+    "@vitest/coverage-v8": "^5.1.0",
     "@vitest/ui": "^5.0.0",
     "autoprefixer": "^10.6.2",
     "googleapis": "^189.0.0",
@@ -129,7 +129,7 @@
     "tailwindcss": "^4.0.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
-    "vite": "^8.3.5",
+    "vite": "^8.3.6",
     "vitest": "^5.0.0"
   }
 }
