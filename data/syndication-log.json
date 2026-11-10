@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-02T20:01:58.548Z",
+  "updatedAt": "2026-11-10T17:30:27.665Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -1095,6 +1095,25 @@
       "status": "posted",
       "uri": "117530823249239534",
       "postedAt": "2026-10-30T16:34:00.521Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-11-10",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3mzxxnkzaaj26",
+      "rkey": "3mzxxnkzaaj26",
+      "postedAt": "2026-11-10T17:28:12.538Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-11-10",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117593330639733252",
+      "postedAt": "2026-11-10T17:30:27.665Z",
       "tier": 2,
       "source": "artist-deezer"
     },
