@@ -1,6 +1,35 @@
 {
-  "generatedAt": "2026-11-04T14:57:00.975Z",
+  "generatedAt": "2026-11-10T15:17:57.092Z",
   "posts": [
+    {
+      "slug": "otd-2026-11-10",
+      "day": "11-10",
+      "showDate": "2009-11-10",
+      "age": 17,
+      "artist": "Rob Thomas",
+      "artistNormalized": "rob-thomas",
+      "venue": "EagleBank Arena",
+      "venueNormalized": "eaglebank-arena",
+      "city": "Fairfax",
+      "score": 8,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/b6ed93851c7e2ad696c7a9b8ccee8ab2/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=rob-thomas&show=2009-11-10",
+      "cardPath": "public/og/on-this-day/otd-2026-11-10.png",
+      "social": {
+        "hook": "I've seen a lot of acts exactly once. Rob Thomas is one of the stranger ones to stay that way.",
+        "caption": "Seventeen years ago today was my only Rob Thomas show. That same year I also caught Brian Setzer and the Nashvillians.",
+        "beats": [
+          "November 2009, Fairfax, Virginia.",
+          "Filed under Pop Rock, a genre tag I don't use often.",
+          "One of only two times I've ever been to EagleBank Arena.",
+          "I never went back for a second Rob Thomas show."
+        ],
+        "authoredAt": "2026-11-10T15:17:50.580Z"
+      },
+      "publishedAt": "2026-11-10T15:17:57.092Z"
+    },
     {
       "slug": "otd-2026-11-04",
       "day": "11-04",
