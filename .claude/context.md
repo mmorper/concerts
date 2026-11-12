@@ -55,7 +55,7 @@ npm run build-data   # Fetch & enrich concert data
 
 **Infrastructure:** Cloudflare Pages (hosting) + four Workers, each with its own CI and auto-deploy: `meta-injector` (dynamic OG tags), `mcp-server` (`/mcp` connector), `ask-chat` (Ask the Archive), `dashboard-refresh` (operator dashboard). GitHub Actions run the data refresh, weekly liner notes, and daily syndication / On This Day.
 
-**Data:** 185 concerts (1984-2027), 258 artists (108 headliners), 80 venues
+**Data:** 185 concerts (1984-2027), 260 artists (108 headliners), 80 venues
 **SEO:** 92/100 (last analyzed: 2026-02-05)
 
 ---

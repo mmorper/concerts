@@ -98,7 +98,7 @@ describe('deriveArchiveStats — against the real archive', () => {
 
   it('agrees with every published surface', () => {
     expect(stats.concerts).toBe(185)
-    expect(stats.artists).toBe(258)
+    expect(stats.artists).toBe(260)
     expect(stats.venues).toBe(80)
   })
 
@@ -118,7 +118,7 @@ describe('deriveArchiveStats — against the real archive', () => {
 
   it('counts BILLINGS, while the Artists scene counts ACTS — both live (#295)', () => {
     // The Artists scene alias-collapses (#227), so Brian Setzer is one card
-    // rather than four billings: 255 there against 258 everywhere else. Pinned
+    // rather than four billings: 257 there against 260 everywhere else. Pinned
     // so the gap stays a recorded decision rather than a surprise, and so that
     // closing it is a deliberate edit to this test.
     const billings = new Set<string>()
@@ -128,10 +128,10 @@ describe('deriveArchiveStats — against the real archive', () => {
     }
 
     expect(stats.artists).toBe(billings.size)
-    expect(stats.artists).toBe(258)
+    expect(stats.artists).toBe(260)
 
     const setzer = [...billings].filter((b) => /setzer/i.test(b))
-    expect(setzer.length).toBe(4) // 258 - 3 = the 255 the mosaic shows
+    expect(setzer.length).toBe(4) // 260 - 3 = the 257 the mosaic shows
   })
 
   it('includes dated-but-unplayed shows', () => {
