@@ -7,7 +7,7 @@ _A visual love letter to four decades of live music._
 
 An interactive web app for exploring personal concert history. Six scenes—Timeline, Venues, Geography, Genres, Artists, Ask the Archive—each offering a different lens on 185 shows spanning 1984 to today. Click through decades, trace connections between venues and artists, see where the music happened on a map. All enriched with artist photos, venue imagery, and setlist data.
 
-**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 185 shows • 258 artists • 80 venues • 5+ decades
+**Live at [concerts.morperhaus.org](https://concerts.morperhaus.org)** • 185 shows • 260 artists • 80 venues • 5+ decades
 
 ## What's new
 
