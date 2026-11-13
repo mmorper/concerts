@@ -346,6 +346,59 @@ describe('DeezerClient', () => {
       expect(await client.getArtistInfo('Blondie')).toBeNull()
     })
 
+    it('takes the namesake with the most fans, not the first one Deezer ranks', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          data: [
+            { id: 1, name: 'Berlin', nb_fan: 9, picture_big: 'https://example.com/500x500-1.jpg', type: 'artist' },
+            { id: 2, name: 'Berlin', nb_fan: 25618, picture_big: 'https://example.com/500x500-2.jpg', type: 'artist' },
+          ],
+          total: 2,
+        }),
+      } as Response)
+
+      expect((await client.getArtistInfo('Berlin'))?.image).toBe('https://example.com/500x500-2.jpg')
+    })
+
+    it("skips Deezer's blank silhouette, whatever URL it is served under", async () => {
+      const blank = 'https://cdn-images.dzcdn.net/images/artist/289da594432bdbb853711b6f8187109a/500x500.jpg'
+      const empty = 'https://cdn-images.dzcdn.net/images/artist/d41d8cd98f00b204e9800998ecf8427e/500x500.jpg'
+      const real = 'https://cdn-images.dzcdn.net/images/artist/681b1a03ba34b3d16aa6866f5f5cfd9d/500x500.jpg'
+      const isBlank = vi.spyOn(client, 'isBlankPicture')
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          data: [
+            { id: 1, name: 'Torres', nb_fan: 9000, picture_big: empty, type: 'artist' },
+            { id: 2, name: 'Torres', nb_fan: 5593, picture_big: blank, type: 'artist' },
+            { id: 3, name: 'TORRES', nb_fan: 110, picture_big: real, type: 'artist' },
+          ],
+          total: 3,
+        }),
+      } as Response)
+      isBlank.mockImplementation(async (url) => url !== real)
+
+      expect((await client.getArtistInfo('Torres'))?.image).toBe(real)
+
+      isBlank.mockResolvedValue(true)
+      expect(await client.getArtistInfo('Torres')).toBeNull()
+    })
+
+    it('knows the blank silhouette by its bytes, and a failed check is not blank', async () => {
+      expect(await client.isBlankPicture('https://cdn-images.dzcdn.net/images/artist//500x500-000000-80-0-0.jpg')).toBe(true)
+      expect(await client.isBlankPicture('https://cdn-images.dzcdn.net/images/artist/d41d8cd98f00b204e9800998ecf8427e/500x500.jpg')).toBe(true)
+
+      global.fetch = vi.fn().mockRejectedValue(new Error('offline'))
+      expect(await client.isBlankPicture('https://example.com/real.jpg')).toBe(false)
+
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        arrayBuffer: async () => new TextEncoder().encode('a real photo').buffer,
+      } as Response)
+      expect(await client.isBlankPicture('https://example.com/real.jpg')).toBe(false)
+    })
+
     it('should return valid ISO timestamp', async () => {
       const mockResponse = {
         data: [

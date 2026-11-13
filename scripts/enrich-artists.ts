@@ -113,6 +113,23 @@ export async function findDeadImages(
   return new Set(entries.filter((_, i) => health[i] === 'dead').map(e => e.key))
 }
 
+/** Of the given Deezer records, which ones' image is Deezer's blank silhouette? Four at a time. */
+async function findBlankDeezerImages(
+  deezer: DeezerClient,
+  entries: Array<{ key: string; url: string }>
+): Promise<Array<{ key: string; url: string }>> {
+  const blank: Array<{ key: string; url: string }> = []
+  let next = 0
+  const worker = async () => {
+    while (next < entries.length) {
+      const entry = entries[next++]
+      if (await deezer.isBlankPicture(entry.url)) blank.push(entry)
+    }
+  }
+  await Promise.all(Array.from({ length: 4 }, worker))
+  return blank
+}
+
 /** The `{ key, url }` pairs `findDeadImages` takes, for records that have an image. */
 function imageEntries(
   metadata: ArtistMetadata,
@@ -179,6 +196,13 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
     })
   console.log(`Checking ${trusted.length} cached artist image(s) still load...`)
   const staleImages = await findDeadImages(imageEntries(metadata, trusted))
+  // A Deezer URL can load and still be no photo: when Deezer has none, or later drops
+  // one, its CDN serves a grey silhouette. That is a missing image too (2026-11-12:
+  // New Order, Torres, X, Berlin and Rebuilder showed it for weeks).
+  const deezerTrusted = imageEntries(metadata, trusted).filter(
+    ({ key }) => metadata[key]?.source === 'deezer' && !staleImages.has(key)
+  )
+  for (const { key } of await findBlankDeezerImages(deezer, deezerTrusted)) staleImages.add(key)
   if (staleImages.size > 0) {
     console.log(`  ⚠️  ${staleImages.size} cached image(s) are gone — re-fetching those artists`)
   }

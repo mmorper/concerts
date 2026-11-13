@@ -97,13 +97,6 @@
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:39:45.914Z"
   },
-  "berlin": {
-    "name": "Berlin",
-    "image": "https://cdn-images.dzcdn.net/images/artist/fef2c93b07d6a8d3be2f358d589840ea/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:39:11.611Z"
-  },
   "big-audio-dynamite": {
     "name": "Big Audio Dynamite",
     "image": "https://cdn-images.dzcdn.net/images/artist/be78b096e562b32fcbb3239b34cc0aa1/500x500-000000-80-0-0.jpg",
@@ -277,7 +270,7 @@
     "image": "https://cdn-images.dzcdn.net/images/artist/1b2ca964de4c4f693dada3fe1dc25a39/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-10-12T16:31:57.410Z"
+    "fetchedAt": "2026-11-13T00:18:32.950Z"
   },
   "culture-club": {
     "name": "Culture Club",
@@ -841,10 +834,15 @@
   },
   "new-order": {
     "name": "New Order",
-    "image": "https://cdn-images.dzcdn.net/images/artist/d41d8cd98f00b204e9800998ecf8427e/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:38:50.389Z"
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg",
+    "genres": [
+      "Synthpop",
+      "Rock/Pop"
+    ],
+    "formed": "1980",
+    "website": "www.neworderonline.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-13T00:18:30.781Z"
   },
   "nikki-lane": {
     "name": "Nikki Lane",
@@ -964,13 +962,6 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-10-31T22:40:43.196Z"
-  },
-  "rebuilder": {
-    "name": "Rebuilder",
-    "image": "https://cdn-images.dzcdn.net/images/artist/289da594432bdbb853711b6f8187109a/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:40:52.004Z"
   },
   "rise-against": {
     "name": "Rise Against",
@@ -1344,11 +1335,15 @@
     "fetchedAt": "2026-10-31T22:38:57.358Z"
   },
   "torres": {
-    "name": "Torres",
-    "image": "https://cdn-images.dzcdn.net/images/artist/d41d8cd98f00b204e9800998ecf8427e/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:40:29.607Z"
+    "name": "TORRES",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wrtrqu1446130746.jpg",
+    "genres": [
+      "Alternative Rock"
+    ],
+    "formed": "2012",
+    "website": "torrestorrestorres.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-13T00:18:33.205Z"
   },
   "transplants": {
     "name": "Transplants",
@@ -1422,10 +1417,14 @@
   },
   "x": {
     "name": "X",
-    "image": "https://cdn-images.dzcdn.net/images/artist/11491a2f0c255eb18c04f69807b1a456/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:39:32.513Z"
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/rrtxsr1401206573.jpg",
+    "genres": [
+      "Punk Rock",
+      "Rock/Pop"
+    ],
+    "formed": "1977",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-13T00:18:31.196Z"
   },
   "yates-mckendree": {
     "name": "Yates McKendree",
@@ -1702,17 +1701,21 @@
   },
   "pinhead-gunpowder": {
     "name": "Pinhead Gunpowder",
-    "image": "https://cdn-images.dzcdn.net/images/artist/cab48debe1758d7f68aa0e9598c2778a/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-12T16:31:56.940Z"
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/7za54g1717752096.jpg",
+    "genres": [
+      "Punk Rock",
+      "Punk"
+    ],
+    "formed": "1990",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-13T00:18:31.702Z"
   },
   "karl-denson-s-tiny-universe": {
     "name": "Karl Denson's Tiny Universe",
     "image": "https://cdn-images.dzcdn.net/images/artist/7b3cd032209f1bd16cf41f79149e4d83/500x500-000000-80-0-0.jpg",
     "genres": [],
     "source": "deezer",
-    "fetchedAt": "2026-10-12T16:31:57.914Z"
+    "fetchedAt": "2026-11-13T00:18:33.969Z"
   },
   "re-flex": {
     "name": "Re-Flex",
@@ -1828,5 +1831,16 @@
     "genres": [],
     "source": "deezer",
     "fetchedAt": "2026-11-09T17:11:58.006Z"
+  },
+  "berlin": {
+    "name": "Berlin",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/berlin-508e21ae9f72b.jpg",
+    "genres": [
+      "Synthpop",
+      "Rock/Pop"
+    ],
+    "formed": "1982",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-13T00:19:04.227Z"
   }
 }
