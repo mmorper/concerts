@@ -17,6 +17,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
  */
 
 const getArtistInfo = vi.hoisted(() => vi.fn())
+const isBlankPicture = vi.hoisted(() => vi.fn(async (_url: string) => false))
 const writeFileSync = vi.hoisted(() => vi.fn())
 
 vi.mock('../../scripts/utils/theaudiodb-client', () => ({
@@ -27,6 +28,7 @@ vi.mock('../../scripts/utils/theaudiodb-client', () => ({
 vi.mock('../../scripts/utils/deezer-client', () => ({
   DeezerClient: class {
     getArtistInfo = vi.fn(async () => null)
+    isBlankPicture = isBlankPicture
   },
 }))
 vi.mock('../../scripts/utils/rate-limiter', () => ({
@@ -146,6 +148,27 @@ describe('enrichArtists image validation', () => {
 
     expect(getArtistInfo).toHaveBeenCalledWith('Gorillaz')
     expect(written().gorillaz.image).toBe('https://cdn.test/fresh.jpg')
+  })
+
+  /** A Deezer URL that loads Deezer's grey silhouette is no photo at all. */
+  it("re-fetches a fresh Deezer record whose image is Deezer's blank silhouette", async () => {
+    metadataFixture = {
+      gorillaz: { ...cached('Gorillaz', 'https://cdn.test/blank.jpg'), source: 'deezer' },
+    }
+    headStatus(() => 200)
+    isBlankPicture.mockImplementation(async (url) => url.includes('blank'))
+    getArtistInfo.mockResolvedValue({
+      name: 'Gorillaz',
+      image: 'https://cdn.test/real.jpg',
+      source: 'theaudiodb',
+      fetchedAt: new Date().toISOString(),
+    })
+
+    await enrichArtists()
+
+    expect(getArtistInfo).toHaveBeenCalledWith('Gorillaz')
+    expect(written().gorillaz.image).toBe('https://cdn.test/real.jpg')
+    isBlankPicture.mockImplementation(async () => false)
   })
 
   it('does not re-fetch when the image check only returns 5xx', async () => {
