@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-13T17:30:15.951Z",
-  "lastRunAt": "2026-11-13T17:30:15.951Z",
+  "generatedAt": "2026-11-14T16:22:08.050Z",
+  "lastRunAt": "2026-11-14T16:22:08.050Z",
   "paused": false,
   "ledger": {
     "total": 206,
@@ -28,5 +28,5 @@
       "consecutiveFailures": 0
     }
   ],
-  "consecutiveBlockedRuns": 3
+  "consecutiveBlockedRuns": 4
 }
