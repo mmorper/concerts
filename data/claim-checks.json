@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-14T16:22:08.049Z",
+  "updatedAt": "2026-11-15T16:47:23.786Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -195,23 +195,24 @@
     },
     {
       "slug": "march-22-13-years-since-bad-religion",
-      "hash": "9d6e14e31eca682b",
-      "checkedAt": "2026-11-14T16:22:08.049Z",
+      "hash": "2110f2bc895687e8",
+      "checkedAt": "2026-11-15T16:47:23.786Z",
       "issues": [
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Four bands, one night, and the headliner had been doing this for 33 years by then.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "The fact sheet contains no formation year for Bad Religion; '33 years' is calculated from an unsupported external fact.",
-          "replacement": "Four bands, one night, and a headliner who'd been playing 9:30 Club since 2011."
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet does not state Bad Religion's formation year; the '33 years' figure relies on an unconfirmed 1980 formation date not present in the archive.",
+          "replacement": "Four bands, one night, and a headliner who had been releasing records since the early '80s."
         },
         {
-          "field": "Beat 3",
+          "field": "beat",
           "sentence": "Bad Religion formed in 1980.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No formation year appears anywhere in the fact sheet; this is an external claim the archive cannot confirm (though widely reported as true)."
+          "evidence": "The fact sheet's discography begins with 'How Could Hell Be Any Worse?' (1982-01-12) but gives no band formation year; 1980 is not confirmed by the archive data.",
+          "replacement": "Bad Religion had been a band for decades by then."
         }
       ]
     },
@@ -629,48 +630,38 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "9c8715450b3cf14f",
-      "checkedAt": "2026-11-14T16:21:30.401Z",
+      "hash": "39f3cc5ec62e36a9",
+      "checkedAt": "2026-11-15T16:46:50.339Z",
       "issues": [
+        {
+          "field": "caption",
+          "sentence": "Social Distortion headlined a 15-act bill at Huntington State Beach in 2018.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "The 2018-10-28 show at Huntington State Beach lists Social Distortion plus 13 openers (Bad Religion, The Offspring, Pennywise, Suicidal Tendencies, Voodoo Glow Skulls, T.S.O.L., Black Rebel Motorcycle Club, Snuff, Fear, Mad Caddies, Rancid, Aaron Lee Tasjan, Wrecks, The Interrupters) = 14 acts total, not 15.",
+          "replacement": "Social Distortion headlined a 14-act bill at Huntington State Beach in 2018."
+        },
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet gives no formation years for Fear, T.S.O.L., or other bands, only album release dates (earliest for Fear is 1982-05-16); 'late seventies' is unconfirmed.",
-          "replacement": "Bands that had been releasing records since the early eighties shared a stage with acts that grew up on their music."
+          "evidence": "No formation years are given in the fact sheet for any band; earliest discography entries (e.g. Fear's 'The Record' 1982, Social Distortion's 'Mommy's Little Monster' 1983) don't confirm 'late seventies' origins."
         },
         {
-          "field": "beat2",
+          "field": "beat 2",
           "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No formation years or founding dates for these bands appear in the fact sheet; 'forty years' has no basis.",
-          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill, bands whose records stretch back decades."
+          "evidence": "The fact sheet gives no band-formation dates or tenure figures that would support a '40 years' calculation for these four acts."
         },
         {
-          "field": "beat4",
-          "sentence": "Four decades of West Coast punk in a single set list.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "No formation dates are given for the bands on the bill; 'four decades' is an unsupported span.",
-          "replacement": "Decades of West Coast punk in a single set list."
-        },
-        {
-          "field": "hook",
-          "sentence": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one afternoon.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "Set/door times are explicitly NOT IN THE DATA; 'afternoon' is an unconfirmed detail about the show's timing.",
-          "replacement": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one bill."
-        },
-        {
-          "field": "beat4",
+          "field": "beat 4",
           "sentence": "Fifteen acts, one afternoon on the sand.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "Set/door times are explicitly NOT IN THE DATA; 'afternoon' is an unconfirmed detail about the show's timing.",
-          "replacement": "Fifteen acts, one bill on the sand."
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Same discrepancy as the caption: the 2018-10-28 bill totals 14 acts (Social Distortion plus 13 openers), not fifteen.",
+          "replacement": "Fourteen acts, one afternoon on the sand."
         }
       ]
     },
@@ -724,36 +715,30 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "957e14b4c1a90cb4",
-      "checkedAt": "2026-11-14T16:21:56.354Z",
+      "hash": "f22880c2c4072bd2",
+      "checkedAt": "2026-11-15T16:47:08.073Z",
       "issues": [
         {
-          "field": "hook",
-          "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
-          "kind": "external",
-          "severity": "review",
-          "evidence": "The Bends release date and Radiohead details are not in the fact sheet, which only covers Brian Setzer Orchestra shows and venues; cannot confirm from archive data."
-        },
-        {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Radiohead's album release date is not part of this concert archive's fact sheet; the date appears historically plausible but is unverifiable from the given data."
+          "evidence": "Fact sheet contains no data on Radiohead or The Bends; this is an external claim not sourced from the archive, though it is historically accurate."
         },
         {
-          "field": "beat",
+          "field": "Beat 1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Radiohead/The Bends release date is not in the fact sheet, which only documents Brian Setzer Orchestra and venue data."
+          "evidence": "Fact sheet has no entry for Radiohead or The Bends release date; cannot be confirmed from archive data."
         },
         {
-          "field": "beat",
+          "field": "Beat 3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet gives no birth year or age for Brian Setzer, so any stated age or age difference is invented."
+          "evidence": "Fact sheet provides no birth year or age data for Brian Setzer, so this specific age-gap figure has no basis.",
+          "replacement": "Setzer's was decades older."
         }
       ]
     },
@@ -871,15 +856,15 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "1261588b38d15997",
-      "checkedAt": "2026-11-14T16:21:48.439Z",
+      "hash": "977fd73b0dd4d5f1",
+      "checkedAt": "2026-11-15T16:46:59.517Z",
       "issues": [
         {
           "field": "hook",
-          "sentence": "'Red Red Wine' made the setlist when I finally saved UB40 again in 2023, 35 years after the first time.",
+          "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First UB40 show was 1988-09-09, second was 2023-07-21 — that's 34 years and about 10 months, not a full 35 years.",
+          "evidence": "Show dates are 1988-09-09 and 2023-07-21, which is 34 years and about 10 months apart, not yet 35 full years.",
           "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
         },
         {
@@ -887,31 +872,16 @@
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years (34 years, 10 months), not a full 35 years.",
-          "replacement": "Almost thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
+          "evidence": "1988-09-09 to 2023-07-21 is about 34 years and 10 months, not a full 35 years.",
+          "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
-          "field": "beat 3",
+          "field": "beat3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years, not a full 35 years.",
-          "replacement": "Nearly thirty-five years went by before I bought another ticket."
-        },
-        {
-          "field": "beat 2",
-          "sentence": "The Labour of Love covers felt like they'd always existed.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "No setlist is on record for the 1988-09-09 show; only the 2023-07-21 setlist is documented, so claiming Labour of Love covers at the 1988 show is unsupported.",
-          "replacement": "Pacific Amphitheatre in Costa Mesa was the room, and the band's reggae covers felt like they'd always existed."
-        },
-        {
-          "field": "beat 4",
-          "sentence": "the thing I'd wondered about in the parking lot",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "No owner-confirmed personal fact supports this specific parking-lot recollection."
+          "evidence": "1988-09-09 to 2023-07-21 is about 34 years and 10 months, not a full 35 years.",
+          "replacement": "Almost thirty-five years went by before I bought another ticket."
         }
       ]
     },

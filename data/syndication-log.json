@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10T17:30:27.665Z",
+  "updatedAt": "2026-11-15T16:50:39.071Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -629,26 +629,21 @@
     {
       "slug": "march-22-13-years-since-bad-religion",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "march-22-13-years-since-bad-religion",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2ehpdu32m2z",
+      "rkey": "3n2ehpdu32m2z",
+      "postedAt": "2026-11-15T16:47:28.279Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "march-22-13-years-since-bad-religion",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "march-22-13-years-since-bad-religion",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117621485643404206",
+      "postedAt": "2026-11-15T16:50:39.071Z",
+      "tier": 1,
+      "source": "personal"
     },
     {
       "slug": "march-23-21-years-since-social-distortion",
