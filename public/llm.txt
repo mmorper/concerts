@@ -166,7 +166,7 @@ All data is publicly accessible as JSON:
 
 ### Album Eras
 **URL:** https://concerts.morperhaus.org/data/album-eras.json
-**Records:** 249 artists — the join between 40 years of attendance and the discography
+**Records:** 252 artists — the join between 40 years of attendance and the discography
 **Source:** derived from `discography.json` + `concerts.json` (no API calls)
 **What it answers:** where an artist stood in their arc on a given night, and what had not happened yet.
 **Note:** covers openers as well as headliners. Restricting it to headliners left 22.3% of song→album pairs unattributable.
@@ -192,13 +192,13 @@ All data is publicly accessible as JSON:
 
 ### Song → Album Attribution
 **URL:** https://concerts.morperhaus.org/data/song-albums.json
-**Records:** 1,812 of 2,026 unique artist+song pairs (89.4%)
-**Source:** three tiers — `artists-top-tracks.json` (267), MusicBrainz (1,439), iTunes Search (27)
+**Records:** 1,842 of 2,074 unique artist+song pairs (88.8%)
+**Source:** three tiers — `artists-top-tracks.json` (270), MusicBrainz (1,466), iTunes Search (27)
 **What it answers:** which studio album a song performed live came off.
 **Key format:** `artistKey::folded-song-title`. Derive it with `songAlbumKey()` from `scripts/utils/song-title.ts` — a caller that folds differently matches nothing while looking like it simply found nothing.
 
 **Two properties that matter when reading this file:**
-- **`releaseDate` precision varies.** 1,546 entries are full dates, 158 are `YYYY-MM`, 108 are bare `YYYY`. Any gap measured against it must respect that width — a 14-day claim against a month-precision date is undefined, not merely imprecise.
+- **`releaseDate` precision varies.** 1,571 entries are full dates, 163 are `YYYY-MM`, 108 are bare `YYYY`. Any gap measured against it must respect that width — a 14-day claim against a month-precision date is undefined, not merely imprecise.
 - **The album is the EARLIEST studio album carrying the song**, which is not always where the song first appeared. A standalone single that later landed on an album attributes to that album. The file supports claims about the *album*, never about when the song came into existence.
 
 **Schema:**
@@ -619,7 +619,7 @@ These facts are updated with each data refresh and can be quoted directly:
 - "First show: Adam Ant (1984)" — Where it all began — Irvine Meadows
 - "California: 122 concerts" — Home base for most concert experiences
 
-**Facts computed:** 2026-11-09T18:13:20.002Z
+**Facts computed:** 2026-11-16T16:51:56.482Z
 **Source:** https://concerts.morperhaus.org/data/facts.json
 **Browse visually:** https://concerts.morperhaus.org/liner-notes
 
@@ -786,6 +786,6 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 
 ---
 
-**Last Updated:** 2026-11-09
+**Last Updated:** 2026-11-16
 **Version:** v6.3.0
 **Total Content:** 185 concerts | 260 artists | 80 venues | 11,527+ albums | 1984-2027

@@ -1302,6 +1302,16 @@
         "e3318ec6-da0f-40aa-b092-c00abf5d3d29": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e4/fc/28/e4fc2871-48a1-bb8a-7b13-3b20ef73e5f6/1491.jpg/100x100bb.jpg"
       }
     },
+    "constant-insult": {
+      "fetchedAt": "2026-11-16T16:51:49.951Z",
+      "via": "id",
+      "checked": [
+        "bb8a4aa7-f910-431a-ad44-3d37ce039bf6"
+      ],
+      "covers": {
+        "bb8a4aa7-f910-431a-ad44-3d37ce039bf6": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/3c/4c/b1/3c4cb106-7b82-ce97-8e81-afe8e54b7bef/192641440618_Cover.jpg/100x100bb.jpg"
+      }
+    },
     "crowded-house": {
       "fetchedAt": "2026-10-31T22:54:06.053Z",
       "via": "id",
@@ -3674,6 +3684,14 @@
         "0fe77ecb-5995-3a8a-bd3e-0e7cf5610b70": "https://is1-ssl.mzstatic.com/image/thumb/Music1/v4/1c/2b/00/1c2b004b-59e9-f58f-fbbe-ee337a75f7b1/886444805438.jpg/100x100bb.jpg"
       }
     },
+    "mermaid-island": {
+      "fetchedAt": "2026-11-16T16:51:53.230Z",
+      "via": "search",
+      "checked": [
+        "9f4eb397-8d56-472e-8314-8c5e0b18cc8b"
+      ],
+      "covers": {}
+    },
     "midge-ure": {
       "fetchedAt": "2026-10-31T23:06:41.612Z",
       "via": "id",
@@ -4096,6 +4114,22 @@
       ],
       "covers": {
         "298b2f3f-86b0-4068-afe6-e4d5a2580d94": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/fd/59/78/fd5978e5-39e7-d0c3-8636-7e069ca42a5a/720841211693_Cover.jpg/100x100bb.jpg"
+      }
+    },
+    "pinhead-gunpowder": {
+      "fetchedAt": "2026-11-16T16:51:56.391Z",
+      "via": "id",
+      "checked": [
+        "40eae3b1-9fa2-37e5-afbe-3c731f2f1ad3",
+        "13c395bc-a9cb-3060-a284-72f256fd133e",
+        "8a9cf1d2-93ba-39de-930f-b87c20d0d172",
+        "3234e0bc-6350-4782-9d62-63c6a925cd83"
+      ],
+      "covers": {
+        "40eae3b1-9fa2-37e5-afbe-3c731f2f1ad3": "https://is1-ssl.mzstatic.com/image/thumb/Music/39/70/7e/mzi.bmntgcmu.jpg/100x100bb.jpg",
+        "13c395bc-a9cb-3060-a284-72f256fd133e": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2c/40/9b/2c409bce-6fea-59e5-006c-93e213f5a54e/859701539612_cover.jpg/100x100bb.jpg",
+        "8a9cf1d2-93ba-39de-930f-b87c20d0d172": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/6a/8b/e7/6a8be70e-8576-9b6e-a7a4-c12bbb410c5c/859703237110_cover.jpg/100x100bb.jpg",
+        "3234e0bc-6350-4782-9d62-63c6a925cd83": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/5b/8c/b45b8c46-0693-3ff7-ca1d-a5f3766a6b40/859793322819_cover.jpg/100x100bb.jpg"
       }
     },
     "polar-bear-club": {

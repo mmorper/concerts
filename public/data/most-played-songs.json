@@ -1,10 +1,10 @@
 {
   "version": "1",
-  "generatedAt": "2026-11-09T18:13:19.962Z",
+  "generatedAt": "2026-11-16T16:51:56.452Z",
   "coverage": {
-    "concertsWithSetlist": 118,
+    "concertsWithSetlist": 119,
     "totalConcerts": 185,
-    "distinctSongs": 1637
+    "distinctSongs": 1668
   },
   "songs": [
     {
@@ -1321,6 +1321,14 @@
       ]
     },
     {
+      "name": "Happy Birthday to You",
+      "count": 2,
+      "artists": [
+        "Pinhead Gunpowder",
+        "Tears For Fears"
+      ]
+    },
+    {
       "name": "Heartbeat",
       "count": 2,
       "artists": [
@@ -1525,6 +1533,14 @@
       "artists": [
         "Heaven 17",
         "Nile Rodgers"
+      ]
+    },
+    {
+      "name": "Life During Wartime",
+      "count": 2,
+      "artists": [
+        "David Byrne",
+        "Pinhead Gunpowder"
       ]
     },
     {
