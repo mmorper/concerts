@@ -703,11 +703,11 @@
   },
   "garden-amp": {
     "narration": {
-      "context": "I haven't made it to Garden Amp in Garden Grove, California yet — no shows logged here so far — but there's one already on the books: Pinhead Gunpowder with Constant Insult and Mermaid Island on November 11, 2026.",
-      "closingArc": "This one's still ahead of me, so for now Garden Amp is just a name on the calendar waiting to become a memory."
+      "context": "Garden Amp in Garden Grove, California has just one date on the books for me so far: Pinhead Gunpowder on November 11, 2026, with Constant Insult and Mermaid Island opening.",
+      "closingArc": "One night, three bands, and a room I've only just started keeping track of."
     },
-    "inputHash": "sha256:651eab366e500d0984aa1f6a8b8b8aa330ddd29a5bd41c8bb988d9aaa1d14e30",
-    "generatedAt": "2026-11-09T18:13:33.870Z",
+    "inputHash": "sha256:d7a3e322204377fd41626b48cf7ad812e7ae4d70c4f525a6ae700ec99b4414eb",
+    "generatedAt": "2026-11-16T16:52:10.281Z",
     "promptVersion": 3
   },
   "union-stage": {

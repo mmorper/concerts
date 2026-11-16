@@ -955,11 +955,11 @@
   },
   "pinhead-gunpowder": {
     "narration": {
-      "context": "My one night with Pinhead Gunpowder is November 11, 2026, at Garden Amp.",
-      "closingArc": "A single date, a single venue, and no other history with them in the archive."
+      "context": "Pinhead Gunpowder hits my list with just one date so far: headlining Garden Amp in Garden Grove on November 11, 2026.",
+      "closingArc": "One show, one city, one night — the start of whatever history we build from here."
     },
-    "inputHash": "sha256:32066e79b95e3617d1bb412d406077d1848986b35aa83fbed88ff6f424de67c2",
-    "generatedAt": "2026-09-07T01:08:52.187Z",
+    "inputHash": "sha256:e01f7d9ec34a116343304939a1f5d26581898c9fff5d642a2601b99d65e52af7",
+    "generatedAt": "2026-11-16T16:52:12.532Z",
     "promptVersion": 3
   },
   "nick-heyward": {
