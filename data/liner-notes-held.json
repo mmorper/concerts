@@ -1,4 +1,19 @@
 {
   "version": 1,
-  "held": []
+  "held": [
+    {
+      "id": "city-pulse-los-angeles-uprising-after-the-rodney-king-verdict-1992",
+      "headline": "The Smithereens in 1992: The Year of Los Angeles uprising after the Rodney King verdict",
+      "detector": "city-pulse",
+      "reason": "fact-checker: \"The Rodney King verdict had come down and Los Angeles was still raw with it when I drove to The Celebrity Theatre in Anaheim on June 4, 1992, to see The Smithereens.\" (external) — The Rodney King verdict and subsequent unrest occurred in late April/early May 1992; by June 4, 1992 (the show date) the unrest had already ended weeks earlier, so describing the city as 'still raw' and 'fractured' on that date misrepresents the timeline, and this historical framing is not supported by t",
+      "heldAt": "2026-11-16"
+    },
+    {
+      "id": "venue-ghost-irvine-meadows",
+      "headline": "Irvine Meadows: 16 Shows Before It Was Demolished",
+      "detector": "venue-ghost",
+      "reason": "fact-checker: \"Adam Ant opened it for me on April 27, 1984, and Peter Gabriel closed it out on June 8, 2003, nearly 19 years and 1 month apart.\" (contradicted) — April 27, 1984 to June 8, 2003 is 19 years, 1 month, and 12 days — slightly more than 19 years and 1 month, not 'nearly' that amount.; \"it wasn't demolished until October 30, 2016, almost 13 years and 4 months after I last stood in that crowd for Gabriel's *Father, Son*.\" (contradicted) — June 8, 2003 to October 30, 2016 is 13 years, 4 ",
+      "heldAt": "2026-11-16"
+    }
+  ]
 }

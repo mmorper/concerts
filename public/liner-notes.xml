@@ -5,13 +5,23 @@
     <link>https://concerts.morperhaus.org/liner-notes</link>
     <description>Weekly stories from 42 years of live music. First-person editorial posts about patterns, discoveries, and moments from a personal concert history spanning 1984 to present.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Nov 2026 22:44:52 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Nov 2026 18:07:24 +0000</lastBuildDate>
     <atom:link href="https://concerts.morperhaus.org/liner-notes.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://concerts.morperhaus.org/og-image.png</url>
       <title>Morperhaus Concert Archives — Liner Notes</title>
       <link>https://concerts.morperhaus.org/liner-notes</link>
     </image>
+  <item>
+    <title>Peter Gabriel + 11 More: 1993 Festival Bill</title>
+    <link>https://concerts.morperhaus.org/liner-notes/peter-gabriel-11-more-1993-festival-bill</link>
+    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/peter-gabriel-11-more-1993-festival-bill</guid>
+    <pubDate>Mon, 16 Nov 2026 18:07:24 +0000</pubDate>
+    <description>Twelve acts on one bill at the Olympic Velodrome in Carson tells you something about how festivals were built in 1993: not around genre, but around Peter Gabriel&apos;s own curiosity. Sinéad O&apos;Connor and Crowded House sat on the same lineup as the Terem Quartet and the Drummers of Burundi, with James, P.M. Dawn, Ziggy Marley, and Sheila Chandra filling out a bill that looked more like a world-music record collection than a radio format. I remember the sheer logistics of it, eleven openers deep before Gabriel even took the stage. That kind of bill doesn&apos;t really get built anymore, and I was there for the one night it was.</description>
+    <category>#festival-bill</category>
+    <category>#mega-bill</category>
+    <media:content url="https://cdn-images.dzcdn.net/images/artist/2ed7ee8fde056cba5788efcab21fef2e/500x500-000000-80-0-0.jpg" medium="image" />
+  </item>
   <item>
     <title>Crowded House: From Opener to Headliner</title>
     <link>https://concerts.morperhaus.org/liner-notes/crowded-house-from-opener-to-headliner</link>
@@ -200,16 +210,6 @@
     <category>#anniversary</category>
     <category>#on-this-day</category>
     <media:content url="/images/shows/2026-09-16-blancmange-02.jpg" medium="image" />
-  </item>
-  <item>
-    <title>April 12: 40 Years Since The Alarm</title>
-    <link>https://concerts.morperhaus.org/liner-notes/april-12-40-years-since-the-alarm</link>
-    <guid isPermaLink="true">https://concerts.morperhaus.org/liner-notes/april-12-40-years-since-the-alarm</guid>
-    <pubDate>Tue, 07 Apr 2026 16:46:53 +0000</pubDate>
-    <description>I remember standing in that UCLA crowd 40 years ago today, watching The Alarm tear through their set with an intensity that felt almost desperate. Mike Peters had this way of leaning into the microphone like he was trying to pull every person in the venue into whatever urgent message he was delivering, and I was completely susceptible to that kind of raw conviction. Strength was their newest record, and you could feel the band&apos;s belief that rock music could still change the world—a notion that seemed both naive and absolutely necessary in 1986. Forty years later, I still get that same surge of adrenaline when &quot;68 Guns&quot; comes on shuffle.</description>
-    <category>#anniversary</category>
-    <category>#on-this-day</category>
-    <media:content url="https://cdn-images.dzcdn.net/images/artist/6999c912b02ffbace7bd5377a3be8eda/500x500-000000-80-0-0.jpg" medium="image" />
   </item>
   </channel>
 </rss>

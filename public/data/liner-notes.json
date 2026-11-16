@@ -1,7 +1,105 @@
 {
-  "generatedAt": "2026-11-09T22:44:52.542Z",
-  "dataHash": "cb0fa738",
+  "generatedAt": "2026-11-16T18:07:24.830Z",
+  "dataHash": "e600cf52",
   "posts": [
+    {
+      "id": "festival-mega-bill-1993-09-18-peter-gabriel",
+      "slug": "peter-gabriel-11-more-1993-festival-bill",
+      "category": "cultural",
+      "temporality": "evergreen",
+      "headline": "Peter Gabriel + 11 More: 1993 Festival Bill",
+      "prose": "Twelve acts on one bill at the Olympic Velodrome in Carson tells you something about how festivals were built in 1993: not around genre, but around Peter Gabriel's own curiosity. Sinéad O'Connor and Crowded House sat on the same lineup as the Terem Quartet and the Drummers of Burundi, with James, P.M. Dawn, Ziggy Marley, and Sheila Chandra filling out a bill that looked more like a world-music record collection than a radio format. I remember the sheer logistics of it, eleven openers deep before Gabriel even took the stage. That kind of bill doesn't really get built anymore, and I was there for the one night it was.",
+      "image": {
+        "url": "https://cdn-images.dzcdn.net/images/artist/2ed7ee8fde056cba5788efcab21fef2e/500x500-000000-80-0-0.jpg",
+        "alt": "Peter Gabriel",
+        "source": "artist",
+        "ref": "peter-gabriel"
+      },
+      "audio": {
+        "trackName": "In Your Eyes",
+        "artistName": "Peter Gabriel",
+        "albumName": "So",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/19/ec/8c/19ec8cce-0f01-0d4f-afd4-4340859ff3ad/mzaf_8332966889452856893.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/29/d7/7d/29d77d60-24b8-f45b-936f-d8cf3ce52d8d/884108003503.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/in-your-eyes/986800858?i=986800927&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "peter-gabriel",
+        "crowded-house",
+        "inner-circle",
+        "jah-wobble-s-invaders-of-the-heart",
+        "james",
+        "p-m-dawn",
+        "sheila-chandra",
+        "sin-ad-o-connor",
+        "stereo-mc-s",
+        "ziggy-marley",
+        "terem-quartet",
+        "the-drummers-of-burundi"
+      ],
+      "venues": [
+        "olympic-velodrome"
+      ],
+      "years": [
+        1993
+      ],
+      "tags": [
+        "#festival-bill",
+        "#mega-bill"
+      ],
+      "deepLinks": [
+        {
+          "label": "Peter Gabriel",
+          "url": "/?scene=artists&artist=peter-gabriel",
+          "type": "artist"
+        },
+        {
+          "label": "Crowded House",
+          "url": "/?scene=artists&artist=crowded-house",
+          "type": "artist"
+        },
+        {
+          "label": "Inner Circle",
+          "url": "/?scene=artists&artist=inner-circle",
+          "type": "artist"
+        },
+        {
+          "label": "Olympic Velodrome",
+          "url": "/?scene=venues&venue=olympic-velodrome",
+          "type": "venue"
+        },
+        {
+          "label": "September 18, 1993",
+          "url": "/?scene=artists&artist=peter-gabriel&show=1993-09-18",
+          "type": "setlist"
+        },
+        {
+          "label": "1993",
+          "url": "/?scene=timeline&year=1993",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "crowded-house-from-opener-to-headliner",
+        "25-shows-in-a-row-on-the-west-coast-1989-1999"
+      ],
+      "score": 38,
+      "detector": "festival-mega-bill",
+      "publishedAt": "2026-11-16T18:07:24.830Z",
+      "factsAsOf": "2026-11-16T18:07:24.831Z",
+      "social": {
+        "hook": "Eleven openers before Peter Gabriel even walked out — that was the whole bill.",
+        "caption": "Sinéad O'Connor, Crowded House and the Drummers of Burundi shared a stage that night. A lineup built on one man's record collection, not a radio format.",
+        "beats": [
+          "Twelve acts, one bill, one night in Carson.",
+          "The Terem Quartet and the Drummers of Burundi played the same stage as Crowded House and James.",
+          "Eleven openers in before Peter Gabriel even appeared.",
+          "A bill built around curiosity, not genre — that kind of lineup doesn't get assembled anymore."
+        ],
+        "authoredAt": "2026-11-16T18:07:24.837Z"
+      }
+    },
     {
       "id": "opener-to-headliner-crowded-house",
       "slug": "crowded-house-from-opener-to-headliner",
@@ -3241,104 +3339,6 @@
       }
     },
     {
-      "id": "festival-mega-bill-1993-09-18-peter-gabriel",
-      "slug": "peter-gabriel-11-more-1993-festival-bill",
-      "category": "cultural",
-      "temporality": "evergreen",
-      "headline": "Peter Gabriel + 11 More: 1993 Festival Bill",
-      "prose": "The early '90s were the golden age of world music crossover, when MTV and major festivals finally opened their doors to artists like Ziggy Marley, The Drummers of Burundi, and Sinéad O'Connor sharing the same bill. I caught this spectacular 12-artist lineup at the Olympic Velodrome in Carson in September 1993, headlined by Peter Gabriel a year after \"Us\" came out. The sheer diversity was staggering — from Crowded House's jangly pop-rock to Jah Wobble's experimental dub, from P.M. Dawn's hip-hop soul to the traditional rhythms of Burundi. Looking back, it feels like witnessing a brief moment when the music industry genuinely believed in bringing the world together on one stage.",
-      "image": {
-        "url": "https://cdn-images.dzcdn.net/images/artist/2ed7ee8fde056cba5788efcab21fef2e/500x500-000000-80-0-0.jpg",
-        "alt": "Peter Gabriel",
-        "source": "artist",
-        "ref": "peter-gabriel"
-      },
-      "audio": {
-        "trackName": "In Your Eyes",
-        "artistName": "Peter Gabriel",
-        "albumName": "So",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/72/5d/1e/725d1e86-5984-370c-2c77-69441563d5ba/mzaf_15155768550883280506.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/29/d7/7d/29d77d60-24b8-f45b-936f-d8cf3ce52d8d/884108003503.jpg/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/in-your-eyes/986800858?i=986800927&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "peter-gabriel",
-        "crowded-house",
-        "inner-circle",
-        "jah-wobble-s-invaders-of-the-heart",
-        "james",
-        "p-m-dawn",
-        "sheila-chandra",
-        "sin-ad-o-connor",
-        "stereo-mc-s",
-        "ziggy-marley",
-        "terem-quartet",
-        "the-drummers-of-burundi"
-      ],
-      "venues": [
-        "olympic-velodrome"
-      ],
-      "years": [
-        1993
-      ],
-      "tags": [
-        "#festival-bill",
-        "#mega-bill"
-      ],
-      "deepLinks": [
-        {
-          "label": "Peter Gabriel",
-          "url": "/?scene=artists&artist=peter-gabriel",
-          "type": "artist"
-        },
-        {
-          "label": "Crowded House",
-          "url": "/?scene=artists&artist=crowded-house",
-          "type": "artist"
-        },
-        {
-          "label": "Inner Circle",
-          "url": "/?scene=artists&artist=inner-circle",
-          "type": "artist"
-        },
-        {
-          "label": "Olympic Velodrome",
-          "url": "/?scene=venues&venue=olympic-velodrome",
-          "type": "venue"
-        },
-        {
-          "label": "September 18, 1993",
-          "url": "/?scene=artists&artist=peter-gabriel&show=1993-09-18",
-          "type": "setlist"
-        },
-        {
-          "label": "1993",
-          "url": "/?scene=timeline&year=1993",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "crowded-house-from-opener-to-headliner",
-        "my-west-coast-chapter-26-concerts-over-11-years"
-      ],
-      "score": 48,
-      "detector": "festival-mega-bill",
-      "publishedAt": "2026-02-22T16:48:00.000Z",
-      "social": {
-        "hook": "Peter Gabriel headlined, but The Drummers of Burundi opened the same show.",
-        "caption": "Twelve artists, September 1993 — the bill ran from Crowded House's jangly pop to traditional rhythms from Burundi. I don't think the music industry believed it again after that.",
-        "beats": [
-          "September 1993, the Olympic Velodrome in Carson: twelve acts on one bill, from James to Sinéad O'Connor.",
-          "Peter Gabriel headlined a year after 'Us' — Steam, Digging in the Dirt and Secret World were all in the set.",
-          "Sinéad O'Connor, P.M. Dawn, Ziggy Marley, Jah Wobble — and The Drummers of Burundi on the same stage as Crowded House.",
-          "Twelve artists in one afternoon at the Olympic Velodrome. The range felt like a bet the industry was placing on itself.",
-          "I'm not sure that bet ever paid off. But I was there the day they made it."
-        ],
-        "authoredAt": "2026-08-31T21:01:13.909Z"
-      }
-    },
-    {
       "id": "drought-comeback-new-order",
       "slug": "new-order-37-years-between-shows",
       "category": "personal",
@@ -3346,7 +3346,7 @@
       "headline": "New Order: 37 Years Between Shows",
       "prose": "I saw New Order at Irvine Meadows in 1985 when I was just getting into their sound — that perfect blend of post-punk edge and dance floor pulse that made Brotherhood feel so essential. Then nothing. Thirty-seven years passed before I caught them again at the Hollywood Bowl in 2022, and walking into that venue, I couldn't help but think about how much had changed in both our lives since that summer night in Orange County. The music hit just as hard, but I was definitely standing in a very different place to receive it.",
       "image": {
-        "url": "https://cdn-images.dzcdn.net/images/artist/d41d8cd98f00b204e9800998ecf8427e/500x500-000000-80-0-0.jpg",
+        "url": "https://r2.theaudiodb.com/images/media/artist/thumb/new-order-4fd5f3e934e45.jpg",
         "alt": "New Order",
         "source": "artist",
         "ref": "new-order"
@@ -5264,10 +5264,10 @@
   ],
   "metadata": {
     "totalPosts": 59,
-    "totalGenerated": 100,
-    "averageScore": 37.8,
-    "lastPipelineRun": "2026-11-09T22:44:52.542Z",
-    "concertsAnalyzed": 183,
+    "totalGenerated": 103,
+    "averageScore": 37.6,
+    "lastPipelineRun": "2026-11-16T18:07:24.830Z",
+    "concertsAnalyzed": 184,
     "feedUrl": "/liner-notes.xml"
   }
 }
