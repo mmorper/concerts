@@ -1,6 +1,35 @@
 {
-  "generatedAt": "2026-11-10T15:17:57.092Z",
+  "generatedAt": "2026-11-17T16:33:41.536Z",
   "posts": [
+    {
+      "slug": "otd-2026-11-17",
+      "day": "11-17",
+      "showDate": "2000-11-17",
+      "age": 26,
+      "artist": "Brian Setzer",
+      "artistNormalized": "brian-setzer-68-comeback-special",
+      "venue": "The Coach House",
+      "venueNormalized": "the-coach-house",
+      "city": "San Juan Capistrano",
+      "score": 11,
+      "imageUrl": "https://cdn-images.dzcdn.net/images/artist/8537acba3b56457c94fba22fd75480cf/500x500-000000-80-0-0.jpg",
+      "tier": 2,
+      "source": "artist-deezer",
+      "url": "https://concerts.morperhaus.org/?scene=artists&artist=brian-setzer-68-comeback-special&show=2000-11-17",
+      "cardPath": "public/og/on-this-day/otd-2026-11-17.png",
+      "social": {
+        "hook": "The only concert I went to that whole year was a rockabilly show.",
+        "caption": "Twenty-six years ago today I saw Brian Setzer's '68 Comeback Special at The Coach House. It was the only show I made it to in all of 2000.",
+        "beats": [
+          "November 17, 2000: San Juan Capistrano, filed under Rockabilly.",
+          "One show, one year. 2000 didn't bring me anywhere else.",
+          "It was my only time seeing Brian Setzer's '68 Comeback Special.",
+          "Ten visits to The Coach House over the years, and this is the one that stands alone."
+        ],
+        "authoredAt": "2026-11-17T16:33:27.189Z"
+      },
+      "publishedAt": "2026-11-17T16:33:41.536Z"
+    },
     {
       "slug": "otd-2026-11-10",
       "day": "11-10",
