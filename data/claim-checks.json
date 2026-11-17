@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-15T16:47:23.786Z",
+  "updatedAt": "2026-11-17T18:56:42.389Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -20,6 +20,27 @@
           "kind": "personal-invented",
           "severity": "review",
           "evidence": "No Art of Noise show, and no Boston/Massachusetts show following the Alien Fashion Show date, appears anywhere in the fact sheet's artist or venue listings."
+        }
+      ]
+    },
+    {
+      "slug": "april-12-40-years-since-the-alarm",
+      "hash": "71569e253b9b6ff6",
+      "checkedAt": "2026-11-17T18:56:42.388Z",
+      "issues": [
+        {
+          "field": "Beat 1",
+          "sentence": "I was in a UCLA crowd, and The Alarm played like something depended on it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet does not confirm personal attendance claims beyond OWNER-CONFIRMED PERSONAL FACTS, which only states residence in Orange County circa 1992."
+        },
+        {
+          "field": "Beat 2",
+          "sentence": "Mike Peters leaned into the microphone the whole set — not performing conviction, actually having it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "This specific performance detail is not supported by the fact sheet's setlist or any owner-confirmed fact."
         }
       ]
     },
@@ -614,6 +635,34 @@
       ]
     },
     {
+      "slug": "otd-2026-11-17",
+      "hash": "ce34f515356e50dc",
+      "checkedAt": "2026-11-17T18:55:57.851Z",
+      "issues": [
+        {
+          "field": "hook",
+          "sentence": "The only concert I went to that whole year was a rockabilly show.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet has no data on personal concert attendance frequency or exclusivity for any year; not in OWNER-CONFIRMED PERSONAL FACTS."
+        },
+        {
+          "field": "caption",
+          "sentence": "It was the only show I made it to in all of 2000.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet has no data on personal concert attendance frequency for 2000; not in OWNER-CONFIRMED PERSONAL FACTS."
+        },
+        {
+          "field": "beat",
+          "sentence": "One show, one year. 2000 didn't bring me anywhere else.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet has no data on personal concert attendance frequency for 2000; not in OWNER-CONFIRMED PERSONAL FACTS."
+        }
+      ]
+    },
+    {
       "slug": "peter-gabriel-11-more-1993-festival-bill",
       "hash": "d79e9b2bba6ac621",
       "checkedAt": "2026-10-08T17:10:34.296Z",
@@ -630,38 +679,30 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "39f3cc5ec62e36a9",
-      "checkedAt": "2026-11-15T16:46:50.339Z",
+      "hash": "055b6a5f565aa76d",
+      "checkedAt": "2026-11-17T18:56:11.521Z",
       "issues": [
-        {
-          "field": "caption",
-          "sentence": "Social Distortion headlined a 15-act bill at Huntington State Beach in 2018.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "The 2018-10-28 show at Huntington State Beach lists Social Distortion plus 13 openers (Bad Religion, The Offspring, Pennywise, Suicidal Tendencies, Voodoo Glow Skulls, T.S.O.L., Black Rebel Motorcycle Club, Snuff, Fear, Mad Caddies, Rancid, Aaron Lee Tasjan, Wrecks, The Interrupters) = 14 acts total, not 15.",
-          "replacement": "Social Distortion headlined a 14-act bill at Huntington State Beach in 2018."
-        },
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No formation years are given in the fact sheet for any band; earliest discography entries (e.g. Fear's 'The Record' 1982, Social Distortion's 'Mommy's Little Monster' 1983) don't confirm 'late seventies' origins."
+          "evidence": "Fact sheet gives no formation years for Fear, Social Distortion, Bad Religion, T.S.O.L., etc. — 'late seventies' is an external claim not supported by the archive data."
         },
         {
-          "field": "beat 2",
+          "field": "beat2",
           "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet gives no band-formation dates or tenure figures that would support a '40 years' calculation for these four acts."
+          "evidence": "No formation years, ages, or 'years active' figures exist in the fact sheet for any of these bands; 'forty years' is unsupported.",
+          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had been doing this since before most of the crowd was born."
         },
         {
-          "field": "beat 4",
-          "sentence": "Fifteen acts, one afternoon on the sand.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "Same discrepancy as the caption: the 2018-10-28 bill totals 14 acts (Social Distortion plus 13 openers), not fifteen.",
-          "replacement": "Fourteen acts, one afternoon on the sand."
+          "field": "beat4",
+          "sentence": "Four decades of West Coast punk in a single set list.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No formation years or founding dates are in the fact sheet for these bands, so a specific span like 'four decades' cannot be confirmed from the archive data."
         }
       ]
     },
@@ -715,29 +756,36 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "f22880c2c4072bd2",
-      "checkedAt": "2026-11-15T16:47:08.073Z",
+      "hash": "37dd29403f996543",
+      "checkedAt": "2026-11-17T18:56:36.283Z",
       "issues": [
+        {
+          "field": "Hook",
+          "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The Bends release date (March 13, 1995) is not in the fact sheet; this is an external claim about another artist's album. It appears to be factually accurate but cannot be confirmed from archive data."
+        },
         {
           "field": "Caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet contains no data on Radiohead or The Bends; this is an external claim not sourced from the archive, though it is historically accurate."
+          "evidence": "This date is not present anywhere in the fact sheet; external claim about a third-party release date, likely true but unconfirmable from archive data."
         },
         {
           "field": "Beat 1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet has no entry for Radiohead or The Bends release date; cannot be confirmed from archive data."
+          "evidence": "Release date of The Bends is not in the fact sheet; external claim, likely accurate but unconfirmed by archive data."
         },
         {
           "field": "Beat 3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet provides no birth year or age data for Brian Setzer, so this specific age-gap figure has no basis.",
+          "evidence": "The fact sheet gives no birth year or age for Setzer, so a specific 40-year age gap is invented.",
           "replacement": "Setzer's was decades older."
         }
       ]
@@ -856,15 +904,15 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "977fd73b0dd4d5f1",
-      "checkedAt": "2026-11-15T16:46:59.517Z",
+      "hash": "7e3986cbf8d9d350",
+      "checkedAt": "2026-11-17T18:56:27.445Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Show dates are 1988-09-09 and 2023-07-21, which is 34 years and about 10 months apart, not yet 35 full years.",
+          "evidence": "First show 1988-09-09, second show 2023-07-21: that's 34 years and about 10 months, not 35 years.",
           "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
         },
         {
@@ -880,8 +928,24 @@
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is about 34 years and 10 months, not a full 35 years.",
-          "replacement": "Almost thirty-five years went by before I bought another ticket."
+          "evidence": "1988-09-09 to 2023-07-21 is about 34 years and 10 months, not 35 full years.",
+          "replacement": "Nearly thirty-five years went by before I bought another ticket."
+        },
+        {
+          "field": "beat2",
+          "sentence": "The Labour of Love covers felt like they'd always existed.",
+          "kind": "contradicted",
+          "severity": "review",
+          "evidence": "No setlist is on record for the 1988-09-09 show; the archive only has a setlist for 2023-07-21, so specific setlist content for the 1988 show is unsupported.",
+          "replacement": "The songs that night felt like they'd always existed."
+        },
+        {
+          "field": "beat4",
+          "sentence": "That Birmingham-meets-Jamaica energy — the thing I'd wondered about in the parking lot — was exactly where I'd left it.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet's owner-confirmed personal facts only include living in Orange County around 1992; a parking-lot musing is not supported there.",
+          "replacement": "That Birmingham-meets-Jamaica energy was exactly where I'd left it."
         }
       ]
     },

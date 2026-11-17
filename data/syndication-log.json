@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-15T16:50:39.071Z",
+  "updatedAt": "2026-11-17T18:57:03.312Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -58,26 +58,21 @@
     {
       "slug": "april-12-40-years-since-the-alarm",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "april-12-40-years-since-the-alarm",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2jpuhvxkc23",
+      "rkey": "3n2jpuhvxkc23",
+      "postedAt": "2026-11-17T18:56:49.188Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "april-12-40-years-since-the-alarm",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "april-12-40-years-since-the-alarm",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117633307309013461",
+      "postedAt": "2026-11-17T18:57:03.312Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "april-15-40-years-since-blancmange",
@@ -1109,6 +1104,25 @@
       "status": "posted",
       "uri": "117593330639733252",
       "postedAt": "2026-11-10T17:30:27.665Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-11-17",
+      "platform": "bluesky",
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2jpufxrux2q",
+      "rkey": "3n2jpufxrux2q",
+      "postedAt": "2026-11-17T18:56:47.273Z",
+      "tier": 2,
+      "source": "artist-deezer"
+    },
+    {
+      "slug": "otd-2026-11-17",
+      "platform": "mastodon",
+      "status": "posted",
+      "uri": "117633307180925616",
+      "postedAt": "2026-11-17T18:57:01.217Z",
       "tier": 2,
       "source": "artist-deezer"
     },
