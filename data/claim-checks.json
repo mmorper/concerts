@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-17T18:56:42.389Z",
+  "updatedAt": "2026-11-18T18:38:00.308Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -679,30 +679,36 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "055b6a5f565aa76d",
-      "checkedAt": "2026-11-17T18:56:11.521Z",
+      "hash": "c5631ee0c4bdf821",
+      "checkedAt": "2026-11-18T18:37:21.781Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet gives no formation years for Fear, Social Distortion, Bad Religion, T.S.O.L., etc. — 'late seventies' is an external claim not supported by the archive data."
+          "evidence": "No formation years are given in the fact sheet for Social Distortion, Bad Religion, Fear, etc.; the earliest album timing (Mommy's Little Monster, 1983; How Could Hell Be Any Worse?, 1982) doesn't confirm 'late seventies' origins."
         },
         {
-          "field": "beat2",
+          "field": "beat 1",
+          "sentence": "California punk's founding class, still running the room.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet contains no data establishing Social Distortion or Bad Religion as punk's 'founding class'; this is an unverified historical claim."
+        },
+        {
+          "field": "beat 2",
           "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No formation years, ages, or 'years active' figures exist in the fact sheet for any of these bands; 'forty years' is unsupported.",
-          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had been doing this since before most of the crowd was born."
+          "evidence": "No formation dates or ages are given for these bands in the fact sheet, so '40 years' has no basis."
         },
         {
-          "field": "beat4",
-          "sentence": "Four decades of West Coast punk in a single set list.",
+          "field": "beat 5",
+          "sentence": "Sunny nihilism is a Southern California invention.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No formation years or founding dates are in the fact sheet for these bands, so a specific span like 'four decades' cannot be confirmed from the archive data."
+          "evidence": "This is an unverifiable cultural/historical claim not supported by any fact sheet data."
         }
       ]
     },
@@ -711,6 +717,41 @@
       "hash": "9a3b2545d337de3e",
       "checkedAt": "2026-09-17T14:38:40.210Z",
       "issues": []
+    },
+    {
+      "slug": "sting-days-after-nevermind-dropped",
+      "hash": "660a94075a16de3d",
+      "checkedAt": "2026-11-18T18:38:00.308Z",
+      "issues": [
+        {
+          "field": "Hook",
+          "sentence": "Ten days after Nevermind, I was at Pacific Amphitheatre watching Sting, with Squeeze opening.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Nevermind's September 24, 1991 release date is not in the fact sheet; it is a well-known external fact, likely true, but not verifiable from archive data."
+        },
+        {
+          "field": "Caption",
+          "sentence": "Nevermind dropped September 24th.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Nevermind's release date is not in the fact sheet; widely reported as true but unconfirmable from archive data."
+        },
+        {
+          "field": "Beat 1",
+          "sentence": "September 24th, 1991: Nevermind hits shelves and the rock world starts tilting.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Nevermind's release date is not in the fact sheet; likely true externally but not confirmable from archive data."
+        },
+        {
+          "field": "Beat 3",
+          "sentence": "October 4, 1991: The Soul Cages was still Sting's newest record, and Nevermind was ten days old.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The Nevermind release date reference is not in the fact sheet; likely true but unconfirmable from archive data."
+        }
+      ]
     },
     {
       "slug": "stryper-caught-once-never-again",
@@ -756,37 +797,36 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "37dd29403f996543",
-      "checkedAt": "2026-11-17T18:56:36.283Z",
+      "hash": "adeaccf58de46f13",
+      "checkedAt": "2026-11-18T18:37:51.007Z",
       "issues": [
         {
-          "field": "Hook",
+          "field": "hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Bends release date (March 13, 1995) is not in the fact sheet; this is an external claim about another artist's album. It appears to be factually accurate but cannot be confirmed from archive data."
+          "evidence": "The Bends release date is not in the fact sheet; this is an external music-history claim not confirmable from archive data (though historically accurate)."
         },
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "This date is not present anywhere in the fact sheet; external claim about a third-party release date, likely true but unconfirmable from archive data."
+          "evidence": "No Radiohead data in fact sheet; external release-date claim."
         },
         {
-          "field": "Beat 1",
+          "field": "beat1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Release date of The Bends is not in the fact sheet; external claim, likely accurate but unconfirmed by archive data."
+          "evidence": "No Radiohead data in fact sheet; external claim about album release and its significance."
         },
         {
-          "field": "Beat 3",
+          "field": "beat3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet gives no birth year or age for Setzer, so a specific 40-year age gap is invented.",
-          "replacement": "Setzer's was decades older."
+          "evidence": "Fact sheet gives no birth year or age for Brian Setzer; this age/age-gap figure has no basis in the data."
         }
       ]
     },
@@ -904,15 +944,15 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "7e3986cbf8d9d350",
-      "checkedAt": "2026-11-17T18:56:27.445Z",
+      "hash": "cdd10dba5dae2fbd",
+      "checkedAt": "2026-11-18T18:37:43.749Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21: that's 34 years and about 10 months, not 35 years.",
+          "evidence": "First UB40 show was 1988-09-09, second was 2023-07-21 — a gap of about 34 years and 10 months, not a full 35 years.",
           "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
         },
         {
@@ -920,32 +960,37 @@
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is about 34 years and 10 months, not a full 35 years.",
+          "evidence": "1988-09-09 to 2023-07-21 is about 34 years 10 months, not a full 35 years.",
           "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
-          "field": "beat3",
+          "field": "beat 3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is about 34 years and 10 months, not 35 full years.",
-          "replacement": "Nearly thirty-five years went by before I bought another ticket."
+          "evidence": "The actual gap between the two UB40 shows (1988-09-09 to 2023-07-21) is roughly 34 years 10 months, not 35 full years.",
+          "replacement": "Nearly thirty-five years went by before I saw them again."
         },
         {
-          "field": "beat2",
-          "sentence": "The Labour of Love covers felt like they'd always existed.",
-          "kind": "contradicted",
-          "severity": "review",
-          "evidence": "No setlist is on record for the 1988-09-09 show; the archive only has a setlist for 2023-07-21, so specific setlist content for the 1988 show is unsupported.",
-          "replacement": "The songs that night felt like they'd always existed."
-        },
-        {
-          "field": "beat4",
-          "sentence": "That Birmingham-meets-Jamaica energy — the thing I'd wondered about in the parking lot — was exactly where I'd left it.",
+          "field": "beat 3",
+          "sentence": "Thirty-five years went by before I bought another ticket. Peacock Theater, Los Angeles, 2023.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "The fact sheet's owner-confirmed personal facts only include living in Orange County around 1992; a parking-lot musing is not supported there.",
-          "replacement": "That Birmingham-meets-Jamaica energy was exactly where I'd left it."
+          "evidence": "The fact sheet's NOT IN THE DATA list excludes ticket details; buying a ticket is not an owner-confirmed personal fact."
+        },
+        {
+          "field": "beat 2",
+          "sentence": "The Labour of Love covers felt like they'd always existed.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "There is no setlist on record for the 1988-09-09 show; only the 2023-07-21 setlist is documented, so no basis exists for describing the 1988 setlist's content."
+        },
+        {
+          "field": "beat 4",
+          "sentence": "the thing I'd wondered about in the parking lot",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "This concrete personal detail (being in a parking lot, wondering something) is not in the OWNER-CONFIRMED PERSONAL FACTS section."
         }
       ]
     },
