@@ -1070,10 +1070,15 @@
   },
   "sting": {
     "name": "Sting",
-    "image": "https://cdn-images.dzcdn.net/images/artist/5f5402aae0bfc8b586fd7c5c397ef218/500x500-000000-80-0-0.jpg",
-    "genres": [],
-    "source": "deezer",
-    "fetchedAt": "2026-10-31T22:39:01.372Z"
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/wuprus1340023845.jpg",
+    "genres": [
+      "Pop-Rock",
+      "Rock/Pop"
+    ],
+    "formed": "1985",
+    "website": "sting.com",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-19T12:00:00.000Z"
   },
   "stray-cats": {
     "name": "Stray Cats",

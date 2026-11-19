@@ -75,6 +75,15 @@ function getArtistNameVariants(artistName: string): string[] {
  */
 const DEEZER_NAMESAKES = new Set(['heart', 'james', 'beck', 'fear', 'john-doe'])
 
+/**
+ * Acts Deezer has right but pictures wrong. Its "Sting" is Sting, but his picture is the
+ * cover of "In Celebration: The Piano Trios of Stanley Silverman", a classical record he
+ * guests on. It reached the site and went out on Bluesky and Mastodon on 2026-11-18.
+ * The name match and the blank-silhouette check both pass an album cover, so these skip
+ * Deezer too, and keep the record set by hand until TheAudioDB answers for them again.
+ */
+const DEEZER_WRONG_PICTURES = new Set(['sting'])
+
 const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000
 
 type ArtistRecord = ArtistMetadata[string]
@@ -257,7 +266,7 @@ async function enrichArtists(options: { dryRun?: boolean } = {}) {
       // 2. Deezer — last resort, images only, no genres. Never for an act whose name Deezer
       // gives to someone else: a matching name is not the same band. There is no Last.fm step:
       // since 2019 it answers every artist with the same grey star, a placeholder, not a photo.
-      if (!found && !DEEZER_NAMESAKES.has(normalized)) {
+      if (!found && !DEEZER_NAMESAKES.has(normalized) && !DEEZER_WRONG_PICTURES.has(normalized)) {
         for (let i = 0; i < nameVariants.length && !found; i++) {
           const variantName = nameVariants[i]
           const isOriginalName = i === 0
