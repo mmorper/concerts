@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-18T18:41:13.274Z",
+  "updatedAt": "2026-11-19T02:29:20.253Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -1322,20 +1322,35 @@
       "slug": "sting-days-after-nevermind-dropped",
       "platform": "bluesky",
       "status": "posted",
-      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2m7buu75c2s",
-      "rkey": "3n2m7buu75c2s",
-      "postedAt": "2026-11-18T18:38:04.498Z",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2mzmi6iay2z",
+      "rkey": "3n2mzmi6iay2z",
+      "postedAt": "2026-11-19T02:29:17.503Z",
       "tier": 2,
-      "source": "artist-deezer"
+      "source": "artist-audiodb",
+      "corrections": [
+        {
+          "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2m7buu75c2s",
+          "rkey": "3n2m7buu75c2s",
+          "postedAt": "2026-11-18T18:38:04.498Z",
+          "replacedAt": "2026-11-19T02:29:15.436Z"
+        }
+      ]
     },
     {
       "slug": "sting-days-after-nevermind-dropped",
       "platform": "mastodon",
       "status": "posted",
-      "uri": "117638907368380310",
-      "postedAt": "2026-11-18T18:41:13.274Z",
+      "uri": "117640748077818595",
+      "postedAt": "2026-11-19T02:29:20.253Z",
       "tier": 2,
-      "source": "artist-deezer"
+      "source": "artist-audiodb",
+      "corrections": [
+        {
+          "uri": "117638907368380310",
+          "postedAt": "2026-11-18T18:41:13.274Z",
+          "replacedAt": "2026-11-19T02:29:18.583Z"
+        }
+      ]
     },
     {
       "slug": "stryper-caught-once-never-again",

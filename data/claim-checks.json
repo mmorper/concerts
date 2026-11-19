@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-18T18:38:00.308Z",
+  "updatedAt": "2026-11-19T02:29:13.565Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -720,36 +720,43 @@
     },
     {
       "slug": "sting-days-after-nevermind-dropped",
-      "hash": "660a94075a16de3d",
-      "checkedAt": "2026-11-18T18:38:00.308Z",
+      "hash": "8ce13b4e1411e453",
+      "checkedAt": "2026-11-19T02:29:13.565Z",
       "issues": [
         {
-          "field": "Hook",
+          "field": "hook",
           "sentence": "Ten days after Nevermind, I was at Pacific Amphitheatre watching Sting, with Squeeze opening.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Nevermind's September 24, 1991 release date is not in the fact sheet; it is a well-known external fact, likely true, but not verifiable from archive data."
+          "evidence": "Nevermind's release date (September 24, 1991) is not in the fact sheet; it is widely documented as true, but is an external fact the archive cannot verify."
         },
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Nevermind dropped September 24th.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Nevermind's release date is not in the fact sheet; widely reported as true but unconfirmable from archive data."
+          "evidence": "Release date of Nevermind is not part of the fact sheet's data; true as general knowledge but unverifiable against archive."
         },
         {
-          "field": "Beat 1",
+          "field": "caption",
+          "sentence": "By October 4th the radio hadn't caught up yet, and Sting was out with Squeeze, The Soul Cages still his newest record.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Claim about radio's reaction to Nevermind is a speculative external/cultural assertion not supported by the fact sheet."
+        },
+        {
+          "field": "beat_1",
           "sentence": "September 24th, 1991: Nevermind hits shelves and the rock world starts tilting.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Nevermind's release date is not in the fact sheet; likely true externally but not confirmable from archive data."
+          "evidence": "Release date of Nevermind is external information not present in the fact sheet."
         },
         {
-          "field": "Beat 3",
+          "field": "beat_3",
           "sentence": "October 4, 1991: The Soul Cages was still Sting's newest record, and Nevermind was ten days old.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Nevermind release date reference is not in the fact sheet; likely true but unconfirmable from archive data."
+          "evidence": "Nevermind's release date, used to compute 'ten days old,' is external to the fact sheet."
         }
       ]
     },
