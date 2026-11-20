@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-19T02:29:20.253Z",
+  "updatedAt": "2026-11-20T18:20:23.545Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -1172,26 +1172,21 @@
     {
       "slug": "run-dmc-caught-once-never-again",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "run-dmc-caught-once-never-again",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2r6z4rfrw2j",
+      "rkey": "3n2r6z4rfrw2j",
+      "postedAt": "2026-11-20T18:16:29.377Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "run-dmc-caught-once-never-again",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "run-dmc-caught-once-never-again",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117650150087290481",
+      "postedAt": "2026-11-20T18:20:23.545Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "siouxsie-and-the-banshees-days-after-achtung-baby-dropped",

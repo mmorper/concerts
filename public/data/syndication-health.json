@@ -1,25 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-19T18:50:13.214Z",
-  "lastRunAt": "2026-11-19T18:50:13.214Z",
+  "generatedAt": "2026-11-20T18:20:23.546Z",
+  "lastRunAt": "2026-11-20T18:20:23.546Z",
   "paused": false,
   "ledger": {
-    "total": 202,
-    "posted": 118,
-    "seeded": 84,
+    "total": 200,
+    "posted": 120,
+    "seeded": 80,
     "retracted": 0
   },
   "channels": [
     {
       "channel": "bluesky",
-      "lastSuccessAt": "2026-11-19T02:29:17.503Z",
-      "postedCount": 59,
+      "lastSuccessAt": "2026-11-20T18:16:29.377Z",
+      "postedCount": 60,
       "consecutiveFailures": 0
     },
     {
       "channel": "mastodon",
-      "lastSuccessAt": "2026-11-19T02:29:20.253Z",
-      "postedCount": 59,
+      "lastSuccessAt": "2026-11-20T18:20:23.545Z",
+      "postedCount": 60,
       "consecutiveFailures": 0
     },
     {
@@ -28,5 +28,5 @@
       "consecutiveFailures": 0
     }
   ],
-  "consecutiveBlockedRuns": 1
+  "consecutiveBlockedRuns": 0
 }

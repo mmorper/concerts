@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-19T18:50:13.213Z",
+  "updatedAt": "2026-11-20T18:16:25.129Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -679,45 +679,79 @@
     },
     {
       "slug": "run-dmc-caught-once-never-again",
-      "hash": "e8deb7b394a76199",
-      "checkedAt": "2026-11-19T18:50:13.213Z",
+      "hash": "e7ef358adbc552fa",
+      "checkedAt": "2026-11-20T18:16:25.129Z",
       "issues": [
         {
-          "field": "Beat 2",
+          "field": "caption",
+          "sentence": "I never saw either of them again.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet only tracks Run DMC's full show history (1 total) and Pacific Amphitheatre's full show history; it does not provide a complete Beastie Boys show history, so whether they were never seen again elsewhere cannot be confirmed.",
+          "replacement": "I never caught Run DMC again."
+        },
+        {
+          "field": "beat_3",
+          "sentence": "Not one more Beastie Boys show.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No complete Beastie Boys show history is in the fact sheet, so this claim cannot be verified from the data given."
+        },
+        {
+          "field": "beat_2",
           "sentence": "Raising Hell was still Run DMC's current record, and Licensed to Ill was about seven months old.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "The fact sheet provides no release date or discography for the Beastie Boys or 'Licensed to Ill'; the 'seven months old' figure has no basis in the data.",
-          "replacement": "Raising Hell was still Run DMC's current record, and the Beastie Boys were riding their own breakout album."
+          "kind": "external",
+          "severity": "review",
+          "evidence": "The fact sheet gives no release date for Licensed to Ill (only Run-D.M.C.'s discography is listed), so the 'seven months old' figure cannot be confirmed."
         }
       ]
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "55711e587c2f69ac",
-      "checkedAt": "2026-11-19T18:49:41.524Z",
+      "hash": "6a932a3e34a09f4a",
+      "checkedAt": "2026-11-20T18:15:44.079Z",
       "issues": [
         {
-          "field": "beat_2",
-          "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "The fact sheet gives no founding dates or 'years active' figures for these bands, so 'forty years of damage' is an invented quantity.",
-          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill carried decades of scene history between them."
+          "field": "hook",
+          "sentence": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one afternoon.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet has no set times or time-of-day info for the 2018-10-28 show (set times excluded per NOT IN THE DATA)."
         },
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Formation years for Fear, T.S.O.L., Social Distortion, etc. are not given in the fact sheet (only album release dates, earliest 1981-1983), so 'late seventies' can't be confirmed from the archive data."
+          "evidence": "Band formation years are not in the fact sheet's discography or summary data."
         },
         {
-          "field": "beat_4",
+          "field": "beat1",
+          "sentence": "Social Distortion and Bad Religion on a beach in October — California punk's founding class, still running the room.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No formation-year or 'founding class' claim is supported by the fact sheet."
+        },
+        {
+          "field": "beat2",
+          "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
+          "kind": "invented-number",
+          "severity": "must-fix",
+          "evidence": "No band age or formation-year data exists in the fact sheet to support a 'forty years' figure."
+        },
+        {
+          "field": "beat4",
+          "sentence": "Fifteen acts, one afternoon on the sand.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Fact sheet excludes set/door times; no time-of-day for 2018-10-28 is on record."
+        },
+        {
+          "field": "beat4",
           "sentence": "Four decades of West Coast punk in a single set list.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No formation dates are in the fact sheet to support a four-decade span; earliest album dates on record (e.g. Fear's 'The Record', 1982-05-16) suggest roughly 36 years to 2018, not confirmed as four full decades."
+          "evidence": "No formation-year data in the fact sheet supports a 'four decades' span claim."
         }
       ]
     },
@@ -813,43 +847,38 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "13ac008ed94c3fff",
-      "checkedAt": "2026-11-19T18:50:02.687Z",
+      "hash": "f36ca362257b3984",
+      "checkedAt": "2026-11-20T18:16:13.749Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Bends release date (March 13, 1995) is not in the fact sheet; this is an external music-history fact not covered by archive data, though believed accurate."
+          "evidence": "The Bends release date (March 13, 1995) is not in the fact sheet; it is a real external album release date not confirmed by archive data.",
+          "replacement": "Thirteen days after a landmark new rock album, rockabilly had a different answer to the same question."
         },
         {
           "field": "caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Album release date is not part of the fact sheet's data (only Setzer's own album timing is tracked); external claim, likely true but unconfirmed by archive."
-        },
-        {
-          "field": "caption",
-          "sentence": "Thirteen days later I was watching Brian Setzer's pompadour and upright bass pull rock back to the 1950s instead.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "No OWNER-CONFIRMED PERSONAL FACTS entry supports 'I was watching' at this specific show; this is a concrete personal claim not in the confirmed facts section."
+          "evidence": "This date is not present anywhere in the fact sheet; it's an external music-history claim about another artist, unconfirmed by the archive."
         },
         {
           "field": "beat 1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Release date and artistic characterization are external to the fact sheet, which only tracks Setzer tour/album data."
+          "evidence": "Radiohead's release date/claim is not supported by the fact sheet, which only covers Brian Setzer Orchestra and venue data."
         },
         {
           "field": "beat 3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "The fact sheet provides no birth year or age for Setzer or any basis for a '40 years older' comparison."
+          "evidence": "No birth year, era-comparison figure, or '40 years' basis appears anywhere in the fact sheet.",
+          "replacement": "Setzer's was decades older in spirit."
         }
       ]
     },
@@ -967,15 +996,15 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "11f12c652c8fb9c1",
-      "checkedAt": "2026-11-19T18:49:50.744Z",
+      "hash": "726b2258a6f1a6ef",
+      "checkedAt": "2026-11-20T18:15:56.026Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's about 34 years and 10 months, not a full 35 years.",
+          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's 34 years, not yet 35 (the 35th anniversary would fall in September 2023, after the show date).",
           "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 34 years after the first time."
         },
         {
@@ -983,7 +1012,7 @@
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 is short of a full 35-year gap.",
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years, not 35.",
           "replacement": "Thirty-four years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
@@ -991,7 +1020,7 @@
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 is about 34 years and 10 months, not 35 full years.",
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years, not 35.",
           "replacement": "Thirty-four years went by before I bought another ticket."
         },
         {
@@ -999,7 +1028,8 @@
           "sentence": "the thing I'd wondered about in the parking lot",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Fact sheet has no record of any parking-lot moment or thought; not in OWNER-CONFIRMED PERSONAL FACTS."
+          "evidence": "No fact sheet or owner-confirmed detail mentions a parking lot or any such wondering; this is a concrete personal detail not supported by the archive.",
+          "replacement": "the thing I'd wondered about all those years"
         }
       ]
     },
