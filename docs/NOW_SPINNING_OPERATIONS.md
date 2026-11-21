@@ -465,8 +465,9 @@ is enough.
 
 The panel shows:
 - **Connection:** `live`, `reconnecting`, or `reconnecting · polling every 10 s`, and how long
-  ago the last message arrived. It can also say `token refused`, `no token`, or
-  `Worker not configured (503)`.
+  ago the last message and the last heartbeat `pong` arrived. It can also say `token refused`,
+  `no token`, `Worker not configured (503)`, or `no heartbeat: reconnecting`. That last one means
+  the network dropped the connection without saying so; the page noticed within a minute.
 - **Listener:** online or last seen, song recognition, receiver, Apple TV, and the listener's
   version.
 - **State:** the contract version, what is on screen (with `faded`, `black` or `mirrored`),
