@@ -1,17 +1,45 @@
 {
   "version": "1",
-  "generatedAt": "2026-11-16T16:51:56.452Z",
+  "generatedAt": "2026-11-21T18:32:17.839Z",
   "coverage": {
     "concertsWithSetlist": 119,
     "totalConcerts": 185,
-    "distinctSongs": 1668
+    "distinctSongs": 2190
   },
   "songs": [
+    {
+      "name": "Cherry Lips (Go Baby Go!)",
+      "count": 6,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
+      "name": "Only Happy When It Rains",
+      "count": 6,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
+      "name": "Push It",
+      "count": 6,
+      "artists": [
+        "Garbage"
+      ]
+    },
     {
       "name": "Ring of Fire",
       "count": 6,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Stupid Girl",
+      "count": 6,
+      "artists": [
+        "Garbage"
       ]
     },
     {
@@ -50,6 +78,14 @@
       ]
     },
     {
+      "name": "Just Can't Get Enough",
+      "count": 5,
+      "artists": [
+        "Blancmange",
+        "Depeche Mode"
+      ]
+    },
+    {
       "name": "Rock This Town",
       "count": 5,
       "artists": [
@@ -81,10 +117,24 @@
       ]
     },
     {
+      "name": "Vow",
+      "count": 5,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
       "name": "Watch It Crash",
       "count": 5,
       "artists": [
         "Streetlight Manifesto"
+      ]
+    },
+    {
+      "name": "#1 Crush",
+      "count": 4,
+      "artists": [
+        "Garbage"
       ]
     },
     {
@@ -99,13 +149,6 @@
       "count": 4,
       "artists": [
         "Social Distortion"
-      ]
-    },
-    {
-      "name": "Cherry Lips (Go Baby Go!)",
-      "count": 4,
-      "artists": [
-        "Garbage"
       ]
     },
     {
@@ -125,6 +168,14 @@
       ]
     },
     {
+      "name": "Fuck You",
+      "count": 4,
+      "artists": [
+        "Bad Religion",
+        "Rancid"
+      ]
+    },
+    {
       "name": "Gene and Eddie",
       "count": 4,
       "artists": [
@@ -134,10 +185,17 @@
       ]
     },
     {
-      "name": "Just Can't Get Enough",
+      "name": "I Think I'm Paranoid",
       "count": 4,
       "artists": [
-        "Depeche Mode"
+        "Garbage"
+      ]
+    },
+    {
+      "name": "Infected",
+      "count": 4,
+      "artists": [
+        "Bad Religion"
       ]
     },
     {
@@ -148,17 +206,11 @@
       ]
     },
     {
-      "name": "Only Happy When It Rains",
+      "name": "Notorious",
       "count": 4,
       "artists": [
-        "Garbage"
-      ]
-    },
-    {
-      "name": "Push It",
-      "count": 4,
-      "artists": [
-        "Garbage"
+        "Duran Duran",
+        "Nile Rodgers"
       ]
     },
     {
@@ -166,6 +218,13 @@
       "count": 4,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Special",
+      "count": 4,
+      "artists": [
+        "Garbage"
       ]
     },
     {
@@ -178,13 +237,6 @@
       ]
     },
     {
-      "name": "Stupid Girl",
-      "count": 4,
-      "artists": [
-        "Garbage"
-      ]
-    },
-    {
       "name": "The Three of Us",
       "count": 4,
       "artists": [
@@ -192,17 +244,18 @@
       ]
     },
     {
-      "name": "Vow",
-      "count": 4,
+      "name": "21st Century (Digital Boy)",
+      "count": 3,
       "artists": [
-        "Garbage"
+        "Bad Religion"
       ]
     },
     {
-      "name": "#1 Crush",
+      "name": "2am",
       "count": 3,
       "artists": [
-        "Garbage"
+        "Bear Hands",
+        "Foals"
       ]
     },
     {
@@ -217,6 +270,13 @@
       "count": 3,
       "artists": [
         "Depeche Mode"
+      ]
+    },
+    {
+      "name": "American Jesus",
+      "count": 3,
+      "artists": [
+        "Bad Religion"
       ]
     },
     {
@@ -300,6 +360,21 @@
       ]
     },
     {
+      "name": "Do What You Want",
+      "count": 3,
+      "artists": [
+        "Bad Religion"
+      ]
+    },
+    {
+      "name": "Don't Go",
+      "count": 3,
+      "artists": [
+        "Alison Moyet",
+        "Yaz"
+      ]
+    },
+    {
       "name": "Double Talkin' Baby",
       "count": 3,
       "artists": [
@@ -350,6 +425,15 @@
       ]
     },
     {
+      "name": "Heaven",
+      "count": 3,
+      "artists": [
+        "David Byrne",
+        "Squeeze",
+        "The Psychedelic Furs"
+      ]
+    },
+    {
       "name": "Here in the Black",
       "count": 3,
       "artists": [
@@ -357,10 +441,10 @@
       ]
     },
     {
-      "name": "I Think I'm Paranoid",
+      "name": "Hungry Like the Wolf",
       "count": 3,
       "artists": [
-        "Garbage"
+        "Duran Duran"
       ]
     },
     {
@@ -403,6 +487,13 @@
       "count": 3,
       "artists": [
         "Royal Blood"
+      ]
+    },
+    {
+      "name": "Los Angeles Is Burning",
+      "count": 3,
+      "artists": [
+        "Bad Religion"
       ]
     },
     {
@@ -455,11 +546,11 @@
       ]
     },
     {
-      "name": "Notorious",
+      "name": "Nobody's Diary",
       "count": 3,
       "artists": [
-        "Duran Duran",
-        "Nile Rodgers"
+        "Alison Moyet",
+        "Yaz"
       ]
     },
     {
@@ -467,6 +558,14 @@
       "count": 3,
       "artists": [
         "Foals"
+      ]
+    },
+    {
+      "name": "Only You",
+      "count": 3,
+      "artists": [
+        "Alison Moyet",
+        "Yaz"
       ]
     },
     {
@@ -491,6 +590,14 @@
       ]
     },
     {
+      "name": "Planet Earth",
+      "count": 3,
+      "artists": [
+        "Devo",
+        "Duran Duran"
+      ]
+    },
+    {
       "name": "Point/Counterpoint / Keasbey Nights",
       "count": 3,
       "artists": [
@@ -502,6 +609,13 @@
       "count": 3,
       "artists": [
         "Foals"
+      ]
+    },
+    {
+      "name": "Queer",
+      "count": 3,
+      "artists": [
+        "Garbage"
       ]
     },
     {
@@ -542,6 +656,13 @@
       ]
     },
     {
+      "name": "Save a Prayer",
+      "count": 3,
+      "artists": [
+        "Duran Duran"
+      ]
+    },
+    {
       "name": "Secret World",
       "count": 3,
       "artists": [
@@ -564,6 +685,14 @@
       ]
     },
     {
+      "name": "Situation",
+      "count": 3,
+      "artists": [
+        "Alison Moyet",
+        "Yaz"
+      ]
+    },
+    {
       "name": "Somebody",
       "count": 3,
       "artists": [
@@ -571,10 +700,25 @@
       ]
     },
     {
+      "name": "Sorrow",
+      "count": 3,
+      "artists": [
+        "Bad Religion"
+      ]
+    },
+    {
       "name": "Spanish Sahara",
       "count": 3,
       "artists": [
         "Foals"
+      ]
+    },
+    {
+      "name": "Staring at the Sun",
+      "count": 3,
+      "artists": [
+        "The Offspring",
+        "U2"
       ]
     },
     {
@@ -610,6 +754,21 @@
       "count": 3,
       "artists": [
         "Gary Numan"
+      ]
+    },
+    {
+      "name": "The Wild Boys",
+      "count": 3,
+      "artists": [
+        "Duran Duran"
+      ]
+    },
+    {
+      "name": "Time Bomb",
+      "count": 3,
+      "artists": [
+        "Rancid",
+        "The Interrupters"
       ]
     },
     {
@@ -663,6 +822,13 @@
       ]
     },
     {
+      "name": "(Can't Get My) Head Around You",
+      "count": 2,
+      "artists": [
+        "The Offspring"
+      ]
+    },
+    {
       "name": "(I Can't Get No) Satisfaction",
       "count": 2,
       "artists": [
@@ -705,17 +871,17 @@
       ]
     },
     {
-      "name": "2am",
-      "count": 2,
-      "artists": [
-        "Foals"
-      ]
-    },
-    {
       "name": "A Forest",
       "count": 2,
       "artists": [
         "The Cure"
+      ]
+    },
+    {
+      "name": "A Friend Like Me",
+      "count": 2,
+      "artists": [
+        "The Interrupters"
       ]
     },
     {
@@ -775,6 +941,13 @@
       ]
     },
     {
+      "name": "Ain't Messin 'Round",
+      "count": 2,
+      "artists": [
+        "Gary Clark Jr."
+      ]
+    },
+    {
       "name": "Ain't This the Life",
       "count": 2,
       "artists": [
@@ -789,10 +962,32 @@
       ]
     },
     {
+      "name": "All I Want",
+      "count": 2,
+      "artists": [
+        "The Offspring"
+      ]
+    },
+    {
       "name": "All My Life",
       "count": 2,
       "artists": [
         "Foo Fighters"
+      ]
+    },
+    {
+      "name": "Alone",
+      "count": 2,
+      "artists": [
+        "Heart",
+        "The Cure"
+      ]
+    },
+    {
+      "name": "Americana",
+      "count": 2,
+      "artists": [
+        "The Offspring"
       ]
     },
     {
@@ -810,10 +1005,24 @@
       ]
     },
     {
+      "name": "Automatic Systematic Habit",
+      "count": 2,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
       "name": "Bad Boyfriend",
       "count": 2,
       "artists": [
         "Garbage"
+      ]
+    },
+    {
+      "name": "Bad Habit",
+      "count": 2,
+      "artists": [
+        "The Offspring"
       ]
     },
     {
@@ -835,6 +1044,14 @@
       "count": 2,
       "artists": [
         "Gary Numan"
+      ]
+    },
+    {
+      "name": "Bedsitter",
+      "count": 2,
+      "artists": [
+        "Marc Almond",
+        "Soft Cell"
       ]
     },
     {
@@ -903,10 +1120,24 @@
       ]
     },
     {
+      "name": "Bleed Like Me",
+      "count": 2,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
       "name": "Blood for Poppies",
       "count": 2,
       "artists": [
         "Garbage"
+      ]
+    },
+    {
+      "name": "Bloodclot",
+      "count": 2,
+      "artists": [
+        "Rancid"
       ]
     },
     {
@@ -938,11 +1169,25 @@
       ]
     },
     {
+      "name": "Bright Lights",
+      "count": 2,
+      "artists": [
+        "Gary Clark Jr."
+      ]
+    },
+    {
       "name": "Bring Your Love Down (Didn't I)",
       "count": 2,
       "artists": [
         "Alison Moyet",
         "Yaz"
+      ]
+    },
+    {
+      "name": "Bro Hymn",
+      "count": 2,
+      "artists": [
+        "Pennywise"
       ]
     },
     {
@@ -968,6 +1213,14 @@
       ]
     },
     {
+      "name": "Call Me",
+      "count": 2,
+      "artists": [
+        "Blondie",
+        "Paul Oakenfold"
+      ]
+    },
+    {
       "name": "Can't Help Falling in Love",
       "count": 2,
       "artists": [
@@ -988,6 +1241,13 @@
       "count": 2,
       "artists": [
         "New Order"
+      ]
+    },
+    {
+      "name": "Changeling",
+      "count": 2,
+      "artists": [
+        "Alison Moyet"
       ]
     },
     {
@@ -1019,10 +1279,32 @@
       ]
     },
     {
+      "name": "Come Out and Play",
+      "count": 2,
+      "artists": [
+        "The Offspring"
+      ]
+    },
+    {
       "name": "Come Talk to Me",
       "count": 2,
       "artists": [
         "Peter Gabriel"
+      ]
+    },
+    {
+      "name": "Come Tumblin' Down",
+      "count": 2,
+      "artists": [
+        "Colin Hay",
+        "Men At Work"
+      ]
+    },
+    {
+      "name": "Come Undone",
+      "count": 2,
+      "artists": [
+        "Duran Duran"
       ]
     },
     {
@@ -1076,6 +1358,13 @@
       ]
     },
     {
+      "name": "Dead Bodies",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
       "name": "Dear Lover",
       "count": 2,
       "artists": [
@@ -1090,18 +1379,17 @@
       ]
     },
     {
-      "name": "Declaration",
+      "name": "Dearly Beloved",
       "count": 2,
       "artists": [
-        "The Alarm",
-        "The Human League"
+        "Bad Religion"
       ]
     },
     {
-      "name": "DEVO Corporate Anthem",
+      "name": "Declaration",
       "count": 2,
       "artists": [
-        "Devo"
+        "The Alarm"
       ]
     },
     {
@@ -1133,11 +1421,17 @@
       ]
     },
     {
-      "name": "Don't Go",
+      "name": "Don't Dream It's Over",
       "count": 2,
       "artists": [
-        "Alison Moyet",
-        "Yaz"
+        "Crowded House"
+      ]
+    },
+    {
+      "name": "Don't Owe You a Thang",
+      "count": 2,
+      "artists": [
+        "Gary Clark Jr."
       ]
     },
     {
@@ -1162,10 +1456,47 @@
       ]
     },
     {
+      "name": "Down Under",
+      "count": 2,
+      "artists": [
+        "Colin Hay",
+        "Men At Work"
+      ]
+    },
+    {
       "name": "Down, Down, Down to Mephisto's Cafe",
       "count": 2,
       "artists": [
         "Streetlight Manifesto"
+      ]
+    },
+    {
+      "name": "Dreaming",
+      "count": 2,
+      "artists": [
+        "Blondie",
+        "OMD"
+      ]
+    },
+    {
+      "name": "East Bay Night",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
+      "name": "Empty",
+      "count": 2,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
+      "name": "Even Though Our Love Is Doomed",
+      "count": 2,
+      "artists": [
+        "Garbage"
       ]
     },
     {
@@ -1198,6 +1529,20 @@
       ]
     },
     {
+      "name": "Fall at Your Feet",
+      "count": 2,
+      "artists": [
+        "Crowded House"
+      ]
+    },
+    {
+      "name": "Fall Back Down",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
       "name": "Far Behind",
       "count": 2,
       "artists": [
@@ -1209,6 +1554,14 @@
       "count": 2,
       "artists": [
         "The Cure"
+      ]
+    },
+    {
+      "name": "Fever",
+      "count": 2,
+      "artists": [
+        "Inner Wave",
+        "The Black Keys"
       ]
     },
     {
@@ -1240,11 +1593,10 @@
       ]
     },
     {
-      "name": "Fuck You",
+      "name": "Fuck Authority",
       "count": 2,
       "artists": [
-        "Bad Religion",
-        "Rancid"
+        "Pennywise"
       ]
     },
     {
@@ -1252,6 +1604,14 @@
       "count": 2,
       "artists": [
         "Devo"
+      ]
+    },
+    {
+      "name": "Generator",
+      "count": 2,
+      "artists": [
+        "Bad Religion",
+        "Foo Fighters"
       ]
     },
     {
@@ -1277,6 +1637,13 @@
       ]
     },
     {
+      "name": "Girls on Film",
+      "count": 2,
+      "artists": [
+        "Duran Duran"
+      ]
+    },
+    {
       "name": "Going Out in Style",
       "count": 2,
       "artists": [
@@ -1296,6 +1663,13 @@
       "artists": [
         "Wham!",
         "Yaz"
+      ]
+    },
+    {
+      "name": "Gotta Get Away",
+      "count": 2,
+      "artists": [
+        "The Offspring"
       ]
     },
     {
@@ -1329,19 +1703,19 @@
       ]
     },
     {
+      "name": "Heart of Glass",
+      "count": 2,
+      "artists": [
+        "Blondie",
+        "Mini Mansions"
+      ]
+    },
+    {
       "name": "Heartbeat",
       "count": 2,
       "artists": [
         "Bat Fangs",
         "Wham!"
-      ]
-    },
-    {
-      "name": "Heaven",
-      "count": 2,
-      "artists": [
-        "David Byrne",
-        "Squeeze"
       ]
     },
     {
@@ -1380,17 +1754,32 @@
       ]
     },
     {
-      "name": "Hungry Like the Wolf",
-      "count": 2,
-      "artists": [
-        "Duran Duran"
-      ]
-    },
-    {
       "name": "I Feel You",
       "count": 2,
       "artists": [
         "Depeche Mode"
+      ]
+    },
+    {
+      "name": "I Fought the Law",
+      "count": 2,
+      "artists": [
+        "Masked Intruder",
+        "Stray Cats"
+      ]
+    },
+    {
+      "name": "I Wanna Riot",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
+      "name": "I Want Candy",
+      "count": 2,
+      "artists": [
+        "Bow Wow Wow"
       ]
     },
     {
@@ -1429,17 +1818,18 @@
       ]
     },
     {
+      "name": "In My Head",
+      "count": 2,
+      "artists": [
+        "Danny Elfman",
+        "T.S.O.L."
+      ]
+    },
+    {
       "name": "In Your Eyes",
       "count": 2,
       "artists": [
         "Peter Gabriel"
-      ]
-    },
-    {
-      "name": "Infected",
-      "count": 2,
-      "artists": [
-        "Bad Religion"
       ]
     },
     {
@@ -1464,6 +1854,13 @@
       ]
     },
     {
+      "name": "It's Quite Alright",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
       "name": "Jocko Homo",
       "count": 2,
       "artists": [
@@ -1482,6 +1879,13 @@
       "count": 2,
       "artists": [
         "Dropkick Murphys"
+      ]
+    },
+    {
+      "name": "Journey to the End of the East Bay",
+      "count": 2,
+      "artists": [
+        "Rancid"
       ]
     },
     {
@@ -1558,17 +1962,17 @@
       ]
     },
     {
-      "name": "Los Angeles Is Burning",
-      "count": 2,
-      "artists": [
-        "Bad Religion"
-      ]
-    },
-    {
       "name": "Love Action (I Believe in Love)",
       "count": 2,
       "artists": [
         "The Human League"
+      ]
+    },
+    {
+      "name": "Love Resurrection",
+      "count": 2,
+      "artists": [
+        "Alison Moyet"
       ]
     },
     {
@@ -1586,11 +1990,18 @@
       ]
     },
     {
+      "name": "Lullaby",
+      "count": 2,
+      "artists": [
+        "James",
+        "The Cure"
+      ]
+    },
+    {
       "name": "Marching On",
       "count": 2,
       "artists": [
-        "The Alarm",
-        "The Human League"
+        "The Alarm"
       ]
     },
     {
@@ -1598,6 +2009,20 @@
       "count": 2,
       "artists": [
         "Jimmy Buffett"
+      ]
+    },
+    {
+      "name": "Masquerade",
+      "count": 2,
+      "artists": [
+        "Berlin"
+      ]
+    },
+    {
+      "name": "Maxwell Murder",
+      "count": 2,
+      "artists": [
+        "Rancid"
       ]
     },
     {
@@ -1612,6 +2037,14 @@
       "count": 2,
       "artists": [
         "Kraftwerk"
+      ]
+    },
+    {
+      "name": "Midnight",
+      "count": 2,
+      "artists": [
+        "Alison Moyet",
+        "Yaz"
       ]
     },
     {
@@ -1657,10 +2090,10 @@
       ]
     },
     {
-      "name": "My Way",
+      "name": "My Own Country",
       "count": 2,
       "artists": [
-        "Dropkick Murphys"
+        "Pennywise"
       ]
     },
     {
@@ -1678,10 +2111,38 @@
       ]
     },
     {
+      "name": "New Religion",
+      "count": 2,
+      "artists": [
+        "Duran Duran"
+      ]
+    },
+    {
       "name": "New Song",
       "count": 2,
       "artists": [
         "Howard Jones"
+      ]
+    },
+    {
+      "name": "Nihilism",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
+      "name": "Nitro (Youth Energy)",
+      "count": 2,
+      "artists": [
+        "The Offspring"
+      ]
+    },
+    {
+      "name": "No Horses",
+      "count": 2,
+      "artists": [
+        "Garbage"
       ]
     },
     {
@@ -1699,14 +2160,6 @@
       ]
     },
     {
-      "name": "Nobody's Diary",
-      "count": 2,
-      "artists": [
-        "Alison Moyet",
-        "Yaz"
-      ]
-    },
-    {
       "name": "Nothing to Fear (But Fear Itself)",
       "count": 2,
       "artists": [
@@ -1718,6 +2171,20 @@
       "count": 2,
       "artists": [
         "Kraftwerk"
+      ]
+    },
+    {
+      "name": "Old Friend",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
+      "name": "Olympia WA.",
+      "count": 2,
+      "artists": [
+        "Rancid"
       ]
     },
     {
@@ -1749,11 +2216,18 @@
       ]
     },
     {
-      "name": "Only You",
+      "name": "Ordinary World",
       "count": 2,
       "artists": [
-        "Alison Moyet",
-        "Yaz"
+        "Duran Duran"
+      ]
+    },
+    {
+      "name": "Otherside",
+      "count": 2,
+      "artists": [
+        "Paul Oakenfold",
+        "Red Hot Chili Peppers"
       ]
     },
     {
@@ -1764,10 +2238,25 @@
       ]
     },
     {
+      "name": "Overkill",
+      "count": 2,
+      "artists": [
+        "Colin Hay",
+        "Men At Work"
+      ]
+    },
+    {
       "name": "Peek-A-Boo!",
       "count": 2,
       "artists": [
         "Devo"
+      ]
+    },
+    {
+      "name": "Pennywise",
+      "count": 2,
+      "artists": [
+        "Pennywise"
       ]
     },
     {
@@ -1792,11 +2281,11 @@
       ]
     },
     {
-      "name": "Planet Earth",
+      "name": "Play That Funky Music",
       "count": 2,
       "artists": [
-        "Devo",
-        "Duran Duran"
+        "George Michael",
+        "Trouble Funk"
       ]
     },
     {
@@ -1821,10 +2310,24 @@
       ]
     },
     {
+      "name": "Pretty Fly (for a White Guy)",
+      "count": 2,
+      "artists": [
+        "The Offspring"
+      ]
+    },
+    {
       "name": "Prison Bound",
       "count": 2,
       "artists": [
         "Social Distortion"
+      ]
+    },
+    {
+      "name": "Private Universe",
+      "count": 2,
+      "artists": [
+        "Crowded House"
       ]
     },
     {
@@ -1836,10 +2339,10 @@
       ]
     },
     {
-      "name": "Queer",
+      "name": "Radio",
       "count": 2,
       "artists": [
-        "Garbage"
+        "Rancid"
       ]
     },
     {
@@ -1850,11 +2353,24 @@
       ]
     },
     {
-      "name": "Rain",
+      "name": "Recipe for Hate",
       "count": 2,
       "artists": [
-        "The Cult",
-        "U2"
+        "Bad Religion"
+      ]
+    },
+    {
+      "name": "Rio",
+      "count": 2,
+      "artists": [
+        "Duran Duran"
+      ]
+    },
+    {
+      "name": "Roots Radicals",
+      "count": 2,
+      "artists": [
+        "Rancid"
       ]
     },
     {
@@ -1865,10 +2381,39 @@
       ]
     },
     {
-      "name": "Save a Prayer",
+      "name": "Ruby Soho",
       "count": 2,
       "artists": [
-        "Duran Duran"
+        "Rancid"
+      ]
+    },
+    {
+      "name": "Run",
+      "count": 2,
+      "artists": [
+        "AWOLNATION",
+        "Foo Fighters"
+      ]
+    },
+    {
+      "name": "Salvation",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
+      "name": "Same Old Story",
+      "count": 2,
+      "artists": [
+        "Pennywise"
+      ]
+    },
+    {
+      "name": "Sanity",
+      "count": 2,
+      "artists": [
+        "Bad Religion"
       ]
     },
     {
@@ -1886,6 +2431,20 @@
       ]
     },
     {
+      "name": "Self Esteem",
+      "count": 2,
+      "artists": [
+        "The Offspring"
+      ]
+    },
+    {
+      "name": "Sex Is Not the Enemy",
+      "count": 2,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
       "name": "Shake Dog Shake",
       "count": 2,
       "artists": [
@@ -1900,6 +2459,20 @@
       ]
     },
     {
+      "name": "She Got Arrested",
+      "count": 2,
+      "artists": [
+        "The Interrupters"
+      ]
+    },
+    {
+      "name": "She's Kerosene",
+      "count": 2,
+      "artists": [
+        "The Interrupters"
+      ]
+    },
+    {
       "name": "Shout",
       "count": 2,
       "artists": [
@@ -1908,19 +2481,18 @@
       ]
     },
     {
-      "name": "Situation",
+      "name": "Shut 'Em Down",
       "count": 2,
       "artists": [
-        "Alison Moyet",
-        "Yaz"
+        "Prophets of Rage",
+        "Public Enemy"
       ]
     },
     {
       "name": "Sixty Eight Guns",
       "count": 2,
       "artists": [
-        "The Alarm",
-        "The Human League"
+        "The Alarm"
       ]
     },
     {
@@ -2002,21 +2574,6 @@
       ]
     },
     {
-      "name": "Special",
-      "count": 2,
-      "artists": [
-        "Garbage"
-      ]
-    },
-    {
-      "name": "Staring at the Sun",
-      "count": 2,
-      "artists": [
-        "The Offspring",
-        "U2"
-      ]
-    },
-    {
       "name": "Strangelove",
       "count": 2,
       "artists": [
@@ -2034,8 +2591,7 @@
       "name": "Strength",
       "count": 2,
       "artists": [
-        "The Alarm",
-        "The Human League"
+        "The Alarm"
       ]
     },
     {
@@ -2069,6 +2625,13 @@
       ]
     },
     {
+      "name": "Tenderloin",
+      "count": 2,
+      "artists": [
+        "Rancid"
+      ]
+    },
+    {
       "name": "That'll Be the Day",
       "count": 2,
       "artists": [
@@ -2080,6 +2643,13 @@
       "count": 2,
       "artists": [
         "Devo"
+      ]
+    },
+    {
+      "name": "The 11th Hour",
+      "count": 2,
+      "artists": [
+        "Rancid"
       ]
     },
     {
@@ -2097,13 +2667,6 @@
       ]
     },
     {
-      "name": "The Foggy Dew",
-      "count": 2,
-      "artists": [
-        "Dropkick Murphys"
-      ]
-    },
-    {
       "name": "The Gang's All Here",
       "count": 2,
       "artists": [
@@ -2115,6 +2678,13 @@
       "count": 2,
       "artists": [
         "Streetlight Manifesto"
+      ]
+    },
+    {
+      "name": "The Kids Aren't Alright",
+      "count": 2,
+      "artists": [
+        "The Offspring"
       ]
     },
     {
@@ -2182,10 +2752,18 @@
       ]
     },
     {
-      "name": "The Wild Boys",
+      "name": "The Wild Rover",
       "count": 2,
       "artists": [
-        "Duran Duran"
+        "Dropkick Murphys",
+        "Mahones"
+      ]
+    },
+    {
+      "name": "The World Is Not Enough",
+      "count": 2,
+      "artists": [
+        "Garbage"
       ]
     },
     {
@@ -2210,26 +2788,10 @@
       ]
     },
     {
-      "name": "This Must Be the Place (Naive Melody)",
-      "count": 2,
-      "artists": [
-        "David Byrne",
-        "U2"
-      ]
-    },
-    {
       "name": "Through These Eyes",
       "count": 2,
       "artists": [
         "Social Distortion"
-      ]
-    },
-    {
-      "name": "Time Bomb",
-      "count": 2,
-      "artists": [
-        "Rancid",
-        "The Interrupters"
       ]
     },
     {
@@ -2275,6 +2837,14 @@
       ]
     },
     {
+      "name": "Turn It Up",
+      "count": 2,
+      "artists": [
+        "Bat Fangs",
+        "Save Ferris"
+      ]
+    },
+    {
       "name": "Uncontrollable Urge",
       "count": 2,
       "artists": [
@@ -2287,6 +2857,14 @@
       "artists": [
         "Danny Elfman",
         "Nile Rodgers"
+      ]
+    },
+    {
+      "name": "Vertigo",
+      "count": 2,
+      "artists": [
+        "Mini Mansions",
+        "U2"
       ]
     },
     {
@@ -2332,6 +2910,21 @@
       ]
     },
     {
+      "name": "Weather With You",
+      "count": 2,
+      "artists": [
+        "Crowded House"
+      ]
+    },
+    {
+      "name": "Welcome to the Terrordome",
+      "count": 2,
+      "artists": [
+        "Living Colour",
+        "Public Enemy"
+      ]
+    },
+    {
       "name": "What About Me?",
       "count": 2,
       "artists": [
@@ -2353,6 +2946,13 @@
       ]
     },
     {
+      "name": "When My Train Pulls In",
+      "count": 2,
+      "artists": [
+        "Gary Clark Jr."
+      ]
+    },
+    {
       "name": "When the World Comes Apart",
       "count": 2,
       "artists": [
@@ -2360,11 +2960,17 @@
       ]
     },
     {
+      "name": "When You Come",
+      "count": 2,
+      "artists": [
+        "Crowded House"
+      ]
+    },
+    {
       "name": "Where Were You Hiding When the Storm Broke",
       "count": 2,
       "artists": [
-        "The Alarm",
-        "The Human League"
+        "The Alarm"
       ]
     },
     {
@@ -2372,6 +2978,14 @@
       "count": 2,
       "artists": [
         "Devo"
+      ]
+    },
+    {
+      "name": "Who Can It Be Now?",
+      "count": 2,
+      "artists": [
+        "Colin Hay",
+        "Men At Work"
       ]
     },
     {
@@ -2389,10 +3003,46 @@
       ]
     },
     {
+      "name": "Why Don't You Get a Job?",
+      "count": 2,
+      "artists": [
+        "The Offspring"
+      ]
+    },
+    {
+      "name": "Wicked Ways",
+      "count": 2,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
+      "name": "Winter Kills",
+      "count": 2,
+      "artists": [
+        "Alison Moyet",
+        "Yaz"
+      ]
+    },
+    {
       "name": "Would You Be Impressed?",
       "count": 2,
       "artists": [
         "Streetlight Manifesto"
+      ]
+    },
+    {
+      "name": "Wrong Way Kids",
+      "count": 2,
+      "artists": [
+        "Bad Religion"
+      ]
+    },
+    {
+      "name": "You",
+      "count": 2,
+      "artists": [
+        "Bad Religion"
       ]
     },
     {
@@ -2407,6 +3057,20 @@
       "count": 2,
       "artists": [
         "Howard Jones"
+      ]
+    },
+    {
+      "name": "You Look So Fine",
+      "count": 2,
+      "artists": [
+        "Garbage"
+      ]
+    },
+    {
+      "name": "You're Gonna Go Far, Kid",
+      "count": 2,
+      "artists": [
+        "The Offspring"
       ]
     }
   ]

@@ -9,9 +9,14 @@
  * output carries an explicit `coverage` block the tool narrates up front. Numbers
  * here describe "songs I actually witnessed," NOT a play-count of the band's catalog.
  *
- * Counting rules (mirror workers/mcp-server resolveSetlistEntry):
- *   - One setlist per concert: the headliner's, preferred over any opener's.
- *   - A song counts once per concert (deduped within a show).
+ * Counting rules:
+ *   - Every act's setlist counts, openers included: a song an opening act played was
+ *     heard that night as surely as the headliner's (#690). Until 2026-11 only one
+ *     setlist per concert counted, the headliner's, so 547 songs openers played were
+ *     missing — and Now Spinning, which counts every setlist, would have disagreed.
+ *   - A song counts once per act per concert (deduped within one act's set).
+ *   - Tape entries (`tape: true`: intro music, a recording played to the room) are
+ *     skipped. They were not performed.
  *   - Titles are grouped case/space/trailing-punctuation-insensitively; the most
  *     common original casing wins as the display name.
  *   - A song played by different artists merges into one row, but every artist that
@@ -38,12 +43,15 @@ interface Concert {
   date: string
   headliner: string
   headlinerNormalized: string
+  openers?: string[]
 }
 interface ConcertsData {
   concerts: Concert[]
 }
 interface SetlistSong {
   name?: string
+  /** setlist.fm marks recorded music played to the room, rather than performed. */
+  tape?: boolean
 }
 interface SetlistSet {
   song?: SetlistSong[]
@@ -117,18 +125,29 @@ function songKey(name: string): string {
 function songsOf(entry: SetlistEntry): string[] {
   const sets = entry.setlist?.sets?.set ?? []
   const songs: string[] = []
-  for (const s of sets) for (const sg of s.song ?? []) if (sg.name && sg.name.trim()) songs.push(sg.name.trim())
+  for (const s of sets) for (const sg of s.song ?? []) if (sg.name && sg.name.trim() && !sg.tape) songs.push(sg.name.trim())
   return songs
 }
 
-// Headliner-preferred resolution, identical in spirit to the MCP server's helper:
-// a concert can carry several entries (headliner + each opener), prefer the headliner's,
-// else fall back to the richest set so a covered night still contributes.
-function resolveEntry(entries: SetlistEntry[], headlinerNormalized: string) {
-  const withSongs = entries.map((e) => ({ e, songs: songsOf(e) })).filter((x) => x.songs.length)
-  if (!withSongs.length) return null
-  const headliner = withSongs.find((x) => normalizeName(x.e.artistName) === headlinerNormalized)
-  return headliner ?? [...withSongs].sort((a, b) => b.songs.length - a.songs.length)[0]
+// Every act's set on the night, headliner and openers alike, each with the songs performed.
+// One entry per act: a duplicate entry for the same act keeps the fuller set.
+function setsOf(entries: SetlistEntry[]): { e: SetlistEntry; slug: string; songs: string[] }[] {
+  const byAct = new Map<string, { e: SetlistEntry; slug: string; songs: string[] }>()
+  for (const e of entries) {
+    const songs = songsOf(e)
+    if (!songs.length) continue
+    const slug = normalizeName(e.artistName)
+    const prev = byAct.get(slug)
+    if (!prev || songs.length > prev.songs.length) byAct.set(slug, { e, slug, songs })
+  }
+  return [...byAct.values()]
+}
+
+// The act's name as the archive bills it on that night (headliner or opener), so a listed
+// artist reads as it does everywhere else on the site, not as setlist.fm spells it.
+function billingName(c: Concert, slug: string): string | undefined {
+  if (c.headlinerNormalized === slug) return c.headliner
+  return (c.openers ?? []).find((o) => normalizeName(o) === slug)
 }
 
 function entriesByConcert(entries: SetlistEntry[]): Map<string, SetlistEntry[]> {
@@ -149,17 +168,16 @@ export function buildSongIndex(
   const byConcert = entriesByConcert(entries)
   const agg = new Map<string, SongIndexEntry>()
   for (const c of concerts) {
-    const chosen = resolveEntry(byConcert.get(c.id) ?? [], c.headlinerNormalized)
-    if (!chosen) continue
-    const slug = normalizeName(chosen.e.artistName)
-    const seen = new Set<string>() // a song counts once per show
-    for (const raw of chosen.songs) {
-      const key = `${slug}|${songKey(raw)}`
-      if (!songKey(raw) || seen.has(key)) continue
-      seen.add(key)
-      const rec = agg.get(key)
-      if (rec) rec.dates.push(c.date)
-      else agg.set(key, { name: raw, act: chosen.e.artistName, slug, dates: [c.date] })
+    for (const set of setsOf(byConcert.get(c.id) ?? [])) {
+      const seen = new Set<string>() // a song counts once per act per show
+      for (const raw of set.songs) {
+        const key = `${set.slug}|${songKey(raw)}`
+        if (!songKey(raw) || seen.has(key)) continue
+        seen.add(key)
+        const rec = agg.get(key)
+        if (rec) rec.dates.push(c.date)
+        else agg.set(key, { name: raw, act: set.e.artistName, slug: set.slug, dates: [c.date] })
+      }
     }
   }
 
@@ -196,23 +214,25 @@ export async function generateMostPlayedSongs(): Promise<MostPlayedSongs> {
   let concertsWithSetlist = 0
 
   for (const c of concertsData.concerts) {
-    const songs = resolveEntry(byConcert.get(c.id) ?? [], c.headlinerNormalized)?.songs
-    if (!songs) continue
+    const sets = setsOf(byConcert.get(c.id) ?? [])
+    if (!sets.length) continue
     concertsWithSetlist++
 
-    const seen = new Set<string>() // a song counts once per show
-    for (const raw of songs) {
-      const key = songKey(raw)
-      if (!key || seen.has(key)) continue
-      seen.add(key)
-      let rec = agg.get(key)
-      if (!rec) {
-        rec = { displayCounts: new Map(), count: 0, artists: new Set() }
-        agg.set(key, rec)
+    for (const set of sets) {
+      const seen = new Set<string>() // a song counts once per act per show
+      for (const raw of set.songs) {
+        const key = songKey(raw)
+        if (!key || seen.has(key)) continue
+        seen.add(key)
+        let rec = agg.get(key)
+        if (!rec) {
+          rec = { displayCounts: new Map(), count: 0, artists: new Set() }
+          agg.set(key, rec)
+        }
+        rec.count++
+        rec.artists.add(billingName(c, set.slug) ?? set.e.artistName) // the act that played it, as the archive spells it
+        rec.displayCounts.set(raw, (rec.displayCounts.get(raw) ?? 0) + 1)
       }
-      rec.count++
-      rec.artists.add(c.headliner)
-      rec.displayCounts.set(raw, (rec.displayCounts.get(raw) ?? 0) + 1)
     }
   }
 
