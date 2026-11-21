@@ -82,6 +82,7 @@ npm run build-data   # Refresh data pipeline
 | Running tests / why CI is split | `test/README.md` — the root suite excludes `workers/**`; each Worker has its own config and its own CI workflow |
 | Rotating a secret / where keys live | `docs/SECRETS.md` |
 | Operating the internal dashboard | `docs/DASHBOARD_OPERATIONS.md` |
+| Now Spinning: setting up the Raspberry Pi | `docs/NOW_SPINNING_OPERATIONS.md` |
 
 ---
 

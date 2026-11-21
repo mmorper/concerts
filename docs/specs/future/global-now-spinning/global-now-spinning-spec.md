@@ -112,7 +112,7 @@ fine left on for an hour.
 flowchart LR
   TT[Music Hall 2.3] -->|phono| AVR[Marantz AV7703]
   AVR -->|main zone| AMP[MM7055 → speakers]
-  AVR -->|Zone 2 PRE OUT, fixed level, RCA| USB[USB audio interface]
+  AVR -->|Zone 2 PRE OUT, fixed level,<br/>RCA → 1/4" TS| USB[Mackie Onyx Blackjack<br/>USB audio interface]
   USB --> PI[Raspberry Pi<br/>now-spinning listener]
   PI -.->|network control<br/>input + Zone 2| AVR
   PI -->|ShazamIO| SZ[(Shazam)]
@@ -167,13 +167,18 @@ any part of it.
 
 ## Phase 0: one hardware evening, before any code
 
+Step-by-step instructions for setting up the Pi and running these checks are in
+[`docs/NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md).
+
 Three assumptions decide whether this design works, and none can be tested from a desk. Test
-them first with a laptop (or the Pi, if it has arrived), any line-in, and the Apple TV. Record
-the results in this spec's revision history.
+them first with a laptop (or the Pi, if it has arrived), the Onyx Blackjack, and the Apple TV.
+Record the results in this spec's revision history.
 
 | # | Check | Why it matters |
 |---|---|---|
-| 1 | AV7703: Phono plays out of ZONE2 PRE OUT; find a fixed Zone 2 level with peaks near −12 dBFS | Confirmed only for the near-identical AV7702 |
+| 1 | AV7703: Phono plays out of ZONE2 PRE OUT. Set the Blackjack (see [Audio interface settings](#audio-interface-settings)), then find a fixed Zone 2 level where the loudest record peaks near −12 dBFS and the SIG/OL lights never turn red. | Phono to Zone 2 is confirmed only for the near-identical AV7702 |
+| 1b | On the Pi: `arecord -l` lists the Blackjack, and `arecord -D plughw:<card> -f cd -d 10 t.wav` records both channels (`plughw` converts from whatever bit depth the Blackjack offers) | It works without drivers on a Mac, which points to USB Audio Class; this confirms Linux sees it the same way |
+| 1c | On the Pi: `vcgencmd get_throttled` reads `0x0`, `/proc/device-tree/chosen/power/max_current` reads 5000 (a recognised 5 A supply), and `dmesg` shows no USB over-current or under-voltage warnings with the Blackjack plugged in. Steps in [`NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md) §5. | The Blackjack draws its power from the Pi's USB ports |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | With the receiver on Phono, wake the Apple TV. Does the receiver switch input to it? | If HDMI Control (CEC) does that, waking the Apple TV stops the record |
@@ -425,7 +430,8 @@ device.
   Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it.
 
 **Identification loop.**
-- Capture 44.1 kHz stereo from the USB interface (`sounddevice`), downmixed to mono.
+- Capture 44.1 kHz stereo from the Blackjack (`sounddevice`, selected by name, not by card
+  number, which can change between boots), downmixed to mono.
 - **First match fast.** When sound follows silence, record a 10 s clip and recognise at once.
   Target: the screen changes within about 30 s of the needle landing.
 - **Then slow down.** Once a track is established, check every 30 s, and immediately after any
@@ -453,8 +459,9 @@ an aarch64 wheel for the Pi's Python.
 
 **Running it.** Power the Pi from an outlet that stays on, and keep logs in RAM
 (`Storage=volatile` in journald), so cutting power to the cabinet can't corrupt the card.
-Updating is `git pull` and `systemctl restart now-spinning`. Write this up, with token rotation,
-as `docs/NOW_SPINNING_OPERATIONS.md` in Phase 4.
+Updating is `git pull` and `systemctl restart now-spinning`. Phase 4 adds the install, update and
+token-rotation steps to `docs/NOW_SPINNING_OPERATIONS.md`, which already covers setting up the
+Pi itself.
 
 ---
 
@@ -513,12 +520,30 @@ Set `isIdleTimerDisabled` while `kind` is `track`, `gap` or `unmatched`, and cle
 | Power | Official Raspberry Pi 27 W USB-C supply | Underpowered Pis drop USB audio. |
 | Storage | 32 GB A2 microSD | Raspberry Pi OS, 64-bit (Lite if listening only) |
 | Case | Official Pi 5 case with fan | It sits in an AV cabinet; keep it cool. |
-| Audio in | Behringer UCA202 / UCA222 (RCA line in, USB, class-compliant) | **Check in Phase 0:** its input is consumer level and the AV7703's pre-outs are rated 1.2 V. Set the Zone 2 fixed level so peaks stay around −12 dBFS. If it clips at the lowest usable setting, use a HiFiBerry DAC+ADC Pro instead. |
-| Cables | RCA stereo pair, 1 m. For option A, micro-HDMI → HDMI. | AV7703 ZONE2 PRE OUT L/R → interface IN |
+| Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. It has no power socket: it runs on USB power from the Pi. The Pi 5 allows 1.6 A across its USB ports only when it recognises a 5 A supply (600 mA otherwise), so use the 5 A-capable supply from the kit, and keep phantom power off, which is the Blackjack's biggest draw. |
+| Audio cable | Dual RCA (male) → dual 1/4" TS (male), 1 m, such as Hosa's CPR-200 series | AV7703 ZONE2 PRE OUT L → Blackjack input 1, R → input 2. Unbalanced TS is right here: the pre-outs are unbalanced and the run is short. |
+| USB cable | USB-A → USB-B, about 1 m (one likely came with the Blackjack) | Pi USB 2.0 port (black) → Blackjack. The blue USB 3 ports are fine too, but USB 2 keeps it away from any USB 3 interference near the Wi-Fi antenna. |
+| Display cable | Micro-HDMI → HDMI (option A only) | Pi → a spare AV7703 HDMI input |
 | Network | Ethernet patch cable to the cabinet switch | Wi-Fi works too; wired is steadier. |
 
-**Shelf placement:** next to the AV7703, with the interface on a short USB lead so the RCA run stays
-short and away from the amp's power cables (hum).
+**Shelf placement:** next to the AV7703, with the Blackjack on a short USB lead so the analogue run
+stays short and away from the amp's power cables (hum). The Blackjack's monitor outputs and
+headphone jack stay unused.
+
+### Audio interface settings
+
+Set once, then leave alone. Write the gain positions down; a bumped knob is the most likely
+reason recognition gets worse later.
+
+| Control | Setting |
+|---|---|
+| Inputs 1 and 2: LINE / HI-Z button | **LINE** (button out) |
+| Inputs 1 and 2: GAIN | Start at the lowest position (−15 dB) on both, matched. Raise both together only if peaks sit well below −12 dBFS with Zone 2 at a sensible fixed level. |
+| PHANTOM | **Off.** Phantom power on a line output is the one setting that could harm something. |
+| INPUT MONITOR: MONO/STEREO, TO MON | Irrelevant to USB capture; leave TO MON at minimum |
+| MONITOR, PHONES | Minimum; nothing is plugged into them |
+
+The listener records the two channels as stereo and downmixes to mono itself.
 
 **Receiver setup, once:**
 - Zone 2 Setup → Volume Level: fixed.
@@ -628,7 +653,8 @@ changes the page live. Then make the display decision.
 
 ### Phase 4: Pi listener (Window 4)
 **Create:** `now-spinning/pi/{pyproject.toml,now_spinning/*.py,tests/,now-spinning.service,README.md}`,
-`.github/workflows/now-spinning-pi-ci.yml`, `docs/NOW_SPINNING_OPERATIONS.md`
+`.github/workflows/now-spinning-pi-ci.yml`
+**Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§11: install, update, token rotation)
 **Done when:** `--wav --dry-run` prints the right POSTs, pytest passes, and the hardware
 checklist passes. **This is v7.0.0.**
 
@@ -663,6 +689,10 @@ checklist passes. **This is v7.0.0.**
 
 ## Revision History
 
+- **2026-11-21, v1.2.0:** Audio interface: Mike's Mackie Onyx Blackjack replaces the Behringer
+  UCA202/UCA222 and the HiFiBerry fallback. Hardware list, cables, Phase 0 checks and a settings
+  table updated to match, including how the Pi powers it over USB (check 1c). Pi setup and
+  Phase 0 steps written up in `docs/NOW_SPINNING_OPERATIONS.md`.
 - **2026-11-21, v1.1.0:** Architecture review. Verified against the archive data and corrected:
   covers are now consulted for acts Mike has seen (new `seen-cover` screen), medleys match by
   part, the cover lookup no longer mangles "&" names, all-bracket titles match, displayed titles
