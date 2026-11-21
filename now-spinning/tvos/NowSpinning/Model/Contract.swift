@@ -128,7 +128,8 @@ struct Track: Decodable, Equatable, Sendable {
         count = try? c.decode(Count.self, forKey: .count)
         headline = (try? c.decode(String.self, forKey: .headline)) ?? ""
         lines = (try? c.decode([String].self, forKey: .lines)) ?? []
-        nights = (try? c.decode([Night].self, forKey: .nights)) ?? []
+        // One night at a time, so a single malformed night doesn't drop the rest.
+        nights = ((try? c.decode([Lenient<Night>].self, forKey: .nights)) ?? []).compactMap(\.value)
         moreNights = (try? c.decode(Int.self, forKey: .moreNights)) ?? 0
         accentHue = (try? c.decode(Double.self, forKey: .accentHue)) ?? 260
 
@@ -158,6 +159,12 @@ struct Track: Decodable, Equatable, Sendable {
             }
         }
         photos = Array(list.prefix(5))
+    }
+
+    /// Decodes an element if it can, or nil, without failing the list it's in.
+    private struct Lenient<T: Decodable>: Decodable {
+        let value: T?
+        init(from decoder: Decoder) throws { value = try? T(from: decoder) }
     }
 
     /// Only https images go on screen.

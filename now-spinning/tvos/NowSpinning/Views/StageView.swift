@@ -176,6 +176,7 @@ private struct NowPlaying: View {
 private struct PhotoBackdrop: View {
     let photos: [Track.Photo]
     let index: Int
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -187,7 +188,7 @@ private struct PhotoBackdrop: View {
                     .colorMultiply(Color(white: 0.55))
                     .scaleEffect(1.08)
                     .opacity(i == index ? 1 : 0)
-                    .animation(.easeInOut(duration: 2.2), value: index)
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 2.2), value: index)
             }
         }
         .frame(width: 1920, height: 1080)
@@ -465,7 +466,7 @@ private struct Archive: View {
             QuietLines(headline: nil, lines: [track.headline], hopefulLast: false, nights: nil)
         } else if let count = track.count {
             HStack(alignment: .firstTextBaseline, spacing: 0) {
-                Text("\(count.n)")
+                Text(verbatim: String(count.n))
                     .font(Theme.playfair(150, .bold))
                     .foregroundStyle(.white)
                 if count.times {
@@ -559,7 +560,7 @@ private struct Nights: View {
                     }
                 }
                 if more > 0 {
-                    Text("+ \(more) more")
+                    Text(verbatim: "+ \(more) more")
                         .font(Theme.sans(24))
                         .foregroundStyle(Theme.dim)
                 }
@@ -577,6 +578,7 @@ private struct Strip: View {
     let index: Int
     let flipped: Bool
     let faded: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 22) {
@@ -604,7 +606,7 @@ private struct Strip: View {
                     .shadow(color: .black.opacity(0.5), radius: 15, y: 10)
                     .opacity(i == index ? 1 : 0.55)
                     .offset(y: i == index ? -6 : 0)
-                    .animation(.easeInOut(duration: 0.6), value: index)
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.6), value: index)
             }
         }
         .opacity(faded ? 0 : 1)
