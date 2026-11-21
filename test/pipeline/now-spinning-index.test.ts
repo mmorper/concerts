@@ -59,8 +59,14 @@ describe("Now Spinning index (real data)", () => {
     for (const a of acts) for (const s of a.songs) expect(s.k.length, `${a.slug} "${s.n}"`).toBeGreaterThan(0);
   });
 
-  it("agrees with the site's song index on how many nights each song was heard (#690)", async () => {
-    // Every act's setlist counts in both. Compared by act and the setlist's spelling.
+  it("agrees with the site's song index, billing by billing, on how many nights each song was heard (#690)", async () => {
+    // Every act's setlist counts in both. Compared per billing name and the setlist's spelling,
+    // which is how the site's song index lists them.
+    //
+    // The number on the TV can be higher, on purpose: Now Spinning counts an act, and an act can
+    // play under several billings. Brian Setzer's "Rock This Town" is three rows of 1 on the site
+    // (brian-setzer, the-brian-setzer-orchestra, brian-setzer-68-comeback-special) and "3 times"
+    // on the TV. Per billing, the two agree; that is what this checks.
     const siteIndex = JSON.parse(fs.readFileSync(path.join(DATA, "song-index.json"), "utf-8")).songs as { name: string; slug: string; dates: string[] }[];
     const ours = new Map<string, number>();
     for (const a of acts) {
