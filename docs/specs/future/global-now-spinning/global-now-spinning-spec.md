@@ -37,6 +37,7 @@ tvOS app on the Apple TV that shows it.
 | Video routing | Already done: the AV7703 sends the Apple TV picture to the TV while Phono plays. |
 | Play history | **None.** No log of vinyl plays is kept anywhere (see [Privacy](#privacy)). |
 | Display | **A tvOS app on the Apple TV.** The web page is the development display and the fallback. |
+| Getting the app onto the Apple TV | One Apple TV, the one in the living room. From Xcode while it's being built; then TestFlight, kept fresh by Xcode Cloud. Mike has a paid Apple developer account. |
 | What v7.0.0 means | A record plays and the tvOS app shows it on the TV: the index, the Worker, the Pi listener and the app, working end to end. |
 | Version number | v7.0.0. Social Syndication (#323) moves to v6.5.0. |
 | Listener health | Yes. A quiet heartbeat from the Pi, a notice on the idle screen when it's offline, and one line on the operator dashboard. No song data. |
@@ -487,7 +488,7 @@ Without this, a dead Pi or a blocked recogniser looks exactly like "nothing play
 | Secret | Homes |
 |---|---|
 | `NOW_SPINNING_INGEST_TOKEN` | prod `wrangler secret`, `workers/now-spinning/.dev.vars`, Pi `/etc/now-spinning/env` |
-| `NOW_SPINNING_DISPLAY_TOKEN` | prod `wrangler secret`, `.dev.vars`, each display, and `workers/dashboard-refresh` (to read `/health`) |
+| `NOW_SPINNING_DISPLAY_TOKEN` | prod `wrangler secret`, `.dev.vars`, each browser that opens the web page, `Secrets.xcconfig` on Mike's Mac, the Xcode Cloud workflow (a secret environment variable), and `workers/dashboard-refresh` (to read `/health`) |
 
 Add both to `docs/SECRETS.md`'s matrix. Generate each with `openssl rand -base64 32`; they must
 differ. Rotating the display token signs every display out until it is given the new one.
@@ -705,22 +706,40 @@ It can't build, sign or run them. Two things narrow that gap:
   (`.github/workflows/now-spinning-tvos-ci.yml`), so every PR proves the code compiles.
 - The fixture previews let Mike check every screen in Xcode in a minute.
 
-Keep the Xcode project minimal. If hand-editing it proves fragile, generate it from a
-`project.yml` with XcodeGen.
+Keep the Xcode project minimal, with a shared scheme, and commit it. If hand-editing it proves
+fragile, generate it from a `project.yml` with XcodeGen and commit the result.
 
 **Putting it on the screen** is the listener's job: see
 [Pi listener](#pi-listener-now-spinningpi). It depends on Phase 0 checks 4 and 5.
 
-**Staying installed.** An app installed outside the App Store stops working after a while:
+**Getting it onto the Apple TV, and keeping it there.** One Apple TV, the one in the living
+room. Mike has a paid Apple Developer Program membership.
 
-| How it's signed | Works for | Needs |
+| Stage | How | Lasts |
 |---|---|---|
-| Free Apple account, installed from Xcode | 7 days | nothing |
-| Apple Developer Program, installed from Xcode | about a year (until the provisioning profile expires) | the paid program |
-| TestFlight | 90 days per build | the paid program |
+| While it's being built | Installed straight from Xcode. Pair the Apple TV once (Apple TV: Settings → Remotes and Devices → Remote App and Devices; Xcode: Window → Devices and Simulators), then Run. | About a year per install |
+| Once it's stable | TestFlight, internal testing only, with Xcode Cloud doing the builds | Each build 90 days; replaced long before that |
 
-Recommended: the paid program, installed from Xcode, with a calendar reminder to rebuild and
-reinstall each year. The Worker writes the copy, so wording changes never need a reinstall.
+**Xcode Cloud** builds the app from this repo and sends each build to TestFlight:
+- It starts on a change to `now-spinning/tvos/**` on `main`, and on a schedule, monthly. The
+  schedule is what keeps the app from expiring when nothing has changed.
+- TestFlight on the Apple TV has automatic updates turned on, so each new build installs itself.
+- The workflow itself lives in App Store Connect, not in the repo. What the repo holds is
+  `now-spinning/tvos/ci_scripts/ci_post_clone.sh`, which writes `Secrets.xcconfig` from a secret
+  environment variable set on the workflow. The display token therefore has one more home:
+  Xcode Cloud.
+- Xcode Cloud needs a committed Xcode project with a shared scheme. It can't generate one first,
+  so the project file is committed even if XcodeGen is used to produce it.
+- Internal testing needs no App Review. It does need an app record in App Store Connect, an app
+  icon and a Top Shelf image in the asset catalog, and `ITSAppUsesNonExemptEncryption = NO` in
+  `Info.plist` so uploads don't stop to ask about encryption.
+- Two things to confirm when it is set up (#701): that the monthly schedule and TestFlight's
+  automatic updates both work for a tvOS app as described.
+
+The GitHub Actions simulator build stays as the check on pull requests. A Code session can read
+its logs; it can't read Xcode Cloud's.
+
+The Worker writes the copy, so wording changes never need a new build.
 
 ### Fallback: the Pi drives the TV
 
@@ -887,7 +906,7 @@ Every phase is a GitHub issue under epic #687. The issue's checklist is the defi
 | 4: Pi listener | #696 | Code session |
 | Install and hardware acceptance | #697 | Mike |
 | 5: tvOS app | #698 | Code session |
-| Apple developer account, signing, install on the Apple TV | #701 | Mike |
+| Install on the Apple TV; TestFlight and Xcode Cloud | #701 | Mike |
 | Release v7.0.0 | #699 | Code session |
 
 The hardware track (#688) and the software track (#689 → #690 → #691 → #692 → #694) don't depend
@@ -929,7 +948,8 @@ the Apple TV), this spec's Privacy section (Phase 0 check 7)
 checklist (#697) passes.
 
 ### Phase 5: tvOS app (#698, then #701)
-**Create:** `now-spinning/tvos/` (Xcode project, SwiftUI sources, bundled fonts, fixture previews),
+**Create:** `now-spinning/tvos/` (Xcode project with a shared scheme, SwiftUI sources, bundled
+fonts, app icon and Top Shelf image, fixture previews, `ci_scripts/ci_post_clone.sh`),
 `.github/workflows/now-spinning-tvos-ci.yml` (simulator build, no signing)
 **Modify:** `.gitignore` (Xcode user data, `Secrets.xcconfig`)
 **Done when:** CI builds it, every preview matches its screenshot, and after Mike signs and
@@ -960,6 +980,9 @@ The release gate is Phases 1–5: a record plays, and the tvOS app shows it on t
 
 ## Revision History
 
+- **2026-11-21, v1.4.2:** Distribution decided: one Apple TV; installed from Xcode while the app
+  is being built, then TestFlight kept fresh by a monthly Xcode Cloud build. Mike has a paid
+  Apple developer account, so the free-account limit no longer applies.
 - **2026-11-21, v1.4.1:** The web page gains a diagnostics panel (`#debug`), and the setup guide a
   table for telling a tvOS problem from a Pi or Worker problem.
 - **2026-11-21, v1.4.0:** Display decided: a tvOS app on the Apple TV (Mike's strong preference,
