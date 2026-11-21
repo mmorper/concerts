@@ -701,6 +701,20 @@ TV's home screen). SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
 - The Menu button exits. Nothing else is interactive.
 - Reduce Motion in tvOS turns the motion off.
 
+**App icon.** The same network mark the site and its social accounts use. It is not redrawn.
+- **Source:** the layers the project already keeps in `docs/design/icons/MorperhausConcerts.icon/`
+  (`nodes.svg`, `hero.png`, `connections.svg`) and that file's base gradient, `#1e1b4b → #581c87`.
+- **What tvOS changes:** its icons are wide (5:3) and layered, so the layers shift against each
+  other when the icon is focused. The gradient becomes the back layer across the whole canvas;
+  nodes, hero and connections stay separate layers above it. The mark sits centred with a clear
+  margin, because a focused icon is enlarged and its edges are cropped.
+- **Generated, not exported by hand:** extend `scripts/generate-brand-assets.ts`
+  (`npm run generate:brand`), which already follows a one-source rule for the mark. It writes each
+  layer at 400×240 and 800×480 into the app's asset catalog.
+- As far as is known, Icon Composer's `.icon` file can't be used directly for a tvOS target. Check
+  when the project is created; if Xcode accepts it, use it and skip the generated layers.
+- Preview of the composition: [`tvos-icon-preview.png`](tvos-icon-preview.png).
+
 **What a Code session can and can't do.** It can write the Swift sources and the Xcode project.
 It can't build, sign or run them. Two things narrow that gap:
 - A CI job on a macOS runner builds the app for the tvOS Simulator without signing
@@ -937,8 +951,9 @@ checklist (#697) passes.
 
 ### Phase 5: tvOS app (#698, then #701)
 **Create:** `now-spinning/tvos/` (Xcode project with a shared scheme, SwiftUI sources, bundled
-fonts, app icon, fixture previews), `.github/workflows/now-spinning-tvos-ci.yml` (simulator
+fonts, app icon layers, fixture previews), `.github/workflows/now-spinning-tvos-ci.yml` (simulator
 build, no signing)
+**Modify:** `scripts/generate-brand-assets.ts` (the tvOS icon layers)
 **Modify:** `.gitignore` (Xcode user data, `Secrets.xcconfig`)
 **Done when:** CI builds it, every preview matches its screenshot, and after Mike signs and
 installs it (#701) a record on the turntable shows on the TV.
@@ -970,7 +985,8 @@ The release gate is Phases 1–5: a record plays, and the tvOS app shows it on t
 
 - **2026-11-21, v1.4.3:** Distribution changed to the simpler route: installed from Xcode and
   reinstalled once a year. TestFlight with Xcode Cloud is noted as the alternative, not built.
-  App name: Morperhaus Now Spinning.
+  App name: Morperhaus Now Spinning. App icon: the project's existing network mark, from its
+  existing layers, laid out for tvOS's wide layered format.
 - **2026-11-21, v1.4.2:** Distribution decided: one Apple TV; installed from Xcode while the app
   is being built, then TestFlight kept fresh by a monthly Xcode Cloud build. Mike has a paid
   Apple developer account, so the free-account limit no longer applies. (Superseded by v1.4.3.)
