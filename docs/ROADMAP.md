@@ -192,7 +192,7 @@ Click-to-filter year cards, animated genre treemap with timeline slider, mobile-
 
 ## Short-Term Roadmap
 
-### Social Syndication — Liner Notes & On This Day (v7.0.0)
+### Social Syndication — Liner Notes & On This Day (v6.5.0)
 
 **Status**: In Progress — Bluesky and Mastodon live since v6.1.0; Instagram wired, awaiting credentials
 **Spec**: [global-social-syndication.md](specs/future/global-social-syndication.md)
@@ -207,6 +207,15 @@ Phase 0 creative investigation is closed — eleven decisions recorded, includin
 per-channel media matrix, measured text budgets, the imagery rubric and the provenance
 disclosure rule. Instagram (L2 carousel) is built and awaits credentials (#334); X is unbuilt; L3 video
 is gated on #89.
+### Now Spinning (v7.0.0)
+
+**Status**: Planned — spec complete, hardware ordered
+**Spec**: [global-now-spinning-spec.md](specs/future/global-now-spinning/global-now-spinning-spec.md)
+**Epic**: [#687](https://github.com/mmorper/concerts/issues/687)
+
+When a record plays on the living-room turntable, the TV shows the song and the archive's history with it: the nights it was heard live, with photos from those nights. A Raspberry Pi listens to the receiver's line output and identifies songs; a new Worker runs the archive lookup; a display shows the result. No play history is kept.
+
+**Depends on**: two existing bugs in song matching and the song index (#689, #690), then a hardware evening (#688).
 
 ---
 

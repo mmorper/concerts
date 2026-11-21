@@ -164,7 +164,7 @@ docs/
 
 ## Active Work & Next Steps
 
-### In flight — Social Syndication (v7.0.0)
+### In flight — Social Syndication (v6.5.0)
 
 **Epic** [#323](https://github.com/mmorper/concerts/issues/323) · **Spec** [global-social-syndication.md](../docs/specs/future/global-social-syndication.md) · **Operator doc** [SYNDICATION.md](../docs/SYNDICATION.md)
 

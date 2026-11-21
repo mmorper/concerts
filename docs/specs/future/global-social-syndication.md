@@ -1,7 +1,7 @@
 # Social Syndication — Liner Notes & On This Day
 
 **Status:** Phases 0–2 complete — Phase 3 ready
-**Target Version:** v7.0.0
+**Target Version:** v6.5.0
 **Priority:** High
 **Estimated Complexity:** Very High
 **Dependencies:** None blocking. Related: #89 (video pilot), #159/#164 (dashboard + alert webhook), #252 (image revocation), #315 (dead venue photos)

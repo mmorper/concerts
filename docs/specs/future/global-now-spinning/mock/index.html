@@ -86,6 +86,31 @@
   .fade { animation: fadeUp .9s ease both; }
   @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
 
+  /* states that aren't a song: idle, and the fade between tracks */
+  .deck, .info, .strip { transition:opacity 1.2s ease; }
+  #idle { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  #idle .mark { font-family:'Playfair Display',serif; font-size:76px; color:var(--faint); }
+  #idle .mark i { display:block; margin-top:12px; font-family:'Source Sans 3'; font-style:normal; font-size:24px; letter-spacing:.3em; text-transform:uppercase; }
+  #idle p { margin-top:48px; font-family:'Playfair Display',serif; font-style:italic; font-size:32px; color:var(--faint); }
+  #idle p.note { margin-top:20px; font-family:'Source Sans 3'; font-style:normal; font-size:22px; color:#f9a8d4; opacity:.85; }
+  #idle p.note:empty { display:none; }
+  #stage.idle #idle { display:flex; }
+  #stage.idle .deck, #stage.idle .info, #stage.idle .strip, #stage.idle .bg { opacity:0 !important; }
+  #stage.idle .vinyl { animation-play-state:paused; }
+  #stage.faded .info { opacity:.2; }
+  #stage.faded .thumbs, #stage.faded .cap { opacity:0; transition:opacity 1.2s ease; }
+
+  /* screen care: the TV is an OLED, so nothing bright should live in one place for years */
+  .sleeve img, .gen { filter:brightness(.82); }            /* the sleeve is the largest bright thing that stays put */
+  #stage.flip .deck { left:auto; right:120px; }             /* every new record mirrors the layout */
+  #stage.flip .info { left:110px; right:930px; }
+  #stage.flip .strip { flex-direction:row-reverse; left:110px; right:120px; }
+  #stage.flip .brand { margin-left:0; margin-right:auto; text-align:left; }
+  #stage.flip .cap { text-align:right; }
+  #stage.flip .veil, #stage.flip::before { transform:scaleX(-1); }
+  #stage.dark { background:#000; }                          /* idle for 10 minutes: black, and OLED pixels are off */
+  #stage.dark > *, #stage.dark::before { opacity:0 !important; }
+
   /* demo controls (not part of the TV screen) */
   #toggle { position:fixed; right:16px; bottom:16px; z-index:20; padding:11px 16px; border-radius:999px; border:1px solid rgba(255,255,255,.25);
             background:rgba(30,27,75,.85); color:#fff; font:600 15px 'Source Sans 3',sans-serif; backdrop-filter:blur(8px); cursor:pointer; }
@@ -120,6 +145,12 @@
     <div class="cap" id="cap"></div>
     <div class="brand">Morperhaus<i>Concert Archives</i></div>
   </div>
+
+  <div id="idle">
+    <div class="mark">Morperhaus<i>Concert Archives</i></div>
+    <p>Put a record on.</p>
+    <p class="note" id="idleNote"></p>
+  </div>
 </div></div>
 
 <button id="toggle">Change record</button>
@@ -131,6 +162,8 @@
   <button class="go" id="go">Identify</button>
   <h4>Try one</h4>
   <div class="chips" id="chips"></div>
+  <h4>States that aren't a song</h4>
+  <div class="chips" id="kinds"></div>
   <h4>Or search songs you've heard live</h4>
   <input id="search" placeholder="Search songs you've heard live…">
   <div class="res" id="res"></div>
@@ -156,14 +189,21 @@ const cleanTitle = t => {
 const NOISE = /\b(remaster(ed)?|live|version|mix|edit|mono|stereo|single|demo|bonus|deluxe|anniversary)\b/i;
 const tidyTitle = t => (t||'').replace(/\s*[\(\[]([^\)\]]*)[\)\]]/g, (m, inner) => NOISE.test(inner) ? '' : m)
   .replace(/\s+-\s+.*\b(remaster(ed)?|live|version|mix|edit|mono|stereo|single|demo|bonus)\b.*$/i,'').trim();
-// Every key a setlist entry answers to: the whole title, plus each part of a medley
-// ("Smart Patrol/Mr. DNA" answers to "Mr. DNA"). Parts under 4 letters are skipped so
-// "Let/s Get Lost" doesn't answer to "Let".
+// Every key a setlist entry answers to: the whole title, plus each part of a medley written
+// with a SPACED slash ("Head Over Heels / Broken"). "AC/DC" and "Smart Patrol/Mr. DNA" stay whole,
+// the same rule as splitMedley() in scripts/utils/song-title.ts.
 const titleKey = t => loose(cleanTitle(t));
 function titleKeys(name) {
   const keys = new Set([titleKey(name)]);
-  if (name.includes('/')) for (const part of name.split('/')) { const k = titleKey(part); if (k.length >= 4) keys.add(k); }
+  for (const part of name.split(/\s+\/\s+/)) keys.add(titleKey(part));
   keys.delete('');
+  return keys;
+}
+// Near-miss keys never decide "heard". They only stop the screen from saying "never heard"
+// when something close is on a setlist: any slash splits, parts of four letters or more.
+function nearKeys(name) {
+  const keys = new Set();
+  for (const part of name.split('/')) { const k = titleKey(part); if (k.length >= 4) keys.add(k); }
   return keys;
 }
 // Matching fallback only: "Depeche Mode feat. X" -> "Depeche Mode", "Queen & David Bowie" -> "Queen".
@@ -182,7 +222,7 @@ function index() {
   for (const a of Object.keys(D.artists)) (billingsOf[canonOf(a)] ||= []).push(a);
   byLooseArtist = {};
   for (const a of Object.keys(D.artists)) byLooseArtist[loose(a)] = a;
-  for (const s of D.songs) s.k = titleKeys(s.n);
+  for (const s of D.songs) { s.k = titleKeys(s.n); s.nk = nearKeys(s.n); }
 }
 // Try the name as given first: "Echo and the Bunnymen" and "Joan Jett & The Blackhearts"
 // are real billings, so stripping "and …"/"& …" up front would turn them into "Echo" / "Joan Jett".
@@ -214,6 +254,7 @@ function identify(artistIn, titleIn, extra={}) {
   // one act can play under several billings (Brian Setzer has four), so gather every match
   const matches = canon && t ? D.songs.filter(s => canonOf(s.a)===canon && s.k.has(t)) : [];
   const whole = matches.filter(s => titleKey(s.n)===t);
+  const near = !matches.length && canon && t ? D.songs.filter(s => canonOf(s.a)===canon && s.nk.has(t)) : [];
   const song = whole[0] || null;
   // night -> true when the song was only ever part of a medley that night
   const played = new Map();
@@ -236,7 +277,7 @@ function identify(artistIn, titleIn, extra={}) {
     .filter(x => x.date).sort((a,b)=>a.date.localeCompare(b.date));
   const coverOfThis = t ? covers.filter(x => titleKeys(x.song).has(t)) : [];
   return {
-    covers, coverOfThis,
+    covers, coverOfThis, near,
     // a medley's name isn't this song's name, so only borrow the archive's spelling on a whole match
     title: song ? song.n : (tidyTitle(titleIn) || cleanTitle(titleIn)),
     artist: canon ? (D.artists[canon] || D.artists[billingsOf[canon][0]]).n : stripFeat(artistIn),
@@ -246,10 +287,13 @@ function identify(artistIn, titleIn, extra={}) {
 }
 
 let rot = null;
-function render(r) {
+function render(r, opts={}) {
+  $('stage').classList.remove('idle','faded','dark');
   const h = hue(r.album?.t || r.title);
   $('vinyl').style.setProperty('--label', `hsl(${(h+180)%360} 70% 55%)`);
-  $('vinyl').style.left = '20px'; setTimeout(()=>$('vinyl').style.left='200px', 350);
+  // the record peeks out on the side away from the screen edge, so it mirrors with the layout
+  const open = $('stage').classList.contains('flip') ? '-160px' : '200px';
+  $('vinyl').style.left = '20px'; setTimeout(()=>$('vinyl').style.left=open, 350);
 
   // sleeve: real cover where the browser can load it; a drawn sleeve otherwise
   const gen = `<div class="gen" style="background:linear-gradient(150deg,hsl(${h} 55% 42%),hsl(${(h+40)%360} 60% 18%))">
@@ -259,7 +303,10 @@ function render(r) {
   // the archive's part
   const n = r.heard.length, seen = r.shows.length;
   let live;
-  if (n) {
+  if (opts.noArchive) {
+    // The lookup itself failed. Show the song and say nothing about the archive: never "not in the archive".
+    live = `<div class="livetxt quiet"><p>The archive isn't answering right now.</p></div>`;
+  } else if (n) {
     const last = r.heard[n-1], first = r.heard[0];
     live = `<div class="big">${n}<small>×</small></div><div class="livetxt">
       <h3>${n===1 ? 'You heard this one live, once.' : `You've heard this one live ${n} times.`}</h3>
@@ -281,11 +328,13 @@ function render(r) {
   } else if (seen) {
     const withSl = r.shows.filter(x => SL.has(x.date+'|'+x.billing)).length;
     const times = seen===1 ? 'once' : seen+' times';
-    const why = withSl===seen ? `It isn't on any of the setlists from those nights.`
+    const near = r.near[0], nearNights = new Set(r.near.flatMap(x => x.d)).size;
+    const why = near ? `Something close to it is on ${nearNights===1 ? 'the setlist from '+fmt(near.d[0]) : nearNights+' of those setlists'}: “${esc(near.n)}”.`
+      : withSl===seen ? `It isn't on any of the setlists from those nights.`
       : withSl===0 ? `There's no setlist from ${seen===1?'that night':'those nights'}, so maybe you did.`
       : `It isn't on the ${withSl} setlist${withSl>1?'s':''} I have. ${seen-withSl} night${seen-withSl>1?'s have':' has'} no setlist.`;
     live = `<div class="big">${seen}<small>×</small></div><div class="livetxt">
-      <h3>${withSl===seen ? `You've seen ${esc(r.artist)} ${times}, but never heard this one live.` : `You've seen ${esc(r.artist)} ${times}.`}</h3>
+      <h3>${withSl===seen && !near ? `You've seen ${esc(r.artist)} ${times}, but never heard this one live.` : `You've seen ${esc(r.artist)} ${times}.`}</h3>
       <p>${why}</p>
       ${nights(r.shows)}</div>`;
   } else if (r.coverOfThis.length) {
@@ -312,7 +361,7 @@ function render(r) {
     <div class="live">${live}</div></div>`;
 
   // photos from those nights, newest first
-  const about = n ? r.heard : r.coverOfThis.length ? r.coverOfThis : seen ? r.shows : r.covers;
+  const about = opts.noArchive ? [] : n ? r.heard : r.coverOfThis.length ? r.coverOfThis : seen ? r.shows : r.covers;
   const ps = photosFor(about);
   clearInterval(rot); let i = 0, flip = false;
   const show = k => {
@@ -338,7 +387,40 @@ const performers = rows => [...new Set(rows.map(x => D.artists[x.billing].n))];
 const list = a => a.length<2 ? a.join('') : a.slice(0,-1).join(', ')+' and '+a[a.length-1];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function play(a, t) { render(identify(a, t)); }
+let last = null;
+function play(a, t) { last = [a, t]; render(identify(a, t)); }
+
+// States that aren't a lookup result. On the real system the Worker sends these as `kind`.
+function showIdle(notice) {
+  clearInterval(rot); $('idleNote').textContent = notice || '';
+  $('stage').classList.remove('faded','dark'); $('stage').classList.add('idle');
+}
+// After 10 minutes idle (at once, in this demo) the screen goes fully black.
+function showDark() { showIdle(); $('stage').classList.add('dark'); }
+// On the real system each new record (the first track after idle) mirrors the layout.
+function mirror() { $('stage').classList.toggle('flip'); if (last) play(...last); }
+function showUnmatched() {
+  clearInterval(rot); $('stage').classList.remove('idle','faded','dark');
+  $('vinyl').style.setProperty('--label', 'hsl(255 30% 55%)');
+  $('sleeve').innerHTML = `<div class="gen" style="background:linear-gradient(150deg,hsl(255 30% 34%),hsl(275 40% 15%))"><div class="rings"></div></div>`;
+  $('info').innerHTML = `<div class="fade"><div class="kicker"><span class="dot"></span>Now spinning</div>
+    <div class="title">Listening…</div>
+    <div class="live"><div class="livetxt quiet"><p>Nothing I recognise yet.</p></div></div></div>`;
+  $('thumbs').innerHTML = ''; $('cap').innerHTML = ''; $('bgA').classList.remove('on'); $('bgB').classList.remove('on');
+  $('stage').style.setProperty('--glow', 'hsla(255 60% 55% / .22)');
+}
+// Between tracks the last song stays up. After 90 s (at once, in this demo) the words step back.
+function showGapFaded() { $('stage').classList.remove('idle'); $('stage').classList.add('faded'); }
+const KINDS = [
+  ['Idle', () => showIdle()],
+  ['Idle, listener offline', () => showIdle('The listener has been offline since 3:12 PM.')],
+  ['Idle, can\u2019t identify', () => showIdle('Song recognition isn\u2019t working right now.')],
+  ['Listening…', showUnmatched],
+  ['Archive not answering', () => render(identify('Depeche Mode', 'Enjoy the Silence'), { noArchive: true })],
+  ['Between tracks (faded)', showGapFaded],
+  ['Idle for 10 minutes (black)', showDark],
+  ['Next record (mirrored)', mirror],
+];
 
 // demo panel
 const PICKS = [
@@ -351,6 +433,7 @@ const PICKS = [
   ['The Cure','A Forest'],
   ['Oingo Boingo','Only a Lad'],
   ['Devo','Mr. DNA'],
+  ['Tears for Fears','Head Over Heels'],
   ['Depeche Mode','Barrel of a Gun'],
   ['David Bowie',"Let's Dance - 2018 Remaster"],
   ['The Rolling Stones','Paint It Black'],
@@ -360,6 +443,8 @@ function setupPanel() {
   $('chips').innerHTML = PICKS.map((p,i)=>`<button data-i="${i}">${esc(p[1].replace(/\s*[\(\-].*$/,''))}</button>`).join('');
   $('chips').onclick = e => { const b=e.target.closest('button'); if(!b) return; const p=PICKS[b.dataset.i];
     $('inArtist').value=p[0]; $('inTitle').value=p[1]; play(p[0],p[1]); };
+  $('kinds').innerHTML = KINDS.map((k,i)=>`<button data-i="${i}">${esc(k[0])}</button>`).join('');
+  $('kinds').onclick = e => { const b=e.target.closest('button'); if (b) KINDS[b.dataset.i][1](); };
   $('go').onclick = () => play($('inArtist').value, $('inTitle').value);
   $('toggle').onclick = () => $('panel').classList.toggle('open');
   $('search').oninput = e => {

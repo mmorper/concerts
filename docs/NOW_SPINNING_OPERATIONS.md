@@ -1,11 +1,12 @@
 # Now Spinning: Raspberry Pi setup and operations
 
 How to take the Raspberry Pi from a sealed box to a machine that hears the turntable and can
-identify songs. Parts 1–10 are everything Phase 0 needs. Part 11 (installing the listener
-service) is filled in when Phase 4 builds the listener.
+identify songs, and to checking that it can drive the Apple TV. Parts 1–11 are everything Phase 0
+needs. Part 12 (installing the listener service) is filled in when Phase 4 builds the listener.
 
 **Spec:** [`specs/future/global-now-spinning/global-now-spinning-spec.md`](specs/future/global-now-spinning/global-now-spinning-spec.md).
 Its Phase 0 table numbers the checks; this guide says which step covers which check.
+**Checklist to tick off as you go:** issue #688. The whole project is tracked in epic #687.
 
 Commands are marked **Mac** (Terminal on your Mac) or **Pi** (after you've logged in to the Pi
 over SSH). Anything in `<angle brackets>` is a value you fill in.
@@ -19,6 +20,25 @@ over SSH). Anything in `<angle brackets>` is a value you fill in.
 - Mackie Onyx Blackjack, its USB-A → USB-B cable, and the dual RCA → dual 1/4" cable
 - An Ethernet cable to the switch in the AV cabinet
 - Your Mac, on the same home network
+- The Apple TV and its remote (step 10)
+
+---
+
+## Before the hardware arrives: try Shazam on your phone (check 2a, optional)
+
+The Shazam app uses the same catalogue the Pi will query, so this answers the biggest question
+early: does Shazam know your records, and what does it call them?
+
+- Play the ten test records and Shazam a track or two from each.
+- Write down exactly what it shows for the artist and the title, including extras like
+  "(Remastered 2009)". The app's history keeps them all.
+- Press and hold the Shazam button for Auto Shazam and let a whole side play. It logs each song,
+  much as the Pi will at track changes.
+- Leave the needle in the run-out groove for a minute. It should find nothing.
+
+A match here is a strong sign, because the phone hears the record through speakers and room
+noise, which is harder than the Pi's direct line feed. A miss is ambiguous: it may be the room.
+Either way, step 8 still has to be done on the Pi.
 
 ---
 
@@ -105,6 +125,14 @@ Wait a minute and SSH in again. Then check the clock, since recognition and logs
 ```bash
 # Pi
 timedatectl          # "System clock synchronized: yes" and your time zone
+```
+
+Let the Pi install security updates by itself, so it doesn't need regular visits:
+
+```bash
+# Pi
+sudo apt install -y unattended-upgrades
+sudo dpkg-reconfigure -plow unattended-upgrades     # answer Yes
 ```
 
 ---
@@ -225,20 +253,21 @@ cable away from power cords. If one side is silent, check the L/R cables.
 
 ---
 
-## 8. Test Shazam on your records (Phase 0 checks 2, 3 and 7)
+## 8. Test Shazam on your records (Phase 0 checks 2, 3 and 8)
 
 **Install a test environment** (it is thrown away once the real listener exists):
 
 ```bash
 # Pi
+python3 --version                 # write this down: Phase 0 check 8
 sudo apt install -y python3-venv
 python3 -m venv ~/ns-test
 ~/ns-test/bin/pip install --upgrade pip shazamio
 ```
 
-If `pip` starts compiling Rust code and fails, the `shazamio-core` package has no ready-made
-build for the Pi's Python. Note it in the spec's revision history; it changes how Phase 4
-installs things.
+**Check 8.** Note the Python version, and whether `pip` downloaded ready-made packages or started
+compiling Rust code. If it compiled, or failed, the `shazamio-core` package has no ready-made
+build for the Pi's Python. That changes how Phase 4 installs things, so record it either way.
 
 **A small test script:**
 
@@ -257,6 +286,9 @@ async def main(path):
     album = next((m["text"] for s in track.get("sections", []) for m in s.get("metadata", [])
                   if m.get("title") == "Album"), "")
     print(f'{track.get("subtitle")} | {track.get("title")} | {album}')
+    if len(sys.argv) > 2:                       # optional: save the whole response
+        import json
+        json.dump(out, open(sys.argv[2], "w"), indent=1)
 
 asyncio.run(main(sys.argv[1]))
 EOF
@@ -279,16 +311,30 @@ a 45, and something obscure. For each one, write down:
 |---|---|---|---|---|
 | 1 | | | | |
 
+**Save one complete response.** Phase 4 needs to see every field Shazam returns. For one record
+that matched, add a file name to the command and copy the file to your Mac:
+
+```bash
+# Pi
+~/ns-test/bin/python ~/try-shazam.py /tmp/clip.wav ~/shazam-sample.json
+```
+```bash
+# Mac
+scp <username>@now-spinning.local:shazam-sample.json ~/Desktop/
+```
+
+Attach it to issue #688. It names the song you were playing and nothing else about you.
+
 **Check 3 (run-out groove).** At the end of a side, leave the needle in the run-out groove for a
 minute while the meter from step 7 runs. Note what the meter shows: the clicks may never drop
 low enough to count as silence.
 
-**Check 7 (what goes to Shazam).** Phase 4 confirms this from `shazamio`'s source code. Nothing
+**Check 7 (what goes to Shazam)** is answered in Phase 4 from `shazamio`'s source code. Nothing
 to do here.
 
 ---
 
-## 9. The receiver over the network (Phase 0 check 6)
+## 9. The receiver over the network (Phase 0 checks 6 and 6b)
 
 On the AV7703: Network → Network Control → **Always On**, so the receiver answers while in
 standby. Find its IP address in its Network Information menu, or in the router's device list,
@@ -303,33 +349,141 @@ If that prints nothing while a control app (Home Assistant, the Marantz app) is 
 receiver accepts one telnet client at a time. Note it for check 6; the listener will use the
 receiver's HTTP control instead.
 
+**Check 6b: can the Pi control Zone 2?** The listener needs all of these. They are the standard
+Denon/Marantz control commands; write down each reply, including any that prints nothing.
+
+```bash
+# Pi: one at a time, with a record playing on Phono in the main zone
+printf 'ZM?\r'     | nc -w 2 <receiver-ip> 23     # main zone power: expect ZMON
+printf 'Z2?\r'     | nc -w 2 <receiver-ip> 23     # Zone 2 status: power, source, volume
+printf 'Z2ON\r'    | nc -w 2 <receiver-ip> 23     # turn Zone 2 on (the front panel shows it)
+printf 'Z2PHONO\r' | nc -w 2 <receiver-ip> 23     # set Zone 2's source to Phono
+printf 'Z2?\r'     | nc -w 2 <receiver-ip> 23     # confirm: Z2ON and Z2PHONO
+printf 'Z2OFF\r'   | nc -w 2 <receiver-ip> 23     # turn Zone 2 off again
+```
+
+While Zone 2 is on Phono, the level meter from step 7 should show the record. The main zone
+must keep playing throughout; if any command interrupts it, note which.
+
 ---
 
-## 10. Record the results
+## 10. The Apple TV (Phase 0 checks 4 and 5)
+
+The picture on the TV will come from a tvOS app on the Apple TV. The app can't put itself on
+screen, so the Pi has to wake the Apple TV and bring the app forward for every record. These two
+checks find out whether that works. Both are required.
+
+**Check 4: does waking the Apple TV steal the receiver's input?**
+
+1. Put the receiver on Phono with a record playing. Let the Apple TV go to sleep (hold the TV
+   button on the remote → Sleep).
+2. Wake the Apple TV with its remote.
+3. Did the receiver switch away from Phono, so the record stopped?
+
+If it did, HDMI control (CEC) is doing it. Turn it off in one of two places, then repeat the test
+and write down which you chose:
+- Apple TV: Settings → Remotes and Devices → Control TVs and Receivers → Off. The Apple TV remote
+  then no longer turns the TV on or changes the volume.
+- Or the AV7703: its HDMI Control setting → Off.
+
+**Check 5: can the Pi put an app on the Apple TV's screen?**
+
+On the Apple TV first: Settings → AirPlay and HomeKit → Allow Access → "Anyone on the Same
+Network", so the Pi can pair.
+
+```bash
+# Pi
+~/ns-test/bin/pip install pyatv
+~/ns-test/bin/atvremote scan                                   # find the Apple TV; copy its Identifier
+~/ns-test/bin/atvremote --id <identifier> --protocol companion pair   # type the PIN the TV shows
+~/ns-test/bin/atvremote --id <identifier> --protocol airplay pair     # and again
+```
+
+Then try each of these and write down what happened. If a command isn't recognised, run
+`~/ns-test/bin/atvremote commands` to see the names your version uses.
+
+```bash
+# Pi
+~/ns-test/bin/atvremote --id <identifier> power_state          # on or off?
+~/ns-test/bin/atvremote --id <identifier> app_list             # the installed apps and their identifiers
+~/ns-test/bin/atvremote --id <identifier> launch_app=com.apple.TVMusic    # does Music open?
+~/ns-test/bin/atvremote --id <identifier> playing              # says what is playing, if anything
+~/ns-test/bin/atvremote --id <identifier> app                  # which app is in front
+```
+
+Three situations matter. Test each with the receiver on Phono:
+
+| Start from | Run | Write down |
+|---|---|---|
+| Apple TV asleep | `turn_on`, then `launch_app=com.apple.TVMusic` | Did it wake? Did Music open? Did the receiver stay on Phono? |
+| Music open, screensaver showing | `launch_app=com.apple.TVMusic` | Did the screensaver go away? If not, try `turn_on`, then `menu`, and note which worked. |
+| A film playing | `playing` | Does it report that something is playing? (The listener uses this to know not to interrupt.) |
+
+## 11. Record the results
 
 Add one line per check to the spec's **Revision History**, with the date: the Zone 2 level and
-gain positions, the ten-record table, the run-out finding, and the answers to checks 4–6. That's
-what Phase 4 is designed against.
+gain positions, the ten-record table, the run-out finding, the Python version, the Apple TV
+results from step 10, and the answers to checks 6 and 6b. That's what Phase 4 is designed
+against. Tick the same items off on issue #688.
 
 Then delete the test files:
 
 ```bash
 # Pi
-rm -rf ~/ns-test ~/try-shazam.py ~/level-test.wav /tmp/clip.wav
+rm -rf ~/ns-test ~/try-shazam.py ~/level-test.wav ~/shazam-sample.json /tmp/clip.wav
 ```
 
 ---
 
-## 11. Installing the listener (Phase 4)
+## 12. Installing the listener (Phase 4)
 
 *To be written when Phase 4 builds the listener.* It will cover cloning the repo, the
 listener's Python environment, `/etc/now-spinning/env` (the Worker URL and the ingest token,
-readable by root only), the `now-spinning` systemd service, updating with `git pull` and a
-restart, and rotating the ingest token (also listed in [`SECRETS.md`](SECRETS.md)).
+readable by root only), pairing the listener with the Apple TV, the `now-spinning` systemd
+service, updating with `git pull` and a restart, and rotating the ingest token (also listed in
+[`SECRETS.md`](SECRETS.md)).
+
+Building and installing the tvOS app is done on the Mac, not the Pi: see issue #701.
 
 ---
 
-## Troubleshooting
+## When something isn't right: find where the problem is
+
+The web page and the tvOS app show the same thing from the same source. Open the page on a
+laptop or phone and compare it with the TV. That tells you which part to look at.
+
+**Open the page with its diagnostics panel:**
+
+```
+https://concerts.morperhaus.org/now-spinning#debug
+```
+
+The first time on a device, give it the display token once: open
+`https://concerts.morperhaus.org/now-spinning#token=<display token>`, then add `#debug`.
+The panel shows whether the page is connected, the exact state the Worker last sent, and the
+listener's health: online or last seen, song recognition, receiver, Apple TV.
+
+| The web page shows | The TV shows | The problem is in | Look at |
+|---|---|---|---|
+| The right song | Nothing, or the screensaver | Waking the Apple TV, or the app isn't open | The panel's Apple TV line. Open the app by hand: if it then shows the song, the waking step failed (step 10's commands test it). |
+| The right song | The wrong song, or an old one | The tvOS app | Quit and reopen the app. If that fixes it, the app lost its connection and didn't recover; note it on the epic (#687). |
+| The right song | The app won't open at all | The app's signing has expired (about a year after it was installed) | Run it from Xcode again to reinstall it (#701). Set the next reminder. |
+| The right song | The app, but garbled or cut off | The tvOS app | Compare with the page. The app may be older than a newer screen type; rebuild and reinstall it (#701). |
+| Idle while a record plays | Idle | The Pi listener | The panel's listener lines. Offline: is the Pi powered and on the network? Online but not identifying: is Zone 2 on Phono, and does the meter in step 7 move? |
+| "Listening…" that never resolves | The same | Song recognition | The panel's recognition line. If it says failing, Shazam is refusing or unreachable. If it says ok, Shazam doesn't know this record. |
+| The right song, wrong history | The same | The Worker's lookup, or the archive data | The raw state in the panel. Note the artist and title Shazam sent and open an issue. |
+| "The archive isn't answering right now." | The same | The index file | It is rebuilt on every site deploy. Check the latest deploy succeeded. |
+| Nothing loads, or the panel says reconnecting | Anything | The Worker, or your network | Other pages on the site. The Cloudflare dashboard for the Worker. |
+
+On the Pi, once the listener is installed (step 12), these show what it is doing:
+
+```bash
+# Pi
+systemctl status now-spinning        # running, or why not
+journalctl -u now-spinning -n 50     # its last 50 log lines (logs are kept in memory; a reboot clears them)
+```
+
+## Troubleshooting the Pi setup
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
@@ -340,4 +494,5 @@ restart, and rotating the ingest token (also listed in [`SECRETS.md`](SECRETS.md
 | SIG/OL lights red | Too much level | Lower Zone 2's fixed level |
 | Hum between tracks | Cable near a power cord | Re-route it; keep it short |
 | `get_throttled` isn't `0x0` | Under-voltage at some point | Use the kit's supply; check the cable is seated |
+| `nc` prints nothing from the receiver | Network Control is off, or another app holds the connection | Set Network Control to Always On; close other control apps and retry |
 | Pi runs hot | Cooler fan not connected | Check the FAN plug; connect the case fan |
