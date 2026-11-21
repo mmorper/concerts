@@ -123,6 +123,13 @@ describe("seen", () => {
     expect(r.lines[0]).toBe("Something close to it is on 2 of those setlists: “Smart Patrol/Mr. DNA”.");
   });
 
+  it("never says 'never heard' for a title it couldn't compare", async () => {
+    for (const title of ["!!!", ""]) {
+      const r = await look("Depeche Mode", title);
+      expect(r).toMatchObject({ screen: "seen", headline: "You've seen Depeche Mode 5 times.", lines: [] });
+    }
+  });
+
   it("doesn't count a part under four letters as close", async () => {
     expect((await look("The Twilight Sad", "Let")).headline).toContain("never heard");
   });
@@ -175,11 +182,19 @@ describe("never a false 'none'", () => {
     ["a listed act file won't load", alteredLoader({ "acts/depeche-mode.json": () => null })],
     ["a listed covers file won't load", alteredLoader({ "covers/depechemode.json": () => null })],
     ["the act's key is ambiguous", alteredLoader({ "manifest.json": (m) => ({ ...m, ambiguous: ["depechemode"] }) })],
+    ["the manifest's acts aren't an object", alteredLoader({ "manifest.json": (m) => ({ ...m, acts: null }) })],
+    ["the manifest has no ambiguous list", alteredLoader({ "manifest.json": ({ ambiguous: _a, ...m }) => m })],
   ])("answers unknown when %s", async (_why, loader) => {
     const r = await lookup(input, loader);
     expect(r.screen).toBe("unknown");
     expect(r.headline).toBe("The archive isn't answering right now.");
     expect(r.nights).toEqual([]);
+  });
+
+  // "The The" folds to no key at all, so the act can't be found: that's unknown, not "none".
+  it.each(["The The", "!!!", "", "   "])("answers unknown for an artist with no key: %j", async (artist) => {
+    const r = await look(artist, "This Is the Day");
+    expect(r.screen).toBe("unknown");
   });
 });
 
