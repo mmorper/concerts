@@ -167,6 +167,9 @@ any part of it.
 
 ## Phase 0: one hardware evening, before any code
 
+Step-by-step instructions for setting up the Pi and running these checks are in
+[`docs/NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md).
+
 Three assumptions decide whether this design works, and none can be tested from a desk. Test
 them first with a laptop (or the Pi, if it has arrived), the Onyx Blackjack, and the Apple TV.
 Record the results in this spec's revision history.
@@ -175,7 +178,7 @@ Record the results in this spec's revision history.
 |---|---|---|
 | 1 | AV7703: Phono plays out of ZONE2 PRE OUT. Set the Blackjack (see [Audio interface settings](#audio-interface-settings)), then find a fixed Zone 2 level where the loudest record peaks near −12 dBFS and the SIG/OL lights never turn red. | Phono to Zone 2 is confirmed only for the near-identical AV7702 |
 | 1b | On the Pi: `arecord -l` lists the Blackjack, and `arecord -D plughw:<card> -f cd -d 10 t.wav` records both channels (`plughw` converts from whatever bit depth the Blackjack offers) | It works without drivers on a Mac, which points to USB Audio Class; this confirms Linux sees it the same way |
-| 1c | On the Pi: `vcgencmd get_config usb_max_current_enable` reads 1, and `dmesg` shows no USB over-current or power warnings with the Blackjack plugged in. If it reads 0 with the kit's supply, the Pi didn't recognise the supply as 5 A; set `usb_max_current_enable=1` in `/boot/firmware/config.txt` **only** if the supply is rated 5 V / 5 A. | The Blackjack draws its power from the Pi's USB ports |
+| 1c | On the Pi: `vcgencmd get_throttled` reads `0x0`, `/proc/device-tree/chosen/power/max_current` reads 5000 (a recognised 5 A supply), and `dmesg` shows no USB over-current or under-voltage warnings with the Blackjack plugged in. Steps in [`NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md) §5. | The Blackjack draws its power from the Pi's USB ports |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | With the receiver on Phono, wake the Apple TV. Does the receiver switch input to it? | If HDMI Control (CEC) does that, waking the Apple TV stops the record |
@@ -456,8 +459,9 @@ an aarch64 wheel for the Pi's Python.
 
 **Running it.** Power the Pi from an outlet that stays on, and keep logs in RAM
 (`Storage=volatile` in journald), so cutting power to the cabinet can't corrupt the card.
-Updating is `git pull` and `systemctl restart now-spinning`. Write this up, with token rotation,
-as `docs/NOW_SPINNING_OPERATIONS.md` in Phase 4.
+Updating is `git pull` and `systemctl restart now-spinning`. Phase 4 adds the install, update and
+token-rotation steps to `docs/NOW_SPINNING_OPERATIONS.md`, which already covers setting up the
+Pi itself.
 
 ---
 
@@ -649,7 +653,8 @@ changes the page live. Then make the display decision.
 
 ### Phase 4: Pi listener (Window 4)
 **Create:** `now-spinning/pi/{pyproject.toml,now_spinning/*.py,tests/,now-spinning.service,README.md}`,
-`.github/workflows/now-spinning-pi-ci.yml`, `docs/NOW_SPINNING_OPERATIONS.md`
+`.github/workflows/now-spinning-pi-ci.yml`
+**Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§11: install, update, token rotation)
 **Done when:** `--wav --dry-run` prints the right POSTs, pytest passes, and the hardware
 checklist passes. **This is v7.0.0.**
 
@@ -686,7 +691,8 @@ checklist passes. **This is v7.0.0.**
 
 - **2026-11-21, v1.2.0:** Audio interface: Mike's Mackie Onyx Blackjack replaces the Behringer
   UCA202/UCA222 and the HiFiBerry fallback. Hardware list, cables, Phase 0 checks and a settings
-  table updated to match, including how the Pi powers it over USB (check 1c).
+  table updated to match, including how the Pi powers it over USB (check 1c). Pi setup and
+  Phase 0 steps written up in `docs/NOW_SPINNING_OPERATIONS.md`.
 - **2026-11-21, v1.1.0:** Architecture review. Verified against the archive data and corrected:
   covers are now consulted for acts Mike has seen (new `seen-cover` screen), medleys match by
   part, the cover lookup no longer mangles "&" names, all-bracket titles match, displayed titles
