@@ -217,7 +217,7 @@ export function describe(input: TrackInput, act: ActFile | null, covers: CoverRo
     let headline: string;
     let line: string | null;
     if (!t) {
-      // The title has no key ("!!!", "(Intro)"), so nothing was compared: say only what's known.
+      // The title has no key ("!!!", or empty), so nothing was compared: say only what's known.
       headline = `You've seen ${artist} ${timesPhrase(seen)}.`;
       line = null;
     } else if (near.length) {
