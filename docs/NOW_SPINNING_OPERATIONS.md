@@ -458,10 +458,22 @@ laptop or phone and compare it with the TV. That tells you which part to look at
 https://concerts.morperhaus.org/now-spinning#debug
 ```
 
-The first time on a device, give it the display token once: open
-`https://concerts.morperhaus.org/now-spinning#token=<display token>`, then add `#debug`.
-The panel shows whether the page is connected, the exact state the Worker last sent, and the
-listener's health: online or last seen, song recognition, receiver, Apple TV.
+The first time on a device, give it the display token once:
+`https://concerts.morperhaus.org/now-spinning#token=<display token>&debug`. The page keeps the
+token on that device and takes it out of the address straight away. After that, `#debug` alone
+is enough.
+
+The panel shows:
+- **Connection:**
+  - It shows `live`, `reconnecting`, or `reconnecting · polling every 10 s`.
+  - It also shows how long ago the last message and the last heartbeat `pong` arrived.
+  - It can also say `token refused`, `no token`, or `Worker not configured (503)`.
+  - A `last drop: no heartbeat` line means the network dropped the connection without saying
+    so. The page noticed within a minute and reconnected.
+- **Listener:** online or last seen, song recognition, receiver, Apple TV, and the listener's
+  version.
+- **State:** the contract version, what is on screen (with `faded`, `black` or `mirrored`),
+  and the raw state exactly as the Worker sent it.
 
 | The web page shows | The TV shows | The problem is in | Look at |
 |---|---|---|---|
@@ -474,6 +486,25 @@ listener's health: online or last seen, song recognition, receiver, Apple TV.
 | The right song, wrong history | The same | The Worker's lookup, or the archive data | The raw state in the panel. Note the artist and title Shazam sent and open an issue. |
 | "The archive isn't answering right now." | The same | The index file | It is rebuilt on every site deploy. Check the latest deploy succeeded. |
 | Nothing loads, or the panel says reconnecting | Anything | The Worker, or your network | Other pages on the site. The Cloudflare dashboard for the Worker. |
+| The panel says `reconnecting · polling every 10 s`, and songs still change | Anything | The WebSocket only. The Worker itself is answering. | The Cloudflare dashboard for the Worker. Songs still reach the page, up to 10 seconds late. |
+| The panel says `token refused` | Anything | The display token on this device is wrong, or it was rotated | Open the page once more with the current token (`#token=…&debug`). The TV needs it too: rebuild the app with the new `Secrets.xcconfig` (#701). |
+| The panel says `Worker not configured (503)` | Idle | The Worker has no tokens yet, or one was deleted | Set both (`SECRETS.md`, #693). |
+
+**Send a test song without playing a record.** This posts what the listener would, so it checks
+everything from the Worker to the screen. Run it on the Mac and paste the ingest token at the
+prompt: `read -s` keeps it off the screen and out of your shell history.
+
+```bash
+# Mac
+read -rs NS_INGEST
+curl -sS -X POST https://concerts.morperhaus.org/api/now-spinning \
+  -H "Authorization: Bearer $NS_INGEST" -H 'Content-Type: application/json' \
+  -d '{"event":"track","artist":"Depeche Mode","title":"Everything Counts (Remastered 2006)"}'
+```
+
+The open page, and the TV if the app is open, should change within a second or two. To clear
+it, send `-d '{"event":"stopped"}'` the same way. Left alone, the screen goes idle by itself
+after three minutes, because no listener is reporting.
 
 On the Pi, once the listener is installed (step 12), these show what it is doing:
 

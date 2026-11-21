@@ -23,6 +23,12 @@ export default defineConfig(({ mode }) => {
       port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
       open: true,
       proxy: {
+        // Now Spinning: the page at /now-spinning.html and `wrangler dev` (workers/now-spinning,
+        // port 8787) run same-origin locally, WebSocket included.
+        '/api/now-spinning': {
+          target: 'http://localhost:8787',
+          ws: true,
+        },
         // Proxy setlist.fm API requests to avoid CORS issues
         '/api/setlistfm': {
           target: 'https://api.setlist.fm/rest/1.0',

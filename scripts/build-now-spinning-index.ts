@@ -302,6 +302,9 @@ function main(): void {
     const only = arg("--only");
     if (only) built = subsetIndex(built, only.split(","), (arg("--covers") ?? "").split(",").filter(Boolean));
     writeIndex(built, outDir);
+    // The state contract's examples, so /now-spinning?fixture=heard renders on any build of the
+    // site. Not for a subset build, which is the test fixture.
+    if (!only) fs.copyFileSync(path.join(root, "test", "fixtures", "now-spinning-states.json"), path.join(outDir, "states.json"));
     const n = Object.keys(built.files).length;
     console.log(`✓ Now Spinning index: ${n} files, ${Object.keys(built.manifest.acts).length} act names, ${built.manifest.covers.length} covers files → ${path.relative(root, outDir)}`);
     if (built.manifest.problems.length) {
