@@ -100,6 +100,17 @@
   #stage.faded .info { opacity:.2; }
   #stage.faded .thumbs, #stage.faded .cap { opacity:0; transition:opacity 1.2s ease; }
 
+  /* screen care: the TV is an OLED, so nothing bright should live in one place for years */
+  .sleeve img, .gen { filter:brightness(.82); }            /* the sleeve is the largest bright thing that stays put */
+  #stage.flip .deck { left:auto; right:120px; }             /* every new record mirrors the layout */
+  #stage.flip .info { left:110px; right:930px; }
+  #stage.flip .strip { flex-direction:row-reverse; left:110px; right:120px; }
+  #stage.flip .brand { margin-left:0; margin-right:auto; text-align:left; }
+  #stage.flip .cap { text-align:right; }
+  #stage.flip .veil, #stage.flip::before { transform:scaleX(-1); }
+  #stage.dark { background:#000; }                          /* idle for 10 minutes: black, and OLED pixels are off */
+  #stage.dark > *, #stage.dark::before { opacity:0 !important; }
+
   /* demo controls (not part of the TV screen) */
   #toggle { position:fixed; right:16px; bottom:16px; z-index:20; padding:11px 16px; border-radius:999px; border:1px solid rgba(255,255,255,.25);
             background:rgba(30,27,75,.85); color:#fff; font:600 15px 'Source Sans 3',sans-serif; backdrop-filter:blur(8px); cursor:pointer; }
@@ -277,10 +288,12 @@ function identify(artistIn, titleIn, extra={}) {
 
 let rot = null;
 function render(r, opts={}) {
-  $('stage').classList.remove('idle','faded');
+  $('stage').classList.remove('idle','faded','dark');
   const h = hue(r.album?.t || r.title);
   $('vinyl').style.setProperty('--label', `hsl(${(h+180)%360} 70% 55%)`);
-  $('vinyl').style.left = '20px'; setTimeout(()=>$('vinyl').style.left='200px', 350);
+  // the record peeks out on the side away from the screen edge, so it mirrors with the layout
+  const open = $('stage').classList.contains('flip') ? '-160px' : '200px';
+  $('vinyl').style.left = '20px'; setTimeout(()=>$('vinyl').style.left=open, 350);
 
   // sleeve: real cover where the browser can load it; a drawn sleeve otherwise
   const gen = `<div class="gen" style="background:linear-gradient(150deg,hsl(${h} 55% 42%),hsl(${(h+40)%360} 60% 18%))">
@@ -374,15 +387,20 @@ const performers = rows => [...new Set(rows.map(x => D.artists[x.billing].n))];
 const list = a => a.length<2 ? a.join('') : a.slice(0,-1).join(', ')+' and '+a[a.length-1];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function play(a, t) { render(identify(a, t)); }
+let last = null;
+function play(a, t) { last = [a, t]; render(identify(a, t)); }
 
 // States that aren't a lookup result. On the real system the Worker sends these as `kind`.
 function showIdle(notice) {
   clearInterval(rot); $('idleNote').textContent = notice || '';
-  $('stage').classList.remove('faded'); $('stage').classList.add('idle');
+  $('stage').classList.remove('faded','dark'); $('stage').classList.add('idle');
 }
+// After 10 minutes idle (at once, in this demo) the screen goes fully black.
+function showDark() { showIdle(); $('stage').classList.add('dark'); }
+// On the real system each new record (the first track after idle) mirrors the layout.
+function mirror() { $('stage').classList.toggle('flip'); if (last) play(...last); }
 function showUnmatched() {
-  clearInterval(rot); $('stage').classList.remove('idle','faded');
+  clearInterval(rot); $('stage').classList.remove('idle','faded','dark');
   $('vinyl').style.setProperty('--label', 'hsl(255 30% 55%)');
   $('sleeve').innerHTML = `<div class="gen" style="background:linear-gradient(150deg,hsl(255 30% 34%),hsl(275 40% 15%))"><div class="rings"></div></div>`;
   $('info').innerHTML = `<div class="fade"><div class="kicker"><span class="dot"></span>Now spinning</div>
@@ -400,6 +418,8 @@ const KINDS = [
   ['Listening…', showUnmatched],
   ['Archive not answering', () => render(identify('Depeche Mode', 'Enjoy the Silence'), { noArchive: true })],
   ['Between tracks (faded)', showGapFaded],
+  ['Idle for 10 minutes (black)', showDark],
+  ['Next record (mirrored)', mirror],
 ];
 
 // demo panel

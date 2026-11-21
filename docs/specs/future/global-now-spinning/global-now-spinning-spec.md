@@ -11,7 +11,7 @@
 - [`HANDOFF.md`](HANDOFF.md): the original brief and the confirmed AV setup. Where it differs from this spec, the spec wins.
 - [`mock/index.html`](mock/index.html): the TV-screen mock, with every screen state. It is the reference for layout and copy. Its matching is a looser stand-in; the real rules are in §Data.
 - [`mock/build_mock_data.py`](mock/build_mock_data.py): builds the mock's `data.json`. It's the prototype of the index builder in §Data.
-- [`screens/`](screens/): fourteen screenshots covering every screen state (listed under [Screen states](#screen-states))
+- [`screens/`](screens/): fifteen screenshots covering every screen state (listed under [Screen states](#screen-states))
 
 ---
 
@@ -361,7 +361,7 @@ States that aren't songs:
 
 | `kind` | When | Screen |
 |---|---|---|
-| `idle` | Nothing playing (the default) | Brand mark, dimmed, and a small "Put a record on." line. No clock or other data. If the listener is offline or can't identify songs, one line under it says so (`notice`). |
+| `idle` | Nothing playing (the default) | Brand mark, dimmed, and a small "Put a record on." line. No clock or other data. If the listener is offline or can't identify songs, one line under it says so (`notice`). After 10 minutes it goes black (see [Screen care](#screen-care-the-tv-is-an-oled)). |
 | `gap` | Between tracks or while flipping sides | Keep the last track's screen. After 90 s, fade the text and keep the sleeve and spinning record. |
 | `unmatched` | Sound present, no match after 3 tries | "Listening…" with the generic sleeve, and "Nothing I recognise yet." Never guess. |
 
@@ -373,7 +373,7 @@ no hype.
 
 | State | Screenshot |
 |---|---|
-| `heard` | `heard-live.jpg`, `heard-once-opener.jpg`, `heard-in-medley.jpg` |
+| `heard` | `heard-live.jpg`, `heard-live-mirrored.jpg` (the mirrored layout), `heard-once-opener.jpg`, `heard-in-medley.jpg` |
 | `seen-cover` | `seen-heard-from-another.jpg` |
 | `seen` | `seen-not-heard.jpg`, `seen-near-miss.jpg` |
 | `cover-of-this` | `no-history-song-covered.jpg` |
@@ -604,6 +604,33 @@ screen available on a laptop, a phone or an iPad.
 - If the socket drops: reconnect with backoff, and poll `GET` every 10 s meanwhile.
 - Idle: shift the brand mark's position slightly every few minutes.
 
+### Screen care: the TV is an OLED
+
+The TV is a Samsung S95C (QD-OLED, model QN65S95CAFXZA). Burn-in on an OLED is uneven wear: bright
+things that sit in one place for hundreds of hours age those pixels faster. One double album
+does nothing. The same layout in the same place for every listening session over years could.
+The design is already mostly dark, with changing photos and text. These rules cover what isn't:
+
+| Rule | In the display page | Why |
+|---|---|---|
+| **Cap the sleeve's brightness** (required) | Album art and the generated sleeve render at about 82% (`filter: brightness(.82)`) | Wear rises steeply with brightness, this panel is very bright, and the sleeve is the largest bright area that stays put for a whole album |
+| **Black after 10 minutes idle** (required) | After 10 minutes of `idle`, fade to solid black with nothing drawn. Any non-idle state brings the screen back. | If the Pi drives the TV, nothing else ever blanks it. Black OLED pixels are off. |
+| **Mirror the layout for each record** (should) | The first track after `idle` flips the layout: sleeve left and text right, then sleeve right and text left. The choice is kept in `localStorage` so a reload doesn't reset it. | Spreads what wear there is across both halves of the screen |
+
+- **A `notice` is the one exception to going black.** "The listener has been offline since…" stays
+  up, dim, and moves to a new position each minute. A black screen that hides the reason nothing
+  is happening would be worse than a small moving line.
+- **No drift in the page.** The TV's own Pixel Shift does that for the whole panel. Keep it on.
+- The timers are the display's. The 10 minutes count from `at` on the idle state, using `now − at`.
+- The mock shows all three: "Next record (mirrored)" and "Idle for 10 minutes (black)" in its
+  panel, and the brightness cap is always on. Reference: `screens/heard-live-mirrored.jpg`.
+
+**TV settings, once (owner):**
+- Settings → General & Privacy → Panel Care: **Pixel Shift on**, **Adjust Logo Brightness on**.
+- For the HDMI input the picture arrives on: a dim picture mode (**Movie** or **Filmmaker**, not
+  Dynamic or Standard), with Brightness lowered to taste.
+- If the Pi drives the TV, it sends a standard (SDR) signal. Don't enable HDR for that input.
+
 ### Getting it onto the TV: decide after Phase 3
 
 | | A. The Pi drives the TV | B. A tvOS app |
@@ -650,6 +677,7 @@ Ordered 2026-11-21, except the Blackjack, which Mike already owned.
 | Power | The kit's CanaKit 45 W USB-C supply | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
 | Storage | The kit's 32 GB microSD, with its USB reader | Raspberry Pi OS Lite, 64-bit |
 | Cooling | The kit's official active cooler; the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
+| TV | Samsung S95C 65" QD-OLED (already owned) | An OLED, so the display follows the [Screen care](#screen-care-the-tv-is-an-oled) rules. |
 | Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. It has no power socket: it runs on USB power from the Pi. The Pi 5 allows 1.6 A across its USB ports only when it recognises a 5 A supply (600 mA otherwise), so use the 5 A-capable supply from the kit, and keep phantom power off, which is the Blackjack's biggest draw. |
 | Audio cable | Dual RCA (male) → dual 1/4" TS (male), 6 ft (J&D) | AV7703 ZONE2 PRE OUT L → Blackjack input 1, R → input 2. Unbalanced TS is right here: the pre-outs are unbalanced and the run is short. |
 | USB cable | USB-A → USB-B, 1.5 ft (Monoprice) | Pi USB 2.0 port (black) → Blackjack. The blue USB 3 ports are fine too, but USB 2 keeps it away from any USB 3 interference near the Wi-Fi antenna. |
@@ -679,6 +707,7 @@ The listener records the two channels as stereo and downmixes to mono itself.
 - Zone 2 Setup → Volume Level: fixed.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
 - For option A: assign the Pi's HDMI input as Video Select for Phono.
+- TV: the Panel Care and picture-mode settings under [Screen care](#screen-care-the-tv-is-an-oled).
 
 ---
 
@@ -756,7 +785,8 @@ no two acts share an `actKey`, every song has a strict key, every photo URL is i
 - [ ] Needle up for 3 min → idle
 - [ ] Needle left in the run-out groove → idle within about 5 min
 - [ ] Pull the Pi's power mid-song → idle within about 3 min; about 15 min later the idle screen says the listener is offline; power back → it clears
-- [ ] A second record an hour later appears without touching anything
+- [ ] A second record an hour later appears without touching anything, with the layout mirrored
+- [ ] Ten minutes after the record stops, the screen is black
 - [ ] Worker unreachable → the listener keeps running; the display shows the last state, then idle
 
 ---
@@ -857,6 +887,9 @@ The release gate is Phases 1–4. Phase 5 can ship after it.
   Target stays v7.0.0; Social Syndication moves to v6.5.0. Two existing bugs became
   prerequisites (#689, #690). The mock gained the idle, listening, archive-unreachable,
   between-tracks and near-miss screens, with six new screenshots. Work is tracked in epic #687.
+  Added screen care for the OLED TV (Samsung S95C): the sleeve's brightness is capped, the screen
+  goes black after 10 minutes idle, and the layout mirrors for each record. The mock shows all
+  three.
 - **2026-11-21, v1.2.0:** Audio interface: Mike's Mackie Onyx Blackjack replaces the Behringer
   UCA202/UCA222 and the HiFiBerry fallback. Hardware list, cables, Phase 0 checks and a settings
   table updated to match, including how the Pi powers it over USB (check 1c). Pi setup and
