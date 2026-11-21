@@ -37,6 +37,12 @@
     "notes": "Keyed on concert date, which is globally unique across the archive. Never concert.id — those are row-order artifacts and a re-import that renumbers rows would break every shared link."
   },
 
+  "setlistOpener": {
+    "input": { "slug": "blancmange", "date": "2026-09-16" },
+    "url": "/?scene=artists&artist=blancmange&show=2026-09-16",
+    "notes": "An opening act's own setlist (#690). The same shape as any setlist link: the artist is the opener, and the date is the night it opened (here, for Thompson Twins). The site resolves it by date, so the opener's gatefold opens on that night."
+  },
+
   "setlistEarliest": {
     "input": { "slug": "adam-ant", "date": "1984-04-27" },
     "url": "/?scene=artists&artist=adam-ant&show=1984-04-27"

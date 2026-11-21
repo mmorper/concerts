@@ -62,7 +62,7 @@ export interface SearchSources {
   songs: SongRow[]
 }
 
-/** Six in the list, and songs can't crowd out everything else: there are 1,600 of them. */
+/** Six in the list, and songs can't crowd out everything else: there are thousands of them. */
 export const MATCH_LIMIT = 6
 const SONG_LIMIT = 3
 
