@@ -169,7 +169,12 @@ export function buildIndex(inp: IndexInputs, generatedAt = new Date().toISOStrin
   for (const act of acts.values()) {
     for (const name of act.billingNames.values()) {
       const key = actKey(name);
-      if (!key) continue;
+      if (!key) {
+        // "The The" folds to nothing: the act couldn't be found, and the screen would say it isn't
+        // in the archive. Report it, so the real-data test goes red until actKey handles it.
+        problems.push({ kind: "no-act-key", what: `${name} (${act.slug})` });
+        continue;
+      }
       const prev = keyToAct.get(key);
       if (prev && prev !== act.slug) {
         if (!ambiguous.has(key)) problems.push({ kind: "ambiguous-act", what: `${key}: ${prev} and ${act.slug}` });

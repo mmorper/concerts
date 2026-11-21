@@ -97,10 +97,11 @@ jobs:
           set -euo pipefail
           URL=https://concerts.morperhaus.org/api/now-spinning
           for i in $(seq 1 10); do
-            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$URL" || true)
+            code=$(curl -sS -o /tmp/body -w '%{http_code}' --max-time 20 "$URL" || true)
+            # Match this Worker's own answers, so an error page from anywhere else doesn't pass.
             case "$code" in
-              401) echo "route live, locked (secrets set)"; exit 0 ;;
-              503) echo "route live, not configured yet: set the secrets (#693)"; exit 0 ;;
+              401) grep -q '"unauthorized"' /tmp/body && { echo "route live, locked (secrets set)"; exit 0; } ;;
+              503) grep -q '"not configured"' /tmp/body && { echo "route live, not configured yet: set the secrets (#693)"; exit 0; } ;;
             esac
             echo "attempt $i: got $code"
             sleep 6

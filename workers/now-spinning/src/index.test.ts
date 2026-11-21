@@ -81,6 +81,11 @@ describe("auth", () => {
     }
   });
 
+  it("answers 503 when the two tokens are the same, so a display can never write", async () => {
+    const { env } = makeEnv({ NOW_SPINNING_DISPLAY_TOKEN: INGEST });
+    expect((await handle(post({ event: "alive" }), env)).status).toBe(503);
+  });
+
   it("refuses a write without the ingest token, or with the display token", async () => {
     const { env } = makeEnv();
     expect((await handle(req("/api/now-spinning", { method: "POST", body: "{}" }), env)).status).toBe(401);
@@ -137,6 +142,19 @@ describe("ingest", () => {
       track: { screen: string };
     };
     expect(state.track.screen).toBe("unknown");
+  });
+
+  it("still produces a state, 'unknown', when the lookup throws", async () => {
+    // An act file that passes every shape check, then breaks the lookup partway through.
+    vi.stubGlobal("fetch", async (url: string) => {
+      const path = String(url).replace(`${DATA}/now-spinning/`, "");
+      if (path.startsWith("acts/")) return new Response('{"slug":"depeche-mode","nights":[],"songs":[null]}', { status: 200 });
+      return new Response(readFileSync(join(FIXTURE_DIR, path), "utf-8"), { status: 200 });
+    });
+    const { env } = makeEnv();
+    const r = await handle(post({ event: "track", artist: "Depeche Mode", title: "Enjoy the Silence" }), env);
+    expect(r.status).toBe(200);
+    expect(((await r.json()) as { track: { screen: string } }).track.screen).toBe("unknown");
   });
 
   it("holds exactly two keys however many songs arrive", async () => {
