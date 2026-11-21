@@ -35,6 +35,42 @@ describe('foldSongTitle', () => {
     expect(foldSongTitle('Love Song (feat. Someone)')).toBe('love song')
   })
 
+  it('KEEPS "with" when it is part of the title (#689)', () => {
+    // A bare "with" is one of the commonest words in song titles. Treating it as
+    // a featured-artist credit truncated 22 setlist titles, three to nothing.
+    expect(foldSongTitle('Dancing With Myself')).toBe('dancing with myself')
+    expect(foldSongTitle('She Blinded Me With Science')).toBe('she blinded me with science')
+    expect(foldSongTitle('With or Without You')).toBe('with or without you')
+    expect(foldSongTitle('With Any Sort of Certainty')).toBe('with any sort of certainty')
+  })
+
+  it('keeps two different "with" songs by one act apart (#689)', () => {
+    // Under the old rule both folded to "dance".
+    expect(foldSongTitle('Dance With Me')).not.toBe(foldSongTitle('Dance With the Lemurs'))
+    expect(foldSongTitle('Dancing With Myself')).not.toBe(foldSongTitle('Dancing With Tears in My Eyes'))
+  })
+
+  it('still strips featured-artist credits in their three real shapes (#689)', () => {
+    // bracketed
+    expect(foldSongTitle('Song (with Someone)')).toBe('song')
+    expect(foldSongTitle('Song [feat. Someone]')).toBe('song')
+    // after a spaced dash
+    expect(foldSongTitle('Song - with Someone')).toBe('song')
+    expect(foldSongTitle('Song - feat. Someone')).toBe('song')
+    // bare, but only feat. / ft. / featuring
+    expect(foldSongTitle('Song feat. Someone')).toBe('song')
+    expect(foldSongTitle('Song ft. Someone')).toBe('song')
+    expect(foldSongTitle('Song featuring Someone')).toBe('song')
+    // stacked with a version marker
+    expect(foldSongTitle('Halo (feat. X) [2006 Remaster]')).toBe('halo')
+  })
+
+  it('never folds a real title to nothing (#689)', () => {
+    for (const t of ['With or Without You', 'With a Little Help from My Friends', 'Featuring You']) {
+      expect(foldSongTitle(t)).not.toBe('')
+    }
+  })
+
   it('strips stacked qualifiers in one pass', () => {
     expect(foldSongTitle('Halo (Goldfrapp remix) [2006 Remaster]')).toBe('halo')
   })

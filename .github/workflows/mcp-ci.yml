@@ -10,10 +10,20 @@ on:
     branches: [main]
     paths:
       - 'workers/mcp-server/**'
+      # Shared code this Worker bundles. Without these, a change to the matching rules
+      # reaches the site's data but not the Worker (#689).
+      - 'scripts/utils/song-title.ts'
+      - 'scripts/utils/song-album-lookup.ts'
+      - 'src/utils/archiveStats.ts'
       - '.github/workflows/mcp-ci.yml'
   pull_request:
     paths:
       - 'workers/mcp-server/**'
+      # Shared code this Worker bundles. Without these, a change to the matching rules
+      # reaches the site's data but not the Worker (#689).
+      - 'scripts/utils/song-title.ts'
+      - 'scripts/utils/song-album-lookup.ts'
+      - 'src/utils/archiveStats.ts'
       - '.github/workflows/mcp-ci.yml'
 
 concurrency:
