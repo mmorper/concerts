@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-20T18:20:23.545Z",
+  "updatedAt": "2026-11-21T17:06:19.443Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -734,26 +734,21 @@
     {
       "slug": "no-doubt-caught-once-never-again",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "no-doubt-caught-once-never-again",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2tlja2sq32o",
+      "rkey": "3n2tlja2sq32o",
+      "postedAt": "2026-11-21T17:05:34.051Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "no-doubt-caught-once-never-again",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "no-doubt-caught-once-never-again",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117655521144481394",
+      "postedAt": "2026-11-21T17:06:19.443Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "no-doubt-days-before-it-takes-a-nation-of-millions-to-hold-us-back-dropped",
