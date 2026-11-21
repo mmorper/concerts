@@ -684,7 +684,10 @@ nothing else — no merge, no tag, no deploy. Resume by merging by hand, or with
 
 Once every check is green, merge without stopping to ask — this is deliberate, so
 the release does not stall waiting on a confirmation after the checks have already
-answered the question:
+answered the question. It is the one PR exempt from QA before merge (`CLAUDE.md`):
+the owner invoking `/release` is the authorisation, and the PR holds only version
+and changelog bookkeeping for work QA has already passed. If it holds anything
+else, stop and give that a QA pass first (`.claude/skills/steward/SKILL.md`).
 
 ```bash
 gh pr merge {PR} --merge --delete-branch
