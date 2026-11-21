@@ -19,11 +19,22 @@ export interface RoomEnv {
 
 export const ONLINE_MS = 15 * 60_000;
 
+/**
+ * The heartbeat. Displays send "ping" every 30 s; the runtime answers "pong" itself, without
+ * waking the object, so it costs nothing. A display that hears no pong treats its socket as dead
+ * and reconnects: a home network can drop an idle connection silently, which would otherwise
+ * leave an old song on an OLED screen that is being kept awake.
+ */
+export const PING = "ping";
+export const PONG = "pong";
+
 export class NowSpinningRoom {
   constructor(
     private readonly ctx: DurableObjectState,
     private readonly env: RoomEnv,
-  ) {}
+  ) {
+    ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair(PING, PONG));
+  }
 
   private tz(): string {
     return this.env.DISPLAY_TZ || "America/Los_Angeles";

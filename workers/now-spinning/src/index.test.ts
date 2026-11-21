@@ -31,9 +31,23 @@ class FakeStorage {
   }
 }
 
+/** The runtime's class, as far as these tests need it. */
+class FakePair {
+  constructor(
+    readonly request: string,
+    readonly response: string,
+  ) {}
+}
+
 function makeEnv(overrides: Partial<Env> = {}) {
   const storage = new FakeStorage();
-  const ctx = { storage, getWebSockets: () => [], acceptWebSocket: () => {} } as unknown as DurableObjectState;
+  const autoResponse: { pair: FakePair | null } = { pair: null };
+  const ctx = {
+    storage,
+    getWebSockets: () => [],
+    acceptWebSocket: () => {},
+    setWebSocketAutoResponse: (pair: FakePair) => (autoResponse.pair = pair),
+  } as unknown as DurableObjectState;
   const roomObj = new NowSpinningRoom(ctx, { DISPLAY_TZ: "America/Los_Angeles" });
   const ns = {
     idFromName: () => "living-room",
@@ -47,7 +61,7 @@ function makeEnv(overrides: Partial<Env> = {}) {
     DISPLAY_TZ: "America/Los_Angeles",
     ...overrides,
   };
-  return { env, storage, roomObj };
+  return { env, storage, roomObj, autoResponse };
 }
 
 const req = (path: string, init: RequestInit & { token?: string } = {}) => {
@@ -59,6 +73,7 @@ const post = (body: unknown, token = INGEST) =>
   req("/api/now-spinning", { method: "POST", token, body: typeof body === "string" ? body : JSON.stringify(body) });
 
 beforeEach(() => {
+  vi.stubGlobal("WebSocketRequestResponsePair", FakePair);
   resetManifestCache();
   // The site: fixture files by path, and (like the real site) its HTML page with 200 for anything else.
   vi.stubGlobal("fetch", async (url: string) => {
@@ -184,6 +199,14 @@ describe("ingest", () => {
     vi.useRealTimers();
     const state = (await (await handle(req("/api/now-spinning", { token: DISPLAY }), env)).json()) as { kind: string };
     expect(state.kind).toBe("idle");
+  });
+});
+
+describe("heartbeat", () => {
+  it("answers a display's ping with pong, without waking the room", () => {
+    // setWebSocketAutoResponse is answered by the runtime itself; the object never runs.
+    const { autoResponse } = makeEnv();
+    expect(autoResponse.pair).toMatchObject({ request: "ping", response: "pong" });
   });
 });
 

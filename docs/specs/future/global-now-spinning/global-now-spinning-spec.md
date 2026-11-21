@@ -437,7 +437,7 @@ New self-contained Worker, matching `workers/mcp-server`: its own `package.json`
 |---|---|---|
 | `POST /api/now-spinning` | ingest token | `{ event: "track", artist, title, album?, artworkUrl?, isrc?, shazamId? }`, or `{ event: "gap" \| "unmatched" \| "stopped" \| "alive" }`, or `{ event: "status", recognizer, receiver, appleTv, version }`. Body ≤ 2 KB. Returns the new state. `400` on a bad body. |
 | `GET /api/now-spinning` | display token | Current state (polling fallback, debugging) |
-| `GET /api/now-spinning/ws` | display token | WebSocket. Sends the current state on connect, then each change. Uses DO WebSocket hibernation, so an idle evening costs nothing. |
+| `GET /api/now-spinning/ws` | display token | WebSocket. Sends the current state on connect, then each change. Answers the text `ping` with `pong` (the heartbeat). Uses DO WebSocket hibernation, so an idle evening costs nothing. |
 | `GET /api/now-spinning/health` | display token | `{ online, lastSeenAt, recognizer, receiver, appleTv, version }`. No song data. |
 
 ### The state contract
@@ -502,6 +502,14 @@ interface NowSpinningState {
   is split into small files. Phase 2 still measures a cold request with `wrangler tail` and
   records the figure; the target is under 3 ms.
 - **No caching of answers.** Every response carries `Cache-Control: no-store`.
+- **Heartbeat.** A home network can drop an idle connection without either end noticing. The
+  display would then keep showing an old song, and on the TV it would keep the screen awake doing
+  it.
+  - Each display sends the text `ping` every 30 s.
+  - The Durable Object answers `pong` through `setWebSocketAutoResponse`, so the runtime replies
+    without waking it, and an idle evening still costs nothing.
+  - A display that sent a ping and has heard no pong by its next one treats the socket as dead.
+    It closes it, polls, and reconnects. So a dead socket is noticed within a minute.
 
 ### Listener health
 
@@ -677,7 +685,9 @@ laptop, a phone or an iPad.
   `workers/meta-injector/worker.js` (`/now-spinning`, next to `/about-mcp`), so bots get the page
   as written.
 - If the socket drops: reconnect with backoff, and poll `GET` every 10 s meanwhile.
-- Idle: shift the brand mark's position slightly every few minutes.
+- Send the heartbeat (`ping` every 30 s, see [Behaviour](#behaviour)), and treat a missing `pong` as a dropped socket.
+- Idle: the brand mark stays where it is, as in the app. The TV's Pixel Shift moves the whole
+  panel, and the page goes black after 10 minutes (see [Screen care](#screen-care-the-tv-is-an-oled)).
 
 ### Diagnostics panel: telling where a problem is
 
@@ -745,6 +755,8 @@ TV's home screen). SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
   words of its own.
 - `URLSessionWebSocketTask` with the `Authorization` header. Reconnect with backoff, poll `GET`
   every 10 s while the socket is down, and reconnect whenever the app returns to the front.
+- The same heartbeat as the page: `ping` every 30 s; no `pong` by the next one means the socket
+  is dead. This matters most here, because a track keeps the Apple TV awake.
 - An unknown `screen` renders as `unknown`; an unknown `kind` renders as `idle`. The app is
   updated far less often than the Worker, so this rule matters most here.
 - SwiftUI previews load `test/fixtures/now-spinning-states.json`, one per state, so each can be
