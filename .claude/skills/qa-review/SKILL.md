@@ -2,7 +2,9 @@
 
 **Purpose:** An independent check of a pull request before the owner merges it.
 **Loaded:** By a QA session started to review one or more PRs. That session did
-not write the code and has none of the authoring session's context.
+not write the code and has none of the authoring session's context. The
+authoring session starts it for every PR it opens, on a different model from
+its own (`.claude/skills/steward/SKILL.md`, "Before a PR is ready").
 
 QA advises; it never decides. **The owner merges.** A QA verdict is something the
 owner reads before one click, not permission for anyone to merge.

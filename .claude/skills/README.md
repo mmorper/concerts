@@ -12,7 +12,7 @@ Skills are knowledge packages that Claude references for specialized tasks. Unli
 | **data-schema** | `skills/data-schema/SKILL.md` | Data queries, entity relationships, normalization |
 | **api-integration** | `skills/api-integration/SKILL.md` | External APIs, caching, rate limits, credentials |
 | **analytics** | `skills/analytics/SKILL.md` | Event tracking, user interactions, GA4 implementation |
-| **steward** | `skills/steward/SKILL.md` | Driving a PR to green: pre-push checks, reading a red check |
+| **steward** | `skills/steward/SKILL.md` | Driving a PR to green and through QA: pre-push checks, reading a red check, the QA pass every PR gets |
 | **qa-review** | `skills/qa-review/SKILL.md` | An independent QA session reviewing a PR before the owner merges it |
 
 ---
