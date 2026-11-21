@@ -42,6 +42,9 @@ tvOS app on the Apple TV that shows it.
 | Version number | v7.0.0. Social Syndication (#323) moves to v6.5.0. |
 | Listener health | Yes. A quiet heartbeat from the Pi, a notice on the idle screen when it's offline, and one line on the operator dashboard. No song data. |
 | Audio interface | The Mackie Onyx Blackjack Mike already owns. |
+| Cloudflare plan | Free tier. The index is split into small files to stay inside its CPU limit. |
+| A record Shazam doesn't know | The screen says "Listening…". |
+| "Most played" on the site | Counts songs heard from opening acts too (#690). |
 
 ---
 
@@ -125,7 +128,7 @@ flowchart LR
   PI -.->|network control<br/>input + Zone 2| AVR
   PI -->|ShazamIO| SZ[(Shazam)]
   PI -->|POST /api/now-spinning<br/>Bearer ingest token| W[Worker<br/>workers/now-spinning]
-  W -->|cachedJsonFetch, 300 s| D[(concerts.morperhaus.org/data/<br/>now-spinning-index.json)]
+  W -->|cachedJsonFetch, 300 s| D[(concerts.morperhaus.org/data/now-spinning/<br/>manifest + one small file per act)]
   W <--> DO[(Durable Object<br/>current state only)]
   ATV[Apple TV 4K<br/>Now Spinning tvOS app] -->|WebSocket /api/now-spinning/ws<br/>display token| W
   PI -.->|pyatv: wake, launch the app| ATV
@@ -194,6 +197,7 @@ history.
 | 1 | AV7703: Phono plays out of ZONE2 PRE OUT. Set the Blackjack (see [Audio interface settings](#audio-interface-settings)), then find a fixed Zone 2 level where the loudest record peaks near −12 dBFS and the SIG/OL lights never turn red. | Phono to Zone 2 is confirmed only for the near-identical AV7702 |
 | 1b | On the Pi: `arecord -l` lists the Blackjack, and `arecord -D plughw:<card> -f cd -d 10 t.wav` records both channels (`plughw` converts from whatever bit depth the Blackjack offers) | It works without drivers on a Mac, which points to USB Audio Class; this confirms Linux sees it the same way |
 | 1c | On the Pi: `vcgencmd get_throttled` reads `0x0`, `/proc/device-tree/chosen/power/max_current` reads 5000 (a recognised 5 A supply), and `dmesg` shows no USB over-current or under-voltage warnings with the Blackjack plugged in. Steps in [`NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md) §5. | The Blackjack draws its power from the Pi's USB ports |
+| 2a | Optional, and possible before the hardware arrives: try the Shazam app on a phone with the same ten records. Note what it calls each artist and title. | Same catalogue as the Pi will query. A match through speakers and room noise is a strong sign; a miss is ambiguous. It doesn't replace check 2. |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, turn off the Apple TV's "Control TVs and Receivers" (or the receiver's HDMI Control) and try again. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
@@ -254,49 +258,80 @@ table resolving as listed.
 ### A prebuilt index, generated at build time
 
 The lookup needs songs from **every** setlist (openers included), the alias groups, albums,
-covers, photos, and which nights have setlists. The raw files add up to about 1.9 MB; the
-compact index is about 360 KB.
+covers, photos, and which nights have setlists. The raw files add up to about 1.9 MB.
+
+**The index is many small files, not one big one.** The Cloudflare account is on the free tier,
+which allows 10 ms of CPU per request. Parsing a single 360 KB index and building its lookup maps
+measured about 6 ms in Node on a fast machine, which is too close to rely on. So a lookup reads a
+small manifest and then one or two files of a few kilobytes each.
+
+```
+public/data/now-spinning/        written by `npm run build`; gitignored, not committed
+├── manifest.json                about 15 KB: which acts exist, and the version and rules
+├── acts/<slug>.json             one per act (its billings merged), a few KB each
+└── covers/<actKey>.json         one per act whose songs someone else played
+```
 
 Add `scripts/build-now-spinning-index.ts` and run it in **`npm run build`**, before
-`vite build`, next to `gen-mcp-landing.ts`. It writes `public/data/now-spinning-index.json`,
-which is **gitignored, not committed**.
+`vite build`, next to `gen-mcp-landing.ts`.
 
 Why not `npm run build-data`: the inputs are written by several pipelines. `media-index.json`
 comes from `scripts/media/*` (`/media-add`), `album-covers.json` from `resolve-album-covers`,
 `artist-aliases.json` from `sync-artist-aliases`. Hooking one of them leaves the index stale
 after the others. Generating at build means every deploy publishes an index that matches the
-data it ships with, and automated data commits don't churn a derived file. Check that the
+data it ships with, and automated data commits don't churn derived files. Check that the
 Cloudflare Pages build command is `npm run build`.
 
 The index reaches production only when the site next deploys after Phase 1 merges. Until then
 the Worker answers `unknown` for every song, which is correct but not useful. #693 checks that
-`https://concerts.morperhaus.org/data/now-spinning-index.json` returns JSON before going on.
+`https://concerts.morperhaus.org/data/now-spinning/manifest.json` returns JSON before going on.
 
 ```ts
-interface NowSpinningIndex {
+interface Manifest {
   v: 1;
   generatedAt: string;
-  rules: string;                                                  // fingerprint of the matching rules (see below)
+  rules: string;                    // fingerprint of the matching rules (see below)
+  acts: Record<string, string>;     // actKey of every name an act goes by → its file's slug
+  covers: string[];                 // actKeys that have a covers file
+  ambiguous: string[];              // actKeys shared by two different acts
   problems: { kind: 'no-key' | 'ambiguous-act'; what: string }[]; // data the builder left out
-  ambiguous: string[];                                            // actKeys shared by two different acts
-  albums: { t: string; y: string; c: string | null }[];          // c: 600x600 cover URL
-  songs: {
-    n: string;            // the setlist's spelling
-    a: string;            // billing slug
-    c: string;            // canonical act slug (sameAct merged)
-    k: string[];          // strict keys: foldSongTitle(n) first, then each songIndexKeys(n) part
-    nk: string[];         // near-miss keys, from match.ts nearKeys(n)
-    d: string[];          // dates
-    al: number | null;
+}
+
+interface ActFile {                 // acts/<slug>.json
+  slug: string;                     // canonical slug (sameAct billings merged)
+  name: string;                     // display name
+  nights: {
+    d: string; billing: string; venue: string; city: string; role: 'h' | 'o';
+    setlist: boolean;               // does this night have a setlist for this act?
+    photos: { u: string; fx: number; fy: number }[];   // up to 3; fx/fy = crop centre
   }[];
-  artists: Record<string, { n: string; i: string | null; s: [date: string, venue: string, city: string, role: 'h' | 'o'][] }>;
-  artistKeys: Record<string, string>;                             // actKey(name) → billing slug
-  canon: Record<string, string>;                                  // sameAct billing → canonical
-  photos: Record<string, { u: string; fx: number; fy: number }[]>; // "date|billing" → up to 3; fx/fy = crop centre
-  sl: string[];                                                   // "date|billing" with a setlist
-  cv: Record<string, { n: string; k: string[]; p: string; d: string }[]>; // actKey(original act) → songs heard from others
+  songs: {
+    n: string;                      // the setlist's spelling
+    k: string[];                    // strict keys: foldSongTitle(n) first, then each songIndexKeys(n) part
+    nk: string[];                   // near-miss keys, from match.ts nearKeys(n)
+    nights: number[];               // indexes into nights
+    album: { t: string; y: string; c: string | null } | null;   // c: 600x600 cover URL
+  }[];
+}
+
+interface CoversFile {              // covers/<actKey>.json: this act's songs, heard from others
+  rows: {
+    n: string; k: string[];
+    by: string;                     // the performer's display name
+    d: string; venue: string; city: string;
+    photos: { u: string; fx: number; fy: number }[];
+  }[];
 }
 ```
+
+- **The manifest is the authority on what exists.** A missing file on this site comes back as the
+  site's HTML with status 200, so "no such file" can't be told from "not in the archive" by
+  fetching. The manifest settles it: an act that isn't in `acts` has not been seen; an act that
+  is listed but whose file won't load is "index unavailable".
+- **A lookup reads at most three files:** the manifest (kept in memory, refreshed every 300
+  seconds), the act's file if the act is listed, and its covers file if one is listed. Cover rows
+  carry the venue and photos themselves, so no further file is needed.
+- File names are slugs and `actKey`s, which are lowercase letters, digits and hyphens only.
 
 Builder rules:
 - Songs come from `setlists-cache.json`. Skip `tape` entries.
@@ -310,12 +345,12 @@ Builder rules:
   - On 2026-11-21 no acts collide, and three setlist entries have no key ("With Any Sort of
     Certainty"), which is bug #689.
   The real-data test (below) is what turns a problem red, in CI and on the daily scheduled run.
-- **Version.** The Worker accepts `v: 1` only. Any other value, or a file that isn't JSON (a
-  missing file comes back as the site's HTML), counts as "index unavailable".
+- **Version.** The Worker accepts a manifest with `v: 1` only. Any other value, or a file that
+  isn't JSON, counts as "index unavailable".
 - **Rules fingerprint.** The site and the Worker deploy separately, and both contain the matching
   rules: the builder uses them when the site builds, the Worker when a song arrives. If one side
   deploys a rule change before the other, their keys stop agreeing and real matches are missed.
-  So the index carries `rules`, a short hash of the rules applied to a fixed list of sample
+  So the manifest carries `rules`, a short hash of the rules applied to a fixed list of sample
   titles and names. The Worker computes the same hash from its own copy. A mismatch counts as
   "index unavailable" until both sides are deployed.
 - Album covers: `album-covers.json` mzstatic `100x100bb` → `600x600bb`. Fall back to
@@ -420,8 +455,9 @@ New self-contained Worker, matching `workers/mcp-server`: its own `package.json`
 `wrangler.toml`, and a path-filtered CI workflow `.github/workflows/now-spinning-ci.yml`.
 
 - Route: `concerts.morperhaus.org/api/now-spinning*`. It's more specific than meta-injector's `/*`, like `/api/ask*`.
-- `[vars] DATA_BASE_URL = "https://concerts.morperhaus.org/data"`. Load the index with
-  `cachedJsonFetch` (300 s TTL), so the screen reflects a site deploy within about 5 minutes.
+- `[vars] DATA_BASE_URL = "https://concerts.morperhaus.org/data"`. Load the manifest and the
+  files a lookup needs with `cachedJsonFetch` (300 s TTL), so the screen reflects a site deploy
+  within about 5 minutes.
 - One SQLite-backed Durable Object class `NowSpinningRoom`, one instance (`idFromName("living-room")`).
 
 | Method + path | Auth | Body / response |
@@ -485,17 +521,13 @@ interface NowSpinningState {
 - **Index unavailable.** A `track` event still produces a state, with `screen: 'unknown'`. It
   must never fall through to `none`, which would be a false statement. Retry the index on the
   next event. "Unavailable" covers a failed fetch, a file that isn't JSON, a version other than
-  1, and a rules fingerprint that doesn't match.
-- **Where the lookup runs.** In the Worker, before the Durable Object is called. The parsed index
-  and its lookup maps are kept in module scope for the life of the isolate and refreshed when the
-  300-second cache turns over, so most requests don't parse anything.
-- **CPU budget.** `workers/meta-injector/wrangler.toml` describes the account as free tier, which
-  allows 10 ms of CPU per request. Parsing the 360 KB index and building its maps measured about
-  6 ms in Node on a fast machine, which is too close. Phase 2 measures the real figure with
-  `wrangler tail`. If a cold request passes about 5 ms, split the index: a small manifest (the
-  act keys, the cover keys, `v` and `rules`) plus one small file per act, so a lookup reads a
-  few kilobytes. The manifest is what keeps "this act isn't in the archive" distinct from "the
-  file didn't load". Confirm the account's plan before Phase 2 (#692).
+  1, a rules fingerprint that doesn't match, and a file the manifest lists that won't load.
+- **Where the lookup runs.** In the Worker, before the Durable Object is called. The manifest is
+  kept in module scope for the life of the isolate and refreshed when the 300-second cache turns
+  over. Act and covers files are fetched per song, through the same cache.
+- **CPU budget.** The account is on the free tier: 10 ms of CPU per request. That is why the index
+  is split into small files. Phase 2 still measures a cold request with `wrangler tail` and
+  records the figure; the target is under 3 ms.
 - **No caching of answers.** Every response carries `Cache-Control: no-store`.
 
 ### Listener health
@@ -910,7 +942,8 @@ its shape:
 | Foals / "(Intro)" | not `heard` |
 | Foals / "Summer Sky" | `heard` (the setlist writes "(summer sky)") |
 | Blue Öyster Cult / "(Don't Fear) The Reaper" | title shown whole |
-| Index missing, not JSON, `v` other than 1, or `rules` not matching | `unknown`, never `none` |
+| Manifest missing, not JSON, `v` other than 1, or `rules` not matching | `unknown`, never `none` |
+| An act the manifest lists, whose file won't load | `unknown`, never `none` |
 | An act whose key is listed in `ambiguous` | `unknown` |
 | Shazam's album when the archive has none | passed through |
 
@@ -921,9 +954,10 @@ alarm sets `idle`, the offline notice appears after 15 minutes and clears on the
 exactly two keys after a hundred POSTs.
 
 **Invariants, on the real data** (root suite, `test/pipeline/now-spinning-index.test.ts`, so
-data commits trigger it). Build the index from `public/data` and assert properties, not counts:
+data commits trigger it). Build the index files from `public/data` and assert properties, not counts:
 `problems` is empty (no two acts share an `actKey`, every song has a strict key), every photo
-URL is in `media-index.json`, and every `sl` and `cv` row points at a real show. A separate test
+URL is in `media-index.json`, every night and cover row points at a real show, every act in the manifest
+has a file, and no file is larger than 64 KB. A separate test
 feeds the builder a bad title and a colliding act and asserts it reports them without throwing.
 
 **Pi:** pytest as above, and `--wav --dry-run`. The Apple TV rules get their own tests with a fake
@@ -983,7 +1017,7 @@ is chosen.
 `workers/now-spinning/src/{match.ts,identify.ts,types.ts}` and tests, the frozen fixture,
 `scripts/build-now-spinning-index.ts`, `test/pipeline/now-spinning-index.test.ts`,
 `test/fixtures/now-spinning-states.json`
-**Modify:** `package.json` (`build`, `test:workers`), `.gitignore` (the generated index)
+**Modify:** `package.json` (`build`, `test:workers`), `.gitignore` (`public/data/now-spinning/`)
 **Done when:** the fixture table and the invariants pass, and a bad title or a colliding act in
 the data is left out and reported, with the site's build still succeeding.
 
@@ -1036,13 +1070,16 @@ site counts songs the same way the TV does.
 
 ## Questions for Review
 
-- Is "Listening…" right for `unmatched`, or should the screen stay on idle until a match comes in?
-- Should "most played" on the site count songs heard from opening acts? Asked in #690.
+None open. Phase 0 (#688) will raise the next ones.
 
 ---
 
 ## Revision History
 
+- **2026-11-21, v1.5.1:** Three answers from Mike. The Cloudflare account is on the free tier, so
+  the index is split into a manifest and one small file per act, to stay inside 10 ms of CPU.
+  "Listening…" is confirmed for a record Shazam doesn't know. "Most played" on the site will count
+  opening acts' songs (#690). Phase 0 gains an optional first step: try the Shazam app on a phone.
 - **2026-11-21, v1.5.0:** Second architecture review, of the whole spec and every issue.
   - The index builder no longer fails the site's build on bad data; it leaves the item out and
     reports it.

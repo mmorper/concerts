@@ -24,6 +24,24 @@ over SSH). Anything in `<angle brackets>` is a value you fill in.
 
 ---
 
+## Before the hardware arrives: try Shazam on your phone (check 2a, optional)
+
+The Shazam app uses the same catalogue the Pi will query, so this answers the biggest question
+early: does Shazam know your records, and what does it call them?
+
+- Play the ten test records and Shazam a track or two from each.
+- Write down exactly what it shows for the artist and the title, including extras like
+  "(Remastered 2009)". The app's history keeps them all.
+- Press and hold the Shazam button for Auto Shazam and let a whole side play. It logs each song,
+  much as the Pi will at track changes.
+- Leave the needle in the run-out groove for a minute. It should find nothing.
+
+A match here is a strong sign, because the phone hears the record through speakers and room
+noise, which is harder than the Pi's direct line feed. A miss is ambiguous: it may be the room.
+Either way, step 8 still has to be done on the Pi.
+
+---
+
 ## 1. Assemble the Pi
 
 1. **Active cooler.** Peel the backing off its thermal pads. Line its two spring pins up with
