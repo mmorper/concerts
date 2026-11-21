@@ -4,7 +4,7 @@
 **Target Version:** v7.0.0
 **Priority:** Medium
 **Estimated Complexity:** Very High (hardware, a Python listener, a new Worker with a Durable Object, a display)
-**Dependencies:** Two existing bugs, #689 and #690, come before Phase 1. Phase 0 (a hardware evening, #688) comes before Phase 4.
+**Dependencies:** Bug #689 comes before Phase 1. Phase 0 (a hardware evening, #688) comes before Phase 4. Bug #690 comes before the release.
 **Tracking:** epic #687
 
 **Kit in this folder:**
@@ -83,7 +83,7 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 - Media rules: .claude/skills/media-pipeline/SKILL.md
 
 **Implementation Approach:**
-- Prerequisites: #689 and #690 merged before Window 1
+- Prerequisite: #689 merged before Window 1 (#690 is needed before the release, not before Window 1)
 - Phase 0 (Mike, hardware evening, #688): must be done and recorded in this spec before Window 4
 - Window 1: match module + index builder + pure identify() with fixture tests
 - Window 2: Worker API, Durable Object, auth, liveness, CI + deploy
@@ -186,8 +186,8 @@ Tracked as #688, which carries these as a checklist.
 Four assumptions decide whether this design works, and none can be tested from a desk: Shazam on
 real records (check 2), the run-out groove (3), the receiver not switching input when the Apple
 TV wakes (4), and the Pi being able to put an app on the Apple TV's screen (5). Test them with
-the Pi, the Onyx Blackjack and the Apple TV.
-Record the results in this spec's revision history.
+the Pi, the Onyx Blackjack and the Apple TV, and record the results in this spec's revision
+history.
 
 | # | Check | Why it matters |
 |---|---|---|
@@ -197,7 +197,7 @@ Record the results in this spec's revision history.
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, turn off the Apple TV's "Control TVs and Receivers" (or the receiver's HDMI Control) and try again. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
-| 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26. | The app can't put itself on screen. The Pi has to, for every record. |
+| 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
 | 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
 | 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio). Answered from its source code in Phase 4. | So the privacy section states a fact |
@@ -268,10 +268,17 @@ after the others. Generating at build means every deploy publishes an index that
 data it ships with, and automated data commits don't churn a derived file. Check that the
 Cloudflare Pages build command is `npm run build`.
 
+The index reaches production only when the site next deploys after Phase 1 merges. Until then
+the Worker answers `unknown` for every song, which is correct but not useful. #693 checks that
+`https://concerts.morperhaus.org/data/now-spinning-index.json` returns JSON before going on.
+
 ```ts
 interface NowSpinningIndex {
   v: 1;
   generatedAt: string;
+  rules: string;                                                  // fingerprint of the matching rules (see below)
+  problems: { kind: 'no-key' | 'ambiguous-act'; what: string }[]; // data the builder left out
+  ambiguous: string[];                                            // actKeys shared by two different acts
   albums: { t: string; y: string; c: string | null }[];          // c: 600x600 cover URL
   songs: {
     n: string;            // the setlist's spelling
@@ -294,11 +301,23 @@ interface NowSpinningIndex {
 Builder rules:
 - Songs come from `setlists-cache.json`. Skip `tape` entries.
 - Merge `sameAct` billings; keep `sharesMember` acts separate. (They are joined at lookup time, by the cover data. See below.)
-- **The build fails** if two different acts share an `actKey`, or if any song has no strict key.
-  On 2026-11-21 no acts collide. Three setlist entries have no key ("With Any Sort of
-  Certainty"), which is bug #689 and the reason it comes first.
+- **The builder never fails the site's build.** It runs inside `npm run build`, so an exception
+  here would stop the whole site from deploying, and the data changes by itself every day. When
+  it meets data it can't use, it leaves that item out and records it in `problems`:
+  - A song with no strict key (a title that folds to nothing) is left out.
+  - Two different acts sharing an `actKey` are both listed in `ambiguous`. The lookup answers
+    `unknown` for that key and never guesses between them.
+  - On 2026-11-21 no acts collide, and three setlist entries have no key ("With Any Sort of
+    Certainty"), which is bug #689.
+  The real-data test (below) is what turns a problem red, in CI and on the daily scheduled run.
 - **Version.** The Worker accepts `v: 1` only. Any other value, or a file that isn't JSON (a
   missing file comes back as the site's HTML), counts as "index unavailable".
+- **Rules fingerprint.** The site and the Worker deploy separately, and both contain the matching
+  rules: the builder uses them when the site builds, the Worker when a song arrives. If one side
+  deploys a rule change before the other, their keys stop agreeing and real matches are missed.
+  So the index carries `rules`, a short hash of the rules applied to a fixed list of sample
+  titles and names. The Worker computes the same hash from its own copy. A mismatch counts as
+  "index unavailable" until both sides are deployed.
 - Album covers: `album-covers.json` mzstatic `100x100bb` → `600x600bb`. Fall back to
   Cover Art Archive `front-500` when `coverAvailable`.
 - Photos: `media-index.json` assets with `subject: 'artist'` and `kind: 'image'`, keyed
@@ -308,17 +327,20 @@ Builder rules:
   Follow `.claude/skills/media-pipeline/SKILL.md`: only published assets, no new derivatives,
   and the photo's own act and date always travel with it.
 
-### Prerequisites: two existing bugs
+### Two existing bugs this work depends on
 
-Both predate this work, and both come before Phase 1.
+Both predate this work.
 
-- **#689: `foldSongTitle` treats "with" in a title as a featured artist.** "Dancing With Myself"
-  folds to `dancing`, and "With or Without You" to nothing. Since Now Spinning's strict matching
-  is this function, two different songs by one act could count as the same song.
-- **#690: `song-index.json` ignores opening acts' setlists** (1,720 songs against 2,267 from all
-  setlists). The site and Ask the Archive read it, so they don't know Blancmange played "Blind
-  Vision" as an opener. If the TV counts every setlist and the site doesn't, the same song gets
-  two different numbers.
+- **#689, before Phase 1: `foldSongTitle` treats "with" in a title as a featured artist.**
+  "Dancing With Myself" folds to `dancing`, and "With or Without You" to nothing. Now Spinning's
+  strict matching is this function, so two different songs by one act could count as the same
+  song. Fixing it changes keys in `song-albums.json`, and the ask-chat and MCP Workers bundle the
+  same function, so they must be redeployed with the regenerated data (the issue says how).
+- **#690, before the release: `song-index.json` ignores opening acts' setlists** (1,720 songs
+  against 2,267 from all setlists). The site and Ask the Archive read it, so they don't know
+  Blancmange played "Blind Vision" as an opener. Phase 1 doesn't read that file, so it isn't
+  blocked. But if the TV counts every setlist and the site doesn't, the same song gets two
+  different numbers, so it has to land before v7.0.0 ships.
 
 ### Lookup (`workers/now-spinning/src/identify.ts`)
 
@@ -367,7 +389,7 @@ States that aren't songs:
 
 | `kind` | When | Screen |
 |---|---|---|
-| `idle` | Nothing playing (the default) | Brand mark, dimmed, and a small "Put a record on." line. No clock or other data. If the listener is offline or can't identify songs, one line under it says so (`notice`). After 10 minutes it goes black (see [Screen care](#screen-care-the-tv-is-an-oled)). |
+| `idle` | Nothing playing (the default) | Brand mark, dimmed, and a small "Put a record on." line. No clock or other data. If the listener is offline or can't identify songs, one line under it says so (`notice`). It doesn't stay up: the app hands over to the Apple TV's screensaver, and the web page goes black after 10 minutes (see [Screen care](#screen-care-the-tv-is-an-oled)). |
 | `gap` | Between tracks or while flipping sides | Keep the last track's screen. After 90 s, fade the text and keep the sleeve and spinning record. |
 | `unmatched` | Sound present, no match after 3 tries | "Listening…" with the generic sleeve, and "Nothing I recognise yet." Never guess. |
 
@@ -462,7 +484,19 @@ interface NowSpinningState {
   After a reconnect it uses `now − at` from the message, never its own clock.
 - **Index unavailable.** A `track` event still produces a state, with `screen: 'unknown'`. It
   must never fall through to `none`, which would be a false statement. Retry the index on the
-  next event.
+  next event. "Unavailable" covers a failed fetch, a file that isn't JSON, a version other than
+  1, and a rules fingerprint that doesn't match.
+- **Where the lookup runs.** In the Worker, before the Durable Object is called. The parsed index
+  and its lookup maps are kept in module scope for the life of the isolate and refreshed when the
+  300-second cache turns over, so most requests don't parse anything.
+- **CPU budget.** `workers/meta-injector/wrangler.toml` describes the account as free tier, which
+  allows 10 ms of CPU per request. Parsing the 360 KB index and building its maps measured about
+  6 ms in Node on a fast machine, which is too close. Phase 2 measures the real figure with
+  `wrangler tail`. If a cold request passes about 5 ms, split the index: a small manifest (the
+  act keys, the cover keys, `v` and `rules`) plus one small file per act, so a lookup reads a
+  few kilobytes. The manifest is what keeps "this act isn't in the archive" distinct from "the
+  file didn't load". Confirm the account's plan before Phase 2 (#692).
+- **No caching of answers.** Every response carries `Cache-Control: no-store`.
 
 ### Listener health
 
@@ -490,8 +524,9 @@ Without this, a dead Pi or a blocked recogniser looks exactly like "nothing play
 | `NOW_SPINNING_INGEST_TOKEN` | prod `wrangler secret`, `workers/now-spinning/.dev.vars`, Pi `/etc/now-spinning/env` |
 | `NOW_SPINNING_DISPLAY_TOKEN` | prod `wrangler secret`, `.dev.vars`, each browser that opens the web page, `Secrets.xcconfig` on Mike's Mac (it is built into the app), and `workers/dashboard-refresh` (to read `/health`) |
 
-Add both to `docs/SECRETS.md`'s matrix. Generate each with `openssl rand -base64 32`; they must
-differ. Rotating the display token signs every display out until it is given the new one.
+Add both to `docs/SECRETS.md`'s matrix. Generate each with `openssl rand -hex 32`; they must
+differ. Hex on purpose: the web page sends its token as a WebSocket subprotocol, which may not
+contain the `/` or `=` that base64 produces. Rotating the display token signs every display out until it is given the new one.
 
 - Two tokens, so a display can't write and a leaked Pi token can't read. The display token
   exists because the current state says what's playing in the house, and that someone is home.
@@ -510,6 +545,12 @@ Workers in this repo deploy from CI on a push to `main`: copy the `deploy` job f
 deploy (the Worker answers `503` to everything), set both secrets with `wrangler secret put`,
 then check `GET` returns `idle`. Those owner steps are #693. Add `workers/now-spinning` to
 `npm run test:workers` and to `.github/dependabot.yml`.
+
+**What redeploys the Worker.** Its CI path filter must include the shared rule files it bundles:
+`scripts/utils/song-title.ts`, `scripts/utils/act-name.ts` and `src/utils/normalize.ts`, as well
+as `workers/now-spinning/**`. The existing Workers' filters don't include the shared files they
+bundle, which is why #689 needs a manual redeploy. The rules fingerprint is the safety net for
+when the two deploys land at different times.
 
 **Local development.** Run the Worker with `wrangler dev` and add a Vite proxy from
 `/api/now-spinning` to it, so the display page and the Worker are same-origin locally as they are
@@ -540,10 +581,14 @@ identifier and the audio device.
 **Putting the app on the screen.** A tvOS app can't bring itself to the front, so the listener
 does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - Paired with the Apple TV once; the credentials live on the Pi, readable by root only.
-- On **every** idle → track change, not only when the input switches to Phono: wake the Apple TV
-  if it's asleep, and bring the app to the front if it isn't there. This is what makes a second
-  record an hour later appear instead of playing behind the screensaver.
-- **Never interrupt.** If the Apple TV reports that something is playing, do nothing.
+- **When:** each time the listener hears sound after silence while the receiver is on Phono,
+  before the song is identified. Not only when the input switches to Phono. This is what makes a
+  second record an hour later appear instead of playing behind the screensaver, and it means
+  "Listening…" is visible for a record Shazam doesn't know.
+- **What:** wake the Apple TV if it's asleep, then bring the app to the front if it isn't there,
+  including from behind the screensaver.
+- **Never interrupt.** If the Apple TV reports that something is playing, do nothing. A paused
+  app is not protected: it goes to the background and keeps its place.
 - When the record stops, do nothing. The app goes idle and the Apple TV's screensaver takes over.
 - If the Apple TV can't be reached, keep listening and posting. Report `appleTv: "unreachable"`
   in the status heartbeat.
@@ -616,12 +661,15 @@ laptop, a phone or an iPad.
 - Motion: record at 33⅓ rpm (1.8 s a turn), slide-out and back on a new track (0.9 s), text
   fade-up (0.9 s), background photos crossfade every 7 s. Honour `prefers-reduced-motion`.
 - Photos use `fx`/`fy` as the focal point (`object-position`), so the crop Mike chose survives.
-- Token: open the page once as `…/now-spinning.html#token=…`. The page stores it in
+- Address: `https://concerts.morperhaus.org/now-spinning`. Cloudflare Pages serves
+  `public/now-spinning.html` without the extension, as it does `/about-mcp`.
+- Token: open the page once as `…/now-spinning#token=…`. The page stores it in
   `localStorage` and clears the fragment. A fragment never reaches the server.
 - Without a valid token the page shows the idle screen and nothing else.
 - `<meta name="robots" content="noindex">`. Don't add it to `scripts/generate-sitemap.ts`, which
   lists pages by hand. Add its path to the static-page exemption in
-  `workers/meta-injector/worker.js`, next to `/about-mcp`, so bots get the page as written.
+  `workers/meta-injector/worker.js` (`/now-spinning`, next to `/about-mcp`), so bots get the page
+  as written.
 - If the socket drops: reconnect with backoff, and poll `GET` every 10 s meanwhile.
 - Idle: shift the brand mark's position slightly every few minutes.
 
@@ -654,7 +702,7 @@ things that sit in one place for hundreds of hours age those pixels faster. One 
 does nothing. The same layout in the same place for every listening session over years could.
 The design is already mostly dark, with changing photos and text. These rules cover what isn't:
 
-| Rule | In the display page | Why |
+| Rule | How | Why |
 |---|---|---|
 | **Cap the sleeve's brightness** (required) | Album art and the generated sleeve render at about 82% (`filter: brightness(.82)` on the page; the same in the app) | Wear rises steeply with brightness, this panel is very bright, and the sleeve is the largest bright area that stays put for a whole album |
 | **Nothing static when idle** (required) | tvOS app: clear `isIdleTimerDisabled` on `idle`, so the Apple TV's screensaver takes over. Web page: after 10 minutes of `idle`, fade to solid black with nothing drawn; any non-idle state brings it back. | An idle screen left up for hours is the longest-lived static image there is. Black OLED pixels are off. |
@@ -687,7 +735,8 @@ TV's home screen). SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
 
 **The app**
 - Renders the same state contract as the web page, with the same layout, fonts (Playfair Display
-  and Source Sans 3, bundled), copy and motion. It writes no words of its own.
+  and Source Sans 3, bundled with their Open Font License files), copy and motion. It writes no
+  words of its own.
 - `URLSessionWebSocketTask` with the `Authorization` header. Reconnect with backoff, poll `GET`
   every 10 s while the socket is down, and reconnect whenever the app returns to the front.
 - An unknown `screen` renders as `unknown`; an unknown `kind` renders as `idle`. The app is
@@ -719,12 +768,16 @@ TV's home screen). SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
 **What a Code session can and can't do.** It can write the Swift sources and the Xcode project.
 It can't build, sign or run them. Two things narrow that gap:
 - A CI job on a macOS runner builds the app for the tvOS Simulator without signing
-  (`.github/workflows/now-spinning-tvos-ci.yml`), so every PR proves the code compiles.
+  (`.github/workflows/now-spinning-tvos-ci.yml`), so every PR proves the code compiles. It runs
+  only when `now-spinning/tvos/**` changes. macOS runners are free for a public repository and
+  billed at a higher rate for a private one.
 - The fixture previews let Mike check every screen in Xcode in a minute.
 
-Keep the Xcode project minimal, with a shared scheme (the CI build needs one), and commit it. If
-hand-editing it proves fragile, generate it from a `project.yml` with XcodeGen and commit the
-result.
+**The Xcode project is generated, not written by hand.** A Code session can't open Xcode, and a
+hand-written project file is easy to get subtly wrong. So the repo holds a short `project.yml`,
+and XcodeGen turns it into the Xcode project: in CI before the build, and on Mike's Mac with
+`brew install xcodegen` and then `xcodegen` in `now-spinning/tvos/`. The generated
+`.xcodeproj` is gitignored.
 
 **Putting it on the screen** is the listener's job: see
 [Pi listener](#pi-listener-now-spinningpi). It depends on Phase 0 checks 4 and 5.
@@ -751,7 +804,7 @@ is written: the Pi shows the web page.
 - A kiosk session on the Pi starts Chromium full screen on the display page at boot: no desktop,
   no cursor, no screen blanking. The setup guide installs the no-desktop OS, so this adds a
   minimal compositor (`cage` or `labwc`) and Chromium.
-- The display token reaches the page through a launch URL (`…/now-spinning.html#token=…`) kept in
+- The display token reaches the page through a launch URL (`…/now-spinning#token=…`) kept in
   `/etc/now-spinning/env`, readable by root only, never in the repo.
 - Output fixed at 1080p, standard range. If the blurred photo backgrounds stutter, pre-blur the
   images at build time and drop the CSS blur.
@@ -800,21 +853,22 @@ The listener records the two channels as stereo and downmixes to mono itself.
 - Zone 2 Setup → Volume Level: fixed.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
 - Video Select on Phono stays on the Apple TV, as it is today.
-- TV: the Panel Care and picture-mode settings under [Screen care](#screen-care-the-tv-is-an-oled).
+- TV and Apple TV: the settings under [Screen care](#screen-care-the-tv-is-an-oled).
 
 ---
 
 ## Privacy
 
-- The Pi only listens to the receiver's line output. There is no microphone anywhere. It hears
-  exactly what the Phono input plays, and only while the main zone is on Phono.
+- The Pi only listens to the receiver's line output. There is no microphone anywhere. Zone 2 is
+  set to Phono, so the Phono input is all it can ever hear, and it listens only while the main
+  zone is on Phono (or, if it can't reach the receiver, only when that line carries sound).
 - **We keep no play history.** The Worker holds only the current state and overwrites it. The
   one other thing it stores is when the listener last checked in, which names no song.
   Nothing is logged per song, and nothing goes to Analytics Engine or GA4. Stopping the record
   erases the last track.
 - **Shazam does see each identification**, with the home's IP address. That is inherent to
-  using a recognition service. ShazamIO is believed to send an audio fingerprint, not audio;
-  Phase 0 check 7 confirms it, and this line gets updated with the answer.
+  using a recognition service. ShazamIO is believed to send an audio fingerprint, not audio.
+  Phase 4 confirms that from its source code (check 7) and updates this line with the answer.
 - Clips are held in memory for one recognition and never written to disk.
 - Reading the current state requires the display token. Nothing about it is public on the site.
 
@@ -827,7 +881,8 @@ Tests that assert exact counts against live data break when the data moves, and
 
 **Exact behaviour, on a frozen fixture** (`workers/now-spinning/test/fixtures/index.json`, a
 small hand-built index; Worker vitest, `now-spinning-ci.yml`). Each case below was verified
-against the real archive in the mock on 2026-11-21, and the fixture reproduces its shape:
+against the real archive on 2026-11-21, in a prototype of these rules, and the fixture reproduces
+its shape:
 
 | Input | Expected |
 |---|---|
@@ -855,7 +910,8 @@ against the real archive in the mock on 2026-11-21, and the fixture reproduces i
 | Foals / "(Intro)" | not `heard` |
 | Foals / "Summer Sky" | `heard` (the setlist writes "(summer sky)") |
 | Blue Öyster Cult / "(Don't Fear) The Reaper" | title shown whole |
-| Index missing, not JSON, or `v` other than 1 | `unknown`, never `none` |
+| Index missing, not JSON, `v` other than 1, or `rules` not matching | `unknown`, never `none` |
+| An act whose key is listed in `ambiguous` | `unknown` |
 | Shazam's album when the archive has none | passed through |
 
 API and room-logic tests: `401` without a token, `401` for the wrong token on each route, `503`
@@ -866,8 +922,9 @@ exactly two keys after a hundred POSTs.
 
 **Invariants, on the real data** (root suite, `test/pipeline/now-spinning-index.test.ts`, so
 data commits trigger it). Build the index from `public/data` and assert properties, not counts:
-no two acts share an `actKey`, every song has a strict key, every photo URL is in
-`media-index.json`, and every `sl` and `cv` row points at a real show.
+`problems` is empty (no two acts share an `actKey`, every song has a strict key), every photo
+URL is in `media-index.json`, and every `sl` and `cv` row points at a real show. A separate test
+feeds the builder a bad title and a colliding act and asserts it reports them without throwing.
 
 **Pi:** pytest as above, and `--wav --dry-run`. The Apple TV rules get their own tests with a fake
 Apple TV: wake when asleep, bring the app forward, never while something is playing, carry on
@@ -898,8 +955,8 @@ Every phase is a GitHub issue under epic #687. The issue's checklist is the defi
 
 | Phase | Issue | Who |
 |---|---|---|
-| Prerequisite: `foldSongTitle` and "with" | #689 | Code session |
-| Prerequisite: `song-index.json` and openers | #690 | Code session |
+| Before Phase 1: `foldSongTitle` and "with" | #689 | Code session |
+| Before the release: `song-index.json` and openers | #690 | Code session |
 | 0: hardware evening | #688 | Mike |
 | 1: match rules, index, lookup | #691 | Code session |
 | 2: Worker API, Durable Object, health | #692 | Code session |
@@ -912,8 +969,8 @@ Every phase is a GitHub issue under epic #687. The issue's checklist is the defi
 | Install the app on the Apple TV, and the yearly reinstall | #701 | Mike |
 | Release v7.0.0 | #699 | Code session |
 
-The hardware track (#688) and the software track (#689 → #690 → #691 → #692 → #694) don't depend
-on each other. Phase 4 is the first point where they meet. Phase 5 needs only Phase 2's contract
+The hardware track (#688) and the software track (#689 → #691 → #692 → #694) don't depend
+on each other. #690 can be done at any point before the release. Phase 4 is the first point where they meet. Phase 5 needs only Phase 2's contract
 and fixtures, so it can run alongside Phases 3 and 4.
 
 ### Phase 0: hardware evening (#688)
@@ -921,13 +978,14 @@ The checks above. **Done when:** results are in this spec's revision history and
 is chosen.
 
 ### Phase 1: match rules, index, lookup (#691)
-**After:** #689 and #690.
+**After:** #689.
 **Create:** `workers/now-spinning/{package.json,tsconfig.json,vitest.config.ts}`,
 `workers/now-spinning/src/{match.ts,identify.ts,types.ts}` and tests, the frozen fixture,
 `scripts/build-now-spinning-index.ts`, `test/pipeline/now-spinning-index.test.ts`,
 `test/fixtures/now-spinning-states.json`
 **Modify:** `package.json` (`build`, `test:workers`), `.gitignore` (the generated index)
-**Done when:** the fixture table and the invariants pass.
+**Done when:** the fixture table and the invariants pass, and a bad title or a colliding act in
+the data is left out and reported, with the site's build still succeeding.
 
 ### Phase 2: Worker API (#692, then #693)
 **Create:** `workers/now-spinning/src/{index.ts,room.ts,room-logic.ts,auth.ts}` and tests,
@@ -951,18 +1009,19 @@ the Apple TV), this spec's Privacy section (Phase 0 check 7)
 checklist (#697) passes.
 
 ### Phase 5: tvOS app (#698, then #701)
-**Create:** `now-spinning/tvos/` (Xcode project with a shared scheme, SwiftUI sources, bundled
-fonts, app icon layers, fixture previews), `.github/workflows/now-spinning-tvos-ci.yml` (simulator
-build, no signing)
-**Modify:** `scripts/generate-brand-assets.ts` (the tvOS icon layers)
-**Modify:** `.gitignore` (Xcode user data, `Secrets.xcconfig`)
+**Create:** `now-spinning/tvos/` (`project.yml` for XcodeGen, SwiftUI sources, bundled fonts,
+app icon layers, fixture previews), `.github/workflows/now-spinning-tvos-ci.yml` (generate the
+project, then a simulator build with no signing)
+**Modify:** `scripts/generate-brand-assets.ts` (the tvOS icon layers), `.gitignore` (the
+generated `.xcodeproj`, Xcode user data, `Secrets.xcconfig`)
 **Done when:** CI builds it, every preview matches its screenshot, and after Mike signs and
 installs it (#701) a record on the turntable shows on the TV.
 
 ### Release v7.0.0 (#699)
 Changelog, `CLAUDE.md` project structure, roadmap, context file, the spec moved to
 `docs/specs/implemented/`, and the operator dashboard's Worker list and listener-health line.
-The release gate is Phases 1–5: a record plays, and the tvOS app shows it on the TV.
+The release gate is Phases 1–5 and #690: a record plays, the tvOS app shows it on the TV, and the
+site counts songs the same way the TV does.
 
 ---
 
@@ -984,6 +1043,18 @@ The release gate is Phases 1–5: a record plays, and the tvOS app shows it on t
 
 ## Revision History
 
+- **2026-11-21, v1.5.0:** Second architecture review, of the whole spec and every issue.
+  - The index builder no longer fails the site's build on bad data; it leaves the item out and
+    reports it.
+  - A rules fingerprint guards against the site and the Worker deploying rule changes at different
+    times, and the Worker's CI now watches the shared rule files.
+  - Tokens are hex, because base64 can't be used as a WebSocket subprotocol.
+  - The page's address is `/now-spinning`.
+  - The Worker has a CPU budget, a measurement step and a fallback (the account may be free tier).
+  - The Xcode project is generated from `project.yml`.
+  - Waking the Apple TV is tied to sound after silence, before identification.
+  - #690 moves from "before Phase 1" to "before the release", since Phase 1 doesn't depend on it.
+  - Stale wording fixed in the idle state, receiver setup, privacy and testing sections.
 - **2026-11-21, v1.4.3:** Distribution changed to the simpler route: installed from Xcode and
   reinstalled once a year. TestFlight with Xcode Cloud is noted as the alternative, not built.
   App name: Morperhaus Now Spinning. App icon: the project's existing network mark, from its

@@ -390,6 +390,7 @@ Then try each of these and write down what happened. If a command isn't recognis
 ~/ns-test/bin/atvremote --id <identifier> app_list             # the installed apps and their identifiers
 ~/ns-test/bin/atvremote --id <identifier> launch_app=com.apple.TVMusic    # does Music open?
 ~/ns-test/bin/atvremote --id <identifier> playing              # says what is playing, if anything
+~/ns-test/bin/atvremote --id <identifier> app                  # which app is in front
 ```
 
 Three situations matter. Test each with the receiver on Phono:
@@ -436,11 +437,11 @@ laptop or phone and compare it with the TV. That tells you which part to look at
 **Open the page with its diagnostics panel:**
 
 ```
-https://concerts.morperhaus.org/now-spinning.html#debug
+https://concerts.morperhaus.org/now-spinning#debug
 ```
 
 The first time on a device, give it the display token once: open
-`https://concerts.morperhaus.org/now-spinning.html#token=<display token>`, then add `#debug`.
+`https://concerts.morperhaus.org/now-spinning#token=<display token>`, then add `#debug`.
 The panel shows whether the page is connected, the exact state the Worker last sent, and the
 listener's health: online or last seen, song recognition, receiver, Apple TV.
 
