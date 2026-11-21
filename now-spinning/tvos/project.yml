@@ -1,0 +1,65 @@
+# Morperhaus Now Spinning — the tvOS display (#698).
+#
+# XcodeGen turns this file into NowSpinning.xcodeproj, which is generated and gitignored:
+#   brew install xcodegen
+#   cd now-spinning/tvos && xcodegen
+# CI does the same (.github/workflows/now-spinning-tvos-ci.yml). Edit this file, not the project.
+
+name: NowSpinning
+options:
+  bundleIdPrefix: org.morperhaus
+  deploymentTarget:
+    tvOS: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: false
+
+# Config.xcconfig is committed and optionally includes Secrets.xcconfig (gitignored): the display
+# token and the signing team. Without it the app builds, and shows only the idle screen.
+configFiles:
+  Debug: Config.xcconfig
+  Release: Config.xcconfig
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  NowSpinning:
+    type: application
+    platform: tvOS
+    # A shared scheme, so `xcodebuild -scheme NowSpinning` works in CI and Xcode opens ready to run.
+    scheme: {}
+    sources:
+      - path: NowSpinning
+      # The state contract's examples, for the SwiftUI previews: the same file the Worker's tests
+      # write and the web page's ?fixture= reads.
+      - path: ../../test/fixtures/now-spinning-states.json
+        buildPhase: resources
+    info:
+      path: NowSpinning/Info.plist
+      properties:
+        CFBundleDisplayName: Morperhaus Now Spinning
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UIRequiredDeviceCapabilities: [arm64]
+        UIUserInterfaceStyle: Dark
+        ITSAppUsesNonExemptEncryption: false
+        UIAppFonts:
+          - PlayfairDisplay-Medium.ttf
+          - PlayfairDisplay-Bold.ttf
+          - PlayfairDisplay-MediumItalic.ttf
+          - SourceSans3-Regular.ttf
+          - SourceSans3-SemiBold.ttf
+          - SourceSans3-Bold.ttf
+        NowSpinningDisplayToken: $(NOW_SPINNING_DISPLAY_TOKEN)
+    settings:
+      base:
+        PRODUCT_NAME: NowSpinning
+        PRODUCT_BUNDLE_IDENTIFIER: org.morperhaus.nowspinning
+        TARGETED_DEVICE_FAMILY: "3"
+        ASSETCATALOG_COMPILER_APPICON_NAME: "App Icon & Top Shelf Image"
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_PREVIEWS: YES
