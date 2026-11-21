@@ -175,6 +175,7 @@ Record the results in this spec's revision history.
 |---|---|---|
 | 1 | AV7703: Phono plays out of ZONE2 PRE OUT. Set the Blackjack (see [Audio interface settings](#audio-interface-settings)), then find a fixed Zone 2 level where the loudest record peaks near −12 dBFS and the SIG/OL lights never turn red. | Phono to Zone 2 is confirmed only for the near-identical AV7702 |
 | 1b | On the Pi: `arecord -l` lists the Blackjack, and `arecord -D plughw:<card> -f cd -d 10 t.wav` records both channels (`plughw` converts from whatever bit depth the Blackjack offers) | It works without drivers on a Mac, which points to USB Audio Class; this confirms Linux sees it the same way |
+| 1c | On the Pi: `vcgencmd get_config usb_max_current_enable` reads 1, and `dmesg` shows no USB over-current or power warnings with the Blackjack plugged in. If it reads 0 with the kit's supply, the Pi didn't recognise the supply as 5 A; set `usb_max_current_enable=1` in `/boot/firmware/config.txt` **only** if the supply is rated 5 V / 5 A. | The Blackjack draws its power from the Pi's USB ports |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | With the receiver on Phono, wake the Apple TV. Does the receiver switch input to it? | If HDMI Control (CEC) does that, waking the Apple TV stops the record |
@@ -515,7 +516,7 @@ Set `isIdleTimerDisabled` while `kind` is `track`, `gap` or `unmatched`, and cle
 | Power | Official Raspberry Pi 27 W USB-C supply | Underpowered Pis drop USB audio. |
 | Storage | 32 GB A2 microSD | Raspberry Pi OS, 64-bit (Lite if listening only) |
 | Case | Official Pi 5 case with fan | It sits in an AV cabinet; keep it cool. |
-| Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. Bus-powered from the Pi. |
+| Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. It has no power socket: it runs on USB power from the Pi. The Pi 5 allows 1.6 A across its USB ports only when it recognises a 5 A supply (600 mA otherwise), so use the 5 A-capable supply from the kit, and keep phantom power off, which is the Blackjack's biggest draw. |
 | Audio cable | Dual RCA (male) → dual 1/4" TS (male), 1 m, such as Hosa's CPR-200 series | AV7703 ZONE2 PRE OUT L → Blackjack input 1, R → input 2. Unbalanced TS is right here: the pre-outs are unbalanced and the run is short. |
 | USB cable | USB-A → USB-B, about 1 m (one likely came with the Blackjack) | Pi USB 2.0 port (black) → Blackjack. The blue USB 3 ports are fine too, but USB 2 keeps it away from any USB 3 interference near the Wi-Fi antenna. |
 | Display cable | Micro-HDMI → HDMI (option A only) | Pi → a spare AV7703 HDMI input |
@@ -685,7 +686,7 @@ checklist passes. **This is v7.0.0.**
 
 - **2026-11-21, v1.2.0:** Audio interface: Mike's Mackie Onyx Blackjack replaces the Behringer
   UCA202/UCA222 and the HiFiBerry fallback. Hardware list, cables, Phase 0 checks and a settings
-  table updated to match.
+  table updated to match, including how the Pi powers it over USB (check 1c).
 - **2026-11-21, v1.1.0:** Architecture review. Verified against the archive data and corrected:
   covers are now consulted for acts Mike has seen (new `seen-cover` screen), medleys match by
   part, the cover lookup no longer mangles "&" names, all-bracket titles match, displayed titles
