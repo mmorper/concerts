@@ -73,6 +73,27 @@ were set straight to prod, so there is normally no `.dev.vars` for this worker. 
 | `REFRESH_KEY` | gates the manual-refresh endpoint (`GET /?key=…`) | optional; any random string. Rotate by `wrangler secret put` + re-share. |
 | `GH_TOKEN` | fine-grained PAT (`mmorper/concerts`, read Contents/Issues/PRs) for the Development tab | optional; expires — re-mint on the GitHub PAT page and re-put |
 
+### Now Spinning tokens — two tokens, several homes each (#687)
+
+The Now Spinning Worker (`workers/now-spinning`) takes two tokens. The **ingest** token lets the
+Pi write; the **display** token lets a display read. Neither can do the other's job, so a leaked
+Pi token can't read what's playing and a display can't post a song. Until **both** are set, the
+Worker answers `503` to everything.
+
+Generate each with `openssl rand -hex 32`, and make them different. Hex, not base64: the web
+page sends its token as a WebSocket subprotocol, which may not contain `/` or `=`.
+
+| Secret | Homes | Notes |
+|--------|-------|-------|
+| `NOW_SPINNING_INGEST_TOKEN` | prod `wrangler secret` (now-spinning) · `workers/now-spinning/.dev.vars` · the Pi's `/etc/now-spinning/env` (root-only) | Rotating it: set the new value on the Worker and on the Pi together; until both match, songs aren't shown. |
+| `NOW_SPINNING_DISPLAY_TOKEN` | prod `wrangler secret` (now-spinning) · `workers/now-spinning/.dev.vars` · prod `wrangler secret` (dashboard-refresh, to read `/health`) · `Secrets.xcconfig` on Mike's Mac (built into the tvOS app) · each browser that has opened `/now-spinning` | Rotating it signs every display out: rebuild the tvOS app from Xcode, and open `/now-spinning#token=…` again in each browser. |
+
+```bash
+cd workers/now-spinning
+npx wrangler secret put NOW_SPINNING_INGEST_TOKEN     # paste at the prompt, never on the command line
+npx wrangler secret put NOW_SPINNING_DISPLAY_TOKEN
+```
+
 ### Data-pipeline secrets — root `.env` (local) + GitHub Actions (CI)
 
 Google OAuth + Maps/Places + music APIs, consumed by `scripts/` locally and by the

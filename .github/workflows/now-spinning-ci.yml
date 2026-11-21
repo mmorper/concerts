@@ -4,23 +4,21 @@ name: Now Spinning CI
 # matching rules it bundles, or this workflow change. The Worker is its own npm package with its
 # own vitest config; the root suite excludes workers/**, so this is the automated guard for it.
 #
-# Phase 1 (#691) has no deploy job: there is nothing to deploy until the API exists. Phase 2
-# (#692) adds it, copied from mcp-ci.yml.
+# On push to main it also deploys the Worker (the deploy job below, copied from mcp-ci.yml).
 
 on:
   push:
     branches: [main]
     paths:
       - 'workers/now-spinning/**'
-      # Shared code this Worker bundles. A change here must reach the Worker too (#689).
-      - 'scripts/utils/song-title.ts'
-      - 'scripts/utils/act-name.ts'
+      # Shared code this Worker bundles (song-title.ts and act-name.ts), as a folder so a newly
+      # imported file can't be missed. A change here must reach the Worker too (#689).
+      - 'scripts/utils/**'
       - '.github/workflows/now-spinning-ci.yml'
   pull_request:
     paths:
       - 'workers/now-spinning/**'
-      - 'scripts/utils/song-title.ts'
-      - 'scripts/utils/act-name.ts'
+      - 'scripts/utils/**'
       - '.github/workflows/now-spinning-ci.yml'
 
 concurrency:
@@ -53,3 +51,59 @@ jobs:
 
       - name: Test
         run: npm test
+
+  # Ship it on push to main, gated on `test`. `wrangler deploy` uploads the script, bindings and
+  # routes; it does NOT touch secrets. Until both tokens are set (#693) the Worker answers 503 to
+  # everything, so the first deploy exposes nothing.
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Never run two deploys at once, and never cancel one midway: a halted deploy is half-applied.
+    concurrency:
+      group: now-spinning-deploy
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: workers/now-spinning
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: workers/now-spinning/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The wrangler pinned in this package's devDependencies, the same binary that runs locally.
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # "Uploaded" is not "answers requests". An unauthenticated GET must reach this Worker: 503
+      # before the secrets are set, 401 after. Anything else (the site's HTML 200, a 404) means the
+      # route isn't serving. No rollback: a red run means go look (`npx wrangler rollback`).
+      - name: Smoke test the live route
+        run: |
+          set -euo pipefail
+          URL=https://concerts.morperhaus.org/api/now-spinning
+          for i in $(seq 1 10); do
+            code=$(curl -sS -o /tmp/body -w '%{http_code}' --max-time 20 "$URL" || true)
+            # Match this Worker's own answers, so an error page from anywhere else doesn't pass.
+            case "$code" in
+              401) grep -q '"unauthorized"' /tmp/body && { echo "route live, locked (secrets set)"; exit 0; } ;;
+              503) grep -q '"not configured"' /tmp/body && { echo "route live, not configured yet: set the secrets (#693)"; exit 0; } ;;
+            esac
+            echo "attempt $i: got $code"
+            sleep 6
+          done
+          echo "::error::$URL did not answer 401 or 503"
+          exit 1
