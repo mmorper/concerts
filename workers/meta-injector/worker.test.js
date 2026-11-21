@@ -384,9 +384,9 @@ describe('meta-injector worker', () => {
       expect(body).toContain('The story behind 2 concerts across 42+ years.')
     })
 
-    it('leaves the static /about-mcp page exactly as it was served', async () => {
+    it.each(['/about-mcp', '/now-spinning'])('leaves the static %s page exactly as it was served', async (path) => {
       serve()
-      const body = await (await worker.fetch(req('/about-mcp'), {}, ctx)).text()
+      const body = await (await worker.fetch(req(path), {}, ctx)).text()
       expect(body).toBe(PAGE)
     })
   })

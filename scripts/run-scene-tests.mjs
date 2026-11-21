@@ -30,7 +30,8 @@ const TESTS = [
   'test/scenes/test-venues.mjs',
   'test/scenes/test-map.mjs',
   'test/scenes/test-genres.mjs',
-  'test/scenes/test-artists.mjs'
+  'test/scenes/test-artists.mjs',
+  'test/scenes/test-now-spinning.mjs'
 ]
 
 const PORT = process.env.SCENE_TEST_PORT || '4178'

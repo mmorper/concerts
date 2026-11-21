@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Now Spinning — Morperhaus Concert Archives</title>
+<!--
+  Now Spinning: the development and troubleshooting display (#694).
+
+  The TV's display is the tvOS app. This page renders the same state from the same Worker, so it
+  is how the Worker and its copy get developed, the reference the app is checked against, and the
+  way to tell a tvOS problem from a Pi or Worker problem. It runs no lookup and writes no
+  sentence about the archive: every such word arrives in the state. The only words of its own are
+  the fixed labels the screenshots show ("Now spinning", "Put a record on.", "Listening…",
+  "Nothing I recognise yet.", "From the night", "No photos from these nights yet", "+ N more",
+  "◉ photos" and the brand). The tvOS app carries the same list.
+
+    /now-spinning#token=<display token>  once: stores the token and clears it from the address
+    /now-spinning#debug                  the diagnostics panel
+    /now-spinning?fixture=heard          render one state from test/fixtures/now-spinning-states.json
+
+  Not indexed, not in the sitemap, no analytics, not linked from the site.
+  Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Display
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#f5f3ff; --dim:rgba(237,233,254,.68); --faint:rgba(237,233,254,.42); --accent:#c4b5fd; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { height:100%; background:#0b0918; color:var(--ink); font-family:'Source Sans 3',system-ui,sans-serif; overflow:hidden; }
+  #fit { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  #stage { position:relative; width:1920px; height:1080px; flex:none; overflow:hidden; transform-origin:center center;
+    background: radial-gradient(1100px 620px at 50% 30%, rgba(140,122,224,.26), transparent 62%),
+                linear-gradient(180deg,#181334 0%,#1e1b4b 40%,#241253 78%,#2c1660 100%);
+    transition: background 1.2s ease; }
+
+  /* background photos from the night */
+  #stage::before { content:""; position:absolute; inset:0; background:radial-gradient(900px 700px at 22% 45%, var(--glow, transparent), transparent 70%); transition:background 1.5s; }
+  .bg { position:absolute; inset:-40px; background-size:cover; background-position:center; opacity:0;
+        filter:blur(22px) saturate(1.2) brightness(.55); transform:scale(1.08); transition:opacity 2.2s ease; }
+  .bg.on { opacity:1; }
+  .veil { position:absolute; inset:0; background:
+      linear-gradient(90deg, rgba(11,9,24,.78) 0%, rgba(11,9,24,.35) 55%, rgba(11,9,24,.7) 100%),
+      linear-gradient(0deg, rgba(11,9,24,.85) 0%, transparent 40%); }
+
+  /* record + sleeve */
+  .deck { position:absolute; left:120px; top:150px; width:620px; height:620px; }
+  .vinyl { position:absolute; top:20px; left:200px; width:580px; height:580px; border-radius:50%;
+    background:
+      radial-gradient(circle, var(--label) 0 17%, #0d0d0f 17.3% 18.5%, transparent 18.6%),
+      repeating-radial-gradient(circle, #141416 0 2px, #1c1c20 2.6px 3.4px),
+      #111;
+    box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 0 0 2px rgba(255,255,255,.04);
+    animation: spin 1.8s linear infinite; transition:left .9s cubic-bezier(.2,.8,.2,1); }
+  .vinyl::after { content:""; position:absolute; inset:0; border-radius:50%;
+    background:conic-gradient(from 30deg, transparent 0 12%, rgba(255,255,255,.09) 16%, transparent 22% 62%, rgba(255,255,255,.06) 66%, transparent 72%); }
+  .vinyl::before { content:""; position:absolute; left:50%; top:50%; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:#0b0918; z-index:2; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .sleeve { position:absolute; inset:0; border-radius:6px; overflow:hidden; background:#222;
+    box-shadow:0 40px 90px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.06); }
+  .sleeve img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .gen { position:absolute; inset:0; padding:54px; display:flex; flex-direction:column; justify-content:flex-end; }
+  .gen .t { font-family:'Playfair Display',serif; font-size:64px; line-height:1.02; font-weight:700; }
+  .gen .a { margin-top:14px; font-size:24px; letter-spacing:.18em; text-transform:uppercase; opacity:.8; }
+  .gen .rings { position:absolute; right:-140px; top:-140px; width:520px; height:520px; border-radius:50%;
+    background:repeating-radial-gradient(circle, rgba(255,255,255,.10) 0 2px, transparent 2px 26px); }
+
+  /* text column */
+  .info { position:absolute; left:930px; right:110px; top:150px; }
+  .kicker { display:flex; align-items:center; gap:14px; font-size:22px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); }
+  .dot { width:12px; height:12px; border-radius:50%; background:#f472b6; box-shadow:0 0 0 0 rgba(244,114,182,.7); animation:pulse 2s infinite; }
+  @keyframes pulse { 70% { box-shadow:0 0 0 14px rgba(244,114,182,0); } 100% { box-shadow:0 0 0 0 rgba(244,114,182,0); } }
+  .title { margin-top:26px; font-family:'Playfair Display',serif; font-weight:700; font-size:96px; line-height:1.0; letter-spacing:-.01em;
+           display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .artist { margin-top:22px; font-size:40px; font-weight:600; }
+  .album { margin-top:8px; font-size:28px; color:var(--dim); font-style:italic; font-family:'Playfair Display',serif; }
+
+  .live { margin-top:54px; padding-top:40px; border-top:1px solid rgba(255,255,255,.14); display:flex; gap:44px; }
+  .big { font-family:'Playfair Display',serif; font-weight:700; font-size:150px; line-height:.82; color:#fff; min-width:150px; }
+  .big small { font-size:60px; color:var(--accent); }
+  .livetxt { flex:1; min-width:0; }
+  .livetxt h3 { font-size:34px; font-weight:600; line-height:1.2; }
+  .livetxt p { margin-top:8px; font-size:24px; color:var(--dim); }
+  .quiet h3 { font-family:'Playfair Display',serif; font-size:64px; font-weight:700; line-height:1.05; }
+  .quiet p { font-size:28px; max-width:820px; margin-top:18px; line-height:1.4; }
+  .quiet .first { color:var(--accent); font-style:italic; font-family:'Playfair Display',serif; }
+  .nights { margin-top:22px; list-style:none; display:grid; gap:9px; grid-template-columns:minmax(0,1fr); }
+  .nights li { display:flex; gap:18px; font-size:24px; color:var(--dim); white-space:nowrap; }
+  .nights li .v { overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .nights li b { color:var(--ink); font-weight:600; min-width:178px; flex:none; }
+  .nights li.cam::after { content:"◉ photos"; font-size:17px; letter-spacing:.08em; color:#f9a8d4; margin-left:6px; align-self:center; flex:none; }
+
+  /* photo strip */
+  .strip { position:absolute; left:120px; bottom:70px; right:110px; display:flex; align-items:flex-end; gap:22px; }
+  .thumbs { display:flex; gap:14px; }
+  .thumbs div { width:150px; height:100px; border-radius:6px; background-size:cover; background-position:center; opacity:.55;
+                box-shadow:0 10px 30px rgba(0,0,0,.5); transition:opacity .6s, transform .6s; }
+  .thumbs div.on { opacity:1; transform:translateY(-6px); outline:2px solid rgba(255,255,255,.8); }
+  .cap { font-size:22px; color:var(--dim); line-height:1.35; }
+  .cap b { color:var(--ink); font-weight:600; }
+  .brand { margin-left:auto; text-align:right; font-family:'Playfair Display',serif; font-size:24px; color:var(--faint); }
+  .brand i { display:block; font-family:'Source Sans 3'; font-style:normal; font-size:16px; letter-spacing:.22em; text-transform:uppercase; }
+
+  .fade { animation: fadeUp .9s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+
+  /* states that aren't a song: idle, and the fade between tracks */
+  .deck, .info, .strip { transition:opacity 1.2s ease; }
+  #idle { position:absolute; inset:0; display:none; align-items:center; justify-content:center; text-align:center; }
+  #idleBox { transition:transform 2s ease; }
+  #idle .mark { font-family:'Playfair Display',serif; font-size:76px; color:var(--faint); }
+  #idle .mark i { display:block; margin-top:12px; font-family:'Source Sans 3'; font-style:normal; font-size:24px; letter-spacing:.3em; text-transform:uppercase; }
+  #idle p { margin-top:48px; font-family:'Playfair Display',serif; font-style:italic; font-size:32px; color:var(--faint); }
+  #idle p.note { margin-top:20px; font-family:'Source Sans 3'; font-style:normal; font-size:22px; color:#f9a8d4; opacity:.85; }
+  #idle p.note:empty { display:none; }
+  #stage.idle #idle { display:flex; }
+  #stage.idle .deck, #stage.idle .info, #stage.idle .strip, #stage.idle .bg { opacity:0 !important; }
+  #stage.idle .vinyl { animation-play-state:paused; }
+  #stage.faded .info { opacity:.2; }
+  #stage.faded .thumbs, #stage.faded .cap { opacity:0; transition:opacity 1.2s ease; }
+
+  /* screen care: the TV is an OLED, so nothing bright should live in one place for years */
+  .sleeve img, .gen { filter:brightness(.82); }            /* the sleeve is the largest bright thing that stays put */
+  #stage.flip .deck { left:auto; right:120px; }             /* every new record mirrors the layout */
+  #stage.flip .info { left:110px; right:930px; }
+  #stage.flip .strip { flex-direction:row-reverse; left:110px; right:120px; }
+  #stage.flip .brand { margin-left:0; margin-right:auto; text-align:left; }
+  #stage.flip .cap { text-align:right; }
+  #stage.flip .veil, #stage.flip::before { transform:scaleX(-1); }
+  #stage.dark { background:#000; }                          /* idle for 10 minutes: black, and OLED pixels are off */
+  #stage.dark > *, #stage.dark::before { opacity:0 !important; }
+  /* …except a notice, which stays, dim, and moves each minute */
+  #darkNote { position:absolute; display:none; max-width:900px; font-size:24px; color:#f9a8d4; }
+  #stage.dark > #darkNote.on { display:block; opacity:.45 !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vinyl, .dot { animation:none; }
+    .fade { animation:none; }
+    .vinyl, .bg, .thumbs div, #idleBox, .deck, .info, .strip, #stage::before { transition:none !important; }
+  }
+
+  /* diagnostics: #debug only */
+  #debug { position:fixed; top:12px; right:12px; z-index:30; width:min(440px, calc(100vw - 24px)); max-height:calc(100vh - 24px); overflow:auto;
+           background:rgba(11,9,24,.94); border:1px solid rgba(255,255,255,.18); border-radius:12px; padding:14px 16px; display:none;
+           font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; color:#e9e5ff; box-shadow:0 12px 40px rgba(0,0,0,.6); }
+  #debug.open { display:block; }
+  #debug h4 { font:700 11px/1 'Source Sans 3',sans-serif; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:12px 0 6px; }
+  #debug h4:first-child { margin-top:0; }
+  #debug dl { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; }
+  #debug dt { color:rgba(233,229,255,.55); }
+  #debug dd { word-break:break-word; }
+  #debug .ok { color:#86efac; } #debug .warn { color:#fcd34d; } #debug .bad { color:#fca5a5; }
+  #debug pre { white-space:pre-wrap; word-break:break-word; max-height:42vh; overflow:auto; background:rgba(255,255,255,.05); border-radius:8px; padding:8px; font-size:12px; }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage" class="idle">
+  <div id="bgA" class="bg"></div><div id="bgB" class="bg"></div><div class="veil"></div>
+
+  <div class="deck">
+    <div class="vinyl" id="vinyl"></div>
+    <div class="sleeve" id="sleeve"></div>
+  </div>
+
+  <div class="info" id="info"></div>
+
+  <div class="strip">
+    <div class="thumbs" id="thumbs"></div>
+    <div class="cap" id="cap"></div>
+    <div class="brand">Morperhaus<i>Concert Archives</i></div>
+  </div>
+
+  <div id="idle"><div id="idleBox">
+    <div class="mark">Morperhaus<i>Concert Archives</i></div>
+    <p>Put a record on.</p>
+    <p class="note" id="idleNote"></p>
+  </div></div>
+
+  <div id="darkNote"></div>
+</div></div>
+
+<div id="debug" aria-live="polite"></div>
+
+<script>
+'use strict';
+// ── Constants ────────────────────────────────────────────────────────────────
+const API = '/api/now-spinning';
+const SUBPROTOCOL = 'now-spinning.v1';
+const CONTRACT = 1;
+const SCREENS = new Set(['heard', 'seen-cover', 'seen', 'cover-of-this', 'covers', 'none', 'unknown']);
+const KINDS = new Set(['idle', 'unmatched', 'track', 'gap']);
+const GAP_FADE_MS = 90 * 1000;        // between tracks, the words step back after 90 s
+const DARK_MS = 10 * 60 * 1000;       // idle for 10 minutes: black
+const NOTE_MOVE_MS = 60 * 1000;       // a notice on the black screen moves each minute
+const MARK_MOVE_MS = 3 * 60 * 1000;   // the idle brand mark shifts every few minutes
+const PHOTO_MS = 7000;
+const POLL_MS = 10 * 1000;            // while the socket is down
+const HEALTH_MS = 30 * 1000;          // diagnostics only
+const TOKEN_KEY = 'nowSpinning.token';
+const FLIP_KEY = 'nowSpinning.flip';
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+};
+// Only https images go on screen, and only as a quoted CSS string.
+const safeUrl = u => (typeof u === 'string' && /^https:\/\//.test(u) ? u : null);
+const cssUrl = u => `url(${JSON.stringify(u)})`;
+const focal = p => `${clamp01(p.fx) * 100}% ${clamp01(p.fy) * 100}%`;
+const clamp01 = x => (typeof x === 'number' && isFinite(x) ? Math.min(1, Math.max(0, x)) : 0.5);
+const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ── The address: token, debug, fixture ───────────────────────────────────────
+// #token=… is read once, kept in localStorage, and taken out of the address. A fragment never
+// reaches a server, and clearing it keeps the token out of history and screenshots.
+function readFragment() {
+  const params = new URLSearchParams(location.hash.slice(1));
+  if (!params.has('token')) return;
+  const t = params.get('token').trim();
+  if (/^[0-9a-f]{16,256}$/i.test(t)) store.set(TOKEN_KEY, t);
+  params.delete('token');
+  const rest = params.toString().replace(/=(?=&|$)/g, '');   // "debug=" → "debug"
+  history.replaceState(null, '', location.pathname + location.search + (rest ? '#' + rest : ''));
+}
+const debugOn = () => new URLSearchParams(location.hash.slice(1)).has('debug');
+const fixtureName = new URLSearchParams(location.search).get('fixture');
+
+// ── What the page knows (the present moment only; nothing is kept) ────────────
+const diag = { conn: 'starting', lastMsgAt: 0, raw: null, health: null, healthErr: null, fixture: fixtureName, attempt: 0 };
+let shownKind = 'idle';        // what's on screen: idle | unmatched | track
+let shownTrack = null;         // JSON of the track on screen
+let pendingFlip = false;       // the first track after idle mirrors the layout
+let gapTimer = 0, darkTimer = 0, noteTimer = 0, markTimer = 0, photoTimer = 0;
+
+// ── Rendering ────────────────────────────────────────────────────────────────
+function clearTimers() {
+  clearTimeout(gapTimer); clearTimeout(darkTimer); clearInterval(noteTimer); clearInterval(markTimer);
+}
+const elapsedOf = s => {
+  const d = Date.parse(s.now) - Date.parse(s.at);
+  return isFinite(d) && d > 0 ? d : 0;
+};
+
+/** Every message from the Worker, a poll or a fixture comes through here. */
+function apply(state) {
+  if (!state || typeof state !== 'object') return;
+  diag.raw = state; diag.lastMsgAt = Date.now();
+  render(state);
+  renderDebug();
+}
+
+function render(state) {
+  clearTimers();
+  const kind = KINDS.has(state.kind) ? state.kind : 'idle';   // an unknown kind renders as idle
+  const elapsed = elapsedOf(state);
+
+  if (kind === 'idle') {
+    pendingFlip = true;   // the next record mirrors the layout
+    return showIdle(typeof state.notice === 'string' ? state.notice : '', elapsed);
+  }
+  if (kind === 'unmatched') return showUnmatched();
+
+  // track or gap
+  const track = state.track && typeof state.track === 'object' ? state.track : null;
+  if (!track) {
+    // A gap with nothing identified yet: keep whatever is on screen.
+    if (kind === 'gap') return;
+    return showUnmatched();
+  }
+  const key = JSON.stringify(track);
+  if (key !== shownTrack || shownKind !== 'track') showTrack(track, key);
+  $('stage').classList.remove('faded');
+  if (kind === 'gap') {
+    // The 90 s count from when the gap began, by the Worker's clock: a reconnect doesn't restart it.
+    gapTimer = setTimeout(() => { $('stage').classList.add('faded'); renderDebug(); }, Math.max(0, GAP_FADE_MS - elapsed));
+  }
+}
+
+function showIdle(notice, elapsed) {
+  clearInterval(photoTimer);
+  shownKind = 'idle'; shownTrack = null;
+  $('idleNote').textContent = notice;
+  const st = $('stage');
+  st.classList.remove('faded', 'dark'); st.classList.add('idle');
+  $('darkNote').classList.remove('on');
+  moveMark();
+  markTimer = setInterval(moveMark, MARK_MOVE_MS);
+  darkTimer = setTimeout(() => { goDark(notice); renderDebug(); }, Math.max(0, DARK_MS - elapsed));
+}
+
+// Small, occasional shifts, so the brand mark isn't drawn in the same place for ten minutes.
+function moveMark() {
+  const x = Math.round((Math.random() * 2 - 1) * 36), y = Math.round((Math.random() * 2 - 1) * 24);
+  $('idleBox').style.transform = `translate(${x}px, ${y}px)`;
+}
+
+function goDark(notice) {
+  clearInterval(markTimer);
+  $('stage').classList.add('dark');
+  const note = $('darkNote');
+  note.textContent = notice;
+  note.classList.toggle('on', !!notice);
+  if (notice) {
+    const move = () => {
+      note.style.left = `${80 + Math.round(Math.random() * 900)}px`;
+      note.style.top = `${80 + Math.round(Math.random() * 880)}px`;
+    };
+    move();
+    noteTimer = setInterval(move, NOTE_MOVE_MS);
+  }
+}
+
+function setFlip(on) {
+  $('stage').classList.toggle('flip', on);
+  store.set(FLIP_KEY, on ? '1' : '0');
+}
+
+function showUnmatched() {
+  clearInterval(photoTimer);
+  shownKind = 'unmatched'; shownTrack = null;
+  const st = $('stage');
+  st.classList.remove('idle', 'faded', 'dark');
+  $('vinyl').style.setProperty('--label', 'hsl(255 30% 55%)');
+  $('sleeve').innerHTML = `<div class="gen" style="background:linear-gradient(150deg,hsl(255 30% 34%),hsl(275 40% 15%))"><div class="rings"></div></div>`;
+  $('info').innerHTML = `<div class="fade"><div class="kicker"><span class="dot"></span>Now spinning</div>
+    <div class="title">Listening…</div>
+    <div class="live"><div class="livetxt quiet"><p>Nothing I recognise yet.</p></div></div></div>`;
+  $('thumbs').innerHTML = ''; $('cap').innerHTML = '';
+  $('bgA').classList.remove('on'); $('bgB').classList.remove('on');
+  st.style.setProperty('--glow', 'hsla(255 60% 55% / .22)');
+}
+
+function showTrack(t, key) {
+  const st = $('stage');
+  if (pendingFlip && shownKind !== 'track') { setFlip(!st.classList.contains('flip')); }
+  pendingFlip = false;
+  shownKind = 'track'; shownTrack = key;
+  st.classList.remove('idle', 'faded', 'dark');
+  $('darkNote').classList.remove('on');
+
+  const screen = SCREENS.has(t.screen) ? t.screen : null;    // an unknown screen renders as unknown
+  const h = typeof t.accentHue === 'number' ? t.accentHue : 260;
+  const album = t.album && typeof t.album === 'object' ? t.album : null;
+
+  // the record slides back in, then out to the side away from the screen's edge
+  const vinyl = $('vinyl');
+  vinyl.style.setProperty('--label', `hsl(${(h + 180) % 360} 70% 55%)`);
+  const open = st.classList.contains('flip') ? '-160px' : '200px';
+  if (reducedMotion()) vinyl.style.left = open;
+  else { vinyl.style.left = '20px'; setTimeout(() => { vinyl.style.left = open; }, 350); }
+
+  // sleeve: the real cover where it loads, a drawn one underneath otherwise
+  $('sleeve').innerHTML = `<div class="gen" style="background:linear-gradient(150deg,hsl(${h} 55% 42%),hsl(${(h + 40) % 360} 60% 18%))">
+      <div class="rings"></div><div class="t">${esc(album?.title || t.title)}</div><div class="a">${esc(t.artist)}</div></div>`;
+  const cover = safeUrl(album?.coverUrl);
+  if (cover) {
+    const img = new Image();
+    img.alt = ''; img.onerror = () => img.remove(); img.src = cover;
+    $('sleeve').appendChild(img);
+  }
+
+  $('info').innerHTML = `<div class="fade">
+    <div class="kicker"><span class="dot"></span>Now spinning</div>
+    <div class="title">${esc(t.title)}</div>
+    <div class="artist">${esc(t.artist)}</div>
+    ${album?.title ? `<div class="album">${esc(album.title)}${album.year ? ' · ' + esc(album.year) : ''}</div>` : ''}
+    ${screen ? `<div class="live">${live(t, screen)}</div>` : ''}</div>`;
+
+  showPhotos(screen ? t : null, h);
+}
+
+/** The archive's part of the screen. Every word in it came from the Worker. */
+function live(t, screen) {
+  const lines = Array.isArray(t.lines) ? t.lines.filter(l => typeof l === 'string') : [];
+  if (screen === 'unknown') return `<div class="livetxt quiet"><p>${esc(t.headline)}</p></div>`;
+  const n = t.count && typeof t.count.n === 'number' ? t.count : null;
+  if (!n) {
+    // No numeral: the quiet layout. On "none" the last line is the hopeful one, set apart.
+    const ps = lines.map((l, i) => `<p${screen === 'none' && i === lines.length - 1 && lines.length > 1 ? ' class="first"' : ''}>${esc(l)}</p>`);
+    return `<div class="livetxt quiet"><h3>${esc(t.headline)}</h3>${ps.join('')}${nights(t)}</div>`;
+  }
+  return `<div class="big">${esc(n.n)}${n.times ? '<small>×</small>' : ''}</div><div class="livetxt">
+      <h3>${esc(t.headline)}</h3>${lines.map(l => `<p>${esc(l)}</p>`).join('')}${nights(t)}</div>`;
+}
+
+function nights(t) {
+  const list = Array.isArray(t.nights) ? t.nights.slice(0, 4) : [];
+  const more = typeof t.moreNights === 'number' && t.moreNights > 0 ? t.moreNights : 0;
+  if (!list.length && !more) return '';
+  return `<ul class="nights">${list.map(x =>
+    `<li class="${x.hasPhotos ? 'cam' : ''}"><b>${esc(x.dateLabel)}</b><span class="v">${esc(x.text)}</span></li>`).join('')}
+    ${more ? `<li>+ ${esc(more)} more</li>` : ''}</ul>`;
+}
+
+function showPhotos(t, h) {
+  clearInterval(photoTimer);
+  const ps = (t && Array.isArray(t.photos) ? t.photos : []).filter(p => safeUrl(p && p.url)).slice(0, 5);
+  const thumbs = $('thumbs');
+  thumbs.innerHTML = '';
+  for (const p of ps) {
+    const d = document.createElement('div');
+    d.style.backgroundImage = cssUrl(p.url);
+    d.style.backgroundPosition = focal(p);
+    thumbs.appendChild(d);
+  }
+  let flip = false;
+  const show = k => {
+    const p = ps[k]; if (!p) return;
+    const [on, off] = flip ? ['bgA', 'bgB'] : ['bgB', 'bgA']; flip = !flip;
+    $(on).style.backgroundImage = cssUrl(p.url);
+    $(on).style.backgroundPosition = focal(p);
+    $(on).classList.add('on'); $(off).classList.remove('on');
+    [...thumbs.children].forEach((el, j) => el.classList.toggle('on', j === k));
+    const [date, ...rest] = String(p.caption ?? '').split(' · ');
+    $('cap').innerHTML = `From the night<br><b>${esc(date)}</b>${rest.length ? ' · ' + esc(rest.join(' · ')) : ''}`;
+  };
+  if (ps.length) {
+    let i = 0; show(0);
+    if (ps.length > 1) photoTimer = setInterval(() => { i = (i + 1) % ps.length; show(i); }, PHOTO_MS);
+  } else {
+    $('bgA').classList.remove('on'); $('bgB').classList.remove('on');
+    const hasNights = t && Array.isArray(t.nights) && t.nights.length;
+    $('cap').innerHTML = hasNights ? 'No photos from these nights yet' : '';
+  }
+  // with no photos, the room takes its colour from the record
+  $('stage').style.setProperty('--glow', `hsla(${h} 70% 55% / ${ps.length ? 0 : 0.32})`);
+}
+
+// ── Connection: WebSocket, with polling while it's down ──────────────────────
+let ws = null, reconnectTimer = 0, pollTimer = 0, stopped = false;
+const token = () => store.get(TOKEN_KEY);
+
+function connect() {
+  if (stopped || !token()) return;
+  clearTimeout(reconnectTimer);
+  const url = `${location.protocol === 'http:' ? 'ws' : 'wss'}://${location.host}${API}/ws`;
+  try {
+    // The token travels as the second subprotocol: a browser can't set an Authorization header
+    // on a WebSocket, and it must never go in the URL.
+    ws = new WebSocket(url, [SUBPROTOCOL, token()]);
+  } catch {
+    return retry();
+  }
+  diag.conn = diag.attempt ? 'reconnecting' : 'connecting'; renderDebug();
+  ws.onopen = () => { diag.attempt = 0; diag.conn = 'live'; stopPolling(); renderDebug(); };
+  ws.onmessage = e => { try { apply(JSON.parse(e.data)); } catch {} };
+  ws.onclose = () => { ws = null; if (!stopped) { startPolling(); retry(); } };
+}
+
+function retry() {
+  diag.attempt++;
+  diag.conn = 'reconnecting'; renderDebug();
+  const wait = Math.min(30000, 1000 * 2 ** Math.min(diag.attempt - 1, 5)) + Math.random() * 500;
+  reconnectTimer = setTimeout(connect, wait);
+}
+
+function startPolling() {
+  if (pollTimer) return;
+  poll();
+  pollTimer = setInterval(poll, POLL_MS);
+}
+function stopPolling() { clearInterval(pollTimer); pollTimer = 0; }
+
+async function poll() {
+  const r = await authedGet(API);
+  if (!r) return;
+  if (ws && ws.readyState === WebSocket.OPEN) return;
+  diag.conn = 'reconnecting · polling every 10 s';
+  apply(r);
+}
+
+/** GET with the display token. Stops everything on 401: without a valid token, idle only. */
+async function authedGet(path) {
+  try {
+    const res = await fetch(path, { headers: { Authorization: `Bearer ${token()}` }, cache: 'no-store' });
+    if (res.status === 401) { refuse('token refused'); return null; }
+    if (res.status === 503) { diag.conn = 'Worker not configured (503)'; renderDebug(); return null; }
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+function refuse(why) {
+  stopped = true;
+  stopPolling(); clearTimeout(reconnectTimer);
+  if (ws) { try { ws.close(); } catch {} ws = null; }
+  diag.conn = why;
+  clearTimers();
+  showIdle('', 0);
+  renderDebug();
+}
+
+// Come back at once when the network or the tab does.
+addEventListener('online', () => { if (!ws && !stopped) { diag.attempt = 0; connect(); } });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !ws && !stopped) { diag.attempt = 0; connect(); }
+});
+
+// ── Diagnostics panel (#debug) ───────────────────────────────────────────────
+let healthTimer = 0, tickTimer = 0;
+
+async function refreshHealth() {
+  if (fixtureName || !token() || stopped) return;
+  const h = await authedGet(`${API}/health`);
+  diag.health = h; diag.healthErr = h ? null : 'unavailable';
+  renderDebug();
+}
+
+const ago = ms => {
+  const s = Math.round(ms / 1000);
+  return s < 60 ? `${s} s ago` : s < 3600 ? `${Math.floor(s / 60)} min ${s % 60} s ago` : `${Math.floor(s / 3600)} h ago`;
+};
+const cls = v => (v === 'ok' || v === true ? 'ok' : v == null ? 'warn' : 'bad');
+
+function renderDebug() {
+  const el = $('debug');
+  if (!el.classList.contains('open')) return;
+  const raw = diag.raw;
+  const conn = diag.conn;
+  const connCls = conn === 'live' || conn.startsWith('fixture') ? 'ok' : conn.startsWith('reconnecting') || conn === 'connecting' ? 'warn' : 'bad';
+  const h = diag.health;
+  const listener = fixtureName ? '<dd>not read in fixture mode</dd>'
+    : !h ? `<dd class="warn">${esc(diag.healthErr || 'waiting…')}</dd>`
+    : `<dd class="${h.online ? 'ok' : 'bad'}">${h.online ? 'online' : 'offline'}${h.lastSeenAt ? ' · last seen ' + esc(new Date(h.lastSeenAt).toLocaleString()) : ' · never seen'}</dd>`;
+  el.innerHTML = `
+    <h4>Connection</h4>
+    <dl>
+      <dt>state</dt><dd class="${connCls}">${esc(conn)}</dd>
+      <dt>last message</dt><dd>${diag.lastMsgAt ? ago(Date.now() - diag.lastMsgAt) : 'none yet'}</dd>
+      <dt>token</dt><dd>${token() ? 'stored' : '<span class="bad">none — open once with #token=…</span>'}</dd>
+      ${fixtureName ? `<dt>fixture</dt><dd>${esc(fixtureName)}</dd>` : ''}
+    </dl>
+    <h4>Listener</h4>
+    <dl>
+      <dt>status</dt>${listener}
+      ${h ? `<dt>song recognition</dt><dd class="${cls(h.recognizer)}">${esc(h.recognizer ?? '—')}</dd>
+      <dt>receiver</dt><dd class="${cls(h.receiver)}">${esc(h.receiver ?? '—')}</dd>
+      <dt>Apple TV</dt><dd class="${cls(h.appleTv)}">${esc(h.appleTv ?? '—')}</dd>
+      <dt>version</dt><dd>${esc(h.version ?? '—')}</dd>` : ''}
+    </dl>
+    <h4>State</h4>
+    <dl>
+      <dt>contract</dt><dd class="${raw && raw.v !== CONTRACT ? 'bad' : ''}">${raw ? 'v' + esc(raw.v) + (raw.v !== CONTRACT ? ` (this page reads v${CONTRACT})` : '') : '—'}</dd>
+      <dt>on screen</dt><dd>${esc(shownKind)}${$('stage').classList.contains('faded') ? ' · faded' : ''}${$('stage').classList.contains('dark') ? ' · black' : ''}${$('stage').classList.contains('flip') ? ' · mirrored' : ''}</dd>
+    </dl>
+    <pre>${raw ? esc(JSON.stringify(raw, null, 2)) : 'no state yet'}</pre>`;
+}
+
+function syncDebug() {
+  const on = debugOn();
+  $('debug').classList.toggle('open', on);
+  clearInterval(healthTimer); clearInterval(tickTimer);
+  if (on) {
+    refreshHealth();
+    healthTimer = setInterval(refreshHealth, HEALTH_MS);
+    tickTimer = setInterval(renderDebug, 1000);
+    renderDebug();
+  }
+}
+
+// ── Fixtures (?fixture=heard) ────────────────────────────────────────────────
+async function loadFixture(name) {
+  diag.conn = `fixture: ${name}`;
+  try {
+    // Copied from test/fixtures/now-spinning-states.json by scripts/build-now-spinning-index.ts.
+    const res = await fetch('/data/now-spinning/states.json', { cache: 'no-store' });
+    const all = await res.json();
+    if (name === '_comment' || !all[name]) {
+      diag.conn = `fixture "${name}" not found · have: ${Object.keys(all).filter(k => k !== '_comment').join(', ')}`;
+      return renderDebug();
+    }
+    apply(all[name]);
+  } catch {
+    diag.conn = 'fixture file not found: run npm run build (or the index builder) first';
+    renderDebug();
+  }
+}
+
+// ── Start ────────────────────────────────────────────────────────────────────
+function fit() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `scale(${s})`;
+  $('fit').style.width = innerWidth + 'px'; $('fit').style.height = innerHeight + 'px';
+}
+addEventListener('resize', fit); fit();
+
+readFragment();
+addEventListener('hashchange', () => { readFragment(); syncDebug(); if (!fixtureName && !ws && !stopped) connect(); });
+if (store.get(FLIP_KEY) === '1') $('stage').classList.add('flip');
+showIdle('', 0);
+syncDebug();
+if (fixtureName) loadFixture(fixtureName);
+else if (!token()) { diag.conn = 'no token'; renderDebug(); }
+else connect();
+</script>
+</body>
+</html>

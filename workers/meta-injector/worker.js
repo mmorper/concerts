@@ -129,6 +129,9 @@ function canonicalArtist(aliases, slug) {
   return aliases.canonical.get(slug) || slug;
 }
 
+/** Static pages served exactly as written: never given a scene's title or card. */
+const STATIC_PAGES = new Set(['/about-mcp', '/now-spinning']);
+
 /**
  * Main request handler
  */
@@ -152,10 +155,11 @@ export default {
       return fetch(new Request(fresh.toString(), request));
     }
 
-    // Only process HTML requests from bots, and links made to be shared. /about-mcp is a static
-    // file with its own title and card, so the scene fallback would only overwrite them.
+    // Only process HTML requests from bots, and links made to be shared. /about-mcp and
+    // /now-spinning are static files with their own titles (and, for /now-spinning, noindex), so
+    // the scene fallback would only overwrite them.
     const bot = isBot(userAgent);
-    if (!(bot || isSharedLink(url)) || !isHTMLRequest(request) || url.pathname === '/about-mcp') {
+    if (!(bot || isSharedLink(url)) || !isHTMLRequest(request) || STATIC_PAGES.has(url.pathname)) {
       return fetch(request);
     }
 

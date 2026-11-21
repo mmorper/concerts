@@ -471,7 +471,8 @@ interface NowSpinningState {
   know. This matters because a tvOS app updates far less often than the Worker.
 - **One set of fixtures is the contract:** `test/fixtures/now-spinning-states.json`, one state
   per `screen` and `kind`. The Worker's tests produce them, the web page can render any of them
-  with `?fixture=heard`, and Swift previews load the same file. Same idea as
+  with `?fixture=heard` (the site build copies the file to `/data/now-spinning/states.json`), and
+  Swift previews load the same file. Same idea as
   `test/fixtures/deep-link-urls.json`.
 
 ### Behaviour
@@ -1006,7 +1007,13 @@ secrets (#693), `GET` returns `idle`.
 
 ### Phase 3: web display (#694)
 **Create:** `public/now-spinning.html`
-**Modify:** `workers/meta-injector/worker.js` (static-page exemption), `vite.config.ts` (dev proxy)
+**Modify:**
+- `workers/meta-injector/worker.js` (static-page exemption)
+- `vite.config.ts` (dev proxy)
+- `scripts/build-now-spinning-index.ts`: it also copies the state fixtures to
+  `/data/now-spinning/states.json`, which `?fixture=` reads
+- `docs/NOW_SPINNING_OPERATIONS.md` (the panel's wording, and a test-song `curl`)
+
 **Done when:** every fixture renders like its screenshot in `screens/`, and a `curl` POST with the
 ingest token changes the page live.
 

@@ -54,6 +54,7 @@
     "test:map": "node test/scenes/test-map.mjs",
     "test:genres": "node test/scenes/test-genres.mjs",
     "test:artists": "node test/scenes/test-artists.mjs",
+    "test:now-spinning": "node test/scenes/test-now-spinning.mjs",
     "update:meta": "tsx scripts/update-meta-tags.ts",
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
     "og:generate": "tsx scripts/generate-og-simple.ts",

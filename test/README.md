@@ -57,6 +57,7 @@ npm run test:venues      # Venue network scene
 npm run test:map         # Map scene
 npm run test:genres      # Genres scene
 npm run test:artists     # Artists scene
+npm run test:now-spinning  # Now Spinning page: every state in the contract renders (?fixture=)
 
 # Cloudflare Workers — separate npm packages with their own vitest configs
 npm run test:workers     # mcp-server (46) + ask-chat (75)
