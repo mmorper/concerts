@@ -63,7 +63,16 @@ const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
 function isManifest(x: unknown): x is Manifest {
   const m = x as Manifest | null;
-  return !!m && m.v === INDEX_VERSION && typeof m.rules === "string" && typeof m.acts === "object" && Array.isArray(m.covers);
+  return (
+    !!m &&
+    m.v === INDEX_VERSION &&
+    typeof m.rules === "string" &&
+    !!m.acts &&
+    typeof m.acts === "object" &&
+    !Array.isArray(m.acts) &&
+    Array.isArray(m.covers) &&
+    Array.isArray(m.ambiguous)
+  );
 }
 
 /** What the screen shows when the archive can't be trusted: the song, and nothing about history. */
@@ -88,9 +97,14 @@ export async function lookup(input: TrackInput, load: Loader): Promise<Track> {
   const manifest = await load("manifest.json");
   if (!isManifest(manifest) || manifest.rules !== rulesFingerprint()) return unknownTrack(input);
 
+  // A name with no key ("The The" drops both its words; "!!!" has no letters) can't be looked up,
+  // so nothing can be said about it. Saying "not in the archive" would be a guess.
+  const actKeys = actKeysFor(input.artist);
+  if (!actKeys.length) return unknownTrack(input);
+
   // The act: the full name first, then with a featured act dropped.
   let act: ActFile | null = null;
-  for (const key of actKeysFor(input.artist)) {
+  for (const key of actKeys) {
     if (manifest.ambiguous.includes(key)) return unknownTrack(input);
     const slug = manifest.acts[key];
     if (!slug) continue;
@@ -100,7 +114,7 @@ export async function lookup(input: TrackInput, load: Loader): Promise<Track> {
   }
 
   // Who else played this act's songs, under every name it goes by.
-  const coverKeys = new Set<string>(actKeysFor(input.artist));
+  const coverKeys = new Set<string>(actKeys);
   for (const name of act?.names ?? []) coverKeys.add(actKey(name));
   const rows = new Map<string, CoverRow>();
   for (const key of coverKeys) {
@@ -201,8 +215,12 @@ export function describe(input: TrackInput, act: ActFile | null, covers: CoverRo
   if (act && seen) {
     const nearNights = new Set(near.flatMap((s) => s.on)).size;
     let headline: string;
-    let line: string;
-    if (near.length) {
+    let line: string | null;
+    if (!t) {
+      // The title has no key ("!!!", "(Intro)"), so nothing was compared: say only what's known.
+      headline = `You've seen ${artist} ${timesPhrase(seen)}.`;
+      line = null;
+    } else if (near.length) {
       const firstNight = act.nights[Math.min(...near.flatMap((s) => s.on))];
       headline = `You've seen ${artist} ${timesPhrase(seen)}.`;
       line = `Something close to it is on ${nearNights === 1 ? `the setlist from ${dateLabel(firstNight.d)}` : `${nearNights} of those setlists`}: “${near[0].n}”.`;
@@ -222,7 +240,7 @@ export function describe(input: TrackInput, act: ActFile | null, covers: CoverRo
       screen: "seen",
       count: { n: seen, times: true },
       headline,
-      lines: [line],
+      lines: line ? [line] : [],
       ...ownNights(nights),
       photos: photosOf(act.nights),
     };

@@ -884,8 +884,8 @@ The listener records the two channels as stereo and downmixes to mono itself.
 Tests that assert exact counts against live data break when the data moves, and
 `.claude/skills/steward/SKILL.md` warns against exactly that. So there are two kinds.
 
-**Exact behaviour, on a frozen fixture** (`workers/now-spinning/test/fixtures/index.json`, a
-small hand-built index; Worker vitest, `now-spinning-ci.yml`). Each case below was verified
+**Exact behaviour, on a frozen fixture** (`test/fixtures/index/`, a small index cut from the real
+archive by the builder's `--only`; Worker vitest, `now-spinning-ci.yml`). Each case below was verified
 against the real archive on 2026-11-21, in a prototype of these rules, and the fixture reproduces
 its shape:
 

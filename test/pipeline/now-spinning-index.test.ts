@@ -86,9 +86,11 @@ describe("Now Spinning index builder", () => {
     const inputs = readInputs(DATA);
     const c = inputs.concerts[0];
     const twin = { ...c, id: "twin", date: "1999-01-01", headliner: "The Adam Ant", headlinerNormalized: "the-adam-ant", openers: [] };
+    // "The The" folds to no act key at all
+    const thethe = { ...c, id: "thethe", date: "1999-02-02", headliner: "The The", headlinerNormalized: "the-the", openers: [] };
     const bad = {
       ...inputs,
-      concerts: [...inputs.concerts, twin],
+      concerts: [...inputs.concerts, twin, thethe],
       setlists: [
         ...inputs.setlists,
         { concertId: c.id, artistName: c.headliner, date: c.date, setlist: { sets: { set: [{ song: [{ name: "!!!" }] }] } } },
@@ -99,6 +101,7 @@ describe("Now Spinning index builder", () => {
     const kinds = result!.manifest.problems.map((p) => p.kind);
     expect(kinds).toContain("no-key");
     expect(kinds).toContain("ambiguous-act");
+    expect(result!.manifest.problems).toContainEqual({ kind: "no-act-key", what: "The The (the-the)" });
     expect(result!.manifest.ambiguous).toContain("adamant");
   });
 });
