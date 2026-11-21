@@ -36,7 +36,7 @@ load from the site, so the Mac needs a network connection.
 | `Config.xcconfig` | Build settings; includes `Secrets.xcconfig` when it exists |
 | `NowSpinning/Model/Contract.swift` | The state contract, decoded forgivingly: an unknown `kind` is idle, an unknown `screen` is the song only |
 | `NowSpinning/Model/Display.swift` | What's on screen: mirroring each new record, the gap fade, keeping the Apple TV awake |
-| `NowSpinning/Model/Room.swift` | The WebSocket, polling every 10 s while it's down, and the token |
+| `NowSpinning/Model/Room.swift` | The WebSocket with its heartbeat (ping every 30 s), polling every 10 s while it's down, and the token |
 | `NowSpinning/Views/` | The 1920×1080 stage, ported from the web page's CSS |
 | `NowSpinning/Resources/Fonts/` | Playfair Display and Source Sans 3, with their Open Font License files |
 | `NowSpinning/Resources/Assets.xcassets` | The app icon. Generated: `npm run generate:brand -- --tvos` |

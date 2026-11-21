@@ -13,6 +13,12 @@ final class Room {
     enum Status: String { case stopped, connecting, live, reconnecting, refused, noToken }
 
     static let pollInterval: Duration = .seconds(10)
+    /// The heartbeat: "ping" every 30 s, which the Worker answers "pong" without waking up. A ping
+    /// still unanswered at the next one means the network dropped the socket silently, which would
+    /// otherwise leave an old song up on a screen this app keeps awake.
+    static let heartbeatInterval: Duration = .seconds(30)
+    static let ping = "ping"
+    static let pong = "pong"
 
     private(set) var status: Status = .stopped
     private let base: URL
@@ -25,6 +31,8 @@ final class Room {
     private var receiveTask: Task<Void, Never>?
     private var reconnectTask: Task<Void, Never>?
     private var pollTask: Task<Void, Never>?
+    private var heartbeatTask: Task<Void, Never>?
+    private var awaitingPong = false
     private var attempt = 0
 
     init(base: URL, token: String?, onState: @escaping @MainActor (NowSpinningState) -> Void) {
@@ -80,10 +88,16 @@ final class Room {
                     status = .live
                     attempt = 0
                     stopPolling()
+                    startHeartbeat(on: task)
                     log.info("live")
                 }
                 switch message {
-                case .string(let text): deliver(Data(text.utf8))
+                case .string(let text):
+                    if text == Room.pong {
+                        awaitingPong = false
+                        continue
+                    }
+                    deliver(Data(text.utf8))
                 case .data(let data): deliver(data)
                 @unknown default: break
                 }
@@ -92,9 +106,40 @@ final class Room {
             guard socket === task else { return }
             log.info("socket closed: \(error.localizedDescription, privacy: .public)")
             socket = nil
+            heartbeatTask?.cancel()
             startPolling()
             scheduleReconnect()
         }
+    }
+
+    // MARK: - Heartbeat
+
+    private func startHeartbeat(on task: URLSessionWebSocketTask) {
+        heartbeatTask?.cancel()
+        awaitingPong = false
+        heartbeatTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: Room.heartbeatInterval)
+                guard !Task.isCancelled, let self, self.socket === task else { return }
+                if self.awaitingPong {
+                    self.log.notice("no heartbeat: reconnecting")
+                    self.dropDeadSocket(task)
+                    return
+                }
+                self.awaitingPong = true
+                try? await task.send(.string(Room.ping))
+            }
+        }
+    }
+
+    /// The socket stopped answering. Don't wait for a dead network to confirm the close.
+    private func dropDeadSocket(_ task: URLSessionWebSocketTask) {
+        guard socket === task else { return }
+        socket = nil
+        receiveTask?.cancel()
+        task.cancel(with: .goingAway, reason: nil)
+        startPolling()
+        scheduleReconnect()
     }
 
     private func scheduleReconnect() {
@@ -150,6 +195,8 @@ final class Room {
     }
 
     private func tearDown() {
+        heartbeatTask?.cancel()
+        heartbeatTask = nil
         receiveTask?.cancel()
         reconnectTask?.cancel()
         stopPolling()
