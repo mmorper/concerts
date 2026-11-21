@@ -12,21 +12,21 @@ on:
     paths:
       - 'workers/ask-chat/**'
       - 'workers/mcp-server/**'
-      # Shared code this Worker bundles. Without these, a change to the matching rules
-      # reaches the site's data but not the Worker (#689).
-      - 'scripts/utils/song-title.ts'
-      - 'scripts/utils/song-album-lookup.ts'
-      - 'src/utils/normalize.ts'
+      # Shared code this Worker bundles. Whole folders, not a list of files, so a newly
+      # imported shared file can't be missed: a change to the matching rules must reach the
+      # Worker as well as the site's data (#689).
+      - 'scripts/utils/**'
+      - 'src/utils/**'
       - '.github/workflows/ask-chat-ci.yml'
   pull_request:
     paths:
       - 'workers/ask-chat/**'
       - 'workers/mcp-server/**'
-      # Shared code this Worker bundles. Without these, a change to the matching rules
-      # reaches the site's data but not the Worker (#689).
-      - 'scripts/utils/song-title.ts'
-      - 'scripts/utils/song-album-lookup.ts'
-      - 'src/utils/normalize.ts'
+      # Shared code this Worker bundles. Whole folders, not a list of files, so a newly
+      # imported shared file can't be missed: a change to the matching rules must reach the
+      # Worker as well as the site's data (#689).
+      - 'scripts/utils/**'
+      - 'src/utils/**'
       - '.github/workflows/ask-chat-ci.yml'
 
 concurrency:
