@@ -133,6 +133,11 @@ docs/                      # Documentation & specs
   naming the prose in README, `docs/ROADMAP.md` and this file that still
   disagrees. Stats in those files are checked the same way, against
   `concerts.json`. CI runs it on every PR (#284).
+- **QA before merge:** every PR a Claude session opens gets an independent QA pass before it
+  is called ready to merge. The authoring session starts it without being asked, on a different
+  model from its own. The loop and its few exceptions (`/release`, `/hotfix`, Dependabot) are
+  in `.claude/skills/steward/SKILL.md`; the rubric is `.claude/skills/qa-review/SKILL.md`. The
+  owner merges; QA never authorises a merge.
 
 **Avoid:**
 - Creating new docs without checking if content belongs in existing files
