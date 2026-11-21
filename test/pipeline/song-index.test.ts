@@ -40,12 +40,29 @@ describe("buildSongIndex", () => {
     expect(buildSongIndex(concerts, entries).songs.map((s) => s.slug).sort()).toEqual(["johnny-cash", "social-distortion"]);
   });
 
-  it("prefers the headliner's setlist, and credits the act whose setlist it is", () => {
+  it("counts every act's setlist on the night, openers included, each under its own act (#690)", () => {
+    // Until #690 only the headliner's setlist counted, so an opener's songs vanished whenever
+    // the headliner also had one — 547 songs, including Blancmange's "Blind Vision".
     const entries = [setlist("a", "Opener", ["Support Song"]), setlist("a", "Social Distortion", ["Ring of Fire"])];
-    expect(buildSongIndex([concert("a", "2020-01-01")], entries).songs.map((s) => s.name)).toEqual(["Ring of Fire"]);
+    const songs = buildSongIndex([concert("a", "2020-01-01")], entries).songs;
+    expect(songs.map((s) => s.name).sort()).toEqual(["Ring of Fire", "Support Song"]);
+    expect(songs.find((s) => s.name === "Support Song")).toMatchObject({ act: "Opener", slug: "opener", dates: ["2020-01-01"] });
+    expect(songs.find((s) => s.name === "Ring of Fire")).toMatchObject({ act: "Social Distortion", slug: "social-distortion" });
+  });
 
-    const onlyOpener = [setlist("a", "Opener", ["Support Song"])];
-    expect(buildSongIndex([concert("a", "2020-01-01")], onlyOpener).songs[0]).toMatchObject({ act: "Opener", slug: "opener" });
+  it("gives a song an opener and the headliner both played on one night a row each (#690)", () => {
+    const entries = [setlist("a", "Opener", ["Ring of Fire"]), setlist("a", "Social Distortion", ["Ring of Fire"])];
+    const songs = buildSongIndex([concert("a", "2020-01-01")], entries).songs;
+    expect(songs.map((s) => s.slug).sort()).toEqual(["opener", "social-distortion"]);
+  });
+
+  it("skips tape entries, which were played to the room, not performed (#690)", () => {
+    const withTape = {
+      concertId: "a",
+      artistName: "Social Distortion",
+      setlist: { sets: { set: [{ song: [{ name: "Intro Music", tape: true }, { name: "Ring of Fire" }] }] } },
+    };
+    expect(buildSongIndex([concert("a", "2020-01-01")], [withTape]).songs.map((s) => s.name)).toEqual(["Ring of Fire"]);
   });
 
   it("names the record a song came off, listing each record once", () => {
