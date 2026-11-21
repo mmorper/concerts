@@ -36,7 +36,7 @@ tvOS app on the Apple TV that shows it.
 | Zone 2 | Free to use. |
 | Video routing | Already done: the AV7703 sends the Apple TV picture to the TV while Phono plays. |
 | Play history | **None.** No log of vinyl plays is kept anywhere (see [Privacy](#privacy)). |
-| Display | **A tvOS app on the Apple TV.** The web page is the development display and the fallback. |
+| Display | **A tvOS app on the Apple TV**, named Morperhaus Now Spinning. The web page is the development display and the fallback. |
 | Getting the app onto the Apple TV | One Apple TV, the one in the living room. Installed from Xcode, and reinstalled once a year. Mike has a paid Apple developer account. |
 | What v7.0.0 means | A record plays and the tvOS app shows it on the TV: the index, the Worker, the Pi listener and the app, working end to end. |
 | Version number | v7.0.0. Social Syndication (#323) moves to v6.5.0. |
@@ -682,7 +682,8 @@ The design is already mostly dark, with changing photos and text. These rules co
 
 ### On the TV: the tvOS app (`now-spinning/tvos/`)
 
-Decided 2026-11-21. SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
+Decided 2026-11-21. The app is named **Morperhaus Now Spinning** (its display name on the Apple
+TV's home screen). SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
 
 **The app**
 - Renders the same state contract as the web page, with the same layout, fonts (Playfair Display
@@ -969,6 +970,7 @@ The release gate is Phases 1–5: a record plays, and the tvOS app shows it on t
 
 - **2026-11-21, v1.4.3:** Distribution changed to the simpler route: installed from Xcode and
   reinstalled once a year. TestFlight with Xcode Cloud is noted as the alternative, not built.
+  App name: Morperhaus Now Spinning.
 - **2026-11-21, v1.4.2:** Distribution decided: one Apple TV; installed from Xcode while the app
   is being built, then TestFlight kept fresh by a monthly Xcode Cloud build. Mike has a paid
   Apple developer account, so the free-account limit no longer applies. (Superseded by v1.4.3.)
