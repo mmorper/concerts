@@ -703,10 +703,11 @@ TV's home screen). SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
 
 **App icon.** The same network mark the site and its social accounts use. It is not redrawn.
 - **Source:** the layers the project already keeps in `docs/design/icons/MorperhausConcerts.icon/`
-  (`nodes.svg`, `hero.png`, `connections.svg`) and that file's base gradient, `#1e1b4b → #581c87`.
+  (`connections.svg`, `nodes.svg`, `hero.png`) and that file's base gradient, `#1e1b4b → #581c87`.
 - **What tvOS changes:** its icons are wide (5:3) and layered, so the layers shift against each
-  other when the icon is focused. The gradient becomes the back layer across the whole canvas;
-  nodes, hero and connections stay separate layers above it. The mark sits centred with a clear
+  other when the icon is focused. **Back to front: the gradient across the whole canvas, then
+  the connecting lines, then the outer nodes, then the hero node.** The lines sit under every
+  node, as in the original drawing. The mark sits centred with a clear
   margin, because a focused icon is enlarged and its edges are cropped.
 - **Generated, not exported by hand:** extend `scripts/generate-brand-assets.ts`
   (`npm run generate:brand`), which already follows a one-source rule for the mark. It writes each
