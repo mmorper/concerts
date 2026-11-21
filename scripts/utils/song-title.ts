@@ -70,8 +70,25 @@ const VERSION_RE = new RegExp(
   'i'
 )
 
-/** "(feat. X)", "featuring X", "ft. X" — never title-bearing on a song. */
-const FEAT_RE = /\s*[([]?\s*\b(?:feat|ft|featuring|with)\b\.?\s+[^)\]]*[)\]]?\s*/gi
+/**
+ * Featured-artist credits — never title-bearing on a song. Three shapes, and
+ * only these:
+ *
+ *   "Love Song (feat. Someone)"   "Love Song [with Someone]"   bracketed
+ *   "Love Song - feat. Someone"   "Love Song - with Someone"   after a spaced dash
+ *   "Love Song feat. Someone"     "Love Song featuring X"      bare, but never "with"
+ *
+ * A BARE "with" is never a credit. It is one of the commonest words in song
+ * titles — "Dancing With Myself", "She Blinded Me With Science", "With or
+ * Without You" — and treating it as one truncated 23 setlist titles in the
+ * archive, one of them ("With Any Sort of Certainty") to nothing, and let
+ * different songs fold to the same key (#689). A BRACKETED "with" is still read
+ * as a credit, because catalogues write one that way: "Down Here (With the Rest
+ * of Us)" folds to "down here" (pinned in the tests). Bare "ft" needs its dot for the same reason: without one it could
+ * be a word.
+ */
+const FEAT_BRACKETED_RE = /\s*[([]\s*(?:feat|ft|featuring|with)\b\.?\s+[^)\]]*[)\]]\s*/gi
+const FEAT_TRAILING_RE = /\s+(?:[-–—]\s+(?:feat\.?|ft\.|featuring|with)|feat\.|ft\.|featuring)\s+.*$/i
 
 const MAX_QUALIFIER_PASSES = 3
 
@@ -100,7 +117,7 @@ function fold(s: string): string {
  * Remaster]" needs two passes.
  */
 export function stripSongQualifiers(title: string): string {
-  let out = fold(title).replace(FEAT_RE, ' ')
+  let out = fold(title).replace(FEAT_BRACKETED_RE, ' ').replace(FEAT_TRAILING_RE, '')
 
   for (let i = 0; i < MAX_QUALIFIER_PASSES; i++) {
     const next = out.replace(/\s*[([]([^)\]]*)[)\]]\s*$/, (match, inner: string) =>

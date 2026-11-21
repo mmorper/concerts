@@ -12,11 +12,21 @@ on:
     paths:
       - 'workers/ask-chat/**'
       - 'workers/mcp-server/**'
+      # Shared code this Worker bundles. Whole folders, not a list of files, so a newly
+      # imported shared file can't be missed: a change to the matching rules must reach the
+      # Worker as well as the site's data (#689).
+      - 'scripts/utils/**'
+      - 'src/utils/**'
       - '.github/workflows/ask-chat-ci.yml'
   pull_request:
     paths:
       - 'workers/ask-chat/**'
       - 'workers/mcp-server/**'
+      # Shared code this Worker bundles. Whole folders, not a list of files, so a newly
+      # imported shared file can't be missed: a change to the matching rules must reach the
+      # Worker as well as the site's data (#689).
+      - 'scripts/utils/**'
+      - 'src/utils/**'
       - '.github/workflows/ask-chat-ci.yml'
 
 concurrency:

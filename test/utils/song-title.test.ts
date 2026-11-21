@@ -35,6 +35,52 @@ describe('foldSongTitle', () => {
     expect(foldSongTitle('Love Song (feat. Someone)')).toBe('love song')
   })
 
+  it('KEEPS "with" when it is part of the title (#689)', () => {
+    // A bare "with" is one of the commonest words in song titles. Treating it as
+    // a featured-artist credit truncated 23 setlist titles (openers included), and
+    // "With Any Sort of Certainty" to nothing at all.
+    expect(foldSongTitle('Dancing With Myself')).toBe('dancing with myself')
+    expect(foldSongTitle('She Blinded Me With Science')).toBe('she blinded me with science')
+    expect(foldSongTitle('With or Without You')).toBe('with or without you')
+    expect(foldSongTitle('With Any Sort of Certainty')).toBe('with any sort of certainty')
+  })
+
+  it('keeps different songs that share the words before "with" apart (#689)', () => {
+    // Under the old rule both folded to "dance" (T.S.O.L. and Danny Elfman).
+    expect(foldSongTitle('Dance With Me')).not.toBe(foldSongTitle('Dance With the Lemurs'))
+    expect(foldSongTitle('Dancing With Myself')).not.toBe(foldSongTitle('Dancing With Tears in My Eyes'))
+  })
+
+  it('treats a BRACKETED "with" as a credit, even when it is part of a title (a known choice, #689)', () => {
+    // Social Distortion's "Down Here (With the Rest of Us)" folds to "down here". That's the
+    // price of reading "(with X)" as a credit, which is how catalogues write one. It's harmless
+    // while setlists and catalogues fold the same way, but it is the #689 failure class: a
+    // later Social Distortion song called "Down Here" would share the key. If that happens,
+    // allow-list the title here; this test makes the choice visible until then.
+    expect(foldSongTitle('Down Here (With the Rest of Us)')).toBe('down here')
+  })
+
+  it('still strips featured-artist credits in their three real shapes (#689)', () => {
+    // bracketed
+    expect(foldSongTitle('Song (with Someone)')).toBe('song')
+    expect(foldSongTitle('Song [feat. Someone]')).toBe('song')
+    // after a spaced dash
+    expect(foldSongTitle('Song - with Someone')).toBe('song')
+    expect(foldSongTitle('Song - feat. Someone')).toBe('song')
+    // bare, but only feat. / ft. / featuring
+    expect(foldSongTitle('Song feat. Someone')).toBe('song')
+    expect(foldSongTitle('Song ft. Someone')).toBe('song')
+    expect(foldSongTitle('Song featuring Someone')).toBe('song')
+    // stacked with a version marker
+    expect(foldSongTitle('Halo (feat. X) [2006 Remaster]')).toBe('halo')
+  })
+
+  it('never folds a real title to nothing (#689)', () => {
+    for (const t of ['With or Without You', 'With a Little Help from My Friends', 'Featuring You']) {
+      expect(foldSongTitle(t)).not.toBe('')
+    }
+  })
+
   it('strips stacked qualifiers in one pass', () => {
     expect(foldSongTitle('Halo (Goldfrapp remix) [2006 Remaster]')).toBe('halo')
   })
