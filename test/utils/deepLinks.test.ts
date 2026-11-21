@@ -8,6 +8,8 @@
 
 import { describe, it, expect } from 'vitest'
 import fixture from '../fixtures/deep-link-urls.json'
+import realConcerts from '../../public/data/concerts.json'
+import { normalizeArtistName } from '../../src/utils/normalize'
 import {
   artistDeepLink,
   venueDeepLink,
@@ -78,6 +80,12 @@ describe('deep-link builders match the shared fixture', () => {
     expect(isValidPhotoId(null)).toBe(false)
   })
 
+  it("builds an opening act's setlist link the same way (#690)", () => {
+    expect(
+      setlistDeepLink(fixture.setlistOpener.input.slug, fixture.setlistOpener.input.date)
+    ).toBe(fixture.setlistOpener.url)
+  })
+
   it('builds setlist links for the earliest show in the archive', () => {
     expect(
       setlistDeepLink(
@@ -144,6 +152,21 @@ describe('resolveShow', () => {
     expect(
       resolveShow(sameDay, '2026-07-31', 'nile-rodgers')?.headlinerNormalized
     ).toBe('nile-rodgers')
+  })
+
+  it("resolves an opening act's link to the night it opened (#690)", () => {
+    // The opener isn't the headliner, so this goes through the date fallback below, and that is
+    // what makes an opener's song link open the right night.
+    const night = [{ date: '2026-09-16', headlinerNormalized: 'thompson-twins', openers: ['Blancmange'] }]
+    const hit = resolveShow(night, fixture.setlistOpener.input.date, fixture.setlistOpener.input.slug)
+    expect(hit?.openers).toContain('Blancmange')
+  })
+
+  it("the fixture's opener really opened that night in the archive", () => {
+    const { concerts } = realConcerts as { concerts: { date: string; openers?: string[] }[] }
+    const night = concerts.filter(c => c.date === fixture.setlistOpener.input.date)
+    const slugs = night.flatMap(c => (c.openers ?? []).map(o => normalizeArtistName(o)))
+    expect(slugs).toContain(fixture.setlistOpener.input.slug)
   })
 
   it('falls back to first-match when the artist does not match', () => {
