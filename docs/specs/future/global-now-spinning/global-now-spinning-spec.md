@@ -286,43 +286,16 @@ The index reaches production only when the site next deploys after Phase 1 merge
 the Worker answers `unknown` for every song, which is correct but not useful. #693 checks that
 `https://concerts.morperhaus.org/data/now-spinning/manifest.json` returns JSON before going on.
 
-```ts
-interface Manifest {
-  v: 1;
-  generatedAt: string;
-  rules: string;                    // fingerprint of the matching rules (see below)
-  acts: Record<string, string>;     // actKey of every name an act goes by → its file's slug
-  covers: string[];                 // actKeys that have a covers file
-  ambiguous: string[];              // actKeys shared by two different acts
-  problems: { kind: 'no-key' | 'ambiguous-act'; what: string }[]; // data the builder left out
-}
-
-interface ActFile {                 // acts/<slug>.json
-  slug: string;                     // canonical slug (sameAct billings merged)
-  name: string;                     // display name
-  nights: {
-    d: string; billing: string; venue: string; city: string; role: 'h' | 'o';
-    setlist: boolean;               // does this night have a setlist for this act?
-    photos: { u: string; fx: number; fy: number }[];   // up to 3; fx/fy = crop centre
-  }[];
-  songs: {
-    n: string;                      // the setlist's spelling
-    k: string[];                    // strict keys: foldSongTitle(n) first, then each songIndexKeys(n) part
-    nk: string[];                   // near-miss keys, from match.ts nearKeys(n)
-    nights: number[];               // indexes into nights
-    album: { t: string; y: string; c: string | null } | null;   // c: 600x600 cover URL
-  }[];
-}
-
-interface CoversFile {              // covers/<actKey>.json: this act's songs, heard from others
-  rows: {
-    n: string; k: string[];
-    by: string;                     // the performer's display name
-    d: string; venue: string; city: string;
-    photos: { u: string; fx: number; fy: number }[];
-  }[];
-}
-```
+The exact shapes live in code, not here: **`workers/now-spinning/src/types.ts`** (`Manifest`,
+`ActFile`, `CoversFile`, `NowSpinningState`). In short:
+- `manifest.json`: `v`, `generatedAt`, `rules`, `acts` (the `actKey` of every billing name → the
+  act's file slug), `covers` (the `actKey`s with a covers file), `ambiguous`, `problems`.
+- `acts/<slug>.json`: the act's display `name`, every billing `names`, its `nights` (date, billing,
+  venue, city, opener or headliner, whether there's a setlist, up to 3 photos with focal points),
+  and its `songs` (the setlist's spelling, strict keys `k`, near-miss keys `nk`, the nights it was
+  played `on`, and its album).
+- `covers/<actKey>.json`: `rows`, each a song by that act someone else played at a show Mike was
+  at: the song, its keys, the performer, the night and its photos.
 
 - **The manifest is the authority on what exists.** A missing file on this site comes back as the
   site's HTML with status 200, so "no such file" can't be told from "not in the archive" by
@@ -1013,18 +986,21 @@ is chosen.
 
 ### Phase 1: match rules, index, lookup (#691)
 **After:** #689.
-**Create:** `workers/now-spinning/{package.json,tsconfig.json,vitest.config.ts}`,
+**Create:** `workers/now-spinning/{package.json,tsconfig.json,tsconfig.test.json,vitest.config.ts}`,
 `workers/now-spinning/src/{match.ts,identify.ts,types.ts}` and tests, the frozen fixture,
 `scripts/build-now-spinning-index.ts`, `test/pipeline/now-spinning-index.test.ts`,
-`test/fixtures/now-spinning-states.json`
-**Modify:** `package.json` (`build`, `test:workers`), `.gitignore` (`public/data/now-spinning/`)
+`test/fixtures/now-spinning-states.json`, `.github/workflows/now-spinning-ci.yml` (tests only;
+Phase 2 adds the deploy job)
+**Modify:** `package.json` (`build`, `test:workers`), `.gitignore` (`public/data/now-spinning/`),
+`.github/dependabot.yml`, `test/README.md`, `docs/architecture.svg` (CI gate count)
 **Done when:** the fixture table and the invariants pass, and a bad title or a colliding act in
 the data is left out and reported, with the site's build still succeeding.
 
 ### Phase 2: Worker API (#692, then #693)
 **Create:** `workers/now-spinning/src/{index.ts,room.ts,room-logic.ts,auth.ts}` and tests,
-`wrangler.toml`, `.dev.vars.example`, `.github/workflows/now-spinning-ci.yml` (test + deploy)
-**Modify:** `docs/SECRETS.md`, `test/README.md`, `.github/dependabot.yml`
+`wrangler.toml`, `.dev.vars.example`
+**Modify:** `.github/workflows/now-spinning-ci.yml` (add the deploy job), `docs/SECRETS.md`,
+`docs/architecture.svg` (Worker count)
 **Done when:** API tests pass, the Worker is deployed and answers `503`, and after Mike sets the
 secrets (#693), `GET` returns `idle`.
 

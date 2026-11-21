@@ -21,7 +21,8 @@ suites that were genuinely failing.
 
 **`npm run test:run` covers the root app only.** Use `npm run test:everything`
 for full coverage, and note that CI runs the root gate (`.github/workflows/ci.yml`)
-while each Worker has its own path-filtered workflow (`mcp-ci.yml`, `ask-chat-ci.yml`).
+while each Worker has its own path-filtered workflow (`mcp-ci.yml`, `ask-chat-ci.yml`,
+`now-spinning-ci.yml`).
 
 ## Quick Start
 
