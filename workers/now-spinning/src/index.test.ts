@@ -121,6 +121,8 @@ describe("ingest", () => {
     expect((await handle(post({ event: "track", artist: "Devo" }), env)).status).toBe(400);
     expect((await handle(post({ event: "status", recognizer: "great" }), env)).status).toBe(400);
     expect((await handle(post({ event: "track", artist: "x".repeat(3000), title: "y" }), env)).status).toBe(413);
+    // 2 KB is bytes: 1,100 "é" are 1,100 characters but 2,200 bytes.
+    expect((await handle(post({ event: "track", artist: "é".repeat(1100), title: "y" }), env)).status).toBe(413);
   });
 
   it("looks a track up and stores the answer", async () => {
