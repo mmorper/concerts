@@ -428,7 +428,42 @@ Building and installing the tvOS app is done on the Mac, not the Pi: see issue #
 
 ---
 
-## Troubleshooting
+## When something isn't right: find where the problem is
+
+The web page and the tvOS app show the same thing from the same source. Open the page on a
+laptop or phone and compare it with the TV. That tells you which part to look at.
+
+**Open the page with its diagnostics panel:**
+
+```
+https://concerts.morperhaus.org/now-spinning.html#debug
+```
+
+The first time on a device, give it the display token once: open
+`https://concerts.morperhaus.org/now-spinning.html#token=<display token>`, then add `#debug`.
+The panel shows whether the page is connected, the exact state the Worker last sent, and the
+listener's health: online or last seen, song recognition, receiver, Apple TV.
+
+| The web page shows | The TV shows | The problem is in | Look at |
+|---|---|---|---|
+| The right song | Nothing, or the screensaver | Waking the Apple TV, or the app isn't open | The panel's Apple TV line. Open the app by hand: if it then shows the song, the waking step failed (step 10's commands test it). |
+| The right song | The wrong song, or an old one | The tvOS app | Quit and reopen the app. If that fixes it, the app lost its connection and didn't recover; note it on the epic (#687). |
+| The right song | The app, but garbled or cut off | The tvOS app | Compare with the page. The app may be older than a newer screen type; rebuild and reinstall it (#701). |
+| Idle while a record plays | Idle | The Pi listener | The panel's listener lines. Offline: is the Pi powered and on the network? Online but not identifying: is Zone 2 on Phono, and does the meter in step 7 move? |
+| "Listening…" that never resolves | The same | Song recognition | The panel's recognition line. If it says failing, Shazam is refusing or unreachable. If it says ok, Shazam doesn't know this record. |
+| The right song, wrong history | The same | The Worker's lookup, or the archive data | The raw state in the panel. Note the artist and title Shazam sent and open an issue. |
+| "The archive isn't answering right now." | The same | The index file | It is rebuilt on every site deploy. Check the latest deploy succeeded. |
+| Nothing loads, or the panel says reconnecting | Anything | The Worker, or your network | Other pages on the site. The Cloudflare dashboard for the Worker. |
+
+On the Pi, once the listener is installed (step 12), these show what it is doing:
+
+```bash
+# Pi
+systemctl status now-spinning        # running, or why not
+journalctl -u now-spinning -n 50     # its last 50 log lines (logs are kept in memory; a reboot clears them)
+```
+
+## Troubleshooting the Pi setup
 
 | Symptom | Likely cause | Fix |
 |---|---|---|

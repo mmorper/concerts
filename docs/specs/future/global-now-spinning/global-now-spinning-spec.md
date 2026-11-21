@@ -624,6 +624,28 @@ laptop, a phone or an iPad.
 - If the socket drops: reconnect with backoff, and poll `GET` every 10 s meanwhile.
 - Idle: shift the brand mark's position slightly every few minutes.
 
+### Diagnostics panel: telling where a problem is
+
+The page and the tvOS app read the same state from the same Worker. So the page is the way to
+tell problems apart: if the page is right and the TV is wrong, the fault is in the app or the
+Apple TV, not in the Pi or the Worker.
+
+Adding `#debug` to the page's address opens a small panel over one corner. It is off unless
+asked for, and it shows only the present moment:
+
+| Shows | From |
+|---|---|
+| Connection: live, reconnecting or polling, and how long ago the last message arrived | the page itself |
+| The contract version and the raw state exactly as the Worker sent it | the WebSocket |
+| Listener: online or last seen, song recognition, receiver, Apple TV, listener version | `GET /api/now-spinning/health`, refreshed every 30 s |
+| Which fixture is loaded, when `?fixture=` is in use | the page itself |
+
+- It uses the display token the page already holds. It adds no endpoint and stores nothing.
+- It keeps no list of past songs, in line with [Privacy](#privacy).
+- The tvOS app has no such panel. Checking the TV against this page is the diagnostic.
+- `docs/NOW_SPINNING_OPERATIONS.md` has the table that turns what the page and the TV show into
+  where to look.
+
 ### Screen care: the TV is an OLED
 
 The TV is a Samsung S95C (QD-OLED, model QN65S95CAFXZA). Burn-in on an OLED is uneven wear: bright
@@ -938,6 +960,8 @@ The release gate is Phases 1–5: a record plays, and the tvOS app shows it on t
 
 ## Revision History
 
+- **2026-11-21, v1.4.1:** The web page gains a diagnostics panel (`#debug`), and the setup guide a
+  table for telling a tvOS problem from a Pi or Worker problem.
 - **2026-11-21, v1.4.0:** Display decided: a tvOS app on the Apple TV (Mike's strong preference,
   and what the original handoff described). The web page becomes the development display and the
   fallback; the Pi driving the TV is kept only as a fallback. The listener now wakes the Apple TV
