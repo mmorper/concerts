@@ -1,0 +1,3 @@
+# Copy to .dev.vars (gitignored) for `npx wrangler dev`. Local values only; never real ones.
+NOW_SPINNING_INGEST_TOKEN=local-ingest-token-change-me
+NOW_SPINNING_DISPLAY_TOKEN=local-display-token-change-me

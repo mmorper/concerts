@@ -1,0 +1,35 @@
+# Cloudflare Worker Configuration — Now Spinning
+# Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Worker API
+# Deploys to: concerts.morperhaus.org/api/now-spinning* (more specific than meta-injector's /*)
+#
+# Deployed by CI on push to main (.github/workflows/now-spinning-ci.yml). It answers 503 to
+# everything until both secrets are set, so the first deploy is safe (#693):
+#   cd workers/now-spinning
+#   npx wrangler secret put NOW_SPINNING_INGEST_TOKEN    # openssl rand -hex 32
+#   npx wrangler secret put NOW_SPINNING_DISPLAY_TOKEN   # a different one
+# Where each token lives: docs/SECRETS.md.
+
+name = "morperhaus-now-spinning"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+
+account_id = "6db8591bbcba4588ae4ef9c3839cd209"
+
+[[routes]]
+pattern = "concerts.morperhaus.org/api/now-spinning*"
+zone_name = "morperhaus.org"
+
+[vars]
+DATA_BASE_URL = "https://concerts.morperhaus.org/data"
+# The home's time zone, for "The listener has been offline since 3:12 PM."
+DISPLAY_TZ = "America/Los_Angeles"
+
+# One room: the current state, the listener's health, and every display's WebSocket.
+# SQLite-backed, as Cloudflare's free tier requires for Durable Objects.
+[[durable_objects.bindings]]
+name = "NOW_SPINNING_ROOM"
+class_name = "NowSpinningRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["NowSpinningRoom"]
