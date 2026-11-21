@@ -1,0 +1,72 @@
+name: Now Spinning tvOS CI
+
+# Builds the tvOS app (now-spinning/tvos, #698) for the tvOS Simulator, unsigned, so every change
+# to it proves it compiles. A Code session writes the Swift but can't build it; this is the check.
+#
+# XcodeGen generates the project from project.yml first, exactly as on the owner's Mac. There is
+# no Secrets.xcconfig here, so the build has no token, which is fine: the app compiles the same.
+#
+# Runs only when the app changes. macOS runners are free for a public repository and billed at a
+# higher rate for a private one.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'now-spinning/tvos/**'
+      - 'test/fixtures/now-spinning-states.json'
+      - '.github/workflows/now-spinning-tvos-ci.yml'
+  pull_request:
+    paths:
+      - 'now-spinning/tvos/**'
+      - 'test/fixtures/now-spinning-states.json'
+      - '.github/workflows/now-spinning-tvos-ci.yml'
+
+concurrency:
+  group: now-spinning-tvos-ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build for the tvOS Simulator
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Select the newest Xcode 26
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)"
+          xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      # Building for a simulator needs its platform installed. The runner image usually has it;
+      # download it only when it doesn't.
+      - name: Make sure the tvOS platform is installed
+        run: |
+          if xcrun simctl list runtimes | grep -q "tvOS 26"; then
+            echo "tvOS 26 runtime present"
+          else
+            xcodebuild -downloadPlatform tvOS
+          fi
+
+      - name: Generate the Xcode project
+        working-directory: now-spinning/tvos
+        run: xcodegen generate
+
+      - name: Build (no signing)
+        working-directory: now-spinning/tvos
+        run: |
+          xcodebuild build \
+            -project NowSpinning.xcodeproj \
+            -scheme NowSpinning \
+            -configuration Debug \
+            -destination 'generic/platform=tvOS Simulator' \
+            -quiet \
+            CODE_SIGNING_ALLOWED=NO

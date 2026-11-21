@@ -1,0 +1,10 @@
+// Build settings for Morperhaus Now Spinning. Committed; holds no secrets.
+//
+// The display token and the signing team live in Secrets.xcconfig beside this file, which is
+// gitignored. Copy Secrets.example.xcconfig to Secrets.xcconfig and fill it in. Without it the app
+// still builds (CI builds it that way) and shows the idle screen only.
+
+NOW_SPINNING_DISPLAY_TOKEN =
+DEVELOPMENT_TEAM =
+
+#include? "Secrets.xcconfig"

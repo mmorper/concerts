@@ -1026,9 +1026,12 @@ the Apple TV), this spec's Privacy section (Phase 0 check 7)
 checklist (#697) passes.
 
 ### Phase 5: tvOS app (#698, then #701)
-**Create:** `now-spinning/tvos/` (`project.yml` for XcodeGen, SwiftUI sources, bundled fonts,
-app icon layers, fixture previews), `.github/workflows/now-spinning-tvos-ci.yml` (generate the
-project, then a simulator build with no signing)
+**Create:**
+- `now-spinning/tvos/`: `project.yml` for XcodeGen, `Config.xcconfig` (committed) with an
+  optional `Secrets.xcconfig` (gitignored; the display token and signing team), SwiftUI sources,
+  bundled fonts, app icon layers, fixture previews, and a `README.md` for building on the Mac
+- `.github/workflows/now-spinning-tvos-ci.yml`: generate the project, then a simulator build
+  with no signing
 **Modify:** `scripts/generate-brand-assets.ts` (the tvOS icon layers), `.gitignore` (the
 generated `.xcodeproj`, Xcode user data, `Secrets.xcconfig`)
 **Done when:** CI builds it, every preview matches its screenshot, and after Mike signs and

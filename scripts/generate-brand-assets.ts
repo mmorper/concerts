@@ -40,7 +40,10 @@
  * The masked previews are for review only; platforms apply their own crop to
  * the square file, so the uploads stay unmasked.
  *
- * Usage: npm run generate:brand
+ * Also writes the tvOS app icon for Morperhaus Now Spinning (#698): see generateTvosIcon().
+ *
+ * Usage: npm run generate:brand            (everything)
+ *        npm run generate:brand -- --tvos  (the tvOS icon only)
  */
 
 import sharp from "sharp";
@@ -254,7 +257,128 @@ async function generateHeaders(): Promise<void> {
   console.log("  review     390×130  (true mobile scale)");
 }
 
+// --- tvOS app icon: Morperhaus Now Spinning (#698) ---------------------------------------------
+//
+// The same mark, from the layers Icon Composer keeps (MorperhausConcerts.icon), not redrawn.
+// tvOS icons are wide (5:3) and layered: the layers shift against each other when the icon is
+// focused. Back to front: the base gradient across the whole canvas, then the connecting lines,
+// then the outer nodes, then the hero node, so the lines sit under every node as they do in the
+// original drawing. The mark is centred with a clear margin, because a focused icon is enlarged
+// and its edges are cropped. The whole asset catalog entry, Contents.json files included, is
+// written here, so it can always be regenerated.
+
+const ICON_LAYERS_SRC = join(ROOT, "docs", "design", "icons", "MorperhausConcerts.icon", "Assets");
+const TVOS_BRAND = join(
+  ROOT, "now-spinning", "tvos", "NowSpinning", "Resources", "Assets.xcassets",
+  "App Icon & Top Shelf Image.brandassets",
+);
+/** icon.json's base fill, #1e1b4b → #581c87, run corner to corner as in the approved preview. */
+const TVOS_GRADIENT = ["#1e1b4b", "#581c87"] as const;
+/** The mark's square, as a share of the icon's height (matches tvos-icon-preview.png). */
+const TVOS_MARK = 0.83;
+/** The Top Shelf banners are much wider and shorter; the mark sits smaller in them. */
+const TOP_SHELF_MARK = 0.5;
+
+type TvLayer = "gradient" | "connections" | "nodes" | "hero";
+/** Back to front. */
+const TV_LAYERS: TvLayer[] = ["gradient", "connections", "nodes", "hero"];
+const LAYER_NAME: Record<TvLayer, string> = {
+  gradient: "Back", connections: "Lines", nodes: "Nodes", hero: "Front",
+};
+const XCODE_INFO = { info: { author: "xcode", version: 1 } };
+
+function gradientSvg(w: number, h: number): Buffer {
+  return Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">` +
+      `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">` +
+      `<stop offset="0" stop-color="${TVOS_GRADIENT[0]}"/><stop offset="1" stop-color="${TVOS_GRADIENT[1]}"/>` +
+      `</linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/></svg>`,
+  );
+}
+
+/** One layer at one size: the gradient, or a piece of the mark centred on a transparent canvas. */
+async function tvLayer(layer: TvLayer, w: number, h: number, markRatio: number): Promise<Buffer> {
+  if (layer === "gradient") return sharp(gradientSvg(w, h)).png().toBuffer();
+  const side = Math.round(h * markRatio);
+  const file = join(ICON_LAYERS_SRC, layer === "hero" ? "hero.png" : `${layer}.svg`);
+  const input = layer === "hero"
+    ? sharp(file)
+    : sharp(file, { density: Math.max(72, Math.ceil((72 * side) / 1024)) });
+  const piece = await input.resize(side, side).png().toBuffer();
+  return sharp({ create: { width: w, height: h, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    .composite([{ input: piece, left: Math.round((w - side) / 2), top: Math.round((h - side) / 2) }])
+    .png()
+    .toBuffer();
+}
+
+/** All layers flattened, for the Top Shelf images, which aren't layered. */
+async function tvFlat(w: number, h: number, markRatio: number): Promise<Buffer> {
+  const [base, ...rest] = await Promise.all(TV_LAYERS.map((l) => tvLayer(l, w, h, markRatio)));
+  return sharp(base).composite(rest.map((input) => ({ input }))).png().toBuffer();
+}
+
+function writeJson(dir: string, body: object): void {
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, "Contents.json"), JSON.stringify(body, null, 2) + "\n");
+}
+
+/** An image stack: one layer per folder, listed front to back as Xcode does. */
+async function tvStack(name: string, w: number, h: number, scales: number[]): Promise<void> {
+  const stack = join(TVOS_BRAND, `${name}.imagestack`);
+  writeJson(stack, {
+    ...XCODE_INFO,
+    layers: [...TV_LAYERS].reverse().map((l) => ({ filename: `${LAYER_NAME[l]}.imagestacklayer` })),
+  });
+  for (const layer of TV_LAYERS) {
+    const layerDir = join(stack, `${LAYER_NAME[layer]}.imagestacklayer`);
+    writeJson(layerDir, XCODE_INFO);
+    const imageset = join(layerDir, "Content.imageset");
+    mkdirSync(imageset, { recursive: true });
+    const images = [];
+    for (const scale of scales) {
+      const filename = `${LAYER_NAME[layer].toLowerCase()}-${w}x${h}${scale > 1 ? `@${scale}x` : ""}.png`;
+      writeFileSync(join(imageset, filename), await tvLayer(layer, w * scale, h * scale, TVOS_MARK));
+      images.push({ filename, idiom: "tv", scale: `${scale}x` });
+    }
+    writeJson(imageset, { images, ...XCODE_INFO });
+  }
+}
+
+async function tvTopShelf(name: string, w: number, h: number): Promise<void> {
+  const imageset = join(TVOS_BRAND, `${name}.imageset`);
+  mkdirSync(imageset, { recursive: true });
+  const images = [];
+  for (const scale of [1, 2]) {
+    const filename = `top-shelf-${w}x${h}${scale > 1 ? "@2x" : ""}.png`;
+    writeFileSync(join(imageset, filename), await tvFlat(w * scale, h * scale, TOP_SHELF_MARK));
+    images.push({ filename, idiom: "tv", scale: `${scale}x` });
+  }
+  writeJson(imageset, { images, ...XCODE_INFO });
+}
+
+async function generateTvosIcon(): Promise<void> {
+  writeJson(join(TVOS_BRAND, ".."), XCODE_INFO);
+  writeJson(TVOS_BRAND, {
+    assets: [
+      { filename: "App Icon - App Store.imagestack", idiom: "tv", role: "primary-app-icon", size: "1280x768" },
+      { filename: "App Icon.imagestack", idiom: "tv", role: "primary-app-icon", size: "400x240" },
+      { filename: "Top Shelf Image Wide.imageset", idiom: "tv", role: "top-shelf-image-wide", size: "2320x720" },
+      { filename: "Top Shelf Image.imageset", idiom: "tv", role: "top-shelf-image", size: "1920x720" },
+    ],
+    ...XCODE_INFO,
+  });
+  await tvStack("App Icon", 400, 240, [1, 2]);
+  await tvStack("App Icon - App Store", 1280, 768, [1]);
+  await tvTopShelf("Top Shelf Image", 1920, 720);
+  await tvTopShelf("Top Shelf Image Wide", 2320, 720);
+}
+
 async function main() {
+  if (process.argv.includes("--tvos")) {
+    await generateTvosIcon();
+    console.log("✅ tvOS app icon written to now-spinning/tvos/NowSpinning/Resources/Assets.xcassets/");
+    return;
+  }
   mkdirSync(OUT, { recursive: true });
 
   console.log("🎨 Brand assets — venue-network mark\n");
@@ -297,6 +421,10 @@ async function main() {
   console.log("  instagram  — no header on this channel");
 
   console.log(`\n✅ Written to public/images/brand/`);
+
+  // --- the tvOS app icon (#698); `--tvos` runs this part alone ---
+  await generateTvosIcon();
+  console.log("✅ tvOS app icon written to now-spinning/tvos/NowSpinning/Resources/Assets.xcassets/");
 
   if (clipped.length) {
     console.error(
