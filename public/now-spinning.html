@@ -217,14 +217,17 @@ const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').match
 // ── The address: token, debug, fixture ───────────────────────────────────────
 // #token=… is read once, kept in localStorage, and taken out of the address. A fragment never
 // reaches a server, and clearing it keeps the token out of history and screenshots.
+/** Returns true when a new, valid token was stored. */
 function readFragment() {
   const params = new URLSearchParams(location.hash.slice(1));
-  if (!params.has('token')) return;
+  if (!params.has('token')) return false;
   const t = params.get('token').trim();
-  if (/^[0-9a-f]{16,256}$/i.test(t)) store.set(TOKEN_KEY, t);
+  const valid = /^[0-9a-f]{16,256}$/i.test(t);
+  if (valid) store.set(TOKEN_KEY, t);
   params.delete('token');
   const rest = params.toString().replace(/=(?=&|$)/g, '');   // "debug=" → "debug"
   history.replaceState(null, '', location.pathname + location.search + (rest ? '#' + rest : ''));
+  return valid;
 }
 const debugOn = () => new URLSearchParams(location.hash.slice(1)).has('debug');
 const fixtureName = new URLSearchParams(location.search).get('fixture');
@@ -246,10 +249,17 @@ const elapsedOf = s => {
 };
 
 /** Every message from the Worker, a poll or a fixture comes through here. */
+let lastStateKey = null;
 function apply(state) {
   if (!state || typeof state !== 'object') return;
   diag.raw = state; diag.lastMsgAt = Date.now();
-  render(state);
+  // A poll every 10 s re-sends the same state with a new `now`. Drawing it again would restart
+  // the timers and move a notice on the black screen every poll instead of once a minute.
+  const key = JSON.stringify({ ...state, now: undefined });
+  if (key !== lastStateKey) {
+    lastStateKey = key;
+    render(state);
+  }
   renderDebug();
 }
 
@@ -438,17 +448,21 @@ function connect() {
   if (stopped || !token()) return;
   clearTimeout(reconnectTimer);
   const url = `${location.protocol === 'http:' ? 'ws' : 'wss'}://${location.host}${API}/ws`;
+  let sock;
   try {
     // The token travels as the second subprotocol: a browser can't set an Authorization header
     // on a WebSocket, and it must never go in the URL.
-    ws = new WebSocket(url, [SUBPROTOCOL, token()]);
+    sock = new WebSocket(url, [SUBPROTOCOL, token()]);
   } catch {
     return retry();
   }
+  ws = sock;
   diag.conn = diag.attempt ? 'reconnecting' : 'connecting'; renderDebug();
-  ws.onopen = () => { diag.attempt = 0; diag.conn = 'live'; stopPolling(); renderDebug(); };
-  ws.onmessage = e => { try { apply(JSON.parse(e.data)); } catch {} };
-  ws.onclose = () => { ws = null; if (!stopped) { startPolling(); retry(); } };
+  // Each handler checks it still belongs to the current socket: an old one closing late must
+  // not tear down its replacement.
+  sock.onopen = () => { if (ws !== sock) return; diag.attempt = 0; diag.conn = 'live'; stopPolling(); renderDebug(); };
+  sock.onmessage = e => { if (ws !== sock) return; try { apply(JSON.parse(e.data)); } catch {} };
+  sock.onclose = () => { if (ws !== sock) return; ws = null; if (!stopped) { startPolling(); retry(); } };
 }
 
 function retry() {
@@ -488,6 +502,7 @@ async function authedGet(path) {
 
 function refuse(why) {
   stopped = true;
+  lastStateKey = null;
   stopPolling(); clearTimeout(reconnectTimer);
   if (ws) { try { ws.close(); } catch {} ws = null; }
   diag.conn = why;
@@ -571,7 +586,7 @@ async function loadFixture(name) {
     // Copied from test/fixtures/now-spinning-states.json by scripts/build-now-spinning-index.ts.
     const res = await fetch('/data/now-spinning/states.json', { cache: 'no-store' });
     const all = await res.json();
-    if (name === '_comment' || !all[name]) {
+    if (name.startsWith('_') || !Object.hasOwn(all, name)) {
       diag.conn = `fixture "${name}" not found · have: ${Object.keys(all).filter(k => k !== '_comment').join(', ')}`;
       return renderDebug();
     }
@@ -591,7 +606,17 @@ function fit() {
 addEventListener('resize', fit); fit();
 
 readFragment();
-addEventListener('hashchange', () => { readFragment(); syncDebug(); if (!fixtureName && !ws && !stopped) connect(); });
+addEventListener('hashchange', () => {
+  // A new token (say, after "token refused", or after rotating it) starts again from scratch.
+  if (readFragment() && !fixtureName) {
+    stopped = false; diag.attempt = 0; diag.conn = 'connecting';
+    if (ws) { try { ws.close(); } catch {} ws = null; }
+    stopPolling(); clearTimeout(reconnectTimer);
+    connect();
+  }
+  syncDebug();
+  if (!fixtureName && !ws && !stopped) connect();
+});
 if (store.get(FLIP_KEY) === '1') $('stage').classList.add('flip');
 showIdle('', 0);
 syncDebug();
