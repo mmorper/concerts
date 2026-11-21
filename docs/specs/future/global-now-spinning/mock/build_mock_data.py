@@ -59,10 +59,10 @@ for k, x in songs.items():
         al_i = aidx[m['mbid']]
     out_songs.append({'n': x['n'], 'a': x['a'], 'd': sorted(x['d']), 'al': al_i})
 
-# Photos: up to 3 per night, resized into ./p
+# Photos: up to 3 per night, hero frames first and then in the index's own order, resized into ./p
 os.makedirs(os.path.join(OUT, 'p'), exist_ok=True)
 photos = {}
-for m in media:
+for m in sorted(media, key=lambda m: (not m.get('hero'), m.get('order') or 0)):
     if m.get('subject') != 'artist' or m['kind'] != 'image': continue
     key = m['date'] + '|' + m['artistNormalized']
     if len(photos.get(key, [])) >= 3: continue

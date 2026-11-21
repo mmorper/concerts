@@ -143,9 +143,33 @@ const slug = s => (s||'').toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,
 // "&" and "and" are the same word to a billing: Echo & the Bunnymen = Echo and the Bunnymen.
 const loose = s => slug(s).replace(/^the-/,'').replace(/(^|-)and(?=-|$)/g,'').replace(/-/g,'');
 // Shazam titles carry noise: "(Remastered 2006)", "- Live", "[Single Version]", "feat. X"
-const cleanTitle = t => (t||'').replace(/\s*[\(\[][^\)\]]*[\)\]]/g,'')
+const cleanTitle = t => {
+  const raw = (t||'').trim();
+  const s = raw.replace(/\s*[\(\[][^\)\]]*[\)\]]/g,'')
+    .replace(/\s+-\s+.*\b(remaster(ed)?|live|version|mix|edit|mono|stereo|single|demo|bonus)\b.*$/i,'').trim();
+  // A title that is ALL brackets, like "(summer sky)" or "[10 Good Reasons for Modern Drugs]",
+  // keeps its words. Stripping it to nothing made it unmatchable and let "(Intro)" match it.
+  return loose(s) ? s : raw.replace(/[\(\)\[\]]/g,'').trim();
+};
+// What goes on screen when the archive has no spelling of its own: drop only Shazam's noise
+// ("(Remastered 2006)", "- Single Version"), never real words like "(Don't Fear) The Reaper".
+const NOISE = /\b(remaster(ed)?|live|version|mix|edit|mono|stereo|single|demo|bonus|deluxe|anniversary)\b/i;
+const tidyTitle = t => (t||'').replace(/\s*[\(\[]([^\)\]]*)[\)\]]/g, (m, inner) => NOISE.test(inner) ? '' : m)
   .replace(/\s+-\s+.*\b(remaster(ed)?|live|version|mix|edit|mono|stereo|single|demo|bonus)\b.*$/i,'').trim();
+// Every key a setlist entry answers to: the whole title, plus each part of a medley
+// ("Smart Patrol/Mr. DNA" answers to "Mr. DNA"). Parts under 4 letters are skipped so
+// "Let/s Get Lost" doesn't answer to "Let".
+const titleKey = t => loose(cleanTitle(t));
+function titleKeys(name) {
+  const keys = new Set([titleKey(name)]);
+  if (name.includes('/')) for (const part of name.split('/')) { const k = titleKey(part); if (k.length >= 4) keys.add(k); }
+  keys.delete('');
+  return keys;
+}
+// Matching fallback only: "Depeche Mode feat. X" -> "Depeche Mode", "Queen & David Bowie" -> "Queen".
 const cleanArtist = a => (a||'').replace(/\s+(feat\.?|featuring|ft\.?|with|&|and)\s+.*$/i,'').trim();
+// Display: drop "feat. X" only. "&" and "and" are part of real names (Kool & the Gang).
+const stripFeat = a => (a||'').replace(/\s+[\(\[]?(feat\.?|featuring|ft\.?)\s+.*$/i,'').trim();
 const fmt = d => new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 const hue = s => { let h=0; for (const c of s) h=(h*31+c.charCodeAt(0))%360; return h; };
 
@@ -158,6 +182,7 @@ function index() {
   for (const a of Object.keys(D.artists)) (billingsOf[canonOf(a)] ||= []).push(a);
   byLooseArtist = {};
   for (const a of Object.keys(D.artists)) byLooseArtist[loose(a)] = a;
+  for (const s of D.songs) s.k = titleKeys(s.n);
 }
 // Try the name as given first: "Echo and the Bunnymen" and "Joan Jett & The Blackhearts"
 // are real billings, so stripping "and …"/"& …" up front would turn them into "Echo" / "Joan Jett".
@@ -185,26 +210,36 @@ function photosFor(nights) {
 function identify(artistIn, titleIn, extra={}) {
   const canon = findArtist(artistIn);
   const shows = canon ? showsFor(canon) : [];
-  const t = loose(cleanTitle(titleIn));
+  const t = titleKey(titleIn);
   // one act can play under several billings (Brian Setzer has four), so gather every match
-  const matches = canon ? D.songs.filter(s => canonOf(s.a)===canon && loose(cleanTitle(s.n))===t) : [];
-  const song = matches[0] || null;
-  const played = new Set(matches.flatMap(s => s.d.map(d => d+'|'+s.a)));
-  const heard = shows.filter(n => played.has(n.date+'|'+n.billing));
+  const matches = canon && t ? D.songs.filter(s => canonOf(s.a)===canon && s.k.has(t)) : [];
+  const whole = matches.filter(s => titleKey(s.n)===t);
+  const song = whole[0] || null;
+  // night -> true when the song was only ever part of a medley that night
+  const played = new Map();
+  for (const s of matches) for (const d of s.d) {
+    const k = d+'|'+s.a, part = titleKey(s.n)!==t;
+    played.set(k, played.has(k) ? played.get(k) && part : part);
+  }
+  const heard = shows.filter(n => played.has(n.date+'|'+n.billing)).map(n => ({...n, medley: played.get(n.date+'|'+n.billing)}));
   const withAlbum = matches.find(s => s.al!=null);
   const album = withAlbum ? D.albums[withAlbum.al] : null;
-  // No shows? Maybe someone you HAVE seen played their songs.
-  let covers = [], coverOfThis = [];
-  if (!shows.length) {
-    const showOf = (perf, date) => (showsFor(canonOf(perf)).find(x => x.date===date && x.billing===perf));
-    covers = (D.cv[loose(cleanArtist(artistIn))] || []).map(([n, perf, date]) => ({ song:n, ...showOf(perf, date) }))
-      .filter(x => x.date).sort((a,b)=>a.date.localeCompare(b.date));
-    coverOfThis = covers.filter(x => loose(cleanTitle(x.song))===t);
-  }
+  // Someone else may have played this act's songs, whether or not you've seen the act itself:
+  // George Michael played Wham!, Danny Elfman played Oingo Boingo. Look the act up under every
+  // name it goes by, full name first, so "Kool & the Gang" isn't looked up as "Kool".
+  const names = new Set([artistIn, cleanArtist(artistIn)]);
+  if (canon) for (const b of billingsOf[canon]) names.add(D.artists[b].n);
+  const rows = new Map();
+  for (const nm of names) for (const r of D.cv[loose(nm)] || []) rows.set(r.join('|'), r);
+  const showOf = (perf, date) => (showsFor(canonOf(perf)).find(x => x.date===date && x.billing===perf));
+  const covers = [...rows.values()].map(([n, perf, date]) => ({ song:n, ...showOf(perf, date) }))
+    .filter(x => x.date).sort((a,b)=>a.date.localeCompare(b.date));
+  const coverOfThis = t ? covers.filter(x => titleKeys(x.song).has(t)) : [];
   return {
     covers, coverOfThis,
-    title: song ? song.n : cleanTitle(titleIn),
-    artist: canon ? (D.artists[canon] || D.artists[billingsOf[canon][0]]).n : cleanArtist(artistIn),
+    // a medley's name isn't this song's name, so only borrow the archive's spelling on a whole match
+    title: song ? song.n : (tidyTitle(titleIn) || cleanTitle(titleIn)),
+    artist: canon ? (D.artists[canon] || D.artists[billingsOf[canon][0]]).n : stripFeat(artistIn),
     canon, album: album || extra.album || null, shows, heard, song,
     artistImg: canon ? D.artists[canon]?.i : null
   };
@@ -229,7 +264,20 @@ function render(r) {
     live = `<div class="big">${n}<small>×</small></div><div class="livetxt">
       <h3>${n===1 ? 'You heard this one live, once.' : `You've heard this one live ${n} times.`}</h3>
       ${n>1 ? `<p>First in ${first.date.slice(0,4)} · most recent ${fmt(last.date)}</p>` : ''}
+      ${r.coverOfThis.length ? `<p>${esc(list(performers(r.coverOfThis)))} played it too.</p>` : ''}
       ${nights(r.heard)}</div>`;
+  } else if (seen && r.coverOfThis.length) {
+    // Seen the act, never heard them play it, but heard it from someone else.
+    const c = r.coverOfThis, k = c.length, by = performers(c);
+    const withSl = r.shows.filter(x => SL.has(x.date+'|'+x.billing)).length;
+    const times = seen===1 ? 'once' : seen+' times';
+    const own = withSl===seen ? `${esc(r.artist)} didn't play it ${seen===1 ? 'the night' : 'on the nights'} you saw them.`
+      : withSl===0 ? `There's no ${esc(r.artist)} setlist from ${seen===1?'that night':'those nights'}, so maybe they played it too.`
+      : `It isn't on the ${withSl} ${esc(r.artist)} setlist${withSl>1?'s':''} I have. ${seen-withSl} night${seen-withSl>1?'s have':' has'} no setlist.`;
+    live = `<div class="big">${k}<small>×</small></div><div class="livetxt">
+      <h3>You've seen ${esc(r.artist)} ${times}, and you heard ${esc(list(by))} play this one${k>1 ? ` ${k} times` : ''}.</h3>
+      <p>${own}</p>
+      ${nights(c, x => D.artists[x.billing].n)}</div>`;
   } else if (seen) {
     const withSl = r.shows.filter(x => SL.has(x.date+'|'+x.billing)).length;
     const times = seen===1 ? 'once' : seen+' times';
@@ -241,7 +289,7 @@ function render(r) {
       <p>${why}</p>
       ${nights(r.shows)}</div>`;
   } else if (r.coverOfThis.length) {
-    const c = r.coverOfThis, k = c.length, by = [...new Set(c.map(x => D.artists[x.billing].n))];
+    const c = r.coverOfThis, k = c.length, by = performers(c);
     live = `<div class="big">${k}<small>×</small></div><div class="livetxt">
       <h3>You've never seen ${esc(r.artist)}. But you've heard this one live, played by ${esc(list(by))}.</h3>
       <p>Not in the archive yet. This song is, though.</p>
@@ -264,7 +312,7 @@ function render(r) {
     <div class="live">${live}</div></div>`;
 
   // photos from those nights, newest first
-  const about = n ? r.heard : seen ? r.shows : (r.coverOfThis.length ? r.coverOfThis : r.covers);
+  const about = n ? r.heard : r.coverOfThis.length ? r.coverOfThis : seen ? r.shows : r.covers;
   const ps = photosFor(about);
   clearInterval(rot); let i = 0, flip = false;
   const show = k => {
@@ -283,9 +331,10 @@ function render(r) {
 function nights(list, label) {
   const cams = new Set(Object.keys(D.photos));
   return `<ul class="nights">${[...list].reverse().slice(0,4).map(x=>
-    `<li class="${cams.has(x.date+'|'+x.billing)?'cam':''}"><b>${fmt(x.date)}</b><span class="v">${label ? esc(label(x))+' · ' : ''}${esc(x.venue)}${label ? '' : ', '+esc(x.city.split(',')[0])}${x.role==='o'&&!label?' · opening':''}</span></li>`).join('')}
+    `<li class="${cams.has(x.date+'|'+x.billing)?'cam':''}"><b>${fmt(x.date)}</b><span class="v">${label ? esc(label(x))+' · ' : ''}${esc(x.venue)}${label || x.medley ? '' : ', '+esc(x.city.split(',')[0])}${x.role==='o'&&!label?' · opening':''}${x.medley?' · in a medley':''}</span></li>`).join('')}
     ${list.length>4 ? `<li>+ ${list.length-4} more</li>` : ''}</ul>`;
 }
+const performers = rows => [...new Set(rows.map(x => D.artists[x.billing].n))];
 const list = a => a.length<2 ? a.join('') : a.slice(0,-1).join(', ')+' and '+a[a.length-1];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -300,6 +349,8 @@ const PICKS = [
   ['Gary Numan','The Fall'],
   ['Blancmange','Blind Vision - Single Version'],
   ['The Cure','A Forest'],
+  ['Oingo Boingo','Only a Lad'],
+  ['Devo','Mr. DNA'],
   ['Depeche Mode','Barrel of a Gun'],
   ['David Bowie',"Let's Dance - 2018 Remaster"],
   ['The Rolling Stones','Paint It Black'],

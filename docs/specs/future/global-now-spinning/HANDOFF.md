@@ -1,5 +1,9 @@
 # Handoff: Now Spinning (vinyl → Apple TV, with concert history)
 
+> **Historical.** This is the original brief. Where it differs from
+> [`global-now-spinning-spec.md`](global-now-spinning-spec.md), the spec wins: play logging was
+> dropped, the lookup rules were corrected, and the tvOS app became one of two display options.
+
 Start in `mmorper/concerts` with push access, and run `/spec` from this note.
 
 ## The idea
@@ -46,6 +50,6 @@ When a record plays on the turntable, the Apple TV shows the song, its album, an
 
 ## Artifacts (in this folder)
 - `mock/index.html` is the TV-screen mock with all five states. To rebuild its data from the repo, run `python3 docs/specs/future/global-now-spinning/mock/build_mock_data.py` from the repo root. Then serve the folder with `python3 -m http.server -d docs/specs/future/global-now-spinning/mock 8765` and open the page. `data.json` and `p/` are generated, so add them to .gitignore.
-- `screens/` has screenshots of each state (JPEG, compressed from the original PNGs).
+- `screens/` has screenshots of each state (JPEG). Two were added with the spec's v1.1.0 review.
 - The same mock is published on claude.ai as "Now Spinning — Morperhaus Concert Archives" (artifact U5dworSwGunfBzfUbt29Mv).
 - The lookup logic in `mock/index.html` (`identify()`) is the reference the Worker should copy.

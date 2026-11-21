@@ -64,6 +64,8 @@ data/venues-to-classify.csv*
 .claude/todos/
 .claude/worktrees/
 .claude/scheduled-tasks/
+# Link the Marketing Sherpas plugin creates at session start; points outside the repo.
+.claude/ms-context
 
 # Bug reports and debugging artifacts
 bugs/
