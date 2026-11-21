@@ -232,7 +232,7 @@ const debugOn = () => new URLSearchParams(location.hash.slice(1)).has('debug');
 const fixtureName = new URLSearchParams(location.search).get('fixture');
 
 // ── What the page knows (the present moment only; nothing is kept) ────────────
-const diag = { conn: 'starting', lastMsgAt: 0, raw: null, health: null, healthErr: null, fixture: fixtureName, attempt: 0 };
+const diag = { conn: 'starting', lastMsgAt: 0, lastPongAt: 0, lastDrop: null, raw: null, health: null, healthErr: null, fixture: fixtureName, attempt: 0 };
 let shownKind = 'idle';        // what's on screen: idle | unmatched | track
 let shownTrack = null;         // JSON of the track on screen
 let pendingFlip = false;       // the first track after idle mirrors the layout
@@ -456,7 +456,7 @@ function connect() {
   sock.onopen = () => {
     if (ws !== sock) return;
     diag.attempt = 0; diag.conn = 'live'; stopPolling();
-    awaitingPong = false; clearInterval(heartbeatTimer); heartbeatTimer = setInterval(heartbeat, HEARTBEAT_MS);
+    awaitingPong = false; stopHeartbeat(); heartbeatTimer = setInterval(heartbeat, HEARTBEAT_MS);
     renderDebug();
   };
   sock.onmessage = e => {
@@ -466,7 +466,7 @@ function connect() {
   };
   sock.onclose = () => {
     if (ws !== sock) return;
-    ws = null; clearInterval(heartbeatTimer);
+    ws = null; stopHeartbeat();
     if (!stopped) { startPolling(); retry(); }
   };
 }
@@ -477,11 +477,14 @@ function connect() {
  * close it, which polls and reconnects as any drop does. Otherwise ping again. The Worker's
  * Durable Object answers without waking up.
  */
+function stopHeartbeat() { clearInterval(heartbeatTimer); heartbeatTimer = 0; }
+
 function heartbeat() {
   const sock = ws;
   if (!sock || sock.readyState !== WebSocket.OPEN) return;
   if (awaitingPong) {
-    diag.conn = 'no heartbeat: reconnecting'; renderDebug();
+    // Kept apart from the connection line, which the reconnect overwrites at once.
+    diag.lastDrop = { reason: 'no heartbeat', at: Date.now() };
     try { sock.close(); } catch {}
     sock.onclose && sock.onclose();   // don't wait for a dead network to confirm the close
     return;
@@ -528,7 +531,7 @@ async function authedGet(path) {
 function refuse(why) {
   stopped = true;
   lastStateKey = null;
-  stopPolling(); clearTimeout(reconnectTimer); clearInterval(heartbeatTimer);
+  stopPolling(); clearTimeout(reconnectTimer); stopHeartbeat();
   if (ws) { try { ws.close(); } catch {} ws = null; }
   diag.conn = why;
   clearTimers();
@@ -574,6 +577,7 @@ function renderDebug() {
       <dt>state</dt><dd class="${connCls}">${esc(conn)}</dd>
       <dt>last message</dt><dd>${diag.lastMsgAt ? ago(Date.now() - diag.lastMsgAt) : 'none yet'}</dd>
       <dt>heartbeat</dt><dd>${diag.lastPongAt ? 'pong ' + ago(Date.now() - diag.lastPongAt) : 'none yet'}</dd>
+      ${diag.lastDrop ? `<dt>last drop</dt><dd class="warn">${esc(diag.lastDrop.reason)}, ${ago(Date.now() - diag.lastDrop.at)}</dd>` : ''}
       <dt>token</dt><dd>${token() ? 'stored' : '<span class="bad">none — open once with #token=…</span>'}</dd>
       ${fixtureName ? `<dt>fixture</dt><dd>${esc(fixtureName)}</dd>` : ''}
     </dl>
@@ -637,7 +641,7 @@ addEventListener('hashchange', () => {
   if (readFragment() && !fixtureName) {
     stopped = false; diag.attempt = 0; diag.conn = 'connecting';
     if (ws) { try { ws.close(); } catch {} ws = null; }
-    stopPolling(); clearTimeout(reconnectTimer); clearInterval(heartbeatTimer);
+    stopPolling(); clearTimeout(reconnectTimer); stopHeartbeat();
     connect();
   }
   syncDebug();
