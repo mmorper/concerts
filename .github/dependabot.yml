@@ -159,6 +159,23 @@ updates:
         exclude-patterns:
           - typescript
 
+  - package-ecosystem: npm
+    directory: /workers/now-spinning
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+      dev-majors:
+        dependency-type: development
+        update-types: [major]
+        # TypeScript is excluded so it keeps its OWN PR per package. See the
+        # header note — a grouped TS major is a per-package drive-by wearing a
+        # batch's clothes.
+        exclude-patterns:
+          - typescript
+
   # deploy.yml already worries, in a comment, that `cloudflare/wrangler-action@v3`
   # is a floating major. This is what would have flagged it.
   - package-ecosystem: github-actions

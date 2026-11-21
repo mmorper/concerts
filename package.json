@@ -6,7 +6,7 @@
   "description": "Interactive concert history timeline application",
   "scripts": {
     "dev": "vite",
-    "build": "tsx scripts/generate-version.ts && tsc && tsx scripts/gen-mcp-landing.ts && vite build",
+    "build": "tsx scripts/generate-version.ts && tsc && tsx scripts/gen-mcp-landing.ts && tsx scripts/build-now-spinning-index.ts && vite build",
     "preview": "vite preview",
     "build-data": "tsx scripts/build-data.ts",
     "fetch-sheet": "tsx scripts/fetch-google-sheet.ts",
@@ -43,7 +43,7 @@
     "test:utils": "vitest run test/utils",
     "test:smoke": "node test/scenes/test-smoke.mjs",
     "typecheck": "tsc --noEmit",
-    "test:workers": "npm --prefix workers/mcp-server test && npm --prefix workers/ask-chat test",
+    "test:workers": "npm --prefix workers/mcp-server test && npm --prefix workers/ask-chat test && npm --prefix workers/now-spinning test",
     "test:everything": "npm run test:run && npm run test:workers",
     "test:all": "tsx scripts/run-tests.ts",
     "test:all:quick": "tsx scripts/run-tests.ts --quick",

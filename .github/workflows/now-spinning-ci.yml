@@ -1,0 +1,55 @@
+name: Now Spinning CI
+
+# Typecheck + tests for the Now Spinning Worker (#687). Runs only when the Worker, the shared
+# matching rules it bundles, or this workflow change. The Worker is its own npm package with its
+# own vitest config; the root suite excludes workers/**, so this is the automated guard for it.
+#
+# Phase 1 (#691) has no deploy job: there is nothing to deploy until the API exists. Phase 2
+# (#692) adds it, copied from mcp-ci.yml.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/now-spinning/**'
+      # Shared code this Worker bundles. A change here must reach the Worker too (#689).
+      - 'scripts/utils/song-title.ts'
+      - 'scripts/utils/act-name.ts'
+      - '.github/workflows/now-spinning-ci.yml'
+  pull_request:
+    paths:
+      - 'workers/now-spinning/**'
+      - 'scripts/utils/song-title.ts'
+      - 'scripts/utils/act-name.ts'
+      - '.github/workflows/now-spinning-ci.yml'
+
+concurrency:
+  group: now-spinning-ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers/now-spinning
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: workers/now-spinning/package-lock.json
+
+      # `npm ci` against this package's committed lock file (#457).
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test

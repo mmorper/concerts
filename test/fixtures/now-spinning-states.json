@@ -1,0 +1,584 @@
+{
+  "_comment": "The Now Spinning state contract: one example of every screen and kind. Produced by workers/now-spinning/src/states.test.ts from the frozen index; regenerate with UPDATE_FIXTURES=1. The web page renders these with ?fixture=<name>; the tvOS app's previews load this file.",
+  "heard": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Everything Counts",
+      "artist": "Depeche Mode",
+      "album": {
+        "title": "Construction Time Again",
+        "year": "1983",
+        "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/cf/4e/59/cf4e590d-e45a-2575-cf5f-53128794e944/0724347387852.jpg/600x600bb.jpg"
+      },
+      "accentHue": 284,
+      "screen": "heard",
+      "count": {
+        "n": 5,
+        "times": true
+      },
+      "headline": "You've heard this one live 5 times.",
+      "lines": [
+        "First in 1985 · most recent Mar 28, 2023"
+      ],
+      "nights": [
+        {
+          "date": "2023-03-28",
+          "dateLabel": "Mar 28, 2023",
+          "text": "Kia Forum, Inglewood",
+          "hasPhotos": true
+        },
+        {
+          "date": "2005-11-22",
+          "dateLabel": "Nov 22, 2005",
+          "text": "Staples Center, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1990-08-05",
+          "dateLabel": "Aug 5, 1990",
+          "text": "Dodger Stadium, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1988-06-18",
+          "dateLabel": "Jun 18, 1988",
+          "text": "The Rose Bowl, Pasadena",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 1,
+      "photos": [
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-03-28-depeche-mode-01.jpg",
+          "caption": "Mar 28, 2023 · Kia Forum",
+          "fx": 0.5,
+          "fy": 0.469
+        }
+      ]
+    }
+  },
+  "heard-medley": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Head Over Heels",
+      "artist": "Tears For Fears",
+      "album": {
+        "title": "Songs From the Big Chair",
+        "year": "1985",
+        "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/600x600bb.jpg"
+      },
+      "accentHue": 306,
+      "screen": "heard",
+      "count": {
+        "n": 1,
+        "times": true
+      },
+      "headline": "You heard this one live, once.",
+      "lines": [],
+      "nights": [
+        {
+          "date": "2022-06-04",
+          "dateLabel": "Jun 4, 2022",
+          "text": "Kia Forum · in a medley",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 0,
+      "photos": []
+    }
+  },
+  "seen-cover": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Only a Lad",
+      "artist": "Oingo Boingo",
+      "album": null,
+      "accentHue": 132,
+      "screen": "seen-cover",
+      "count": {
+        "n": 2,
+        "times": true
+      },
+      "headline": "You've seen Oingo Boingo 2 times, and you heard Danny Elfman play this one 2 times.",
+      "lines": [
+        "It isn't on the 1 Oingo Boingo setlist I have. 1 night has no setlist."
+      ],
+      "nights": [
+        {
+          "date": "2026-09-14",
+          "dateLabel": "Sep 14, 2026",
+          "text": "Danny Elfman · The Fillmore Silver Spring",
+          "hasPhotos": true
+        },
+        {
+          "date": "2022-10-28",
+          "dateLabel": "Oct 28, 2022",
+          "text": "Danny Elfman · Hollywood Bowl",
+          "hasPhotos": true
+        }
+      ],
+      "moreNights": 0,
+      "photos": [
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-07.jpg",
+          "caption": "Sep 14, 2026 · The Fillmore Silver Spring",
+          "fx": 0.5,
+          "fy": 0.515
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-03.jpg",
+          "caption": "Sep 14, 2026 · The Fillmore Silver Spring",
+          "fx": 0.5,
+          "fy": 0.469
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-04.jpg",
+          "caption": "Sep 14, 2026 · The Fillmore Silver Spring",
+          "fx": 0.5,
+          "fy": 0.531
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2022-10-28-danny-elfman-01.jpg",
+          "caption": "Oct 28, 2022 · Hollywood Bowl",
+          "fx": 0.509,
+          "fy": 0.532
+        }
+      ]
+    }
+  },
+  "seen": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Barrel of a Gun",
+      "artist": "Depeche Mode",
+      "album": {
+        "title": "Ultra"
+      },
+      "accentHue": 220,
+      "screen": "seen",
+      "count": {
+        "n": 5,
+        "times": true
+      },
+      "headline": "You've seen Depeche Mode 5 times, but never heard this one live.",
+      "lines": [
+        "It isn't on any of the setlists from those nights."
+      ],
+      "nights": [
+        {
+          "date": "2023-03-28",
+          "dateLabel": "Mar 28, 2023",
+          "text": "Kia Forum, Inglewood",
+          "hasPhotos": true
+        },
+        {
+          "date": "2005-11-22",
+          "dateLabel": "Nov 22, 2005",
+          "text": "Staples Center, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1990-08-05",
+          "dateLabel": "Aug 5, 1990",
+          "text": "Dodger Stadium, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1988-06-18",
+          "dateLabel": "Jun 18, 1988",
+          "text": "The Rose Bowl, Pasadena",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 1,
+      "photos": [
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-03-28-depeche-mode-01.jpg",
+          "caption": "Mar 28, 2023 · Kia Forum",
+          "fx": 0.5,
+          "fy": 0.469
+        }
+      ]
+    }
+  },
+  "seen-near": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Mr. DNA",
+      "artist": "Devo",
+      "album": null,
+      "accentHue": 0,
+      "screen": "seen",
+      "count": {
+        "n": 2,
+        "times": true
+      },
+      "headline": "You've seen Devo 2 times.",
+      "lines": [
+        "Something close to it is on 2 of those setlists: “Smart Patrol/Mr. DNA”."
+      ],
+      "nights": [
+        {
+          "date": "2023-11-16",
+          "dateLabel": "Nov 16, 2023",
+          "text": "YouTube Theatre, Inglewood",
+          "hasPhotos": true
+        },
+        {
+          "date": "2006-10-27",
+          "dateLabel": "Oct 27, 2006",
+          "text": "The Grove of Anaheim, Anaheim",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 0,
+      "photos": [
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-04.jpg",
+          "caption": "Nov 16, 2023 · YouTube Theatre",
+          "fx": 0.555,
+          "fy": 0.583
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-01.jpg",
+          "caption": "Nov 16, 2023 · YouTube Theatre",
+          "fx": 0.52,
+          "fy": 0.583
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-02.jpg",
+          "caption": "Nov 16, 2023 · YouTube Theatre",
+          "fx": 0.531,
+          "fy": 0.541
+        }
+      ]
+    }
+  },
+  "seen-maybe": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "A Song Nobody Has Written",
+      "artist": "Tears For Fears",
+      "album": null,
+      "accentHue": 152,
+      "screen": "seen",
+      "count": {
+        "n": 4,
+        "times": true
+      },
+      "headline": "You've seen Tears For Fears 4 times.",
+      "lines": [
+        "It isn't on the 1 setlist I have. 3 nights have no setlist."
+      ],
+      "nights": [
+        {
+          "date": "2022-06-04",
+          "dateLabel": "Jun 4, 2022",
+          "text": "Kia Forum, Inglewood",
+          "hasPhotos": false
+        },
+        {
+          "date": "2005-11-23",
+          "dateLabel": "Nov 23, 2005",
+          "text": "Universal Amphitheater, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1993-11-04",
+          "dateLabel": "Nov 4, 1993",
+          "text": "Universal Amphitheater, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1985-07-10",
+          "dateLabel": "Jul 10, 1985",
+          "text": "Pacific Amphitheatre, Costa Mesa",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 0,
+      "photos": []
+    }
+  },
+  "cover-of-this": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Let's Dance",
+      "artist": "David Bowie",
+      "album": null,
+      "accentHue": 234,
+      "screen": "cover-of-this",
+      "count": {
+        "n": 2,
+        "times": true
+      },
+      "headline": "You've never seen David Bowie. But you've heard this one live, played by Heaven 17 and Nile Rodgers.",
+      "lines": [
+        "Not in the archive yet. This song is, though."
+      ],
+      "nights": [
+        {
+          "date": "2026-07-31",
+          "dateLabel": "Jul 31, 2026",
+          "text": "Nile Rodgers · Pacific Amphitheatre",
+          "hasPhotos": true
+        },
+        {
+          "date": "2022-10-01",
+          "dateLabel": "Oct 1, 2022",
+          "text": "Heaven 17 · The Observatory",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 0,
+      "photos": [
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-06.jpg",
+          "caption": "Jul 31, 2026 · Pacific Amphitheatre",
+          "fx": 0.49,
+          "fy": 0.416
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-04.jpg",
+          "caption": "Jul 31, 2026 · Pacific Amphitheatre",
+          "fx": 0.455,
+          "fy": 0.5
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-05.jpg",
+          "caption": "Jul 31, 2026 · Pacific Amphitheatre",
+          "fx": 0.424,
+          "fy": 0.351
+        }
+      ]
+    }
+  },
+  "covers": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Paint It Black",
+      "artist": "The Rolling Stones",
+      "album": null,
+      "accentHue": 68,
+      "screen": "covers",
+      "count": {
+        "n": 3,
+        "times": false
+      },
+      "headline": "You've never seen The Rolling Stones, but you've heard 3 of their songs live, in other hands.",
+      "lines": [],
+      "nights": [
+        {
+          "date": "2023-11-16",
+          "dateLabel": "Nov 16, 2023",
+          "text": "“(I Can't Get No) Satisfaction” · Devo · YouTube Theatre",
+          "hasPhotos": true
+        },
+        {
+          "date": "2017-10-12",
+          "dateLabel": "Oct 12, 2017",
+          "text": "“Bitch” · Foo Fighters · The Anthem",
+          "hasPhotos": true
+        },
+        {
+          "date": "2015-08-25",
+          "dateLabel": "Aug 25, 2015",
+          "text": "“Wild Horses” · Social Distortion · The Fillmore Silver Spring",
+          "hasPhotos": false
+        },
+        {
+          "date": "2006-10-27",
+          "dateLabel": "Oct 27, 2006",
+          "text": "“(I Can't Get No) Satisfaction” · Devo · The Grove of Anaheim",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 0,
+      "photos": [
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-04.jpg",
+          "caption": "Nov 16, 2023 · YouTube Theatre",
+          "fx": 0.555,
+          "fy": 0.583
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-01.jpg",
+          "caption": "Nov 16, 2023 · YouTube Theatre",
+          "fx": 0.52,
+          "fy": 0.583
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-02.jpg",
+          "caption": "Nov 16, 2023 · YouTube Theatre",
+          "fx": 0.531,
+          "fy": 0.541
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2017-10-12-foo-fighters-01.jpg",
+          "caption": "Oct 12, 2017 · The Anthem",
+          "fx": 0.5,
+          "fy": 0.532
+        },
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2017-10-12-foo-fighters-02.jpg",
+          "caption": "Oct 12, 2017 · The Anthem",
+          "fx": 0.503,
+          "fy": 0.593
+        }
+      ]
+    }
+  },
+  "none": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Dreams",
+      "artist": "Fleetwood Mac",
+      "album": {
+        "title": "Rumours"
+      },
+      "accentHue": 345,
+      "screen": "none",
+      "headline": "Not in the archive. Yet.",
+      "lines": [
+        "No Fleetwood Mac show on the books, and nobody you've seen has played one of their songs either.",
+        "Maybe this is the one you go see next."
+      ],
+      "nights": [],
+      "moreNights": 0,
+      "photos": []
+    }
+  },
+  "unknown": {
+    "v": 1,
+    "kind": "track",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Enjoy the Silence",
+      "artist": "Depeche Mode",
+      "album": {
+        "title": "Violator"
+      },
+      "screen": "unknown",
+      "headline": "The archive isn't answering right now.",
+      "lines": [],
+      "nights": [],
+      "moreNights": 0,
+      "photos": [],
+      "accentHue": 38
+    }
+  },
+  "idle": {
+    "v": 1,
+    "kind": "idle",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z"
+  },
+  "idle-offline": {
+    "v": 1,
+    "kind": "idle",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "notice": "The listener has been offline since 3:12 PM."
+  },
+  "idle-recognition": {
+    "v": 1,
+    "kind": "idle",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "notice": "Song recognition isn't working right now."
+  },
+  "gap": {
+    "v": 1,
+    "kind": "gap",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z",
+    "track": {
+      "title": "Everything Counts",
+      "artist": "Depeche Mode",
+      "album": {
+        "title": "Construction Time Again",
+        "year": "1983",
+        "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/cf/4e/59/cf4e590d-e45a-2575-cf5f-53128794e944/0724347387852.jpg/600x600bb.jpg"
+      },
+      "accentHue": 284,
+      "screen": "heard",
+      "count": {
+        "n": 5,
+        "times": true
+      },
+      "headline": "You've heard this one live 5 times.",
+      "lines": [
+        "First in 1985 · most recent Mar 28, 2023"
+      ],
+      "nights": [
+        {
+          "date": "2023-03-28",
+          "dateLabel": "Mar 28, 2023",
+          "text": "Kia Forum, Inglewood",
+          "hasPhotos": true
+        },
+        {
+          "date": "2005-11-22",
+          "dateLabel": "Nov 22, 2005",
+          "text": "Staples Center, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1990-08-05",
+          "dateLabel": "Aug 5, 1990",
+          "text": "Dodger Stadium, Los Angeles",
+          "hasPhotos": false
+        },
+        {
+          "date": "1988-06-18",
+          "dateLabel": "Jun 18, 1988",
+          "text": "The Rose Bowl, Pasadena",
+          "hasPhotos": false
+        }
+      ],
+      "moreNights": 1,
+      "photos": [
+        {
+          "url": "https://concerts.morperhaus.org/images/shows/2023-03-28-depeche-mode-01.jpg",
+          "caption": "Mar 28, 2023 · Kia Forum",
+          "fx": 0.5,
+          "fy": 0.469
+        }
+      ]
+    }
+  },
+  "unmatched": {
+    "v": 1,
+    "kind": "unmatched",
+    "at": "2026-11-21T20:00:00.000Z",
+    "now": "2026-11-21T20:01:30.000Z"
+  }
+}

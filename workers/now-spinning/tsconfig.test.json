@@ -1,0 +1,16 @@
+{
+  "//": "The tests read the frozen fixture from disk, so they get Node's types. The Worker's own code (tsconfig.json) does not, which keeps a Node-only API from slipping into the Worker bundle.",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "@cloudflare/workers-types",
+      "node"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
