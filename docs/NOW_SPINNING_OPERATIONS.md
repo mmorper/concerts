@@ -6,6 +6,7 @@ service) is filled in when Phase 4 builds the listener.
 
 **Spec:** [`specs/future/global-now-spinning/global-now-spinning-spec.md`](specs/future/global-now-spinning/global-now-spinning-spec.md).
 Its Phase 0 table numbers the checks; this guide says which step covers which check.
+**Checklist to tick off as you go:** issue #688. The whole project is tracked in epic #687.
 
 Commands are marked **Mac** (Terminal on your Mac) or **Pi** (after you've logged in to the Pi
 over SSH). Anything in `<angle brackets>` is a value you fill in.
@@ -105,6 +106,14 @@ Wait a minute and SSH in again. Then check the clock, since recognition and logs
 ```bash
 # Pi
 timedatectl          # "System clock synchronized: yes" and your time zone
+```
+
+Let the Pi install security updates by itself, so it doesn't need regular visits:
+
+```bash
+# Pi
+sudo apt install -y unattended-upgrades
+sudo dpkg-reconfigure -plow unattended-upgrades     # answer Yes
 ```
 
 ---
@@ -225,20 +234,21 @@ cable away from power cords. If one side is silent, check the L/R cables.
 
 ---
 
-## 8. Test Shazam on your records (Phase 0 checks 2, 3 and 7)
+## 8. Test Shazam on your records (Phase 0 checks 2, 3 and 8)
 
 **Install a test environment** (it is thrown away once the real listener exists):
 
 ```bash
 # Pi
+python3 --version                 # write this down: Phase 0 check 8
 sudo apt install -y python3-venv
 python3 -m venv ~/ns-test
 ~/ns-test/bin/pip install --upgrade pip shazamio
 ```
 
-If `pip` starts compiling Rust code and fails, the `shazamio-core` package has no ready-made
-build for the Pi's Python. Note it in the spec's revision history; it changes how Phase 4
-installs things.
+**Check 8.** Note the Python version, and whether `pip` downloaded ready-made packages or started
+compiling Rust code. If it compiled, or failed, the `shazamio-core` package has no ready-made
+build for the Pi's Python. That changes how Phase 4 installs things, so record it either way.
 
 **A small test script:**
 
@@ -257,6 +267,9 @@ async def main(path):
     album = next((m["text"] for s in track.get("sections", []) for m in s.get("metadata", [])
                   if m.get("title") == "Album"), "")
     print(f'{track.get("subtitle")} | {track.get("title")} | {album}')
+    if len(sys.argv) > 2:                       # optional: save the whole response
+        import json
+        json.dump(out, open(sys.argv[2], "w"), indent=1)
 
 asyncio.run(main(sys.argv[1]))
 EOF
@@ -279,16 +292,30 @@ a 45, and something obscure. For each one, write down:
 |---|---|---|---|---|
 | 1 | | | | |
 
+**Save one complete response.** Phase 4 needs to see every field Shazam returns. For one record
+that matched, add a file name to the command and copy the file to your Mac:
+
+```bash
+# Pi
+~/ns-test/bin/python ~/try-shazam.py /tmp/clip.wav ~/shazam-sample.json
+```
+```bash
+# Mac
+scp <username>@now-spinning.local:shazam-sample.json ~/Desktop/
+```
+
+Attach it to issue #688. It names the song you were playing and nothing else about you.
+
 **Check 3 (run-out groove).** At the end of a side, leave the needle in the run-out groove for a
 minute while the meter from step 7 runs. Note what the meter shows: the clicks may never drop
 low enough to count as silence.
 
-**Check 7 (what goes to Shazam).** Phase 4 confirms this from `shazamio`'s source code. Nothing
+**Check 7 (what goes to Shazam)** is answered in Phase 4 from `shazamio`'s source code. Nothing
 to do here.
 
 ---
 
-## 9. The receiver over the network (Phase 0 check 6)
+## 9. The receiver over the network (Phase 0 checks 6 and 6b)
 
 On the AV7703: Network → Network Control → **Always On**, so the receiver answers while in
 standby. Find its IP address in its Network Information menu, or in the router's device list,
@@ -303,19 +330,39 @@ If that prints nothing while a control app (Home Assistant, the Marantz app) is 
 receiver accepts one telnet client at a time. Note it for check 6; the listener will use the
 receiver's HTTP control instead.
 
+**Check 6b: can the Pi control Zone 2?** The listener needs all of these. They are the standard
+Denon/Marantz control commands; write down each reply, including any that prints nothing.
+
+```bash
+# Pi: one at a time, with a record playing on Phono in the main zone
+printf 'ZM?\r'     | nc -w 2 <receiver-ip> 23     # main zone power: expect ZMON
+printf 'Z2?\r'     | nc -w 2 <receiver-ip> 23     # Zone 2 status: power, source, volume
+printf 'Z2ON\r'    | nc -w 2 <receiver-ip> 23     # turn Zone 2 on (the front panel shows it)
+printf 'Z2PHONO\r' | nc -w 2 <receiver-ip> 23     # set Zone 2's source to Phono
+printf 'Z2?\r'     | nc -w 2 <receiver-ip> 23     # confirm: Z2ON and Z2PHONO
+printf 'Z2OFF\r'   | nc -w 2 <receiver-ip> 23     # turn Zone 2 off again
+```
+
+While Zone 2 is on Phono, the level meter from step 7 should show the record. The main zone
+must keep playing throughout; if any command interrupts it, note which.
+
 ---
 
 ## 10. Record the results
 
 Add one line per check to the spec's **Revision History**, with the date: the Zone 2 level and
-gain positions, the ten-record table, the run-out finding, and the answers to checks 4–6. That's
-what Phase 4 is designed against.
+gain positions, the ten-record table, the run-out finding, the Python version, and the answers to
+checks 4–6b. That's what Phase 4 is designed against. Tick the same items off on issue #688.
+
+Checks 4 and 5 involve the Apple TV, not the Pi. Check 4: with the receiver on Phono and a
+record playing, wake the Apple TV with its remote and see whether the receiver switches input
+away from Phono. Check 5 only matters if you're still considering a tvOS app.
 
 Then delete the test files:
 
 ```bash
 # Pi
-rm -rf ~/ns-test ~/try-shazam.py ~/level-test.wav /tmp/clip.wav
+rm -rf ~/ns-test ~/try-shazam.py ~/level-test.wav ~/shazam-sample.json /tmp/clip.wav
 ```
 
 ---
@@ -340,4 +387,5 @@ restart, and rotating the ingest token (also listed in [`SECRETS.md`](SECRETS.md
 | SIG/OL lights red | Too much level | Lower Zone 2's fixed level |
 | Hum between tracks | Cable near a power cord | Re-route it; keep it short |
 | `get_throttled` isn't `0x0` | Under-voltage at some point | Use the kit's supply; check the cable is seated |
+| `nc` prints nothing from the receiver | Network Control is off, or another app holds the connection | Set Network Control to Always On; close other control apps and retry |
 | Pi runs hot | Cooler fan not connected | Check the FAN plug; connect the case fan |

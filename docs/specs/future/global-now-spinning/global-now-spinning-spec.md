@@ -4,13 +4,14 @@
 **Target Version:** v7.0.0
 **Priority:** Medium
 **Estimated Complexity:** Very High (hardware, a Python listener, a new Worker with a Durable Object, a display)
-**Dependencies:** Phase 0 (a hardware evening) comes before any code. Hardware has to be bought before Phase 4.
+**Dependencies:** Two existing bugs, #689 and #690, come before Phase 1. Phase 0 (a hardware evening, #688) comes before Phase 4.
+**Tracking:** epic #687
 
 **Kit in this folder:**
 - [`HANDOFF.md`](HANDOFF.md): the original brief and the confirmed AV setup. Where it differs from this spec, the spec wins.
-- [`mock/index.html`](mock/index.html): the TV-screen mock. Its `identify()` and `render()` are the reference for the lookup and the copy.
+- [`mock/index.html`](mock/index.html): the TV-screen mock, with every screen state. It is the reference for layout and copy. Its matching is a looser stand-in; the real rules are in §Data.
 - [`mock/build_mock_data.py`](mock/build_mock_data.py): builds the mock's `data.json`. It's the prototype of the index builder in §Data.
-- [`screens/`](screens/): one screenshot per screen state
+- [`screens/`](screens/): fourteen screenshots covering every screen state (listed under [Screen states](#screen-states))
 
 ---
 
@@ -36,6 +37,9 @@ display that shows it.
 | Video routing | Already done: the AV7703 sends the Apple TV picture to the TV while Phono plays. |
 | Play history | **None.** No log of vinyl plays is kept anywhere (see [Privacy](#privacy)). |
 | What v7.0.0 means | The index, the Worker, the web display and the Pi listener working end to end. A tvOS app is not part of the release gate. |
+| Version number | v7.0.0. Social Syndication (#323) moves to v6.5.0. |
+| Listener health | Yes. A quiet heartbeat from the Pi, a notice on the idle screen when it's offline, and one line on the operator dashboard. No song data. |
+| Audio interface | The Mackie Onyx Blackjack Mike already owns. |
 
 **Open (decide after Phase 3):** whether the picture comes from the Pi over HDMI or from a
 tvOS app. See [Display](#display).
@@ -62,14 +66,16 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 **Feature Overview:**
 - A Raspberry Pi hears the turntable through the AV7703's Zone 2 line output and identifies songs (ShazamIO)
 - It POSTs {artist, title, album?, artworkUrl?, isrc?} to a new Worker at concerts.morperhaus.org/api/now-spinning
-- The Worker runs the archive lookup (port of identify() in the mock) and stores only the current state in a Durable Object
+- The Worker runs the archive lookup (identify(), built on the repo's existing title and act matching utilities) and stores only the current state and the listener's last-seen time in a Durable Object
 - A web page (and later, maybe, a tvOS app) holds a WebSocket to the Worker and renders the state
 - No play history is kept, anywhere
 - The screen never says something the data can't back up
 
 **Key References:**
 - Full Design Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md
-- Reference lookup + layout + copy: docs/specs/future/global-now-spinning/mock/index.html
+- Epic and issues: #687 (work the issue for your phase; its checklist is the definition of done)
+- Reference layout + copy: docs/specs/future/global-now-spinning/mock/index.html and screens/
+- Matching utilities to reuse, not reinvent: scripts/utils/song-title.ts, scripts/utils/act-name.ts
 - Worker patterns to copy: workers/mcp-server (wrangler.toml, data.ts cachedJsonFetch, CI workflow with its deploy job)
 - Build-time generator precedent: scripts/gen-mcp-landing.ts
 - Secrets inventory: docs/SECRETS.md
@@ -78,12 +84,13 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 - Media rules: .claude/skills/media-pipeline/SKILL.md
 
 **Implementation Approach:**
-- Phase 0 (Mike, hardware evening): must be done and recorded in this spec before Window 3
+- Prerequisites: #689 and #690 merged before Window 1
+- Phase 0 (Mike, hardware evening, #688): must be done and recorded in this spec before Window 4
 - Window 1: match module + index builder + pure identify() with fixture tests
 - Window 2: Worker API, Durable Object, auth, liveness, CI + deploy
 - Window 3: web display page
 - Window 4: Pi listener (Python), runnable against a WAV file without hardware
-- Window 5 (optional): tvOS app, only if the display decision goes that way
+- Window 5: put it on the TV: a kiosk on the Pi, or a tvOS app, per the decision in #695
 
 Let's start with Window 1. Should I begin with workers/now-spinning/src/match.ts?
 ```
@@ -101,6 +108,8 @@ fine left on for an hour.
 - "Never heard this one live" appears only when every night Mike saw the act has a setlist
   **and** nobody else played the song at a show he was at.
 - A song heard only inside a medley is counted, and the night says "in a medley".
+- When a setlist has something close to the song but not the song itself, the screen says that,
+  and claims neither "heard" nor "never heard".
 - A photo's caption always names the night it is from.
 - If the lookup itself fails, the screen shows the song and says nothing about the archive.
 
@@ -170,6 +179,8 @@ any part of it.
 Step-by-step instructions for setting up the Pi and running these checks are in
 [`docs/NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md).
 
+Tracked as #688, which carries these as a checklist.
+
 Three assumptions decide whether this design works, and none can be tested from a desk. Test
 them first with a laptop (or the Pi, if it has arrived), the Onyx Blackjack, and the Apple TV.
 Record the results in this spec's revision history.
@@ -179,12 +190,14 @@ Record the results in this spec's revision history.
 | 1 | AV7703: Phono plays out of ZONE2 PRE OUT. Set the Blackjack (see [Audio interface settings](#audio-interface-settings)), then find a fixed Zone 2 level where the loudest record peaks near −12 dBFS and the SIG/OL lights never turn red. | Phono to Zone 2 is confirmed only for the near-identical AV7702 |
 | 1b | On the Pi: `arecord -l` lists the Blackjack, and `arecord -D plughw:<card> -f cd -d 10 t.wav` records both channels (`plughw` converts from whatever bit depth the Blackjack offers) | It works without drivers on a Mac, which points to USB Audio Class; this confirms Linux sees it the same way |
 | 1c | On the Pi: `vcgencmd get_throttled` reads `0x0`, `/proc/device-tree/chosen/power/max_current` reads 5000 (a recognised 5 A supply), and `dmesg` shows no USB over-current or under-voltage warnings with the Blackjack plugged in. Steps in [`NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md) §5. | The Blackjack draws its power from the Pi's USB ports |
-| 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
+| 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | With the receiver on Phono, wake the Apple TV. Does the receiver switch input to it? | If HDMI Control (CEC) does that, waking the Apple TV stops the record |
 | 5 | From the laptop: `pyatv` pairing, `turn_on`, `launch_app` against tvOS 26 | Only matters if the display is a tvOS app |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
-| 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio) | So the privacy section states a fact |
+| 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
+| 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio). Answered from its source code in Phase 4. | So the privacy section states a fact |
+| 8 | Note the Pi's Python version, and whether `pip install shazamio` had to compile anything | The listener targets the Python the Pi ships, whatever that is |
 
 If check 2 fails, stop and pick another recogniser (ACRCloud, AudD) before going further.
 
@@ -192,14 +205,45 @@ If check 2 fails, stop and pick another recogniser (ACRCloud, AudD) before going
 
 ## Data
 
-### One match module, shared by construction
+### Matching: reuse the archive's rules, add nothing parallel
 
-`workers/now-spinning/src/match.ts` holds every normalization rule: `slug`, `loose`,
-`cleanTitle`, `tidyTitle`, `titleKeys`, `cleanArtist`, `stripFeat`. It has no dependencies. The
-Worker imports it for Shazam's input, and the index builder imports it for the archive's side,
-the way `scripts/gen-mcp-landing.ts` already imports from `workers/mcp-server`. The two sides
-then can't disagree. A root test asserts `slug` equals `normalizeArtistName`
-(`src/utils/normalize.ts`) for every name in the archive.
+The repo already has the rules for telling one song or one act from another, written to fail
+closed. Now Spinning uses them. It does not define its own.
+
+| Need | Use | Where |
+|---|---|---|
+| Compare song titles | `foldSongTitle`, `songIndexKeys` | `scripts/utils/song-title.ts` |
+| Compare act names | `actKey` | `scripts/utils/act-name.ts` |
+| Stored slugs | `normalizeArtistName` | `src/utils/normalize.ts` |
+| The archive's album for a song | `songAlbumKey` | `scripts/utils/song-title.ts` |
+
+Those rules strip only version markers ("(Remastered 2006)", "- Single Version"), keep
+title-bearing brackets ("(Don't Fear) The Reaper", "[10 Good Reasons for Modern Drugs]"), split
+medleys only on a spaced slash, fold accents and unusual hyphens ("Run‐D.M.C."), and read "&" as
+"and". Both files are pure, with no imports, and `workers/ask-chat` already imports
+`song-title.ts` across packages, so a Worker can use them.
+
+`workers/now-spinning/src/match.ts` is a thin layer on top. It adds only what Shazam's input
+needs:
+- `cleanArtist`: the fallback that drops `feat. X`, `& Y` or `with Z` from an act name, used only
+  when the full name matches nothing.
+- `stripFeat` and `tidyTitle`: tidying for display, so "Kool & the Gang" isn't shown as "Kool"
+  and "(Remastered 2006)" isn't shown at all.
+- `nearKeys`: looser keys (all bracketed text removed; any slash splits; parts of four letters or
+  more), used for one purpose only, below.
+
+The Worker and the index builder both import `match.ts`, so the two sides can't disagree.
+
+**Two tiers, and what each may do.**
+- **Strict keys** (the repo's rules) decide every positive statement: `heard`, `seen-cover`,
+  `cover-of-this`.
+- **Near-miss keys** never do. They only stop the screen from saying "never heard this one live"
+  when something close is on a setlist, and then the screen says exactly that: *Something close to
+  it is on 2 of those setlists: "Smart Patrol/Mr. DNA".*
+
+A prototype of these rules ran against the real archive on 2026-11-21: 2,267 songs, 260 acts, 211
+covered acts, no two acts sharing a key, and every input in the [Testing](#testing-strategy)
+table resolving as listed.
 
 ### A prebuilt index, generated at build time
 
@@ -227,24 +271,28 @@ interface NowSpinningIndex {
     n: string;            // the setlist's spelling
     a: string;            // billing slug
     c: string;            // canonical act slug (sameAct merged)
-    k: string[];          // match keys from titleKeys(n); k[0] is the whole title
+    k: string[];          // strict keys: foldSongTitle(n) first, then each songIndexKeys(n) part
+    nk: string[];         // near-miss keys, from match.ts nearKeys(n)
     d: string[];          // dates
     al: number | null;
   }[];
   artists: Record<string, { n: string; i: string | null; s: [date: string, venue: string, city: string, role: 'h' | 'o'][] }>;
-  artistKeys: Record<string, string>;                             // loose(name) → billing slug
+  artistKeys: Record<string, string>;                             // actKey(name) → billing slug
   canon: Record<string, string>;                                  // sameAct billing → canonical
   photos: Record<string, { u: string; fx: number; fy: number }[]>; // "date|billing" → up to 3; fx/fy = crop centre
   sl: string[];                                                   // "date|billing" with a setlist
-  cv: Record<string, { n: string; k: string[]; p: string; d: string }[]>; // loose(original act) → songs heard from others
+  cv: Record<string, { n: string; k: string[]; p: string; d: string }[]>; // actKey(original act) → songs heard from others
 }
 ```
 
 Builder rules:
 - Songs come from `setlists-cache.json`. Skip `tape` entries.
 - Merge `sameAct` billings; keep `sharesMember` acts separate. (They are joined at lookup time, by the cover data. See below.)
-- **The build fails** if two different acts share a loose key, or if any title key is empty. On
-  2026-11-21 the archive has neither.
+- **The build fails** if two different acts share an `actKey`, or if any song has no strict key.
+  On 2026-11-21 no acts collide. Three setlist entries have no key ("With Any Sort of
+  Certainty"), which is bug #689 and the reason it comes first.
+- **Version.** The Worker accepts `v: 1` only. Any other value, or a file that isn't JSON (a
+  missing file comes back as the site's HTML), counts as "index unavailable".
 - Album covers: `album-covers.json` mzstatic `100x100bb` → `600x600bb`. Fall back to
   Cover Art Archive `front-500` when `coverAvailable`.
 - Photos: `media-index.json` assets with `subject: 'artist'` and `kind: 'image'`, keyed
@@ -254,42 +302,43 @@ Builder rules:
   Follow `.claude/skills/media-pipeline/SKILL.md`: only published assets, no new derivatives,
   and the photo's own act and date always travel with it.
 
-### Prerequisite: one count of "times heard" across the archive
+### Prerequisites: two existing bugs
 
-`public/data/song-index.json` only holds headliners' setlists (1,720 songs against 2,267 from
-all setlists). The site and Ask the Archive read it, so they don't know Blancmange played
-"Blind Vision" as an opener. If the TV counts all setlists and the site doesn't, the same
-song gets two different numbers.
+Both predate this work, and both come before Phase 1.
 
-Fix `song-index.json` to include opening acts **first**, in its own issue and PR, because it
-changes numbers on the site, in Ask and in the MCP server. If that's deferred, say so here and
-accept the difference knowingly.
+- **#689: `foldSongTitle` treats "with" in a title as a featured artist.** "Dancing With Myself"
+  folds to `dancing`, and "With or Without You" to nothing. Since Now Spinning's strict matching
+  is this function, two different songs by one act could count as the same song.
+- **#690: `song-index.json` ignores opening acts' setlists** (1,720 songs against 2,267 from all
+  setlists). The site and Ask the Archive read it, so they don't know Blancmange played "Blind
+  Vision" as an opener. If the TV counts every setlist and the site doesn't, the same song gets
+  two different numbers.
 
 ### Lookup (`workers/now-spinning/src/identify.ts`)
 
-A pure function, `identify(index, input) → Track`, ported from the mock.
+A pure function, `identify(index, input) → Track`. The mock's `identify()` and `render()` show its
+shape and all its copy; the matching follows the rules above.
 
-1. **Artist.** Try the name exactly as Shazam gives it (slug, then loose), and only then the
-   cleaned name with `feat./featuring/ft./with/&/and …` stripped. `loose()` drops a leading
-   "the" and every "and", so "Echo & the Bunnymen" matches "Echo and the Bunnymen".
-2. **Title.** `cleanTitle` strips bracketed text and `- … Remaster/Live/Version/Mix/Edit/Mono/
-   Stereo/Single/Demo/Bonus`. A title that is *all* brackets keeps its words, so
-   "[10 Good Reasons for Modern Drugs]" matches and "(Intro)" doesn't match "(summer sky)".
-3. **Medleys.** A setlist entry answers to its whole title and to each `/`-separated part of
-   four letters or more: "Smart Patrol/Mr. DNA" answers to "Mr. DNA", and "Head Over Heels /
-   Broken" to "Head Over Heels". A night matched only by a part is flagged `medley`.
-   33 setlist entries contain a slash.
-4. **Billings.** Collect every billing of the canonical act (Brian Setzer has four).
-5. **Other hands, always.** Look up who else played this act's songs **whether or not Mike
+1. **Act.** `actKey` of the name exactly as Shazam gives it. Only if that matches nothing,
+   `actKey(cleanArtist(name))`. So "Echo & the Bunnymen" matches "Echo and the Bunnymen", and
+   "Depeche Mode feat. X" still finds Depeche Mode.
+2. **Title.** Shazam's title is compared whole: `foldSongTitle(title)`. A setlist entry answers to
+   the fold of its whole name and to each part `songIndexKeys` gives. So "Head Over Heels /
+   Broken" answers to "Head Over Heels", and that night is flagged `medley`. "Smart Patrol/Mr.
+   DNA" has no spaced slash, so it answers only as a whole, which is how Shazam names that track.
+3. **Billings.** Collect every billing of the canonical act (Brian Setzer has four).
+4. **Other hands, always.** Look up who else played this act's songs **whether or not Mike
    has seen the act**, under every name the act goes by, full name first. Setlist.fm's `cover`
    field is what joins the `sharesMember` pairs: George Michael playing Wham!, Danny Elfman
    playing Oingo Boingo, Marc Almond playing Soft Cell. 38 setlist entries are songs by an act
    Mike has seen that he only ever heard from someone else.
-6. **Album.** The archive's album when it has one; otherwise the album and artwork Shazam sent.
-7. **Displayed names.** The archive's spelling when there's a whole-title match. Otherwise
-   Shazam's title with only its noise removed (`tidyTitle`), so "(Don't Fear) The Reaper" stays
-   whole, and Shazam's artist with only `feat. X` removed (`stripFeat`), so "Kool & the Gang"
-   isn't shown as "Kool".
+5. **Near miss.** If the act has been seen and no strict key matches, try the near-miss keys. A
+   hit changes the wording of the `seen` screen and nothing else.
+6. **Album.** The archive's album when it has one (`songAlbumKey`); otherwise the album and
+   artwork Shazam sent.
+7. **Displayed names.** The archive's spelling when the whole title matched. Otherwise Shazam's
+   title with only its noise removed (`tidyTitle`) and Shazam's act with only `feat. X` removed
+   (`stripFeat`).
 
 ### Screen states
 
@@ -299,7 +348,7 @@ Checked in this order. Headlines are the mock's; all were run against the real a
 |---|---|---|---|---|
 | 1 | `heard` | The act played it on a night Mike was there | "You've heard this one live N times." If someone else also played it, add "Y played it too." | the nights it was heard |
 | 2 | `seen-cover` | Act seen, never heard from them, but someone else played it | "You've seen Wham! once, and you heard George Michael play this one." Second line says what the act's own setlists show. | the nights the other act played it |
-| 3 | `seen` | Act seen, song not found anywhere | "…but never heard this one live" **only if every night has a setlist**; otherwise the "maybe" copy | every night the act was seen |
+| 3 | `seen` | Act seen, song not found anywhere | Three wordings. Near miss: "Something close to it is on the setlist from …". Every night has a setlist and no near miss: "…but never heard this one live." Otherwise: the "maybe" copy about missing setlists. | every night the act was seen |
 | 4 | `cover-of-this` | Act never seen, someone else played this song | "You've never seen X. But you've heard this one live, played by Y." | those nights |
 | 5 | `covers` | Act never seen, others played other songs of theirs | "…you've heard N of their songs live, in other hands." | those nights |
 | 6 | `none` | No connection | "Not in the archive. Yet." | none (the screen takes its colour from the record) |
@@ -312,12 +361,28 @@ States that aren't songs:
 
 | `kind` | When | Screen |
 |---|---|---|
-| `idle` | Nothing playing (the default) | Brand mark, dimmed, and a small "Put a record on." line. No clock or other data. |
+| `idle` | Nothing playing (the default) | Brand mark, dimmed, and a small "Put a record on." line. No clock or other data. If the listener is offline or can't identify songs, one line under it says so (`notice`). |
 | `gap` | Between tracks or while flipping sides | Keep the last track's screen. After 90 s, fade the text and keep the sleeve and spinning record. |
-| `unmatched` | Sound present, no match after 3 tries | "Listening…" with the generic sleeve. Never guess. |
+| `unmatched` | Sound present, no match after 3 tries | "Listening…" with the generic sleeve, and "Nothing I recognise yet." Never guess. |
 
 Copy follows `.claude/skills/liner-notes-voice/SKILL.md`: "you" addresses Mike, plainly, with
 no hype.
+
+**Reference screenshots.** Every state has one in [`screens/`](screens/), and the mock's
+"Change record" panel shows each live.
+
+| State | Screenshot |
+|---|---|
+| `heard` | `heard-live.jpg`, `heard-once-opener.jpg`, `heard-in-medley.jpg` |
+| `seen-cover` | `seen-heard-from-another.jpg` |
+| `seen` | `seen-not-heard.jpg`, `seen-near-miss.jpg` |
+| `cover-of-this` | `no-history-song-covered.jpg` |
+| `covers` | `no-history-artist-covered.jpg` |
+| `none` | `no-history-none.jpg` |
+| `unknown` | `unknown.jpg` |
+| `idle` | `idle.jpg`, `idle-listener-offline.jpg` |
+| `gap`, after 90 s | `gap-faded.jpg` |
+| `unmatched` | `unmatched.jpg` |
 
 ---
 
@@ -333,9 +398,10 @@ New self-contained Worker, matching `workers/mcp-server`: its own `package.json`
 
 | Method + path | Auth | Body / response |
 |---|---|---|
-| `POST /api/now-spinning` | ingest token | `{ event: "track", artist, title, album?, artworkUrl?, isrc?, shazamId? }` or `{ event: "gap" \| "unmatched" \| "stopped" \| "alive" }`. Body ≤ 2 KB. Returns the new state. `400` on a bad body. |
+| `POST /api/now-spinning` | ingest token | `{ event: "track", artist, title, album?, artworkUrl?, isrc?, shazamId? }`, or `{ event: "gap" \| "unmatched" \| "stopped" \| "alive" }`, or `{ event: "status", recognizer, receiver, version }`. Body ≤ 2 KB. Returns the new state. `400` on a bad body. |
 | `GET /api/now-spinning` | display token | Current state (polling fallback, debugging) |
 | `GET /api/now-spinning/ws` | display token | WebSocket. Sends the current state on connect, then each change. Uses DO WebSocket hibernation, so an idle evening costs nothing. |
+| `GET /api/now-spinning/health` | display token | `{ online, lastSeenAt, recognizer, receiver, version }`. No song data. |
 
 ### The state contract
 
@@ -345,6 +411,7 @@ interface NowSpinningState {
   kind: 'idle' | 'unmatched' | 'track' | 'gap';
   at: string;          // when this state began (server clock)
   now: string;         // server clock when this message was sent
+  notice?: string;     // idle only: one line the Worker writes when the listener is offline or can't identify
   track?: {
     title: string; artist: string;
     album: { title: string; year?: string; coverUrl?: string } | null;
@@ -372,8 +439,13 @@ interface NowSpinningState {
 
 ### Behaviour
 
-- **One value, overwritten.** Durable Object storage holds the current state and nothing else.
-  No history, no list, no Analytics Engine rows naming songs. Log the state `kind` only.
+- **Two values, overwritten.** Durable Object storage holds the current state and the listener's
+  status (below), and nothing else. No history, no list, no Analytics Engine rows naming songs.
+  Log the state `kind` only.
+- **Logic apart from the runtime.** The rules in this section live in a pure module
+  (`room-logic.ts`: state, event and clock in; new state and next alarm time out). The Durable
+  Object class is a thin shell around it. The repo's Workers are tested with plain vitest, with
+  no Workers runtime, so this is what makes the alarm and dedupe rules testable.
 - **Liveness.** Every ingest POST sets a DO alarm three minutes out. If the alarm fires, the
   state becomes `idle`. A Pi that loses power or network can't leave a song on the screen all
   night.
@@ -386,14 +458,34 @@ interface NowSpinningState {
   must never fall through to `none`, which would be a false statement. Retry the index on the
   next event.
 
+### Listener health
+
+Without this, a dead Pi or a blocked recogniser looks exactly like "nothing playing".
+
+- The Pi POSTs `{ event: "status", recognizer: "ok" | "failing", receiver: "ok" | "unreachable",
+  version }` every 5 minutes, playing or not.
+- The Durable Object keeps `listener: { lastSeenAt, recognizer, receiver, version }` beside the
+  state. Every ingest POST refreshes `lastSeenAt`. It holds no song data.
+- `GET /api/now-spinning/health` returns it, plus `online` (seen in the last 15 minutes).
+- **On the idle screen.** When the listener is offline or the recogniser is failing, the Worker
+  sets `notice` on the idle state: "The listener has been offline since 3:12 PM." or "Song
+  recognition isn't working right now." Times use `DISPLAY_TZ`, a Worker var set to the home's
+  time zone. Displays show `notice` under "Put a record on." and nowhere else.
+- **One alarm, two deadlines.** A Durable Object has a single alarm. Keep both deadlines
+  (liveness: 3 minutes after the last ingest while not idle; offline: 15 minutes after
+  `lastSeenAt`) and set the alarm to the earlier one.
+- **Operator dashboard.** `workers/dashboard-refresh` reads `/health` and shows one line: online,
+  or last seen. That work is in the release issue, #699.
+
 ### Auth and secrets
 
 | Secret | Homes |
 |---|---|
 | `NOW_SPINNING_INGEST_TOKEN` | prod `wrangler secret`, `workers/now-spinning/.dev.vars`, Pi `/etc/now-spinning/env` |
-| `NOW_SPINNING_DISPLAY_TOKEN` | prod `wrangler secret`, `.dev.vars`, each display |
+| `NOW_SPINNING_DISPLAY_TOKEN` | prod `wrangler secret`, `.dev.vars`, each display, and `workers/dashboard-refresh` (to read `/health`) |
 
-Add both to `docs/SECRETS.md`'s matrix.
+Add both to `docs/SECRETS.md`'s matrix. Generate each with `openssl rand -base64 32`; they must
+differ. Rotating the display token signs every display out until it is given the new one.
 
 - Two tokens, so a display can't write and a leaked Pi token can't read. The display token
   exists because the current state says what's playing in the house, and that someone is home.
@@ -410,14 +502,20 @@ Add both to `docs/SECRETS.md`'s matrix.
 Workers in this repo deploy from CI on a push to `main`: copy the `deploy` job from
 `mcp-ci.yml`. So merging Phase 2 puts a public endpoint live. First-deploy order: merge, let CI
 deploy (the Worker answers `503` to everything), set both secrets with `wrangler secret put`,
-then check `GET` returns `idle`. Add `workers/now-spinning` to `npm run test:workers` and to
-`.github/dependabot.yml`.
+then check `GET` returns `idle`. Those owner steps are #693. Add `workers/now-spinning` to
+`npm run test:workers` and to `.github/dependabot.yml`.
+
+**Local development.** Run the Worker with `wrangler dev` and add a Vite proxy from
+`/api/now-spinning` to it, so the display page and the Worker are same-origin locally as they are
+in production. No CORS headers are needed anywhere.
 
 ---
 
 ## Pi listener (`now-spinning/pi/`)
 
-Python 3.12 service, run by systemd (`now-spinning.service`, restart on failure). Config is in
+A Python service for **the Python that Raspberry Pi OS ships** (Phase 0 check 8 records which;
+`requires-python` and CI follow it). Run by systemd (`now-spinning.service`, restart on failure).
+`sounddevice` needs the `libportaudio2` system package. Config is in
 `/etc/now-spinning/env`: the Worker URL, the ingest token, the receiver's address and the audio
 device.
 
@@ -427,7 +525,11 @@ device.
   listening, and turn Zone 2 off if the listener turned it on.
 - The listener never touches the main zone.
 - Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
-  Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it.
+  Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
+  commands Phase 0 check 6b found to work.
+- **Receiver unreachable.** After three failed polls, stop gating and listen on sound alone. If
+  Zone 2 is off there is only silence, so nothing is posted. Report `receiver: "unreachable"`
+  in the status heartbeat and keep polling.
 
 **Identification loop.**
 - Capture 44.1 kHz stereo from the Blackjack (`sounddevice`, selected by name, not by card
@@ -443,9 +545,22 @@ device.
 - **No match.** Three misses in a row → POST `unmatched` once. Five minutes of sound with no
   match (the run-out groove, a record Shazam doesn't know) → POST `stopped` and try once every
   two minutes until something matches or real silence resets the loop.
-- **Heartbeat.** POST `alive` every 60 s while there is a track, a gap or `unmatched`.
+- **Heartbeats.** POST `alive` every 60 s while there is a track, a gap or `unmatched`. POST
+  `status` every 5 minutes always (see [Listener health](#listener-health)); `recognizer` is
+  `failing` when the last three recognition calls raised errors, as opposed to finding no match.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.
+
+**What the listener sends.** To be confirmed against the raw response saved in Phase 0 check 2:
+
+| Field | From Shazam's response |
+|---|---|
+| `artist` | `track.subtitle` |
+| `title` | `track.title` |
+| `album` | the `text` of the `track.sections[].metadata` entry titled "Album" |
+| `artworkUrl` | `track.images.coverart` |
+| `isrc` | `track.isrc` |
+| `shazamId` | `track.key` |
 
 **Testing without hardware.** `python -m now_spinning --wav sample.wav --dry-run` runs the
 loop on a file and prints what it would POST. Unit-test the silence gate, the two-in-a-row
@@ -454,8 +569,8 @@ CI: `.github/workflows/now-spinning-pi-ci.yml` (pytest), plus a `pip` entry in d
 
 **ShazamIO risk.** ShazamIO is an unofficial client for Shazam's private API. It can break or be
 blocked without notice. Keep recognition behind one `Recognizer` interface so ACRCloud or AudD,
-which are paid but official, can replace it with a config change. Check that `shazamio-core` has
-an aarch64 wheel for the Pi's Python.
+which are paid but official, can replace it with a config change. Phase 0 check 8 shows whether
+`shazamio-core` installs on the Pi's Python without compiling.
 
 **Running it.** Power the Pi from an outlet that stays on, and keep logs in RAM
 (`Storage=volatile` in journald), so cutting power to the cabinet can't corrupt the card.
@@ -502,7 +617,20 @@ screen available on a laptop, a phone or an iPad.
 | Risk | Chromium on a Pi 5 may stutter on the blurred backgrounds; pre-blur the images if so | Phase 0 checks 4 and 5 could each rule it out |
 
 **Recommendation: A.** It reuses Phase 3 as it is and removes the parts of this project that
-can't be tested or automated. B stays possible later because the contract is the same.
+can't be tested or automated. B stays possible later because the contract is the same. The
+decision is #695, which includes a half-hour trial of A on the real TV; the build is #698.
+
+If A is chosen:
+- A kiosk session on the Pi starts Chromium full screen on the display page at boot: no desktop,
+  no cursor, no screen blanking. The setup guide installs the no-desktop OS, so this adds a
+  minimal compositor (`cage` or `labwc`) and Chromium.
+- The display token reaches the page through a launch URL (`…/now-spinning.html#token=…`) kept in
+  `/etc/now-spinning/env`, readable by root only, never in the repo.
+- Output fixed at 1080p. The listener and the browser run on the same Pi; check there are no
+  audio dropouts or throttling with both running.
+- If the blurred photo backgrounds stutter, pre-blur the images at build time and drop the CSS
+  blur.
+- The AV7703's Video Select for Phono points at the Pi's HDMI input.
 
 If B is chosen: SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`, in `now-spinning/tvos/`.
 `URLSessionWebSocketTask` with the `Authorization` header. The display token comes from an
@@ -512,19 +640,21 @@ Set `isIdleTimerDisabled` while `kind` is `track`, `gap` or `unmatched`, and cle
 
 ---
 
-## Hardware to order
+## Hardware
 
-| Item | Pick | Notes |
+Ordered 2026-11-21, except the Blackjack, which Mike already owned.
+
+| Item | What it is | Notes |
 |---|---|---|
-| Computer | Raspberry Pi 5, 2 GB (4 GB if it also drives the TV) | A Pi 4 works for listening only. |
-| Power | Official Raspberry Pi 27 W USB-C supply | Underpowered Pis drop USB audio. |
-| Storage | 32 GB A2 microSD | Raspberry Pi OS, 64-bit (Lite if listening only) |
-| Case | Official Pi 5 case with fan | It sits in an AV cabinet; keep it cool. |
+| Computer | Raspberry Pi 5, 8 GB (CanaKit Essentials Starter Kit) | More memory than this needs; enough to also drive the TV. |
+| Power | The kit's CanaKit 45 W USB-C supply | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
+| Storage | The kit's 32 GB microSD, with its USB reader | Raspberry Pi OS Lite, 64-bit |
+| Cooling | The kit's official active cooler; the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
 | Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. It has no power socket: it runs on USB power from the Pi. The Pi 5 allows 1.6 A across its USB ports only when it recognises a 5 A supply (600 mA otherwise), so use the 5 A-capable supply from the kit, and keep phantom power off, which is the Blackjack's biggest draw. |
-| Audio cable | Dual RCA (male) → dual 1/4" TS (male), 1 m, such as Hosa's CPR-200 series | AV7703 ZONE2 PRE OUT L → Blackjack input 1, R → input 2. Unbalanced TS is right here: the pre-outs are unbalanced and the run is short. |
-| USB cable | USB-A → USB-B, about 1 m (one likely came with the Blackjack) | Pi USB 2.0 port (black) → Blackjack. The blue USB 3 ports are fine too, but USB 2 keeps it away from any USB 3 interference near the Wi-Fi antenna. |
-| Display cable | Micro-HDMI → HDMI (option A only) | Pi → a spare AV7703 HDMI input |
-| Network | Ethernet patch cable to the cabinet switch | Wi-Fi works too; wired is steadier. |
+| Audio cable | Dual RCA (male) → dual 1/4" TS (male), 6 ft (J&D) | AV7703 ZONE2 PRE OUT L → Blackjack input 1, R → input 2. Unbalanced TS is right here: the pre-outs are unbalanced and the run is short. |
+| USB cable | USB-A → USB-B, 1.5 ft (Monoprice) | Pi USB 2.0 port (black) → Blackjack. The blue USB 3 ports are fine too, but USB 2 keeps it away from any USB 3 interference near the Wi-Fi antenna. |
+| Display cable | The kit's micro-HDMI → HDMI cable (option A only) | Pi → a spare AV7703 HDMI input |
+| Network | Ethernet patch cable to the cabinet switch (already owned) | Wi-Fi works too; wired is steadier. |
 
 **Shelf placement:** next to the AV7703, with the Blackjack on a short USB lead so the analogue run
 stays short and away from the amp's power cables (hum). The Blackjack's monitor outputs and
@@ -556,7 +686,8 @@ The listener records the two channels as stereo and downmixes to mono itself.
 
 - The Pi only listens to the receiver's line output. There is no microphone anywhere. It hears
   exactly what the Phono input plays, and only while the main zone is on Phono.
-- **We keep no play history.** The Worker holds only the current state and overwrites it.
+- **We keep no play history.** The Worker holds only the current state and overwrites it. The
+  one other thing it stores is when the listener last checked in, which names no song.
   Nothing is logged per song, and nothing goes to Analytics Engine or GA4. Stopping the record
   erases the last track.
 - **Shazam does see each identification**, with the home's IP address. That is inherent to
@@ -586,8 +717,13 @@ against the real archive in the mock on 2026-11-21, and the fixture reproduces i
 | Brian Setzer / "Rock This Town" | `heard` across all four billings |
 | Wham! / "I'm Your Man" | `seen-cover` via George Michael |
 | Oingo Boingo / "Only a Lad" | `seen-cover` via Danny Elfman, twice; second line mentions the missing setlist |
-| Devo / "Mr. DNA" | `heard`, nights flagged "in a medley", title "Mr. DNA" |
-| Tears for Fears / "Head Over Heels" | `heard` once, in a medley |
+| Devo / "Smart Patrol / Mr. DNA" and "Smart Patrol/Mr. DNA" | `heard` twice (whole-title match) |
+| Devo / "Mr. DNA" | `seen`, near-miss wording naming "Smart Patrol/Mr. DNA"; never "never heard" |
+| The Twilight Sad / "Let" | `seen`, "never heard" ("Let/s Get Lost" is not a near miss: the part is under four letters) |
+| Tears for Fears / "Head Over Heels" | `heard` once, flagged "in a medley" |
+| Run-D.M.C. / "Jam-Master Jay" | `seen-cover` via LL Cool J (the setlist spells the act with an unusual hyphen) |
+| Depeche Mode / "Enjoy the Silence (Live)" | `heard` (version marker stripped) |
+| Billy Idol / "Dancing With Myself" against a fixture that also has "Dancing With Tears in My Eyes" | only the first is `heard` (guards #689) |
 | David Bowie / "Let's Dance - 2018 Remaster" | `cover-of-this` (Heaven 17, Nile Rodgers) |
 | Queen & David Bowie / "Under Pressure" | `cover-of-this`; artist shown as "Queen & David Bowie" |
 | Kool & the Gang / "Celebration" | `covers`; artist shown as "Kool & the Gang" |
@@ -595,19 +731,21 @@ against the real archive in the mock on 2026-11-21, and the fixture reproduces i
 | Fleetwood Mac / "Dreams" | `none` |
 | The Twilight Sad / "10 Good Reasons for Modern Drugs" | `heard` (all-bracket title) |
 | Foals / "(Intro)" | not `heard` |
+| Foals / "Summer Sky" | `heard` (the setlist writes "(summer sky)") |
 | Blue Öyster Cult / "(Don't Fear) The Reaper" | title shown whole |
-| Index missing | `unknown`, never `none` |
+| Index missing, not JSON, or `v` other than 1 | `unknown`, never `none` |
 | Shazam's album when the archive has none | passed through |
 
-API tests: `401` without a token, `401` for the wrong token on each route, `503` when a secret
-is unset, a repeated track doesn't push, a track after `gap` does, the alarm sets `idle`, and
-the DO holds one key after a hundred POSTs.
+API and room-logic tests: `401` without a token, `401` for the wrong token on each route, `503`
+when a secret is unset, a repeated track doesn't push, a track after `gap` does, the liveness
+alarm sets `idle`, the offline notice appears after 15 minutes and clears on the next heartbeat,
+`recognizer: "failing"` sets its notice, `/health` carries no song data, and storage holds
+exactly two keys after a hundred POSTs.
 
 **Invariants, on the real data** (root suite, `test/pipeline/now-spinning-index.test.ts`, so
 data commits trigger it). Build the index from `public/data` and assert properties, not counts:
-no two acts share a loose key, no empty title key, every photo URL is in `media-index.json`,
-every `sl` and `cv` row points at a real show, `slug` equals `normalizeArtistName` for every
-name.
+no two acts share an `actKey`, every song has a strict key, every photo URL is in
+`media-index.json`, and every `sl` and `cv` row points at a real show.
 
 **Pi:** pytest as above, and `--wav --dry-run`.
 
@@ -617,7 +755,7 @@ name.
 - [ ] Side flip → `gap`, then the first track of side B shows
 - [ ] Needle up for 3 min → idle
 - [ ] Needle left in the run-out groove → idle within about 5 min
-- [ ] Pull the Pi's power mid-song → idle within about 3 min
+- [ ] Pull the Pi's power mid-song → idle within about 3 min; about 15 min later the idle screen says the listener is offline; power back → it clears
 - [ ] A second record an hour later appears without touching anything
 - [ ] Worker unreachable → the listener keeps running; the display shows the last state, then idle
 
@@ -625,12 +763,32 @@ name.
 
 ## Implementation Plan
 
-### Phase 0: hardware evening (Mike)
-The seven checks above. **Done when:** results are in this spec's revision history and the
-recogniser is chosen.
+Every phase is a GitHub issue under epic #687. The issue's checklist is the definition of done.
 
-### Phase 1: match rules, index, lookup (Window 1)
-**First, separately:** the `song-index.json` opener fix (own issue and PR).
+| Phase | Issue | Who |
+|---|---|---|
+| Prerequisite: `foldSongTitle` and "with" | #689 | Code session |
+| Prerequisite: `song-index.json` and openers | #690 | Code session |
+| 0: hardware evening | #688 | Mike |
+| 1: match rules, index, lookup | #691 | Code session |
+| 2: Worker API, Durable Object, health | #692 | Code session |
+| First deploy: tokens and secrets | #693 | Mike |
+| 3: web display | #694 | Code session |
+| Display decision | #695 | Mike |
+| 4: Pi listener | #696 | Code session |
+| Install and hardware acceptance | #697 | Mike |
+| 5: put it on the TV | #698 | Both |
+| Release v7.0.0 | #699 | Code session |
+
+The hardware track (#688) and the software track (#689 → #690 → #691 → #692 → #694) don't depend
+on each other. Phase 4 is the first point where they meet.
+
+### Phase 0: hardware evening (#688)
+The checks above. **Done when:** results are in this spec's revision history and the recogniser
+is chosen.
+
+### Phase 1: match rules, index, lookup (#691)
+**After:** #689 and #690.
 **Create:** `workers/now-spinning/{package.json,tsconfig.json,vitest.config.ts}`,
 `workers/now-spinning/src/{match.ts,identify.ts,types.ts}` and tests, the frozen fixture,
 `scripts/build-now-spinning-index.ts`, `test/pipeline/now-spinning-index.test.ts`,
@@ -638,35 +796,35 @@ recogniser is chosen.
 **Modify:** `package.json` (`build`, `test:workers`), `.gitignore` (the generated index)
 **Done when:** the fixture table and the invariants pass.
 
-### Phase 2: Worker API (Window 2)
-**Create:** `workers/now-spinning/src/{index.ts,room.ts,auth.ts}` and tests, `wrangler.toml`,
-`.dev.vars.example`, `.github/workflows/now-spinning-ci.yml` (test + deploy)
+### Phase 2: Worker API (#692, then #693)
+**Create:** `workers/now-spinning/src/{index.ts,room.ts,room-logic.ts,auth.ts}` and tests,
+`wrangler.toml`, `.dev.vars.example`, `.github/workflows/now-spinning-ci.yml` (test + deploy)
 **Modify:** `docs/SECRETS.md`, `test/README.md`, `.github/dependabot.yml`
 **Done when:** API tests pass, the Worker is deployed and answers `503`, and after Mike sets the
-secrets, `GET` returns `idle`.
+secrets (#693), `GET` returns `idle`.
 
-### Phase 3: web display (Window 3)
+### Phase 3: web display (#694, then #695)
 **Create:** `public/now-spinning.html`
-**Modify:** `workers/meta-injector/worker.js` (static-page exemption)
-**Done when:** every fixture renders like `screens/`, and a `curl` POST with the ingest token
-changes the page live. Then make the display decision.
+**Modify:** `workers/meta-injector/worker.js` (static-page exemption), `vite.config.ts` (dev proxy)
+**Done when:** every fixture renders like its screenshot in `screens/`, and a `curl` POST with the
+ingest token changes the page live. Then make the display decision (#695).
 
-### Phase 4: Pi listener (Window 4)
+### Phase 4: Pi listener (#696, then #697)
 **Create:** `now-spinning/pi/{pyproject.toml,now_spinning/*.py,tests/,now-spinning.service,README.md}`,
 `.github/workflows/now-spinning-pi-ci.yml`
-**Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§11: install, update, token rotation)
+**Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§11: install, update, token rotation), this spec's
+Privacy section (Phase 0 check 7)
 **Done when:** `--wav --dry-run` prints the right POSTs, pytest passes, and the hardware
-checklist passes. **This is v7.0.0.**
+checklist (#697) passes.
 
-### Phase 5 (only if option B): tvOS app
-**Create:** `now-spinning/tvos/` and Xcode ignores in `.gitignore`.
+### Phase 5: put it on the TV (#698)
+Option A: the kiosk session, its section in `docs/NOW_SPINNING_OPERATIONS.md`, and the receiver's
+Video Select. Option B: `now-spinning/tvos/` and Xcode ignores in `.gitignore`.
 
-### GitHub issues to open (outside this code base)
-- Phase 0 hardware evening (the seven checks)
-- Order hardware
-- AV7703 setup: fixed Zone 2 level, network control, Video Select if option A
-- `song-index.json` drops opening acts' songs (site, Ask the Archive, MCP server)
-- If option B: Apple developer account and signing, pyatv pairing
+### Release v7.0.0 (#699)
+Changelog, `CLAUDE.md` project structure, roadmap, context file, the spec moved to
+`docs/specs/implemented/`, and the operator dashboard's Worker list and listener-health line.
+The release gate is Phases 1–4. Phase 5 can ship after it.
 
 ---
 
@@ -681,14 +839,24 @@ checklist passes. **This is v7.0.0.**
 
 ## Questions for Review
 
-- Display: option A (the Pi drives the TV) or option B (a tvOS app)? Decide after Phase 3.
+- Display: option A (the Pi drives the TV) or option B (a tvOS app)? Decided in #695, after Phase 3.
 - Is "Listening…" right for `unmatched`, or should the screen stay on idle until a match comes in?
-- `song-index.json`: fix openers before Phase 1, or accept that the TV and the site count differently for a while?
+- Should "most played" on the site count songs heard from opening acts? Asked in #690.
 
 ---
 
 ## Revision History
 
+- **2026-11-21, v1.3.0:** Completeness pass. Matching now reuses the repo's own rules
+  (`foldSongTitle`, `songIndexKeys`, `actKey`), with a near-miss tier that can only soften a
+  "never heard" claim; a prototype confirmed every test input against the real archive. Added
+  listener health (status heartbeat, `/health`, idle-screen notice, dashboard line), the
+  receiver-unreachable fallback, Phase 0 checks 6b and 8, the build details for option A, the
+  Shazam field mapping, pure room logic for testing, token generation, local development, and
+  the index version rule. Corrected the Python version and the hardware table (now as bought).
+  Target stays v7.0.0; Social Syndication moves to v6.5.0. Two existing bugs became
+  prerequisites (#689, #690). The mock gained the idle, listening, archive-unreachable,
+  between-tracks and near-miss screens, with six new screenshots. Work is tracked in epic #687.
 - **2026-11-21, v1.2.0:** Audio interface: Mike's Mackie Onyx Blackjack replaces the Behringer
   UCA202/UCA222 and the HiFiBerry fallback. Hardware list, cables, Phase 0 checks and a settings
   table updated to match, including how the Pi powers it over USB (check 1c). Pi setup and
