@@ -728,7 +728,9 @@ The design is already mostly dark, with changing photos and text. These rules co
 - **A `notice` on the web page is the one exception to going black.** "The listener has been
   offline since…" stays up, dim, and moves to a new position each minute. In the app, the notice
   shows on the idle screen until the screensaver starts, and again whenever the app is opened.
-- **No drift in the app or the page.** The TV's own Pixel Shift does that for the whole panel.
+- **No drift in the app or the page.** The layout and the brand mark stay put; the TV's own Pixel
+  Shift moves the whole panel. The one thing that moves is the notice on the page's black screen
+  (above), because it is the only thing drawn there.
   Keep it on.
 - The web page's timer is its own. The 10 minutes count from `at` on the idle state, using
   `now − at`.

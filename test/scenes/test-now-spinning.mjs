@@ -146,6 +146,13 @@ async function rules(browser, fail) {
   await h.setRequestInterception(true)
   h.on('request', r => (r.url().includes('/api/now-spinning') ? r.respond({ ...answer, contentType: 'application/json' }) : r.continue()))
   await h.evaluateOnNewDocument(() => {
+    // Count the live 30 s heartbeat timers, through every reconnect.
+    const active = new Map()
+    const si = window.setInterval.bind(window)
+    const ci = window.clearInterval.bind(window)
+    window.setInterval = (fn, ms, ...rest) => { const id = si(fn, ms, ...rest); active.set(id, ms); return id }
+    window.clearInterval = id => { active.delete(id); ci(id) }
+    window.__beats = () => [...active.values()].filter(ms => ms === 30000).length
     window.__sent = []
     window.__closed = 0
     window.WebSocket = class {
@@ -173,6 +180,28 @@ async function rules(browser, fail) {
   ok('the page sends a heartbeat ping', beat.sentFirst.length === 1 && beat.sentFirst[0] === 'ping', JSON.stringify(beat))
   ok('a pong keeps the socket, and is not taken for a state', beat.closedAfterPong === 0 && beat.raw === null, JSON.stringify(beat))
   ok('no pong by the next ping drops the socket and reconnects', beat.closed === 1 && beat.conn !== 'live', JSON.stringify(beat))
+  const dropped = await h.evaluate(() => ({ beats: window.__beats(), drop: diag.lastDrop && diag.lastDrop.reason, panel: document.getElementById('debug').innerText }))
+  ok('a dropped socket stops its heartbeat, and the panel says why', dropped.beats === 0 && dropped.drop === 'no heartbeat', JSON.stringify({ ...dropped, panel: undefined }))
+
+  const live = () => h.waitForFunction(() => diag.conn === 'live', { timeout: 10000 }).catch(() => {})
+  await live()
+  ok('a live socket runs exactly one 30 s heartbeat', (await h.evaluate(() => window.__beats())) === 1)
+  for (let i = 0; i < 3; i++) {
+    await h.evaluate(() => window.__sock.onclose())   // the network drops it; the page reconnects
+    await h.waitForFunction(() => diag.conn !== 'live', { timeout: 2000 }).catch(() => {})
+    await live()
+  }
+  ok('reconnecting never stacks heartbeats', (await h.evaluate(() => window.__beats())) === 1, String(await h.evaluate(() => window.__beats())))
+
+  answer = { status: 401, body: '{"error":"unauthorized"}' }
+  await h.evaluate(() => window.__sock.onclose())
+  await h.waitForFunction(() => diag.conn === 'token refused', { timeout: 15000 }).catch(() => {})
+  ok('a refused token stops the heartbeat', (await h.evaluate(() => [diag.conn, window.__beats()].join(','))) === 'token refused,0')
+
+  answer = { status: 200, body: JSON.stringify({ v: 1, kind: 'idle', at: at(0), now: at(0) }) }
+  await h.evaluate(t => { location.hash = `token=${t}` }, OTHER)
+  await live()
+  ok('a new token starts one heartbeat again', (await h.evaluate(() => window.__beats())) === 1)
   await h.close()
 
   // The rest needs no Worker: states straight into apply(), as the socket would deliver them.
