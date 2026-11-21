@@ -15,7 +15,7 @@
  */
 
 import { sameToken, tokenOf, wantsSubprotocol } from "./auth.js";
-import { lookup, type Loader } from "./identify.js";
+import { lookup, unknownTrack, type Loader } from "./identify.js";
 import { actKey, foldSongTitle } from "./match.js";
 import { json, NowSpinningRoom } from "./room.js";
 import type { RoomEvent } from "./room-logic.js";
@@ -121,7 +121,8 @@ export async function handle(req: Request, env: Env): Promise<Response> {
   // Fail closed until both secrets exist.
   const ingestToken = env.NOW_SPINNING_INGEST_TOKEN;
   const displayToken = env.NOW_SPINNING_DISPLAY_TOKEN;
-  if (!ingestToken || !displayToken) return json({ error: "not configured" }, 503);
+  // Two tokens only mean something if they differ: a display must not be able to write.
+  if (!ingestToken || !displayToken || ingestToken === displayToken) return json({ error: "not configured" }, 503);
 
   const token = tokenOf(req);
 
@@ -142,7 +143,13 @@ export async function handle(req: Request, env: Env): Promise<Response> {
 
     let ev: RoomEvent;
     if (parsed.event === "track") {
-      const track = await lookup(parsed.input, makeLoader(env));
+      // A track always produces a state. If the lookup itself fails, say nothing about the archive.
+      let track;
+      try {
+        track = await lookup(parsed.input, makeLoader(env));
+      } catch {
+        track = unknownTrack(parsed.input);
+      }
       const key = parsed.shazamId || `${actKey(parsed.input.artist)}|${foldSongTitle(parsed.input.title)}`;
       ev = { event: "track", track, key };
     } else {

@@ -39,7 +39,7 @@ export interface Manifest {
   /** `actKey`s shared by two different acts. The lookup never guesses between them. */
   ambiguous: string[];
   /** Data the builder left out rather than fail the site's build. Empty when all is well. */
-  problems: { kind: "no-key" | "ambiguous-act"; what: string }[];
+  problems: { kind: "no-key" | "no-act-key" | "ambiguous-act"; what: string }[];
 }
 
 export interface Night {
