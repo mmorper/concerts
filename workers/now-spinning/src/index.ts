@@ -131,7 +131,8 @@ export async function handle(req: Request, env: Env): Promise<Response> {
     const length = Number(req.headers.get("Content-Length") ?? 0);
     if (length > MAX_BODY) return json({ error: "body too large" }, 413);
     const text = await req.text();
-    if (text.length > MAX_BODY) return json({ error: "body too large" }, 413);
+    // In bytes, not UTF-16 code units: the limit is 2 KB.
+    if (new TextEncoder().encode(text).length > MAX_BODY) return json({ error: "body too large" }, 413);
     let body: unknown;
     try {
       body = JSON.parse(text);

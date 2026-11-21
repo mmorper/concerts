@@ -551,11 +551,12 @@ deploy (the Worker answers `503` to everything), set both secrets with `wrangler
 then check `GET` returns `idle`. Those owner steps are #693. Add `workers/now-spinning` to
 `npm run test:workers` and to `.github/dependabot.yml`.
 
-**What redeploys the Worker.** Its CI path filter must include the shared rule files it bundles:
-`scripts/utils/song-title.ts`, `scripts/utils/act-name.ts` and `src/utils/normalize.ts`, as well
-as `workers/now-spinning/**`. The existing Workers' filters don't include the shared files they
-bundle, which is why #689 needs a manual redeploy. The rules fingerprint is the safety net for
-when the two deploys land at different times.
+**What redeploys the Worker.** Its CI path filter must include the shared code it bundles, as
+well as `workers/now-spinning/**`. It bundles `scripts/utils/song-title.ts` and
+`scripts/utils/act-name.ts` and nothing from `src/utils/`, so the filter watches
+`scripts/utils/**`: a folder, not a list of files, so a newly imported file can't be missed. #689
+moved the other Workers' filters to folders for the same reason. The rules fingerprint is the
+safety net for when the site's deploy and the Worker's land at different times.
 
 **Local development.** Run the Worker with `wrangler dev` and add a Vite proxy from
 `/api/now-spinning` to it, so the display page and the Worker are same-origin locally as they are
