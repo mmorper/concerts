@@ -193,7 +193,7 @@ All data is publicly accessible as JSON:
 ### Song → Album Attribution
 **URL:** https://concerts.morperhaus.org/data/song-albums.json
 **Records:** 1,842 of 2,074 unique artist+song pairs (88.8%)
-**Source:** three tiers — `artists-top-tracks.json` (270), MusicBrainz (1,466), iTunes Search (27)
+**Source:** three tiers — `artists-top-tracks.json` (270), MusicBrainz (1,467), iTunes Search (26)
 **What it answers:** which studio album a song performed live came off.
 **Key format:** `artistKey::folded-song-title`. Derive it with `songAlbumKey()` from `scripts/utils/song-title.ts` — a caller that folds differently matches nothing while looking like it simply found nothing.
 

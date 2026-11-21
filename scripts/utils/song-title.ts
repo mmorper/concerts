@@ -80,9 +80,11 @@ const VERSION_RE = new RegExp(
  *
  * A BARE "with" is never a credit. It is one of the commonest words in song
  * titles — "Dancing With Myself", "She Blinded Me With Science", "With or
- * Without You" — and treating it as one truncated 23 titles in the archive,
- * three of them to nothing, so different songs by one act folded to the same
- * key (#689). Bare "ft" needs its dot for the same reason: without one it could
+ * Without You" — and treating it as one truncated 23 setlist titles in the
+ * archive, one of them ("With Any Sort of Certainty") to nothing, and let
+ * different songs fold to the same key (#689). A BRACKETED "with" is still read
+ * as a credit, because catalogues write one that way: "Down Here (With the Rest
+ * of Us)" folds to "down here" (pinned in the tests). Bare "ft" needs its dot for the same reason: without one it could
  * be a word.
  */
 const FEAT_BRACKETED_RE = /\s*[([]\s*(?:feat|ft|featuring|with)\b\.?\s+[^)\]]*[)\]]\s*/gi
