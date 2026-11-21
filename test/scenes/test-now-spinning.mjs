@@ -139,6 +139,42 @@ async function rules(browser, fail) {
   ok('a new token after a refusal starts again', second.conn !== 'token refused' && second.stored === OTHER, JSON.stringify(second))
   await page.close()
 
+  // The heartbeat, with a stand-in WebSocket: a pong keeps the socket; a missing pong by the next
+  // ping drops it, and the page falls back to polling and reconnects.
+  const h = await browser.newPage()
+  h.on('pageerror', e => fail('rules', `uncaught error: ${e.message}`))
+  await h.setRequestInterception(true)
+  h.on('request', r => (r.url().includes('/api/now-spinning') ? r.respond({ ...answer, contentType: 'application/json' }) : r.continue()))
+  await h.evaluateOnNewDocument(() => {
+    window.__sent = []
+    window.__closed = 0
+    window.WebSocket = class {
+      static OPEN = 1
+      constructor() {
+        this.readyState = 0
+        window.__sock = this
+        setTimeout(() => { this.readyState = 1; this.onopen && this.onopen() }, 20)
+      }
+      send(m) { window.__sent.push(m) }
+      close() { this.readyState = 3; window.__closed++ }
+    }
+  })
+  await h.goto(`${PAGE}#token=${TOKEN}`, { waitUntil: 'networkidle2', timeout: CONFIG.TIMEOUTS.navigation })
+  await h.waitForFunction(() => diag.conn === 'live', { timeout: 5000 }).catch(() => {})
+  const beat = await h.evaluate(() => {
+    heartbeat()                                   // ping
+    const sentFirst = [...window.__sent]
+    window.__sock.onmessage({ data: 'pong' })     // answered
+    heartbeat()                                   // ping again: still alive
+    const closedAfterPong = window.__closed
+    heartbeat()                                   // no pong since the last ping: dead
+    return { sentFirst, sent: window.__sent.length, closedAfterPong, closed: window.__closed, conn: diag.conn, raw: diag.raw }
+  })
+  ok('the page sends a heartbeat ping', beat.sentFirst.length === 1 && beat.sentFirst[0] === 'ping', JSON.stringify(beat))
+  ok('a pong keeps the socket, and is not taken for a state', beat.closedAfterPong === 0 && beat.raw === null, JSON.stringify(beat))
+  ok('no pong by the next ping drops the socket and reconnects', beat.closed === 1 && beat.conn !== 'live', JSON.stringify(beat))
+  await h.close()
+
   // The rest needs no Worker: states straight into apply(), as the socket would deliver them.
   const p = await browser.newPage()
   p.on('pageerror', e => fail('rules', `uncaught error: ${e.message}`))

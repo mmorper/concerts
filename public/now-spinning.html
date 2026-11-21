@@ -109,7 +109,6 @@
   /* states that aren't a song: idle, and the fade between tracks */
   .deck, .info, .strip { transition:opacity 1.2s ease; }
   #idle { position:absolute; inset:0; display:none; align-items:center; justify-content:center; text-align:center; }
-  #idleBox { transition:transform 2s ease; }
   #idle .mark { font-family:'Playfair Display',serif; font-size:76px; color:var(--faint); }
   #idle .mark i { display:block; margin-top:12px; font-family:'Source Sans 3'; font-style:normal; font-size:24px; letter-spacing:.3em; text-transform:uppercase; }
   #idle p { margin-top:48px; font-family:'Playfair Display',serif; font-style:italic; font-size:32px; color:var(--faint); }
@@ -138,7 +137,7 @@
   @media (prefers-reduced-motion: reduce) {
     .vinyl, .dot { animation:none; }
     .fade { animation:none; }
-    .vinyl, .bg, .thumbs div, #idleBox, .deck, .info, .strip, #stage::before { transition:none !important; }
+    .vinyl, .bg, .thumbs div, .deck, .info, .strip, #stage::before { transition:none !important; }
   }
 
   /* diagnostics: #debug only */
@@ -194,7 +193,7 @@ const KINDS = new Set(['idle', 'unmatched', 'track', 'gap']);
 const GAP_FADE_MS = 90 * 1000;        // between tracks, the words step back after 90 s
 const DARK_MS = 10 * 60 * 1000;       // idle for 10 minutes: black
 const NOTE_MOVE_MS = 60 * 1000;       // a notice on the black screen moves each minute
-const MARK_MOVE_MS = 3 * 60 * 1000;   // the idle brand mark shifts every few minutes
+const HEARTBEAT_MS = 30 * 1000;       // ping the Worker; no pong by the next ping means the socket is dead
 const PHOTO_MS = 7000;
 const POLL_MS = 10 * 1000;            // while the socket is down
 const HEALTH_MS = 30 * 1000;          // diagnostics only
@@ -237,11 +236,11 @@ const diag = { conn: 'starting', lastMsgAt: 0, raw: null, health: null, healthEr
 let shownKind = 'idle';        // what's on screen: idle | unmatched | track
 let shownTrack = null;         // JSON of the track on screen
 let pendingFlip = false;       // the first track after idle mirrors the layout
-let gapTimer = 0, darkTimer = 0, noteTimer = 0, markTimer = 0, photoTimer = 0;
+let gapTimer = 0, darkTimer = 0, noteTimer = 0, photoTimer = 0;
 
 // ── Rendering ────────────────────────────────────────────────────────────────
 function clearTimers() {
-  clearTimeout(gapTimer); clearTimeout(darkTimer); clearInterval(noteTimer); clearInterval(markTimer);
+  clearTimeout(gapTimer); clearTimeout(darkTimer); clearInterval(noteTimer);
 }
 const elapsedOf = s => {
   const d = Date.parse(s.now) - Date.parse(s.at);
@@ -297,19 +296,12 @@ function showIdle(notice, elapsed) {
   const st = $('stage');
   st.classList.remove('faded', 'dark'); st.classList.add('idle');
   $('darkNote').classList.remove('on');
-  moveMark();
-  markTimer = setInterval(moveMark, MARK_MOVE_MS);
+  // The mark stays put, as in the app: the TV's Pixel Shift moves the whole panel, and the page
+  // goes black after 10 minutes.
   darkTimer = setTimeout(() => { goDark(notice); renderDebug(); }, Math.max(0, DARK_MS - elapsed));
 }
 
-// Small, occasional shifts, so the brand mark isn't drawn in the same place for ten minutes.
-function moveMark() {
-  const x = Math.round((Math.random() * 2 - 1) * 36), y = Math.round((Math.random() * 2 - 1) * 24);
-  $('idleBox').style.transform = `translate(${x}px, ${y}px)`;
-}
-
 function goDark(notice) {
-  clearInterval(markTimer);
   $('stage').classList.add('dark');
   const note = $('darkNote');
   note.textContent = notice;
@@ -441,7 +433,8 @@ function showPhotos(t, h) {
 }
 
 // ── Connection: WebSocket, with polling while it's down ──────────────────────
-let ws = null, reconnectTimer = 0, pollTimer = 0, stopped = false;
+let ws = null, reconnectTimer = 0, pollTimer = 0, heartbeatTimer = 0, stopped = false;
+let awaitingPong = false;
 const token = () => store.get(TOKEN_KEY);
 
 function connect() {
@@ -460,9 +453,41 @@ function connect() {
   diag.conn = diag.attempt ? 'reconnecting' : 'connecting'; renderDebug();
   // Each handler checks it still belongs to the current socket: an old one closing late must
   // not tear down its replacement.
-  sock.onopen = () => { if (ws !== sock) return; diag.attempt = 0; diag.conn = 'live'; stopPolling(); renderDebug(); };
-  sock.onmessage = e => { if (ws !== sock) return; try { apply(JSON.parse(e.data)); } catch {} };
-  sock.onclose = () => { if (ws !== sock) return; ws = null; if (!stopped) { startPolling(); retry(); } };
+  sock.onopen = () => {
+    if (ws !== sock) return;
+    diag.attempt = 0; diag.conn = 'live'; stopPolling();
+    awaitingPong = false; clearInterval(heartbeatTimer); heartbeatTimer = setInterval(heartbeat, HEARTBEAT_MS);
+    renderDebug();
+  };
+  sock.onmessage = e => {
+    if (ws !== sock) return;
+    if (e.data === 'pong') { awaitingPong = false; diag.lastPongAt = Date.now(); return; }
+    try { apply(JSON.parse(e.data)); } catch {}
+  };
+  sock.onclose = () => {
+    if (ws !== sock) return;
+    ws = null; clearInterval(heartbeatTimer);
+    if (!stopped) { startPolling(); retry(); }
+  };
+}
+
+/**
+ * The heartbeat. A network can drop an idle connection without either end noticing, which would
+ * leave the last song up for good. Every 30 s: if the last ping got no pong, the socket is dead;
+ * close it, which polls and reconnects as any drop does. Otherwise ping again. The Worker's
+ * Durable Object answers without waking up.
+ */
+function heartbeat() {
+  const sock = ws;
+  if (!sock || sock.readyState !== WebSocket.OPEN) return;
+  if (awaitingPong) {
+    diag.conn = 'no heartbeat: reconnecting'; renderDebug();
+    try { sock.close(); } catch {}
+    sock.onclose && sock.onclose();   // don't wait for a dead network to confirm the close
+    return;
+  }
+  awaitingPong = true;
+  try { sock.send('ping'); } catch {}
 }
 
 function retry() {
@@ -503,7 +528,7 @@ async function authedGet(path) {
 function refuse(why) {
   stopped = true;
   lastStateKey = null;
-  stopPolling(); clearTimeout(reconnectTimer);
+  stopPolling(); clearTimeout(reconnectTimer); clearInterval(heartbeatTimer);
   if (ws) { try { ws.close(); } catch {} ws = null; }
   diag.conn = why;
   clearTimers();
@@ -548,6 +573,7 @@ function renderDebug() {
     <dl>
       <dt>state</dt><dd class="${connCls}">${esc(conn)}</dd>
       <dt>last message</dt><dd>${diag.lastMsgAt ? ago(Date.now() - diag.lastMsgAt) : 'none yet'}</dd>
+      <dt>heartbeat</dt><dd>${diag.lastPongAt ? 'pong ' + ago(Date.now() - diag.lastPongAt) : 'none yet'}</dd>
       <dt>token</dt><dd>${token() ? 'stored' : '<span class="bad">none — open once with #token=…</span>'}</dd>
       ${fixtureName ? `<dt>fixture</dt><dd>${esc(fixtureName)}</dd>` : ''}
     </dl>
@@ -611,7 +637,7 @@ addEventListener('hashchange', () => {
   if (readFragment() && !fixtureName) {
     stopped = false; diag.attempt = 0; diag.conn = 'connecting';
     if (ws) { try { ws.close(); } catch {} ws = null; }
-    stopPolling(); clearTimeout(reconnectTimer);
+    stopPolling(); clearTimeout(reconnectTimer); clearInterval(heartbeatTimer);
     connect();
   }
   syncDebug();
