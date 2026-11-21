@@ -1076,6 +1076,11 @@ None open. Phase 0 (#688) will raise the next ones.
 
 ## Revision History
 
+- **2026-11-21, Phase 0 result, check 2a:** Passed. Mike tried the Shazam app on his phone against
+  records playing on the turntable, and it identified them. The catalogue knows these records
+  even through speakers and room noise. Still to do in check 2 on the Pi: the same test through
+  the line feed with `shazamio`, the time to first match, and exactly what Shazam calls each
+  artist and title.
 - **2026-11-21, v1.5.1:** Three answers from Mike. The Cloudflare account is on the free tier, so
   the index is split into a manifest and one small file per act, to stay inside 10 ms of CPU.
   "Listening…" is confirmed for a record Shazam doesn't know. "Most played" on the site will count
