@@ -25,7 +25,7 @@ music he's playing now, without picking up a phone or opening the site.
 It is an extension of the archive, not a scene on the website. The pieces are a Raspberry Pi
 that listens to the receiver's line-level Zone 2 output, a new Worker on
 `concerts.morperhaus.org` that runs the archive lookup and holds the current state, and a
-display that shows it.
+tvOS app on the Apple TV that shows it.
 
 **Decided:**
 
@@ -36,13 +36,11 @@ display that shows it.
 | Zone 2 | Free to use. |
 | Video routing | Already done: the AV7703 sends the Apple TV picture to the TV while Phono plays. |
 | Play history | **None.** No log of vinyl plays is kept anywhere (see [Privacy](#privacy)). |
-| What v7.0.0 means | The index, the Worker, the web display and the Pi listener working end to end. A tvOS app is not part of the release gate. |
+| Display | **A tvOS app on the Apple TV.** The web page is the development display and the fallback. |
+| What v7.0.0 means | A record plays and the tvOS app shows it on the TV: the index, the Worker, the Pi listener and the app, working end to end. |
 | Version number | v7.0.0. Social Syndication (#323) moves to v6.5.0. |
 | Listener health | Yes. A quiet heartbeat from the Pi, a notice on the idle screen when it's offline, and one line on the operator dashboard. No song data. |
 | Audio interface | The Mackie Onyx Blackjack Mike already owns. |
-
-**Open (decide after Phase 3):** whether the picture comes from the Pi over HDMI or from a
-tvOS app. See [Display](#display).
 
 ---
 
@@ -67,7 +65,7 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 - A Raspberry Pi hears the turntable through the AV7703's Zone 2 line output and identifies songs (ShazamIO)
 - It POSTs {artist, title, album?, artworkUrl?, isrc?} to a new Worker at concerts.morperhaus.org/api/now-spinning
 - The Worker runs the archive lookup (identify(), built on the repo's existing title and act matching utilities) and stores only the current state and the listener's last-seen time in a Durable Object
-- A web page (and later, maybe, a tvOS app) holds a WebSocket to the Worker and renders the state
+- A tvOS app on the Apple TV holds a WebSocket to the Worker and renders the state; a web page does the same for development
 - No play history is kept, anywhere
 - The screen never says something the data can't back up
 
@@ -88,9 +86,9 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 - Phase 0 (Mike, hardware evening, #688): must be done and recorded in this spec before Window 4
 - Window 1: match module + index builder + pure identify() with fixture tests
 - Window 2: Worker API, Durable Object, auth, liveness, CI + deploy
-- Window 3: web display page
+- Window 3: web display page (the development display)
 - Window 4: Pi listener (Python), runnable against a WAV file without hardware
-- Window 5: put it on the TV: a kiosk on the Pi, or a tvOS app, per the decision in #695
+- Window 5: tvOS app: Swift sources and a simulator build check in CI; Mike builds, signs and installs from Xcode
 
 Let's start with Window 1. Should I begin with workers/now-spinning/src/match.ts?
 ```
@@ -128,8 +126,10 @@ flowchart LR
   PI -->|POST /api/now-spinning<br/>Bearer ingest token| W[Worker<br/>workers/now-spinning]
   W -->|cachedJsonFetch, 300 s| D[(concerts.morperhaus.org/data/<br/>now-spinning-index.json)]
   W <--> DO[(Durable Object<br/>current state only)]
-  DISP[Display<br/>web page, or tvOS app] -->|WebSocket /api/now-spinning/ws<br/>display token| W
-  DISP -->|HDMI| AVR
+  ATV[Apple TV 4K<br/>Now Spinning tvOS app] -->|WebSocket /api/now-spinning/ws<br/>display token| W
+  PI -.->|pyatv: wake, launch the app| ATV
+  ATV -->|HDMI| AVR
+  WEB[Web page<br/>development and fallback] -.->|same WebSocket| W
   AVR -->|HDMI, video select on Phono| TV[TV]
 ```
 
@@ -141,13 +141,14 @@ sequenceDiagram
   participant Pi as Pi listener
   participant W as Worker
   participant DO as Durable Object
-  participant TV as Display
-  TV->>W: open WebSocket (display token)
-  DO-->>TV: current state (idle)
+  participant TV as Apple TV app
   Pi->>AVR: which input? (poll)
   AVR-->>Pi: Phono, main zone on
   Pi->>AVR: Zone 2 on, source Phono
   Note over Pi: sound after silence → recognise at once
+  Pi->>TV: wake the Apple TV, bring the app to the front (pyatv)
+  TV->>W: open WebSocket (display token)
+  DO-->>TV: current state
   Pi->>W: POST {event: "track", artist, title, album, artworkUrl}
   W->>W: identify() against the index
   W->>DO: put state, set 3-minute alarm
@@ -181,8 +182,10 @@ Step-by-step instructions for setting up the Pi and running these checks are in
 
 Tracked as #688, which carries these as a checklist.
 
-Three assumptions decide whether this design works, and none can be tested from a desk. Test
-them first with a laptop (or the Pi, if it has arrived), the Onyx Blackjack, and the Apple TV.
+Four assumptions decide whether this design works, and none can be tested from a desk: Shazam on
+real records (check 2), the run-out groove (3), the receiver not switching input when the Apple
+TV wakes (4), and the Pi being able to put an app on the Apple TV's screen (5). Test them with
+the Pi, the Onyx Blackjack and the Apple TV.
 Record the results in this spec's revision history.
 
 | # | Check | Why it matters |
@@ -192,14 +195,16 @@ Record the results in this spec's revision history.
 | 1c | On the Pi: `vcgencmd get_throttled` reads `0x0`, `/proc/device-tree/chosen/power/max_current` reads 5000 (a recognised 5 A supply), and `dmesg` shows no USB over-current or under-voltage warnings with the Blackjack plugged in. Steps in [`NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md) §5. | The Blackjack draws its power from the Pi's USB ports |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
-| 4 | With the receiver on Phono, wake the Apple TV. Does the receiver switch input to it? | If HDMI Control (CEC) does that, waking the Apple TV stops the record |
-| 5 | From the laptop: `pyatv` pairing, `turn_on`, `launch_app` against tvOS 26 | Only matters if the display is a tvOS app |
+| 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, turn off the Apple TV's "Control TVs and Receivers" (or the receiver's HDMI Control) and try again. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
+| 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
 | 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
 | 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio). Answered from its source code in Phase 4. | So the privacy section states a fact |
 | 8 | Note the Pi's Python version, and whether `pip install shazamio` had to compile anything | The listener targets the Python the Pi ships, whatever that is |
 
 If check 2 fails, stop and pick another recogniser (ACRCloud, AudD) before going further.
+If check 4 or 5 fails with no workaround, the display falls back to the Pi driving the TV
+(see [Display](#display)).
 
 ---
 
@@ -398,10 +403,10 @@ New self-contained Worker, matching `workers/mcp-server`: its own `package.json`
 
 | Method + path | Auth | Body / response |
 |---|---|---|
-| `POST /api/now-spinning` | ingest token | `{ event: "track", artist, title, album?, artworkUrl?, isrc?, shazamId? }`, or `{ event: "gap" \| "unmatched" \| "stopped" \| "alive" }`, or `{ event: "status", recognizer, receiver, version }`. Body ≤ 2 KB. Returns the new state. `400` on a bad body. |
+| `POST /api/now-spinning` | ingest token | `{ event: "track", artist, title, album?, artworkUrl?, isrc?, shazamId? }`, or `{ event: "gap" \| "unmatched" \| "stopped" \| "alive" }`, or `{ event: "status", recognizer, receiver, appleTv, version }`. Body ≤ 2 KB. Returns the new state. `400` on a bad body. |
 | `GET /api/now-spinning` | display token | Current state (polling fallback, debugging) |
 | `GET /api/now-spinning/ws` | display token | WebSocket. Sends the current state on connect, then each change. Uses DO WebSocket hibernation, so an idle evening costs nothing. |
-| `GET /api/now-spinning/health` | display token | `{ online, lastSeenAt, recognizer, receiver, version }`. No song data. |
+| `GET /api/now-spinning/health` | display token | `{ online, lastSeenAt, recognizer, receiver, appleTv, version }`. No song data. |
 
 ### The state contract
 
@@ -463,8 +468,8 @@ interface NowSpinningState {
 Without this, a dead Pi or a blocked recogniser looks exactly like "nothing playing".
 
 - The Pi POSTs `{ event: "status", recognizer: "ok" | "failing", receiver: "ok" | "unreachable",
-  version }` every 5 minutes, playing or not.
-- The Durable Object keeps `listener: { lastSeenAt, recognizer, receiver, version }` beside the
+  appleTv: "ok" | "unreachable", version }` every 5 minutes, playing or not.
+- The Durable Object keeps `listener: { lastSeenAt, recognizer, receiver, appleTv, version }` beside the
   state. Every ingest POST refreshes `lastSeenAt`. It holds no song data.
 - `GET /api/now-spinning/health` returns it, plus `online` (seen in the last 15 minutes).
 - **On the idle screen.** When the listener is offline or the recogniser is failing, the Worker
@@ -516,8 +521,8 @@ in production. No CORS headers are needed anywhere.
 A Python service for **the Python that Raspberry Pi OS ships** (Phase 0 check 8 records which;
 `requires-python` and CI follow it). Run by systemd (`now-spinning.service`, restart on failure).
 `sounddevice` needs the `libportaudio2` system package. Config is in
-`/etc/now-spinning/env`: the Worker URL, the ingest token, the receiver's address and the audio
-device.
+`/etc/now-spinning/env`: the Worker URL, the ingest token, the receiver's address, the Apple TV's
+identifier and the audio device.
 
 **Gating on the receiver.**
 - Listen only while the main zone is on and its input is Phono. Then turn Zone 2 on with source
@@ -530,6 +535,17 @@ device.
 - **Receiver unreachable.** After three failed polls, stop gating and listen on sound alone. If
   Zone 2 is off there is only silence, so nothing is posted. Report `receiver: "unreachable"`
   in the status heartbeat and keep polling.
+
+**Putting the app on the screen.** A tvOS app can't bring itself to the front, so the listener
+does it with `pyatv`, using the commands Phase 0 check 5 found to work.
+- Paired with the Apple TV once; the credentials live on the Pi, readable by root only.
+- On **every** idle → track change, not only when the input switches to Phono: wake the Apple TV
+  if it's asleep, and bring the app to the front if it isn't there. This is what makes a second
+  record an hour later appear instead of playing behind the screensaver.
+- **Never interrupt.** If the Apple TV reports that something is playing, do nothing.
+- When the record stops, do nothing. The app goes idle and the Apple TV's screensaver takes over.
+- If the Apple TV can't be reached, keep listening and posting. Report `appleTv: "unreachable"`
+  in the status heartbeat.
 
 **Identification loop.**
 - Capture 44.1 kHz stereo from the Blackjack (`sounddevice`, selected by name, not by card
@@ -582,12 +598,16 @@ Pi itself.
 
 ## Display
 
-### Web page first (`public/now-spinning.html`)
+The picture on the TV comes from a **tvOS app** on the Apple TV, which is already what the TV
+shows while Phono plays. A **web page** renders the same state and is built first: it is how the
+Worker and the copy get developed without a build-and-install cycle, it is the reference the app
+is checked against, and it is the fallback.
+
+### Web page: the development display (`public/now-spinning.html`)
 
 The mock is already most of a display. Phase 3 turns it into one: a static page that opens the
-WebSocket and renders the state instead of running its own lookup. It is needed whatever the
-final display is, because it is how the Worker gets developed and debugged, and it makes the
-screen available on a laptop, a phone or an iPad.
+WebSocket and renders the state instead of running its own lookup. It also puts the screen on a
+laptop, a phone or an iPad.
 
 - Layout, fonts, colours and motion are the mock's: sleeve and spinning record on the left,
   text column on the right, photo strip bottom-left, brand bottom-right, on a 1920×1080 stage
@@ -613,57 +633,85 @@ The design is already mostly dark, with changing photos and text. These rules co
 
 | Rule | In the display page | Why |
 |---|---|---|
-| **Cap the sleeve's brightness** (required) | Album art and the generated sleeve render at about 82% (`filter: brightness(.82)`) | Wear rises steeply with brightness, this panel is very bright, and the sleeve is the largest bright area that stays put for a whole album |
-| **Black after 10 minutes idle** (required) | After 10 minutes of `idle`, fade to solid black with nothing drawn. Any non-idle state brings the screen back. | If the Pi drives the TV, nothing else ever blanks it. Black OLED pixels are off. |
-| **Mirror the layout for each record** (should) | The first track after `idle` flips the layout: sleeve left and text right, then sleeve right and text left. The choice is kept in `localStorage` so a reload doesn't reset it. | Spreads what wear there is across both halves of the screen |
+| **Cap the sleeve's brightness** (required) | Album art and the generated sleeve render at about 82% (`filter: brightness(.82)` on the page; the same in the app) | Wear rises steeply with brightness, this panel is very bright, and the sleeve is the largest bright area that stays put for a whole album |
+| **Nothing static when idle** (required) | tvOS app: clear `isIdleTimerDisabled` on `idle`, so the Apple TV's screensaver takes over. Web page: after 10 minutes of `idle`, fade to solid black with nothing drawn; any non-idle state brings it back. | An idle screen left up for hours is the longest-lived static image there is. Black OLED pixels are off. |
+| **Mirror the layout for each record** (should) | The first track after `idle` flips the layout: sleeve left and text right, then sleeve right and text left. The choice is remembered (`localStorage` on the page, `UserDefaults` in the app) so a restart doesn't reset it. | Spreads what wear there is across both halves of the screen |
 
-- **A `notice` is the one exception to going black.** "The listener has been offline since…" stays
-  up, dim, and moves to a new position each minute. A black screen that hides the reason nothing
-  is happening would be worse than a small moving line.
-- **No drift in the page.** The TV's own Pixel Shift does that for the whole panel. Keep it on.
-- The timers are the display's. The 10 minutes count from `at` on the idle state, using `now − at`.
+- **A `notice` on the web page is the one exception to going black.** "The listener has been
+  offline since…" stays up, dim, and moves to a new position each minute. In the app, the notice
+  shows on the idle screen until the screensaver starts, and again whenever the app is opened.
+- **No drift in the app or the page.** The TV's own Pixel Shift does that for the whole panel.
+  Keep it on.
+- The web page's timer is its own. The 10 minutes count from `at` on the idle state, using
+  `now − at`.
 - The mock shows all three: "Next record (mirrored)" and "Idle for 10 minutes (black)" in its
   panel, and the brightness cap is always on. Reference: `screens/heard-live-mirrored.jpg`.
 
-**TV settings, once (owner):**
-- Settings → General & Privacy → Panel Care: **Pixel Shift on**, **Adjust Logo Brightness on**.
-- For the HDMI input the picture arrives on: a dim picture mode (**Movie** or **Filmmaker**, not
-  Dynamic or Standard), with Brightness lowered to taste.
-- If the Pi drives the TV, it sends a standard (SDR) signal. Don't enable HDR for that input.
+**Settings, once (owner):**
+- TV: Settings → General & Privacy → Panel Care: **Pixel Shift on**, **Adjust Logo Brightness on**.
+- The app's picture arrives on the Apple TV's input, which is also the film input, so leave that
+  input's picture mode as it is. The app keeps itself dim instead (the brightness cap).
+- Apple TV: Settings → Video and Audio → Match Content → **Match Dynamic Range**. With it on, the
+  app (standard range) isn't stretched into HDR brightness. It changes how everything on the
+  Apple TV is shown, so it's Mike's call.
+- Apple TV: a short screensaver delay (Settings → Screen Saver → Start After), so an idle screen
+  doesn't sit for long.
 
-### Getting it onto the TV: decide after Phase 3
+### On the TV: the tvOS app (`now-spinning/tvos/`)
 
-| | A. The Pi drives the TV | B. A tvOS app |
+Decided 2026-11-21. SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`.
+
+**The app**
+- Renders the same state contract as the web page, with the same layout, fonts (Playfair Display
+  and Source Sans 3, bundled), copy and motion. It writes no words of its own.
+- `URLSessionWebSocketTask` with the `Authorization` header. Reconnect with backoff, poll `GET`
+  every 10 s while the socket is down, and reconnect whenever the app returns to the front.
+- An unknown `screen` renders as `unknown`; an unknown `kind` renders as `idle`. The app is
+  updated far less often than the Worker, so this rule matters most here.
+- SwiftUI previews load `test/fixtures/now-spinning-states.json`, one per state, so each can be
+  compared with its screenshot in `screens/` without a record playing.
+- The display token comes from an untracked `Secrets.xcconfig`, not an entry screen, since this
+  is a single personal build.
+- `isIdleTimerDisabled` is set while `kind` is `track`, `gap` or `unmatched`, and cleared on
+  `idle`, so the Apple TV's own screensaver takes over when nothing is playing.
+- The Menu button exits. Nothing else is interactive.
+- Reduce Motion in tvOS turns the motion off.
+
+**What a Code session can and can't do.** It can write the Swift sources and the Xcode project.
+It can't build, sign or run them. Two things narrow that gap:
+- A CI job on a macOS runner builds the app for the tvOS Simulator without signing
+  (`.github/workflows/now-spinning-tvos-ci.yml`), so every PR proves the code compiles.
+- The fixture previews let Mike check every screen in Xcode in a minute.
+
+Keep the Xcode project minimal. If hand-editing it proves fragile, generate it from a
+`project.yml` with XcodeGen.
+
+**Putting it on the screen** is the listener's job: see
+[Pi listener](#pi-listener-now-spinningpi). It depends on Phase 0 checks 4 and 5.
+
+**Staying installed.** An app installed outside the App Store stops working after a while:
+
+| How it's signed | Works for | Needs |
 |---|---|---|
-| How | The Pi runs Chromium in kiosk mode on the web page. Its HDMI goes to a spare AV7703 input, and Video Select on Phono points there. | A SwiftUI app renders the same state contract. |
-| New code | None beyond Phase 3 | A second implementation of the layout, in Swift |
-| Builds and signing | None | Xcode on Mike's Mac; CI can't build it |
-| Staying installed | Nothing expires | A sideloaded app stops working after 7 days on a free Apple account, about a year on a paid one, and 90 days through TestFlight |
-| Starting and waking | Always on; nothing to launch | The Pi must wake the Apple TV and launch the app on every idle → track change, not just when the input changes, or a second record plays behind the screensaver. Don't do it while the Apple TV is playing something. Depends on Phase 0 checks 4 and 5. |
-| When nothing is playing | The TV shows the idle screen (or black) | The Apple TV screensaver takes over |
-| Risk | Chromium on a Pi 5 may stutter on the blurred backgrounds; pre-blur the images if so | Phase 0 checks 4 and 5 could each rule it out |
+| Free Apple account, installed from Xcode | 7 days | nothing |
+| Apple Developer Program, installed from Xcode | about a year (until the provisioning profile expires) | the paid program |
+| TestFlight | 90 days per build | the paid program |
 
-**Recommendation: A.** It reuses Phase 3 as it is and removes the parts of this project that
-can't be tested or automated. B stays possible later because the contract is the same. The
-decision is #695, which includes a half-hour trial of A on the real TV; the build is #698.
+Recommended: the paid program, installed from Xcode, with a calendar reminder to rebuild and
+reinstall each year. The Worker writes the copy, so wording changes never need a reinstall.
 
-If A is chosen:
+### Fallback: the Pi drives the TV
+
+Only if Phase 0 check 4 or 5 rules the app out, or reinstalling becomes a nuisance. Nothing new
+is written: the Pi shows the web page.
 - A kiosk session on the Pi starts Chromium full screen on the display page at boot: no desktop,
   no cursor, no screen blanking. The setup guide installs the no-desktop OS, so this adds a
   minimal compositor (`cage` or `labwc`) and Chromium.
 - The display token reaches the page through a launch URL (`…/now-spinning.html#token=…`) kept in
   `/etc/now-spinning/env`, readable by root only, never in the repo.
-- Output fixed at 1080p. The listener and the browser run on the same Pi; check there are no
-  audio dropouts or throttling with both running.
-- If the blurred photo backgrounds stutter, pre-blur the images at build time and drop the CSS
-  blur.
-- The AV7703's Video Select for Phono points at the Pi's HDMI input.
-
-If B is chosen: SwiftUI, tvOS 26, bundle `org.morperhaus.nowspinning`, in `now-spinning/tvos/`.
-`URLSessionWebSocketTask` with the `Authorization` header. The display token comes from an
-untracked `Secrets.xcconfig`, not an entry screen, since this is a single personal build.
-Set `isIdleTimerDisabled` while `kind` is `track`, `gap` or `unmatched`, and clear it on
-`idle`. Previews load `test/fixtures/now-spinning-states.json`.
+- Output fixed at 1080p, standard range. If the blurred photo backgrounds stutter, pre-blur the
+  images at build time and drop the CSS blur.
+- The kit's micro-HDMI cable goes to a spare AV7703 input, and Video Select for Phono points there.
 
 ---
 
@@ -673,15 +721,16 @@ Ordered 2026-11-21, except the Blackjack, which Mike already owned.
 
 | Item | What it is | Notes |
 |---|---|---|
-| Computer | Raspberry Pi 5, 8 GB (CanaKit Essentials Starter Kit) | More memory than this needs; enough to also drive the TV. |
+| Computer | Raspberry Pi 5, 8 GB (CanaKit Essentials Starter Kit) | More memory than this needs. |
 | Power | The kit's CanaKit 45 W USB-C supply | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
 | Storage | The kit's 32 GB microSD, with its USB reader | Raspberry Pi OS Lite, 64-bit |
 | Cooling | The kit's official active cooler; the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
 | TV | Samsung S95C 65" QD-OLED (already owned) | An OLED, so the display follows the [Screen care](#screen-care-the-tv-is-an-oled) rules. |
+| Display source | Apple TV 4K, 2026 (already owned) | Runs the Now Spinning tvOS app. Already the picture the TV shows while Phono plays. |
 | Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. It has no power socket: it runs on USB power from the Pi. The Pi 5 allows 1.6 A across its USB ports only when it recognises a 5 A supply (600 mA otherwise), so use the 5 A-capable supply from the kit, and keep phantom power off, which is the Blackjack's biggest draw. |
 | Audio cable | Dual RCA (male) → dual 1/4" TS (male), 6 ft (J&D) | AV7703 ZONE2 PRE OUT L → Blackjack input 1, R → input 2. Unbalanced TS is right here: the pre-outs are unbalanced and the run is short. |
 | USB cable | USB-A → USB-B, 1.5 ft (Monoprice) | Pi USB 2.0 port (black) → Blackjack. The blue USB 3 ports are fine too, but USB 2 keeps it away from any USB 3 interference near the Wi-Fi antenna. |
-| Display cable | The kit's micro-HDMI → HDMI cable (option A only) | Pi → a spare AV7703 HDMI input |
+| Display cable | The kit's micro-HDMI → HDMI cable | Not used. Kept for the fallback, where the Pi drives the TV. |
 | Network | Ethernet patch cable to the cabinet switch (already owned) | Wi-Fi works too; wired is steadier. |
 
 **Shelf placement:** next to the AV7703, with the Blackjack on a short USB lead so the analogue run
@@ -706,7 +755,7 @@ The listener records the two channels as stereo and downmixes to mono itself.
 **Receiver setup, once:**
 - Zone 2 Setup → Volume Level: fixed.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
-- For option A: assign the Pi's HDMI input as Video Select for Phono.
+- Video Select on Phono stays on the Apple TV, as it is today.
 - TV: the Panel Care and picture-mode settings under [Screen care](#screen-care-the-tv-is-an-oled).
 
 ---
@@ -776,7 +825,11 @@ data commits trigger it). Build the index from `public/data` and assert properti
 no two acts share an `actKey`, every song has a strict key, every photo URL is in
 `media-index.json`, and every `sl` and `cv` row points at a real show.
 
-**Pi:** pytest as above, and `--wav --dry-run`.
+**Pi:** pytest as above, and `--wav --dry-run`. The Apple TV rules get their own tests with a fake
+Apple TV: wake when asleep, bring the app forward, never while something is playing, carry on
+when it can't be reached.
+
+**tvOS app:** the CI simulator build, and one preview per fixture checked against `screens/`.
 
 **On the hardware**
 - [ ] The listener stays quiet with the main zone on another input
@@ -785,8 +838,12 @@ no two acts share an `actKey`, every song has a strict key, every photo URL is i
 - [ ] Needle up for 3 min → idle
 - [ ] Needle left in the run-out groove → idle within about 5 min
 - [ ] Pull the Pi's power mid-song → idle within about 3 min; about 15 min later the idle screen says the listener is offline; power back → it clears
-- [ ] A second record an hour later appears without touching anything, with the layout mirrored
-- [ ] Ten minutes after the record stops, the screen is black
+- [ ] A second record an hour later appears without touching the remote, with the layout mirrored
+- [ ] With the Apple TV asleep: needle down → the Apple TV wakes and the app is on screen
+- [ ] With the screensaver showing: needle down → the app is on screen
+- [ ] With a film playing on the Apple TV: nothing interrupts it
+- [ ] Waking the Apple TV never switches the receiver away from Phono
+- [ ] After the record stops, the Apple TV's screensaver takes over
 - [ ] Worker unreachable → the listener keeps running; the display shows the last state, then idle
 
 ---
@@ -803,15 +860,17 @@ Every phase is a GitHub issue under epic #687. The issue's checklist is the defi
 | 1: match rules, index, lookup | #691 | Code session |
 | 2: Worker API, Durable Object, health | #692 | Code session |
 | First deploy: tokens and secrets | #693 | Mike |
-| 3: web display | #694 | Code session |
-| Display decision | #695 | Mike |
+| 3: web display (the development display) | #694 | Code session |
+| Display decision | #695 (closed: tvOS app) | Decided |
 | 4: Pi listener | #696 | Code session |
 | Install and hardware acceptance | #697 | Mike |
-| 5: put it on the TV | #698 | Both |
+| 5: tvOS app | #698 | Code session |
+| Apple developer account, signing, install on the Apple TV | #701 | Mike |
 | Release v7.0.0 | #699 | Code session |
 
 The hardware track (#688) and the software track (#689 → #690 → #691 → #692 → #694) don't depend
-on each other. Phase 4 is the first point where they meet.
+on each other. Phase 4 is the first point where they meet. Phase 5 needs only Phase 2's contract
+and fixtures, so it can run alongside Phases 3 and 4.
 
 ### Phase 0: hardware evening (#688)
 The checks above. **Done when:** results are in this spec's revision history and the recogniser
@@ -833,28 +892,31 @@ is chosen.
 **Done when:** API tests pass, the Worker is deployed and answers `503`, and after Mike sets the
 secrets (#693), `GET` returns `idle`.
 
-### Phase 3: web display (#694, then #695)
+### Phase 3: web display (#694)
 **Create:** `public/now-spinning.html`
 **Modify:** `workers/meta-injector/worker.js` (static-page exemption), `vite.config.ts` (dev proxy)
 **Done when:** every fixture renders like its screenshot in `screens/`, and a `curl` POST with the
-ingest token changes the page live. Then make the display decision (#695).
+ingest token changes the page live.
 
 ### Phase 4: Pi listener (#696, then #697)
 **Create:** `now-spinning/pi/{pyproject.toml,now_spinning/*.py,tests/,now-spinning.service,README.md}`,
 `.github/workflows/now-spinning-pi-ci.yml`
-**Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§11: install, update, token rotation), this spec's
-Privacy section (Phase 0 check 7)
+**Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§12: install, update, token rotation, pairing with
+the Apple TV), this spec's Privacy section (Phase 0 check 7)
 **Done when:** `--wav --dry-run` prints the right POSTs, pytest passes, and the hardware
 checklist (#697) passes.
 
-### Phase 5: put it on the TV (#698)
-Option A: the kiosk session, its section in `docs/NOW_SPINNING_OPERATIONS.md`, and the receiver's
-Video Select. Option B: `now-spinning/tvos/` and Xcode ignores in `.gitignore`.
+### Phase 5: tvOS app (#698, then #701)
+**Create:** `now-spinning/tvos/` (Xcode project, SwiftUI sources, bundled fonts, fixture previews),
+`.github/workflows/now-spinning-tvos-ci.yml` (simulator build, no signing)
+**Modify:** `.gitignore` (Xcode user data, `Secrets.xcconfig`)
+**Done when:** CI builds it, every preview matches its screenshot, and after Mike signs and
+installs it (#701) a record on the turntable shows on the TV.
 
 ### Release v7.0.0 (#699)
 Changelog, `CLAUDE.md` project structure, roadmap, context file, the spec moved to
 `docs/specs/implemented/`, and the operator dashboard's Worker list and listener-health line.
-The release gate is Phases 1–4. Phase 5 can ship after it.
+The release gate is Phases 1–5: a record plays, and the tvOS app shows it on the TV.
 
 ---
 
@@ -869,7 +931,6 @@ The release gate is Phases 1–4. Phase 5 can ship after it.
 
 ## Questions for Review
 
-- Display: option A (the Pi drives the TV) or option B (a tvOS app)? Decided in #695, after Phase 3.
 - Is "Listening…" right for `unmatched`, or should the screen stay on idle until a match comes in?
 - Should "most played" on the site count songs heard from opening acts? Asked in #690.
 
@@ -877,11 +938,18 @@ The release gate is Phases 1–4. Phase 5 can ship after it.
 
 ## Revision History
 
+- **2026-11-21, v1.4.0:** Display decided: a tvOS app on the Apple TV (Mike's strong preference,
+  and what the original handoff described). The web page becomes the development display and the
+  fallback; the Pi driving the TV is kept only as a fallback. The listener now wakes the Apple TV
+  and brings the app forward on every idle → track change, never while something is playing.
+  Phase 0 checks 4 and 5 are required. Added app expiry and the recommended signing route, a CI
+  simulator build, `appleTv` in the status heartbeat, and screen care adapted to the app (the
+  Apple TV's screensaver takes over when idle). The release gate now includes the app.
 - **2026-11-21, v1.3.0:** Completeness pass. Matching now reuses the repo's own rules
   (`foldSongTitle`, `songIndexKeys`, `actKey`), with a near-miss tier that can only soften a
   "never heard" claim; a prototype confirmed every test input against the real archive. Added
   listener health (status heartbeat, `/health`, idle-screen notice, dashboard line), the
-  receiver-unreachable fallback, Phase 0 checks 6b and 8, the build details for option A, the
+  receiver-unreachable fallback, Phase 0 checks 6b and 8, the build details for the Pi-drives-the-TV option, the
   Shazam field mapping, pure room logic for testing, token generation, local development, and
   the index version rule. Corrected the Python version and the hardware table (now as bought).
   Target stays v7.0.0; Social Syndication moves to v6.5.0. Two existing bugs became

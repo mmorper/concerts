@@ -1,8 +1,8 @@
 # Now Spinning: Raspberry Pi setup and operations
 
 How to take the Raspberry Pi from a sealed box to a machine that hears the turntable and can
-identify songs. Parts 1–10 are everything Phase 0 needs. Part 11 (installing the listener
-service) is filled in when Phase 4 builds the listener.
+identify songs, and to checking that it can drive the Apple TV. Parts 1–11 are everything Phase 0
+needs. Part 12 (installing the listener service) is filled in when Phase 4 builds the listener.
 
 **Spec:** [`specs/future/global-now-spinning/global-now-spinning-spec.md`](specs/future/global-now-spinning/global-now-spinning-spec.md).
 Its Phase 0 table numbers the checks; this guide says which step covers which check.
@@ -20,6 +20,7 @@ over SSH). Anything in `<angle brackets>` is a value you fill in.
 - Mackie Onyx Blackjack, its USB-A → USB-B cable, and the dual RCA → dual 1/4" cable
 - An Ethernet cable to the switch in the AV cabinet
 - Your Mac, on the same home network
+- The Apple TV and its remote (step 10)
 
 ---
 
@@ -348,15 +349,63 @@ must keep playing throughout; if any command interrupts it, note which.
 
 ---
 
-## 10. Record the results
+## 10. The Apple TV (Phase 0 checks 4 and 5)
+
+The picture on the TV will come from a tvOS app on the Apple TV. The app can't put itself on
+screen, so the Pi has to wake the Apple TV and bring the app forward for every record. These two
+checks find out whether that works. Both are required.
+
+**Check 4: does waking the Apple TV steal the receiver's input?**
+
+1. Put the receiver on Phono with a record playing. Let the Apple TV go to sleep (hold the TV
+   button on the remote → Sleep).
+2. Wake the Apple TV with its remote.
+3. Did the receiver switch away from Phono, so the record stopped?
+
+If it did, HDMI control (CEC) is doing it. Turn it off in one of two places, then repeat the test
+and write down which you chose:
+- Apple TV: Settings → Remotes and Devices → Control TVs and Receivers → Off. The Apple TV remote
+  then no longer turns the TV on or changes the volume.
+- Or the AV7703: its HDMI Control setting → Off.
+
+**Check 5: can the Pi put an app on the Apple TV's screen?**
+
+On the Apple TV first: Settings → AirPlay and HomeKit → Allow Access → "Anyone on the Same
+Network", so the Pi can pair.
+
+```bash
+# Pi
+~/ns-test/bin/pip install pyatv
+~/ns-test/bin/atvremote scan                                   # find the Apple TV; copy its Identifier
+~/ns-test/bin/atvremote --id <identifier> --protocol companion pair   # type the PIN the TV shows
+~/ns-test/bin/atvremote --id <identifier> --protocol airplay pair     # and again
+```
+
+Then try each of these and write down what happened. If a command isn't recognised, run
+`~/ns-test/bin/atvremote commands` to see the names your version uses.
+
+```bash
+# Pi
+~/ns-test/bin/atvremote --id <identifier> power_state          # on or off?
+~/ns-test/bin/atvremote --id <identifier> app_list             # the installed apps and their identifiers
+~/ns-test/bin/atvremote --id <identifier> launch_app=com.apple.TVMusic    # does Music open?
+~/ns-test/bin/atvremote --id <identifier> playing              # says what is playing, if anything
+```
+
+Three situations matter. Test each with the receiver on Phono:
+
+| Start from | Run | Write down |
+|---|---|---|
+| Apple TV asleep | `turn_on`, then `launch_app=com.apple.TVMusic` | Did it wake? Did Music open? Did the receiver stay on Phono? |
+| Music open, screensaver showing | `launch_app=com.apple.TVMusic` | Did the screensaver go away? If not, try `turn_on`, then `menu`, and note which worked. |
+| A film playing | `playing` | Does it report that something is playing? (The listener uses this to know not to interrupt.) |
+
+## 11. Record the results
 
 Add one line per check to the spec's **Revision History**, with the date: the Zone 2 level and
-gain positions, the ten-record table, the run-out finding, the Python version, and the answers to
-checks 4–6b. That's what Phase 4 is designed against. Tick the same items off on issue #688.
-
-Checks 4 and 5 involve the Apple TV, not the Pi. Check 4: with the receiver on Phono and a
-record playing, wake the Apple TV with its remote and see whether the receiver switches input
-away from Phono. Check 5 only matters if you're still considering a tvOS app.
+gain positions, the ten-record table, the run-out finding, the Python version, the Apple TV
+results from step 10, and the answers to checks 6 and 6b. That's what Phase 4 is designed
+against. Tick the same items off on issue #688.
 
 Then delete the test files:
 
@@ -367,12 +416,15 @@ rm -rf ~/ns-test ~/try-shazam.py ~/level-test.wav ~/shazam-sample.json /tmp/clip
 
 ---
 
-## 11. Installing the listener (Phase 4)
+## 12. Installing the listener (Phase 4)
 
 *To be written when Phase 4 builds the listener.* It will cover cloning the repo, the
 listener's Python environment, `/etc/now-spinning/env` (the Worker URL and the ingest token,
-readable by root only), the `now-spinning` systemd service, updating with `git pull` and a
-restart, and rotating the ingest token (also listed in [`SECRETS.md`](SECRETS.md)).
+readable by root only), pairing the listener with the Apple TV, the `now-spinning` systemd
+service, updating with `git pull` and a restart, and rotating the ingest token (also listed in
+[`SECRETS.md`](SECRETS.md)).
+
+Building and installing the tvOS app is done on the Mac, not the Pi: see issue #701.
 
 ---
 
