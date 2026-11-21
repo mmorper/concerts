@@ -448,6 +448,7 @@ listener's health: online or last seen, song recognition, receiver, Apple TV.
 |---|---|---|---|
 | The right song | Nothing, or the screensaver | Waking the Apple TV, or the app isn't open | The panel's Apple TV line. Open the app by hand: if it then shows the song, the waking step failed (step 10's commands test it). |
 | The right song | The wrong song, or an old one | The tvOS app | Quit and reopen the app. If that fixes it, the app lost its connection and didn't recover; note it on the epic (#687). |
+| The right song | The app won't open at all | The app's signing has expired (about a year after it was installed) | Run it from Xcode again to reinstall it (#701). Set the next reminder. |
 | The right song | The app, but garbled or cut off | The tvOS app | Compare with the page. The app may be older than a newer screen type; rebuild and reinstall it (#701). |
 | Idle while a record plays | Idle | The Pi listener | The panel's listener lines. Offline: is the Pi powered and on the network? Online but not identifying: is Zone 2 on Phono, and does the meter in step 7 move? |
 | "Listening…" that never resolves | The same | Song recognition | The panel's recognition line. If it says failing, Shazam is refusing or unreachable. If it says ok, Shazam doesn't know this record. |
