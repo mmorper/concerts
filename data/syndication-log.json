@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-21T17:06:19.443Z",
+  "updatedAt": "2026-11-22T17:37:51.304Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -566,26 +566,21 @@
     {
       "slug": "june-21-35-years-since-jimmy-buffett",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "june-21-35-years-since-jimmy-buffett",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n2w5ojgc7e2t",
+      "rkey": "3n2w5ojgc7e2t",
+      "postedAt": "2026-11-22T17:35:58.273Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "june-21-35-years-since-jimmy-buffett",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "june-21-35-years-since-jimmy-buffett",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117661307447539688",
+      "postedAt": "2026-11-22T17:37:51.304Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "kia-forum-5-shows-over-3-decades",

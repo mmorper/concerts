@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-21T17:05:28.447Z",
+  "updatedAt": "2026-11-22T17:35:54.147Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -212,6 +212,12 @@
       "slug": "irvine-meadows-16-shows-before-it-was-demolished",
       "hash": "520fb64357c626b7",
       "checkedAt": "2026-10-11T16:07:35.619Z",
+      "issues": []
+    },
+    {
+      "slug": "june-21-35-years-since-jimmy-buffett",
+      "hash": "825ee49dbad45d66",
+      "checkedAt": "2026-11-22T17:35:54.147Z",
       "issues": []
     },
     {
@@ -745,39 +751,47 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "e6dee8b218674f9b",
-      "checkedAt": "2026-11-21T17:04:39.464Z",
+      "hash": "967f68334eb272b7",
+      "checkedAt": "2026-11-22T17:35:27.870Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet gives no band-formation dates; only discography release years are listed, none confirming 'late seventies' start for all older acts.",
-          "replacement": "Bands with decades of back catalog shared a stage with acts that grew up on their records."
+          "evidence": "Formation years for these bands are not in the fact sheet; cannot confirm or deny the 'late seventies' claim.",
+          "replacement": "Bands that had been playing punk for decades shared a stage with acts that grew up on their records."
         },
         {
-          "field": "beat 1",
+          "field": "beat_1",
           "sentence": "Social Distortion and Bad Religion on a beach in October — California punk's founding class, still running the room.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet has no formation dates to support 'founding class' designation."
+          "evidence": "No formation-year or 'founding class' claim appears in the fact sheet for either band."
         },
         {
-          "field": "beat 2",
+          "field": "beat_2",
           "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No formation or founding dates for these bands appear in the fact sheet, so 'forty years' has no basis.",
-          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill, each with a catalog stretching back decades."
+          "evidence": "No figure totaling 'forty years' for these bands appears anywhere in the fact sheet.",
+          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill, still at it decades on."
         },
         {
-          "field": "beat 4",
-          "sentence": "Four decades of West Coast punk in a single set list.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "Fact sheet does not establish a four-decade span for the combined setlists; no formation dates given to support this count.",
-          "replacement": "Decades of West Coast punk in a single set list."
+          "field": "hook",
+          "sentence": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one afternoon.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Set/door times are explicitly excluded from the data ('set times or door times' is listed under NOT IN THE DATA), so 'one afternoon' is an unconfirmed detail.",
+          "replacement": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one bill."
+        },
+        {
+          "field": "beat_4",
+          "sentence": "Fifteen acts, one afternoon on the sand.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Set/door times are explicitly excluded from the data, so the time of day ('afternoon') is unconfirmed.",
+          "replacement": "Fifteen acts, one show on the sand."
         }
       ]
     },
@@ -873,36 +887,36 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "26e344040239fa49",
-      "checkedAt": "2026-11-21T17:05:13.554Z",
+      "hash": "04201a411e66cc10",
+      "checkedAt": "2026-11-22T17:35:52.142Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The fact sheet contains no information about Radiohead or The Bends; this is an external music-history claim about a non-archive artist. It appears historically accurate (The Bends released March 13, 1995) but cannot be verified from the fact sheet."
+          "evidence": "Radiohead's 'The Bends' release date (March 13, 1995) is not in the fact sheet; cannot confirm from archive data, though likely true externally."
         },
         {
           "field": "caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Not in fact sheet; this is an external release-date claim about an artist/album outside the archive. Likely true but unconfirmed by the data provided."
+          "evidence": "Album release date not present in fact sheet; external claim, plausible but unverifiable from archive."
         },
         {
-          "field": "beat 1",
+          "field": "beat",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Fact sheet has no entry for Radiohead or The Bends; external claim, plausible but unverifiable from the archive data."
+          "evidence": "Same unverifiable external release date claim repeated."
         },
         {
-          "field": "beat 3",
+          "field": "beat",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no basis for a '40 years' figure comparing Setzer's style era to 1995; this is an invented, unsupported number."
+          "evidence": "Fact sheet gives no birth year or age for Brian Setzer; '40 years older' is an invented age comparison."
         }
       ]
     },
@@ -1020,56 +1034,40 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "167316f15159656a",
-      "checkedAt": "2026-11-21T17:05:00.939Z",
+      "hash": "7b840272c2ef267c",
+      "checkedAt": "2026-11-22T17:35:43.894Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's 34 years and about 10 months, not a full 35 years.",
-          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, almost 35 years after the first time."
+          "evidence": "First show 1988-09-09, second show 2023-07-21 — the anniversary (Sept 9) had not yet occurred by July 21, so only about 34 years had elapsed, not 35.",
+          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 34 years after the first time."
         },
         {
           "field": "caption",
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years (34 years, ~10 months).",
-          "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
+          "evidence": "1988-09-09 to 2023-07-21 is roughly 34 years and 10 months, not a full 35 years.",
+          "replacement": "Thirty-four years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
-          "field": "beat 3",
+          "field": "beat",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years, not a full 35.",
-          "replacement": "Nearly thirty-five years went by before I saw them again."
+          "evidence": "Same date math as above: 1988-09-09 to 2023-07-21 is about 34 years, not 35.",
+          "replacement": "Thirty-four years went by before I bought another ticket."
         },
         {
-          "field": "beat 3",
-          "sentence": "Thirty-five years went by before I bought another ticket.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "Fact sheet lists ticket details ('ticket stubs or any physical ticket detail') as NOT IN THE DATA; 'bought another ticket' is an unconfirmed concrete personal claim.",
-          "replacement": "Thirty-five years went by before I saw them again."
-        },
-        {
-          "field": "beat 2",
+          "field": "beat",
           "sentence": "The Labour of Love covers felt like they'd always existed.",
-          "kind": "external",
+          "kind": "invented-number",
           "severity": "review",
-          "evidence": "No setlist is on record for the 1988-09-09 show, so attributing specific 'Labour of Love' covers to that night cannot be confirmed from the fact sheet.",
-          "replacement": "The reggae covers felt like they'd always existed."
-        },
-        {
-          "field": "beat 4",
-          "sentence": "the thing I'd wondered about in the parking lot",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "No fact sheet entry confirms being in a parking lot or wondering there; this is an unconfirmed concrete personal detail.",
-          "replacement": "the thing I'd wondered about back in 1988"
+          "evidence": "No setlist is on record for the 1988-09-09 show; the only documented setlist (covers included) is from 2023-07-21, so attributing specific 'Labour of Love' covers to the 1988 show is unsupported.",
+          "replacement": "Whatever they played that night felt like it had always existed."
         }
       ]
     },
