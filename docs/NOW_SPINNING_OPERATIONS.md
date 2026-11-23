@@ -119,7 +119,9 @@ sudo -l | grep -o use_pty                            # use_pty
   inside it. Close it with `sudo chmod 700 /home/<name>`.
 - **If the last line prints nothing,** add the setting with
   `echo 'Defaults use_pty' | sudo tee /etc/sudoers.d/use-pty`. It stops a program in another
-  user's shell from typing into your terminal.
+  user's shell from typing into your terminal. Newer versions of `sudo` turn it on without
+  listing it, so the line can print nothing when the setting is already on. Adding it again
+  does no harm.
 
 **Record this in the UniFi runbook** if you changed either one.
 
@@ -149,13 +151,14 @@ From that shell, check that it really can't reach the UniFi files or use `sudo`:
 
 ```bash
 # Pi (now-spinning)
-test -r /home/unifi-mcp/.config/unifi-mcp/network.password && echo READABLE   # prints nothing
+find /home/unifi-mcp /home/pi -type f -readable 2>/dev/null | head -5   # prints nothing
 ls /home/unifi-mcp                 # Permission denied
 sudo -n true                       # "a password is required" or "not in the sudoers file"
 exit
 ```
 
-If the first line prints `READABLE`, or either of the others succeeds, stop and fix that before
+The first line lists every file in those two homes that this user can read, whatever the files
+are called. If it prints a path, or either of the others succeeds, stop and fix that before
 running anything else as this user.
 
 ---
