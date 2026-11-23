@@ -201,9 +201,9 @@ history.
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, turn off the Apple TV's "Control TVs and Receivers" (or the receiver's HDMI Control) and try again. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
-| 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26. | The app can't put itself on screen. The Pi has to, for every record. |
+| 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26, which network the Apple TV is on, and any firewall rule or `--scan-hosts` it needed. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
-| 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
+| 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies, which network the receiver is on, and any firewall rule it needed. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
 | 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio). Answered from its source code in Phase 4. | So the privacy section states a fact |
 | 8 | As the `now-spinning` user, install `shazamio` with `uv` on Python 3.13. Note the Python version, and whether anything had to be compiled. | The listener pins its Python. If `shazamio-core` has no ready-made build for 3.13 on the Pi, Phase 4 pins a version that has one. |
 
@@ -592,13 +592,20 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
 - **Its own user.** The listener runs as the system user `now-spinning`: no login shell, no
   `sudo`, in the `audio` group, with its home at `/var/lib/now-spinning`.
 - **A sandboxed service.** `now-spinning.service` sets `User=now-spinning`, `NoNewPrivileges=yes`,
-  `ProtectSystem=strict`, `ProtectHome=yes` (the service sees no `/home` at all), `PrivateTmp=yes`
-  and `StateDirectory=now-spinning`.
-- **Code it can't change.** The code and its Python environment live in `/opt/now-spinning`, owned
-  by root. The service can read and run them, not write them.
+  `ProtectSystem=strict`, `ProtectHome=yes` (the service sees no `/home` at all), `PrivateTmp=yes`,
+  `UMask=0077`, and `StateDirectory=now-spinning` with `StateDirectoryMode=0700`.
+- **Code it can't change.** The code, its Python environment and the interpreter itself live in
+  `/opt/now-spinning`, owned by root (`UV_PYTHON_INSTALL_DIR` under `/opt/now-spinning`, or the
+  system's Python). `uv` is a root-owned copy at a pinned version, in `/usr/local/bin`. The service
+  can read and run all of it, not write any of it.
+- **Its home holds data only.** `/var/lib/now-spinning` is the one place the service can write. It
+  holds the Apple TV pairing and nothing that is ever executed: **root never runs anything from
+  it.** A virtual environment's `python` is a link to its base interpreter, so an interpreter
+  kept there could be swapped by a compromised listener and then run by root at the next update.
+  The copy of `uv` that Phase 0 puts there is for testing, and is deleted afterwards.
 - **No third-party code as `pi` or root.** That covers `shazamio`, `pyatv` and the listener, in
-  Phase 0 as well as in service. Installing must not build or run package code as root
-  (`uv sync --frozen --no-build`).
+  Phase 0 as well as in service. The one exception is the installer: root runs its own pinned
+  `uv`, and installing must not build or run package code (`uv sync --frozen --no-build`).
 - **No open port.** The listener only makes outbound connections: to Shazam, the Worker, the
   receiver and the Apple TV.
 - **The operating system belongs to the UniFi runbook.** Never reflash the card for Now Spinning.
@@ -852,6 +859,15 @@ room. Mike has a paid Apple Developer Program membership.
 
 Only if Phase 0 check 4 or 5 rules the app out, or reinstalling becomes a nuisance. Nothing new
 is written: the Pi shows the web page.
+
+**This was designed before the Pi was shared, and it needs a second look before it is built.**
+The simplest answer is a second Pi for the kiosk. On the shared Pi it would need at least:
+- its own user for Chromium, which is third-party code and so can't run as `pi` or root
+- the display token kept off the command line, where every user on the Pi could read it,
+  `unifi-mcp` included (a launch URL appears in the process list)
+- the compositor and Chromium recorded in the UniFi runbook, since they change its system
+
+The outline below is the original one.
 - A kiosk session on the Pi starts Chromium full screen on the display page at boot: no desktop,
   no cursor, no screen blanking. The setup guide installs the no-desktop OS, so this adds a
   minimal compositor (`cage` or `labwc`) and Chromium.
@@ -865,7 +881,10 @@ is written: the Pi shows the web page.
 
 ## Hardware
 
-Ordered 2026-11-21, except the Blackjack, which Mike already owned.
+The Pi is the 4 GB board that already runs the UniFi MCP servers. A CanaKit Pi 5 kit was ordered
+on 2026-11-21. **To confirm in Phase 0:** whether this board, its power supply and its cooler are
+that kit's. Check 1c tests the supply whichever it is. The rows below that say "the kit's"
+describe that kit.
 
 | Item | What it is | Notes |
 |---|---|---|
@@ -1112,6 +1131,10 @@ None open. Phase 0 (#688) will raise the next ones.
   - The listener runs as its own `now-spinning` user in a sandboxed systemd service, from
     root-owned code in `/opt/now-spinning`. Before this the spec named no user, so it would have
     run as root.
+  - The interpreter and `uv` are root-owned too, and root never runs anything from the service's
+    writable home. QA found that gap: a compromised listener could otherwise have swapped them
+    and had root run the swap at the next update.
+  - The fallback (the Pi drives the TV) is flagged as needing a second look on a shared Pi.
   - No third-party code runs as `pi` or root, in Phase 0 or in service.
   - The listener installs with `uv` on a pinned Python from a lockfile, and updates on purpose.
     Phase 0 check 8 changes to match.

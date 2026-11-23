@@ -33,12 +33,17 @@ step below keeps them:
 - **This project's third-party code never runs as `pi` or as root.** That means `shazamio`,
   `pyatv` and, later, the listener. `pi` can become root, and root can read everything.
 
+A few steps here do change the system the UniFi runbook owns: the new user in step 3, updates
+and firmware in step 4, the log settings and (rarely) `config.txt` in step 5. Each is marked
+**Record this in the UniFi runbook**, so that runbook stays the full account of this machine.
+
 ---
 
 ## What you need
 
-- CanaKit Raspberry Pi 5 kit: the Pi, the 45 W power supply, the 32 GB microSD card and USB card
-  reader, the official active cooler, the case
+- The Raspberry Pi 5 that already runs the UniFi servers, in its case with the active cooler
+- A power supply the Pi recognises as 5 A, such as the CanaKit 45 W one. Step 5 checks this,
+  whichever supply it is: the Blackjack draws its power from the Pi.
 - Mackie Onyx Blackjack, its USB-A → USB-B cable, and the dual RCA → dual 1/4" cable
 - An Ethernet cable to the switch in the AV cabinet
 - Your Mac, on the same home network
@@ -84,7 +89,8 @@ Skip this step if the Pi is already assembled and running.
 The UniFi runbook's Step 2 set the Pi up: Raspberry Pi OS Lite (64-bit), wired Ethernet, SSH with
 keys only and password logins off, and a fixed address on the main network. Nothing to do here.
 
-Don't repeat that setup from this guide, and don't reflash (see [This Pi is shared](#this-pi-is-shared)).
+Don't repeat that setup from this guide, and don't reflash (see
+[This Pi is shared](#this-pi-is-shared)).
 
 ---
 
@@ -105,11 +111,17 @@ You should land at the prompt `pi@mh-unifi-now-playing:~ $`.
 # Pi
 uname -m                                             # aarch64
 sudo sshd -T | grep -i '^passwordauthentication'     # passwordauthentication no
-sudo stat -c '%A %U' /home/unifi-mcp                 # drwx------ unifi-mcp
+sudo stat -c '%A %U %n' /home/*                      # drwx------ for /home/unifi-mcp and /home/pi
+sudo -l | grep -o use_pty                            # use_pty
 ```
 
-If the last line shows anything other than `drwx------`, other users can look inside that
-folder. Close it with `sudo chmod 700 /home/unifi-mcp`, and note it in the UniFi runbook.
+- **If a home folder shows anything other than `drwx------`,** other users can reach files
+  inside it. Close it with `sudo chmod 700 /home/<name>`.
+- **If the last line prints nothing,** add the setting with
+  `echo 'Defaults use_pty' | sudo tee /etc/sudoers.d/use-pty`. It stops a program in another
+  user's shell from typing into your terminal.
+
+**Record this in the UniFi runbook** if you changed either one.
 
 **Create the Now Spinning user.** It has no password and no login shell, and it isn't in the
 `sudo` group. The `audio` group lets it hear the Blackjack:
@@ -120,6 +132,9 @@ sudo adduser --system --group --home /var/lib/now-spinning now-spinning
 sudo usermod -aG audio now-spinning
 sudo chmod 700 /var/lib/now-spinning
 ```
+
+**Record this in the UniFi runbook:** a second service user, `now-spinning`, with no login and
+no `sudo`.
 
 **Open a shell as that user.** Steps 8 and 10 run their commands there:
 
@@ -134,12 +149,14 @@ From that shell, check that it really can't reach the UniFi files or use `sudo`:
 
 ```bash
 # Pi (now-spinning)
+test -r /home/unifi-mcp/.config/unifi-mcp/network.password && echo READABLE   # prints nothing
 ls /home/unifi-mcp                 # Permission denied
 sudo -n true                       # "a password is required" or "not in the sudoers file"
 exit
 ```
 
-If either command succeeds, stop and fix that before running anything else as this user.
+If the first line prints `READABLE`, or either of the others succeeds, stop and fix that before
+running anything else as this user.
 
 ---
 
@@ -164,6 +181,10 @@ Let the Pi install security updates by itself, so it doesn't need regular visits
 runbook's rule that nothing updates by itself is about its pinned MCP servers, which these
 updates don't touch. A reboot is safe for them too: they only run while a chat is using them.
 
+**Record this in the UniFi runbook:** the date of this upgrade, any firmware update, and that
+automatic security updates are now on. Its maintenance table says the OS is upgraded by hand
+each month; that still applies to everything that isn't a security patch.
+
 ```bash
 # Pi
 sudo apt install -y unattended-upgrades
@@ -187,6 +208,7 @@ If `max_current` isn't 5000, the Pi didn't recognise the supply as 5 A. Check th
 the kit's supply, not a phone charger. If you're sure the label says **5 V / 5 A**, you can add
 `usb_max_current_enable=1` on its own line at the end of `/boot/firmware/config.txt` and reboot.
 Never do that with a weaker supply: the Pi would draw more than the supply can give.
+**Record this in the UniFi runbook** if you add that line.
 
 **Temperature.**
 
@@ -211,9 +233,13 @@ sudo systemctl restart systemd-journald
 An earlier version of this guide kept logs in memory (`Storage=volatile`), which lost them at
 each reboot. If you ran that step, this one replaces it: it writes the same file.
 
+**Record this in the UniFi runbook:** the system log is capped at 64 MB, by
+`/etc/systemd/journald.conf.d/now-spinning.conf`.
+
 **Plug the Pi into an outlet that stays on,** not a switched strip that cuts with the
-receiver. Cutting power while the Pi is writing can corrupt the card. To turn it off on purpose, run `sudo poweroff` and wait for the green light to stop
-flashing before pulling the plug.
+receiver. Cutting power while the Pi is writing can corrupt the card. To turn it off on
+purpose, run `sudo poweroff` and wait for the green light to stop flashing before pulling the
+plug.
 
 ---
 
@@ -294,8 +320,10 @@ cable away from power cords. If one side is silent, check the L/R cables.
 `shazamio` is an unofficial client, so everything in this step runs as `now-spinning`, never
 as `pi`. Open that user's shell first (`sudo -H -u now-spinning bash`, then `cd`).
 
-**Install a test environment** (it is thrown away once the real listener exists). It uses `uv`
-and Python 3.13, the same tools as the UniFi servers. `uv` installs into this user's home only:
+**Install a test environment.** It uses `uv` and Python 3.13, the same tools as the UniFi
+servers. `uv` and its Python install into this user's home only, and they are for these tests
+only: step 11 deletes them. The real listener gets a separate copy that root owns, so nothing
+this user can change is ever run by root.
 
 ```bash
 # Pi (now-spinning)
@@ -448,9 +476,15 @@ it, and the listener will run as this user.
 ```
 
 **If `scan` finds nothing,** the Apple TV may be on a different network from the Pi: device
-discovery doesn't cross VLANs. Give the Apple TV a fixed address in UniFi and point the scan at
-it with `~/ns-test/bin/atvremote --scan-hosts <apple-tv-ip> scan`. If that also finds nothing, a
-firewall rule is blocking `192.168.1.244`. Note the network and any rule on #688.
+discovery doesn't cross VLANs.
+- Give the Apple TV a fixed address in UniFi, then scan that address:
+  `~/ns-test/bin/atvremote --scan-hosts <apple-tv-ip> scan`.
+- If that finds it, add `--scan-hosts <apple-tv-ip>` to **every** `atvremote` command in this
+  step, straight after `atvremote`. Each command looks the Apple TV up again, so `pair` and the
+  rest fail without it.
+- If that also finds nothing, a firewall rule is blocking `192.168.1.244`.
+
+Note the Apple TV's network, and any rule you add, on #688.
 
 Then try each of these and write down what happened. If a command isn't recognised, run
 `~/ns-test/bin/atvremote commands` to see the names your version uses.
@@ -479,11 +513,16 @@ gain positions, the ten-record table, the run-out finding, the Python version, t
 results from step 10, and the answers to checks 6 and 6b. That's what Phase 4 is designed
 against. Tick the same items off on issue #688.
 
-Then delete the test files. Keep `uv` and the Apple TV pairing; the listener uses both:
+Then delete the test files, including the test copy of `uv` and its Python. Keep only the
+Apple TV pairing (`~/.pyatv.conf`), which the listener uses:
 
 ```bash
-# Pi (now-spinning)
-rm -rf ~/ns-test ~/try-shazam.py /tmp/clip.wav /tmp/shazam-sample.json
+# Pi (now-spinning): full paths, so a slip into pi's shell can't delete pi's own files
+cd /var/lib/now-spinning
+rm -rf /var/lib/now-spinning/ns-test /var/lib/now-spinning/try-shazam.py
+rm -rf /var/lib/now-spinning/.local /var/lib/now-spinning/.cache
+rm -f /tmp/clip.wav /tmp/shazam-sample.json
+ls -A /var/lib/now-spinning        # .pyatv.conf; a leftover .profile or .config is harmless
 ```
 ```bash
 # Pi
@@ -496,7 +535,8 @@ rm -f ~/level-test.wav
 
 *To be written when Phase 4 builds the listener.* It will cover:
 - the code in `/opt/now-spinning`, owned by root, so the service can't change its own code
-- its Python environment, built by `uv` from the committed lockfile
+- its Python environment, built from the committed lockfile by a copy of `uv` and a Python that
+  root owns. Root never runs anything from `/var/lib/now-spinning`.
 - `/etc/now-spinning/env`: the Worker URL and the ingest token. Root-only; systemd reads it
   before it starts the service.
 - the `now-spinning` systemd service, running as the `now-spinning` user with no access to
