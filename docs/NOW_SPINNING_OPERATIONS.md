@@ -157,8 +157,11 @@ sudo -n true                       # "a password is required" or "not in the sud
 exit
 ```
 
-The first line lists every file in those two homes that this user can read, whatever the files
-are called. If it prints a path, or either of the others succeeds, stop and fix that before
+The first line lists the files this user can read in those two homes, in any folder it can
+open, whatever the files are called. A home it can pass through but not open (`drwx--x--x`)
+hides its files from this check. That's why the folder check above must show `drwx------`.
+
+If the first line prints a path, or either of the others succeeds, stop and fix that before
 running anything else as this user.
 
 ---
