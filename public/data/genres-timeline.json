@@ -718,11 +718,12 @@
         "2022": 1,
         "2023": 1,
         "2024": 1,
-        "2025": 1
+        "2025": 1,
+        "2027": 1
       },
-      "totalShows": 13,
+      "totalShows": 14,
       "firstYear": 1988,
-      "lastYear": 2025,
+      "lastYear": 2027,
       "artists": [
         {
           "name": "Garbage",
@@ -740,14 +741,15 @@
         {
           "name": "Royal Blood",
           "normalizedName": "royal-blood",
-          "showCount": 3,
+          "showCount": 4,
           "years": [
             2015,
             2017,
-            2022
+            2022,
+            2027
           ],
           "firstYear": 2015,
-          "lastYear": 2022
+          "lastYear": 2027
         },
         {
           "name": "No Doubt",
@@ -1533,7 +1535,7 @@
     "2024": 6,
     "2025": 4,
     "2026": 5,
-    "2027": 1
+    "2027": 2
   },
   "milestones": [
     {
@@ -1569,5 +1571,5 @@
     "start": 1984,
     "end": 2027
   },
-  "generatedAt": "2026-11-16T16:51:56.438Z"
+  "generatedAt": "2026-11-23T19:08:28.762Z"
 }

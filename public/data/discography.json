@@ -3,7 +3,7 @@
     "artistName": "Adam Ant",
     "normalizedName": "adam-ant",
     "mbid": "e188a520-9cb7-4f73-a3d7-2f70c6538e92",
-    "albumCount": 37,
+    "albumCount": 38,
     "albums": [
       {
         "id": "c7bc5871-198c-43dd-bbee-44606adc0a7f",
@@ -153,6 +153,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/90e18cf6-36c7-318f-a88f-9475bdca5139/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "3001b068-eda9-4930-b649-aafeeac87e42",
+        "title": "Goody Two Shoes",
+        "releaseDate": "1998",
+        "year": 1998,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3001b068-eda9-4930-b649-aafeeac87e42/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -443,8 +456,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:11.062Z",
-    "cachedAt": "2026-08-24T08:01:11.062Z"
+    "fetchedAt": "2026-11-23T19:01:33.688Z",
+    "cachedAt": "2026-11-23T19:01:33.688Z"
   },
   "alison-moyet": {
     "artistName": "Alison Moyet",
@@ -1012,8 +1025,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:12.364Z",
-    "cachedAt": "2026-08-24T08:01:12.364Z"
+    "fetchedAt": "2026-11-23T19:01:35.688Z",
+    "cachedAt": "2026-11-23T19:01:35.688Z"
   },
   "bad-religion": {
     "artistName": "Bad Religion",
@@ -2144,8 +2157,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:14.445Z",
-    "cachedAt": "2026-08-24T08:01:14.445Z"
+    "fetchedAt": "2026-11-23T19:01:37.692Z",
+    "cachedAt": "2026-11-23T19:01:37.692Z"
   },
   "bat-fangs": {
     "artistName": "Bat Fangs",
@@ -2187,15 +2200,29 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:16.609Z",
-    "cachedAt": "2026-08-24T08:01:16.609Z"
+    "fetchedAt": "2026-11-23T19:01:39.685Z",
+    "cachedAt": "2026-11-23T19:01:39.685Z"
   },
   "berlin": {
     "artistName": "Berlin",
     "normalizedName": "berlin",
     "mbid": "c7cb9a2e-ff57-4bb8-bd2c-83524e18e369",
-    "albumCount": 50,
+    "albumCount": 46,
     "albums": [
+      {
+        "id": "481afd09-c0ea-492a-adf5-4f430ef3de90",
+        "title": "Take My Breath Away",
+        "releaseDate": "2022-05-27",
+        "year": 2022,
+        "primaryType": "Single",
+        "secondaryTypes": [
+          "Compilation",
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/481afd09-c0ea-492a-adf5-4f430ef3de90/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "670c0e17-f2cb-4c3c-b49d-3cb42012b1b0",
         "title": "Strings Attached",
@@ -2224,20 +2251,12 @@
         "releaseDate": "2019-03-13",
         "year": 2019,
         "primaryType": "Single",
-        "secondaryTypes": [],
+        "secondaryTypes": [
+          "Soundtrack",
+          "Remix"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/faf056e6-da30-4ae5-9d55-feb6a83c9ac9/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "e765988a-055e-464f-8a08-2073d947f0c5",
-        "title": "Take My Breath Away",
-        "releaseDate": "2018-09-25",
-        "year": 2018,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/e765988a-055e-464f-8a08-2073d947f0c5/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -2286,17 +2305,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/87953c7c-bcf2-47aa-9727-f33713822923/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "9f21d54d-ba87-43fc-8e6d-7e54cc534257",
-        "title": "Take My Breath Away (as heard in Top Gun) (Re‐Recorded / Remastered)",
-        "releaseDate": "2009-08-01",
-        "year": 2009,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/9f21d54d-ba87-43fc-8e6d-7e54cc534257/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -2377,7 +2385,10 @@
         "releaseDate": "2002",
         "year": 2002,
         "primaryType": "Single",
-        "secondaryTypes": [],
+        "secondaryTypes": [
+          "Compilation",
+          "Remix"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/e6499168-b8fa-42f4-ab93-92f35057cd92/front-500.jpg",
         "coverAvailable": true
@@ -2510,7 +2521,7 @@
       {
         "id": "73eae75b-cd2f-4e2c-be82-a095a1586d8c",
         "title": "Take My Breath Away (Love Theme From “Top Gun”)",
-        "releaseDate": "1986-10",
+        "releaseDate": "1986-06-15",
         "year": 1986,
         "primaryType": "Single",
         "secondaryTypes": [
@@ -2518,17 +2529,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/73eae75b-cd2f-4e2c-be82-a095a1586d8c/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "ff056f25-116c-444d-bb09-de053b20ccb3",
-        "title": "Take My Breath Away",
-        "releaseDate": "1986-06-15",
-        "year": 1986,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/ff056f25-116c-444d-bb09-de053b20ccb3/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -2561,7 +2561,9 @@
         "releaseDate": "1986",
         "year": 1986,
         "primaryType": "Single",
-        "secondaryTypes": [],
+        "secondaryTypes": [
+          "Soundtrack"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/5e5cd16e-e3fa-4175-993a-ee9abac419f7/front-500.jpg",
         "coverAvailable": true
@@ -2626,17 +2628,6 @@
         "coverAvailable": true
       },
       {
-        "id": "21da4b4c-7017-4340-bede-6268ae9e17dc",
-        "title": "Masquarade",
-        "releaseDate": "1984",
-        "year": 1984,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/21da4b4c-7017-4340-bede-6268ae9e17dc/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "696850e1-b6af-42f0-8089-9ccbfe193d8f",
         "title": "No More Words",
         "releaseDate": "1984",
@@ -2664,7 +2655,9 @@
         "releaseDate": "1984",
         "year": 1984,
         "primaryType": "Single",
-        "secondaryTypes": [],
+        "secondaryTypes": [
+          "Remix"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/cb602a5d-8571-4050-9f9e-58817ffbcb75/front-500.jpg",
         "coverAvailable": true
@@ -2680,6 +2673,17 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/536abc94-613f-4652-bc1e-62f7313de4e9/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "21da4b4c-7017-4340-bede-6268ae9e17dc",
+        "title": "Masquarade",
+        "releaseDate": "1983",
+        "year": 1983,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/21da4b4c-7017-4340-bede-6268ae9e17dc/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -2706,17 +2710,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/329d8fe5-2f3e-4d0c-a797-f9d39bd1cc5f/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "62da55a7-87b0-4760-b4ce-f13d551cc9fd",
-        "title": "Masquerade",
-        "releaseDate": "1983",
-        "year": 1983,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/62da55a7-87b0-4760-b4ce-f13d551cc9fd/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -2753,17 +2746,6 @@
         "coverAvailable": true
       },
       {
-        "id": "bf0a909f-4af8-445c-a831-5bca618485fd",
-        "title": "Matter of Time",
-        "releaseDate": "1980",
-        "year": 1980,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/bf0a909f-4af8-445c-a831-5bca618485fd/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "c5b401ff-e815-4fac-9f51-ccb12a782fc1",
         "title": "Information",
         "releaseDate": "1980",
@@ -2775,19 +2757,19 @@
         "coverAvailable": true
       },
       {
-        "id": "cb5a9d07-8e5a-4cdd-bf9c-4cf8442f48e1",
+        "id": "bf0a909f-4af8-445c-a831-5bca618485fd",
         "title": "Matter of Time",
         "releaseDate": "1979",
         "year": 1979,
         "primaryType": "Single",
         "secondaryTypes": [],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/cb5a9d07-8e5a-4cdd-bf9c-4cf8442f48e1/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/bf0a909f-4af8-445c-a831-5bca618485fd/front-500.jpg",
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:25.191Z",
-    "cachedAt": "2026-08-24T08:01:25.191Z"
+    "fetchedAt": "2026-11-23T19:04:34.970Z",
+    "cachedAt": "2026-11-23T19:04:34.970Z"
   },
   "big-audio-dynamite": {
     "artistName": "Big Audio Dynamite",
@@ -3251,8 +3233,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:29.857Z",
-    "cachedAt": "2026-08-24T08:01:29.857Z"
+    "fetchedAt": "2026-11-23T19:01:43.829Z",
+    "cachedAt": "2026-11-23T19:01:43.829Z"
   },
   "blancmange": {
     "artistName": "Blancmange",
@@ -3890,15 +3872,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:31.729Z",
-    "cachedAt": "2026-08-24T08:01:31.729Z"
+    "fetchedAt": "2026-11-23T19:01:45.835Z",
+    "cachedAt": "2026-11-23T19:01:45.835Z"
   },
   "blondie": {
     "artistName": "Blondie",
     "normalizedName": "blondie",
     "mbid": "4d2956d1-a3f7-44bb-9a41-67563e1a0c94",
-    "albumCount": 97,
+    "albumCount": 100,
     "albums": [
+      {
+        "id": "7227fb41-aeb9-409b-9b1d-3bc57b90511c",
+        "title": "High Noon",
+        "releaseDate": "2027-02-26",
+        "year": 2027,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7227fb41-aeb9-409b-9b1d-3bc57b90511c/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "46f29893-a507-4c37-9ddf-5fd776f25a2f",
         "title": "Blue Neon (live Toronto ’78)",
@@ -3989,28 +3982,6 @@
         "coverAvailable": true
       },
       {
-        "id": "aafb170c-7aef-4e5a-97b2-f236f217b5aa",
-        "title": "Tonight",
-        "releaseDate": "2017-04-29",
-        "year": 2017,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/aafb170c-7aef-4e5a-97b2-f236f217b5aa/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "9b91eda4-5ba7-435c-aeaf-c6011cadaeb2",
-        "title": "Long Time",
-        "releaseDate": "2017-03-24",
-        "year": 2017,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/9b91eda4-5ba7-435c-aeaf-c6011cadaeb2/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "9bfc3ab6-a965-488f-83e7-0a83d444c38c",
         "title": "Fun (remixes)",
         "releaseDate": "2017-03-17",
@@ -4024,19 +3995,8 @@
         "coverAvailable": true
       },
       {
-        "id": "cc4057bc-d0e1-4fce-84fe-c0029fcc00c0",
-        "title": "Fun",
-        "releaseDate": "2017-02-01",
-        "year": 2017,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/cc4057bc-d0e1-4fce-84fe-c0029fcc00c0/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "06370f2f-bf63-4cce-bfc0-f8400b4391f7",
-        "title": "The Palladium, New York, November 11th, 1978 (Remastered, Live On Broadcasting)",
+        "title": "The Palladium, New York, November 11th, 1978 (remastered, live on Broadcasting)",
         "releaseDate": "2016",
         "year": 2016,
         "primaryType": "Album",
@@ -4074,15 +4034,26 @@
         "coverAvailable": true
       },
       {
+        "id": "6b04e564-d367-4ea6-a629-ee0343e83a0d",
+        "title": "Ghosts of Download",
+        "releaseDate": "2014-05-12",
+        "year": 2014,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6b04e564-d367-4ea6-a629-ee0343e83a0d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "e4554a3a-cea0-47ab-a976-39960c32cf73",
-        "title": "Blondie 4(0) Ever",
+        "title": "Greatest Hits Deluxe Redux / Ghosts of Download",
         "releaseDate": "2014-05-09",
         "year": 2014,
         "primaryType": "Album",
         "secondaryTypes": [
           "Compilation"
         ],
-        "disambiguation": "",
+        "disambiguation": "Blondie 4(0)-Ever",
         "coverUrl": "https://coverartarchive.org/release-group/e4554a3a-cea0-47ab-a976-39960c32cf73/front-500.jpg",
         "coverAvailable": true
       },
@@ -4132,7 +4103,7 @@
       },
       {
         "id": "d3bf2dc5-6ee1-4471-b53c-04140f110887",
-        "title": "Live In Australia 2012 - Sidney Myer Music Bowl",
+        "title": "Live In Australia 2012: Sidney Myer Music Bowl",
         "releaseDate": "2012",
         "year": 2012,
         "primaryType": "Album",
@@ -4244,14 +4215,29 @@
         "coverAvailable": true
       },
       {
-        "id": "b97a06a5-10fa-4c0d-a6fb-d9c7f7b5dd3c",
-        "title": "Heart of Glass (single version)",
-        "releaseDate": "2009-01-01",
+        "id": "5d4ddaa4-626d-450b-81e0-79417a27b420",
+        "title": "10 Great Songs",
+        "releaseDate": "2009",
         "year": 2009,
-        "primaryType": "Single",
-        "secondaryTypes": [],
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/b97a06a5-10fa-4c0d-a6fb-d9c7f7b5dd3c/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/5d4ddaa4-626d-450b-81e0-79417a27b420/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "84dbbaeb-8794-4b42-8312-936ce157fe47",
+        "title": "10 Great Songs",
+        "releaseDate": "2009",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/84dbbaeb-8794-4b42-8312-936ce157fe47/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -4357,6 +4343,19 @@
         "coverAvailable": true
       },
       {
+        "id": "7b570766-cb47-42dc-9682-a25b0bf02962",
+        "title": "Video Hits",
+        "releaseDate": "2005",
+        "year": 2005,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7b570766-cb47-42dc-9682-a25b0bf02962/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "825dcdd9-38a3-3ebe-a570-3c1852e867f3",
         "title": "Live by Request",
         "releaseDate": "2004-09-28",
@@ -4428,6 +4427,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/fcbc0e5a-6441-375f-ade9-c0ebc0cd4b68/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "de3fc27b-c29a-48c1-802b-f81e675c23a6",
+        "title": "Greatest Video Hits",
+        "releaseDate": "2002",
+        "year": 2002,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/de3fc27b-c29a-48c1-802b-f81e675c23a6/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -4576,6 +4588,19 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/eee7e620-c062-3084-b79d-63cf7ace19ed/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "f4ea6b3c-5291-4ede-8c0b-29a4ef1f1f8c",
+        "title": "Blondie",
+        "releaseDate": "1998",
+        "year": 1998,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f4ea6b3c-5291-4ede-8c0b-29a4ef1f1f8c/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -4960,7 +4985,7 @@
       },
       {
         "id": "29183476-47ac-4831-84c0-959663778fd9",
-        "title": "(I’m Always Touched by Your) Presence Dear",
+        "title": "(I’m Always Touched by Your) Presence, Dear",
         "releaseDate": "1978-04",
         "year": 1978,
         "primaryType": "Single",
@@ -5069,8 +5094,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:34.015Z",
-    "cachedAt": "2026-08-24T08:01:34.015Z"
+    "fetchedAt": "2026-11-23T19:01:47.826Z",
+    "cachedAt": "2026-11-23T19:01:47.826Z"
   },
   "brian-setzer": {
     "artistName": "Brian Setzer",
@@ -5319,8 +5344,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:42.167Z",
-    "cachedAt": "2026-08-24T08:01:42.167Z"
+    "fetchedAt": "2026-11-23T19:01:49.890Z",
+    "cachedAt": "2026-11-23T19:01:49.890Z"
   },
   "bruce-springsteen": {
     "artistName": "Bruce Springsteen",
@@ -5779,7 +5804,7 @@
       },
       {
         "id": "d94d0f16-8d93-4fd1-aa81-3770da717079",
-        "title": "The Album Collection Vol. 2, 1987–1996",
+        "title": "The Album Collection, Vol. 2: 1987–1996",
         "releaseDate": "2018-05-18",
         "year": 2018,
         "primaryType": "Album",
@@ -5867,6 +5892,20 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/d43c0c6d-c6dc-4bb3-a592-56c740bb8858/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "ef931ea0-e27e-42ff-b6f0-1473d61019b4",
+        "title": "Born in the U.S.A. Live: London 2013",
+        "releaseDate": "2013",
+        "year": 2013,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation",
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ef931ea0-e27e-42ff-b6f0-1473d61019b4/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -6258,19 +6297,6 @@
         "coverAvailable": true
       },
       {
-        "id": "6c8e492e-d0eb-4839-b170-bd12d4a89bf6",
-        "title": "1978‐09‐30: Fox Theatre, Atlanta, GA, USA",
-        "releaseDate": "1990-12",
-        "year": 1990,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/6c8e492e-d0eb-4839-b170-bd12d4a89bf6/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "8435fc60-e3c1-439d-896d-7deb2fe4489c",
         "title": "Greetings From Asbury Park N.J. / The Wild, the Innocent and the E Street Shuffle / Darkness on the Edge of Town",
         "releaseDate": "1990",
@@ -6620,14 +6646,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:43.832Z",
-    "cachedAt": "2026-08-24T08:01:43.832Z"
+    "fetchedAt": "2026-11-23T19:01:51.865Z",
+    "cachedAt": "2026-11-23T19:01:51.865Z"
   },
   "burning-spear": {
     "artistName": "Burning Spear",
     "normalizedName": "burning-spear",
     "mbid": "16dad944-c492-43dd-88ed-e0b7ac520c40",
-    "albumCount": 62,
+    "albumCount": 64,
     "albums": [
       {
         "id": "cd5f97f6-f52e-4722-be3a-84988cad4e68",
@@ -7199,6 +7225,28 @@
         "coverAvailable": true
       },
       {
+        "id": "849964dd-d9fe-4b30-af31-29680b4a7857",
+        "title": "Live In Utrecht CD 1",
+        "releaseDate": "1984-02-15",
+        "year": 1984,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/849964dd-d9fe-4b30-af31-29680b4a7857/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "dd4f4728-30e2-41b9-ab25-ee16e79e10ea",
+        "title": "Live In Utrecht CD 2",
+        "releaseDate": "1984-02-15",
+        "year": 1984,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/dd4f4728-30e2-41b9-ab25-ee16e79e10ea/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "aca3afa8-2d55-3e80-ae11-e55350a7e572",
         "title": "The Fittest of the Fittest",
         "releaseDate": "1983",
@@ -7368,15 +7416,50 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:46.040Z",
-    "cachedAt": "2026-08-24T08:01:46.040Z"
+    "fetchedAt": "2026-11-23T19:01:53.828Z",
+    "cachedAt": "2026-11-23T19:01:53.828Z"
   },
   "cold-war-kids": {
     "artistName": "Cold War Kids",
     "normalizedName": "cold-war-kids",
     "mbid": "0741b30d-e15b-4a8c-b2e5-8834a03d6116",
-    "albumCount": 82,
+    "albumCount": 85,
     "albums": [
+      {
+        "id": "ccbd3f8b-8163-4bd8-a3e7-e5995bc2c747",
+        "title": "Tonight's the Night",
+        "releaseDate": "2026-11-06",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ccbd3f8b-8163-4bd8-a3e7-e5995bc2c747/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0157fb23-5452-4044-98c3-781abe53a8b7",
+        "title": "Jesse Latour / Hang Me Up to Dry (Phantogram version)",
+        "releaseDate": "2026-10-09",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0157fb23-5452-4044-98c3-781abe53a8b7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e945e454-bf67-4e27-be1c-7027a06784e3",
+        "title": "Hang Me Up to Dry (Phantogram version)",
+        "releaseDate": "2026-09-04",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e945e454-bf67-4e27-be1c-7027a06784e3/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "577e104b-b23d-42ba-adfc-cef58cd640d2",
         "title": "Loyalty",
@@ -8320,8 +8403,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:53.788Z",
-    "cachedAt": "2026-08-24T08:01:53.788Z"
+    "fetchedAt": "2026-11-23T19:01:55.831Z",
+    "cachedAt": "2026-11-23T19:01:55.831Z"
   },
   "colin-hay": {
     "artistName": "Colin Hay",
@@ -8637,8 +8720,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:01:55.121Z",
-    "cachedAt": "2026-08-24T08:01:55.121Z"
+    "fetchedAt": "2026-11-23T19:01:57.845Z",
+    "cachedAt": "2026-11-23T19:01:57.845Z"
   },
   "crowded-house": {
     "artistName": "Crowded House",
@@ -9102,7 +9185,7 @@
       {
         "id": "8c3bf5f7-0d0f-34e8-a137-a55ef103d8a9",
         "title": "Afterglow",
-        "releaseDate": "1999-12-08",
+        "releaseDate": "1999-12-07",
         "year": 1999,
         "primaryType": "Album",
         "secondaryTypes": [
@@ -9733,15 +9816,28 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:00.207Z",
-    "cachedAt": "2026-08-24T08:02:00.207Z"
+    "fetchedAt": "2026-11-23T19:01:59.893Z",
+    "cachedAt": "2026-11-23T19:01:59.893Z"
   },
   "culture-club": {
     "artistName": "Culture Club",
     "normalizedName": "culture-club",
     "mbid": "81435053-e1a2-48a4-adfd-e89f310c7b38",
-    "albumCount": 72,
+    "albumCount": 73,
     "albums": [
+      {
+        "id": "83f0bbd2-7fd6-4378-a9c4-af282a3a63db",
+        "title": "Summer Club",
+        "releaseDate": "2026-08-28",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/83f0bbd2-7fd6-4378-a9c4-af282a3a63db/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "08648d0f-d1b0-42e6-829f-b79ea74752ba",
         "title": "Letting Things Go/The Next Thing Will Be Amazing",
@@ -10616,8 +10712,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:04.056Z",
-    "cachedAt": "2026-08-24T08:02:04.056Z"
+    "fetchedAt": "2026-11-23T19:02:01.824Z",
+    "cachedAt": "2026-11-23T19:02:01.824Z"
   },
   "danny-elfman": {
     "artistName": "Danny Elfman",
@@ -10637,6 +10733,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/9a9bdd63-1f79-4ab2-8c44-56a5b0d76560/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "92f13937-45f5-424f-bfb6-21106e850bfe",
+        "title": "Famous Movie Themes",
+        "releaseDate": "2025-07-10",
+        "year": 2025,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/92f13937-45f5-424f-bfb6-21106e850bfe/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -10681,32 +10790,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/1f3c80ac-bbce-45e4-84ac-7b53d4c4c01c/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "068780e7-dd1e-4f13-9f66-e6298d5f5074",
-        "title": "Don't Worry, He Won't Get Far on Foot",
-        "releaseDate": "2018-07-06",
-        "year": 2018,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Soundtrack"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/068780e7-dd1e-4f13-9f66-e6298d5f5074/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "77a522d8-8af0-47cc-977d-50a769a369e2",
-        "title": "Fifty Shades Freed: Original Motion Picture Score",
-        "releaseDate": "2018-02-09",
-        "year": 2018,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Soundtrack"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/77a522d8-8af0-47cc-977d-50a769a369e2/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -11072,6 +11155,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/a1fc48ef-ab37-4977-b10c-bf4b116435eb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c0f5f2a7-3f34-48ad-a5e6-ee384c8d1e08",
+        "title": "The Danny Elfman & Tim Burton 25th Anniversary Music Box: 17 Collector's Edition Bonus Disc",
+        "releaseDate": "2010-12",
+        "year": 2010,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c0f5f2a7-3f34-48ad-a5e6-ee384c8d1e08/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -11917,15 +12013,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:08.236Z",
-    "cachedAt": "2026-08-24T08:02:08.236Z"
+    "fetchedAt": "2026-11-23T19:02:03.837Z",
+    "cachedAt": "2026-11-23T19:02:03.837Z"
   },
   "david-byrne": {
     "artistName": "David Byrne",
     "normalizedName": "david-byrne",
     "mbid": "d4659efb-b8eb-4f03-95e9-f69ce35967a9",
-    "albumCount": 90,
+    "albumCount": 91,
     "albums": [
+      {
+        "id": "4a755f96-9d29-4c24-b907-a00110adc1e9",
+        "title": "Let Me Sell You a Dream",
+        "releaseDate": "2026-10-08",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4a755f96-9d29-4c24-b907-a00110adc1e9/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "bb892c7c-d612-4154-8565-a52a02dbe995",
         "title": "¿Cuál es la razón?",
@@ -12073,6 +12180,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/d63638f8-0e83-462b-8c66-7efca9fc159f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "00a41db0-11ba-404a-8b4b-f027faaed6cc",
+        "title": "gravity",
+        "releaseDate": "2022-08-05",
+        "year": 2022,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/00a41db0-11ba-404a-8b4b-f027faaed6cc/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -12241,19 +12359,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/760ded10-4a72-4a04-98cb-5c568f2df00c/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "ca5ba918-9523-496a-be7b-8679f6950bfe",
-        "title": "Here Lies Love: Original Cast Recording",
-        "releaseDate": "2014-04-22",
-        "year": 2014,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Soundtrack"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/ca5ba918-9523-496a-be7b-8679f6950bfe/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -12427,7 +12532,7 @@
       {
         "id": "10653007-0836-41ec-9d63-f506353244c3",
         "title": "Toe Jam",
-        "releaseDate": "2008-08-05",
+        "releaseDate": "2008-07-20",
         "year": 2008,
         "primaryType": "Single",
         "secondaryTypes": [],
@@ -12987,8 +13092,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:11.966Z",
-    "cachedAt": "2026-08-24T08:02:11.966Z"
+    "fetchedAt": "2026-11-23T19:02:05.831Z",
+    "cachedAt": "2026-11-23T19:02:05.831Z"
   },
   "depeche-mode": {
     "artistName": "Depeche Mode",
@@ -13033,6 +13138,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/21f84ccc-8c91-4b64-83b6-ec80cd16ea26/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "96eceecd-6703-4b5c-9a12-745c3303d685",
+        "title": "Strange | Strange Too",
+        "releaseDate": "2023-12-08",
+        "year": 2023,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/96eceecd-6703-4b5c-9a12-745c3303d685/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -13135,19 +13253,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/1ad2a60f-6c46-49da-a159-a3b000db34dd/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "2c883ebe-90c1-4cb2-accb-f33fabb5621e",
-        "title": "Remixes for the Masses 2020",
-        "releaseDate": "2020-09-04",
-        "year": 2020,
-        "primaryType": "EP",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/2c883ebe-90c1-4cb2-accb-f33fabb5621e/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -13949,6 +14054,19 @@
         "coverAvailable": true
       },
       {
+        "id": "1ce56947-b15a-4add-ba9f-bbb51e96f703",
+        "title": "Member's Revenge 11: Combative!",
+        "releaseDate": "2001",
+        "year": 2001,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1ce56947-b15a-4add-ba9f-bbb51e96f703/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "354f0d5a-5738-4738-b9e6-79a690dd5ae4",
         "title": "The Videos 86>98",
         "releaseDate": "1998-09-28",
@@ -14254,21 +14372,10 @@
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/7a0e0366-91f4-3444-b45a-83b158004165/front-500.jpg",
         "coverAvailable": true
-      },
-      {
-        "id": "3fe864d5-d4f6-3c20-b922-c164d31e015b",
-        "title": "Dreaming of Me",
-        "releaseDate": "1981-02-20",
-        "year": 1981,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/3fe864d5-d4f6-3c20-b922-c164d31e015b/front-500.jpg",
-        "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:16.002Z",
-    "cachedAt": "2026-08-24T08:02:16.002Z"
+    "fetchedAt": "2026-11-23T19:02:07.820Z",
+    "cachedAt": "2026-11-23T19:02:07.820Z"
   },
   "devo": {
     "artistName": "DEVO",
@@ -14276,6 +14383,17 @@
     "mbid": "d2db1078-c170-4e22-b261-14f3ad60a690",
     "albumCount": 96,
     "albums": [
+      {
+        "id": "c1506b46-39e9-4dac-bee5-d9ce88cce651",
+        "title": "Devoween",
+        "releaseDate": "2026-10-01",
+        "year": 2026,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c1506b46-39e9-4dac-bee5-d9ce88cce651/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "1929cf1b-5bab-4d35-8dff-247390ee4cea",
         "title": "Nitrous Nightmare",
@@ -14377,19 +14495,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/5ae17984-4b6a-4d2d-84f5-18a2595f1aa7/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "f7933e0e-bc6a-4686-991a-2f855299bc8d",
-        "title": "Are We Not Live? Orpheum Theatre, 17th July 1980",
-        "releaseDate": "2022-01-13",
-        "year": 2022,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/f7933e0e-bc6a-4686-991a-2f855299bc8d/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -15457,8 +15562,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:20.748Z",
-    "cachedAt": "2026-08-24T08:02:20.748Z"
+    "fetchedAt": "2026-11-23T19:02:09.820Z",
+    "cachedAt": "2026-11-23T19:02:09.820Z"
   },
   "dirty-heads": {
     "artistName": "Dirty Heads",
@@ -15849,14 +15954,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:26.765Z",
-    "cachedAt": "2026-08-24T08:02:26.765Z"
+    "fetchedAt": "2026-11-23T19:02:11.823Z",
+    "cachedAt": "2026-11-23T19:02:11.823Z"
   },
   "dropkick-murphys": {
     "artistName": "Dropkick Murphys",
     "normalizedName": "dropkick-murphys",
     "mbid": "e8374874-4178-4869-b92e-fef6bf30dc04",
-    "albumCount": 66,
+    "albumCount": 70,
     "albums": [
       {
         "id": "6803c0e4-c263-4ece-94e2-90563ac84565",
@@ -16061,6 +16166,17 @@
         "coverAvailable": true
       },
       {
+        "id": "a9c56f35-9800-4442-b419-4ae44992f3ca",
+        "title": "Christmas (Baby Please Come Home)",
+        "releaseDate": "2020-11-27",
+        "year": 2020,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a9c56f35-9800-4442-b419-4ae44992f3ca/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "6d0cf1aa-bf2c-4893-afc8-8bac708aa610",
         "title": "Mick Jones Nicked My Pudding",
         "releaseDate": "2020-03-21",
@@ -16094,6 +16210,19 @@
         "coverAvailable": true
       },
       {
+        "id": "5d13800e-4d25-4e16-a64b-85d1dc9befda",
+        "title": "Live at Resurrection Fest 2017",
+        "releaseDate": "2017",
+        "year": 2017,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/5d13800e-4d25-4e16-a64b-85d1dc9befda/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "713ced21-fbc8-40ea-9192-cf781f6ba0cb",
         "title": "Paying My Way",
         "releaseDate": "2016-12-16",
@@ -16102,6 +16231,28 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/713ced21-fbc8-40ea-9192-cf781f6ba0cb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b67d952c-f37e-4ad6-b9d1-668351c47687",
+        "title": "You'll Never Walk Alone",
+        "releaseDate": "2016-12-03",
+        "year": 2016,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b67d952c-f37e-4ad6-b9d1-668351c47687/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "5fe80c94-49f3-404f-a804-8aa130d526b1",
+        "title": "Blood",
+        "releaseDate": "2016-11-04",
+        "year": 2016,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/5fe80c94-49f3-404f-a804-8aa130d526b1/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -16151,6 +16302,17 @@
         "coverAvailable": true
       },
       {
+        "id": "c931dab1-81d6-4447-ab02-5a952bf4ecbb",
+        "title": "The Boys Are Back",
+        "releaseDate": "2012-01-01",
+        "year": 2012,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c931dab1-81d6-4447-ab02-5a952bf4ecbb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "32e36613-340f-431b-a861-3f41ff002072",
         "title": "Live at Fenway Park",
         "releaseDate": "2012",
@@ -16161,17 +16323,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/32e36613-340f-431b-a861-3f41ff002072/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "c931dab1-81d6-4447-ab02-5a952bf4ecbb",
-        "title": "The Boys Are Back",
-        "releaseDate": "2012",
-        "year": 2012,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/c931dab1-81d6-4447-ab02-5a952bf4ecbb/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -16609,8 +16760,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:29.600Z",
-    "cachedAt": "2026-08-24T08:02:29.600Z"
+    "fetchedAt": "2026-11-23T19:02:13.814Z",
+    "cachedAt": "2026-11-23T19:02:13.814Z"
   },
   "duran-duran": {
     "artistName": "Duran Duran",
@@ -16833,6 +16984,19 @@
         "coverAvailable": true
       },
       {
+        "id": "3cc245b8-808d-4f31-89da-c00919e131c1",
+        "title": "10 Great Songs",
+        "releaseDate": "2011-06-14",
+        "year": 2011,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/3cc245b8-808d-4f31-89da-c00919e131c1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "c0260934-ea2f-4af6-b29f-2440ad29ef1b",
         "title": "Live! - Rome - 12th May 2011",
         "releaseDate": "2011-06",
@@ -17044,17 +17208,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/e4bd35c9-26bb-3d7a-8c13-5126aed68878/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "424db1b5-5b4b-48ea-a2ca-2707b0b9c00e",
-        "title": "Someone Else Not Me",
-        "releaseDate": "2000",
-        "year": 2000,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/424db1b5-5b4b-48ea-a2ca-2707b0b9c00e/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -17677,7 +17830,7 @@
       {
         "id": "3c638420-8208-3c01-b723-f061b10e3f3a",
         "title": "Rio",
-        "releaseDate": "1982-05-21",
+        "releaseDate": "1982-05-10",
         "year": 1982,
         "primaryType": "Album",
         "secondaryTypes": [],
@@ -17778,14 +17931,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:32.117Z",
-    "cachedAt": "2026-08-24T08:02:32.117Z"
+    "fetchedAt": "2026-11-23T19:02:15.853Z",
+    "cachedAt": "2026-11-23T19:02:15.853Z"
   },
   "elton-john": {
     "artistName": "Elton John",
     "normalizedName": "elton-john",
     "mbid": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-    "albumCount": 96,
+    "albumCount": 97,
     "albums": [
       {
         "id": "40bf8997-7983-427a-9379-06d02b7029aa",
@@ -17947,8 +18100,21 @@
         "coverAvailable": true
       },
       {
+        "id": "1c7a4612-b611-490d-8b98-11784a55eefe",
+        "title": "Goodbye Yellow Brick Road / Don’t Shoot Me I’m Only the Piano Player",
+        "releaseDate": "2009",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1c7a4612-b611-490d-8b98-11784a55eefe/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "b89e1372-83e9-4b79-9866-172ee59af08b",
-        "title": "2 for 1: Goodbye Yellow Brick Road + Don't Shoot Me I'm Only the Piano Player",
+        "title": "Goodbye Yellow Brick Road + Don’t Shoot Me I’m Only the Piano Player",
         "releaseDate": "2009",
         "year": 2009,
         "primaryType": "Album",
@@ -17970,19 +18136,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/4bc3e155-dda2-389f-a59c-02b4e8a4cca3/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "22358faf-430c-4247-9e05-4c3c8f2cefcc",
-        "title": "Rocket Man - The Definitive Hits",
-        "releaseDate": "2007",
-        "year": 2007,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/22358faf-430c-4247-9e05-4c3c8f2cefcc/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -18055,6 +18208,19 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/e5fa9446-4c0e-3eef-afb5-c2c1f67bb0d1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "949da47b-0e88-4185-a431-16074e4efc53",
+        "title": "Aida",
+        "releaseDate": "1999-03-23",
+        "year": 1999,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Soundtrack"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/949da47b-0e88-4185-a431-16074e4efc53/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -18968,8 +19134,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:41.263Z",
-    "cachedAt": "2026-08-24T08:02:41.263Z"
+    "fetchedAt": "2026-11-23T19:02:17.835Z",
+    "cachedAt": "2026-11-23T19:02:17.835Z"
   },
   "erasure": {
     "artistName": "Erasure",
@@ -18977,6 +19143,17 @@
     "mbid": "43b58c98-3779-4b04-9a23-1c95cca3a145",
     "albumCount": 98,
     "albums": [
+      {
+        "id": "abd5b2e7-0ab3-44e7-8d48-38ee8867e20f",
+        "title": "Radio!! Radio!!",
+        "releaseDate": "2027-03-12",
+        "year": 2027,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/abd5b2e7-0ab3-44e7-8d48-38ee8867e20f/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "9e2cc0be-25dd-4b78-ac3f-734cb1bc03b1",
         "title": "Day‐Glo (Based on a True Story)",
@@ -19215,6 +19392,19 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/7aadf3b7-3a0d-43e6-822e-e7db4db5cc38/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "0339c4f5-6eb3-4ae3-982e-a82055ca1a76",
+        "title": "Hits! The Very Best Of (10 Great Songs)",
+        "releaseDate": "2009-11-02",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0339c4f5-6eb3-4ae3-982e-a82055ca1a76/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -19592,17 +19782,6 @@
         "coverAvailable": true
       },
       {
-        "id": "e4539ab9-3d1f-348d-84a6-bb96062b416e",
-        "title": "Freedom",
-        "releaseDate": "2000-10-09",
-        "year": 2000,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/e4539ab9-3d1f-348d-84a6-bb96062b416e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "c2719b31-be48-3d04-85b2-832c1f6b5581",
         "title": "Acoustic Session",
         "releaseDate": "2000",
@@ -19622,28 +19801,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/5e5798cd-7543-33ff-81cc-683f70197f38/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "b1a75327-b39a-323f-b0ff-1f1513ef0f8f",
-        "title": "Rain",
-        "releaseDate": "1997-11-24",
-        "year": 1997,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/b1a75327-b39a-323f-b0ff-1f1513ef0f8f/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "4389a17a-e666-3248-8c1e-f8503643ed33",
-        "title": "Don't Say Your Love Is Killing Me",
-        "releaseDate": "1997-08-05",
-        "year": 1997,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/4389a17a-e666-3248-8c1e-f8503643ed33/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -19800,6 +19957,19 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/4e6e57a5-91b6-32f9-8037-a90d2c56f0ae/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "761bdc32-408e-4671-99bb-2edc6d276362",
+        "title": "Gute Zeiten Schlechte Zeiten - Summer Special 4",
+        "releaseDate": "1994",
+        "year": 1994,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/761bdc32-408e-4671-99bb-2edc6d276362/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -20128,14 +20298,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:48.648Z",
-    "cachedAt": "2026-08-24T08:02:48.648Z"
+    "fetchedAt": "2026-11-23T19:02:19.819Z",
+    "cachedAt": "2026-11-23T19:02:19.819Z"
   },
   "foals": {
     "artistName": "Foals",
     "normalizedName": "foals",
     "mbid": "6a65d878-fcd0-42cf-aff9-ca1d636a8bcc",
-    "albumCount": 82,
+    "albumCount": 80,
     "albums": [
       {
         "id": "32419cf7-67c8-48b4-be25-a33bbaab7891",
@@ -20330,50 +20500,8 @@
         "coverAvailable": true
       },
       {
-        "id": "1b967c86-c2b8-4254-91e0-e1556893042e",
-        "title": "Collected Reworks Vol. 3",
-        "releaseDate": "2020-10-09",
-        "year": 2020,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/1b967c86-c2b8-4254-91e0-e1556893042e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "23197f99-a631-445f-acd2-136b116f6178",
         "title": "Collected Reworks",
-        "releaseDate": "2020-10-09",
-        "year": 2020,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/23197f99-a631-445f-acd2-136b116f6178/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "77df57f5-d754-4e03-a24f-0e89b0ec7b40",
-        "title": "Collected Reworks Vol. 2",
-        "releaseDate": "2020-07-31",
-        "year": 2020,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/77df57f5-d754-4e03-a24f-0e89b0ec7b40/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "9d7214e4-8af7-4a60-899d-d16c0601a173",
-        "title": "Collected Reworks Vol. 1",
         "releaseDate": "2020-06-12",
         "year": 2020,
         "primaryType": "Album",
@@ -20382,7 +20510,7 @@
           "Remix"
         ],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/9d7214e4-8af7-4a60-899d-d16c0601a173/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/23197f99-a631-445f-acd2-136b116f6178/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -20660,6 +20788,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/008b9a80-7d2a-497c-8c47-436d86f60dbc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "25b114b8-d0cc-4fc1-96d6-a564074d5ba3",
+        "title": "Mountain at My Gates",
+        "releaseDate": "2015-07-21",
+        "year": 2015,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/25b114b8-d0cc-4fc1-96d6-a564074d5ba3/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -21114,14 +21253,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:52.555Z",
-    "cachedAt": "2026-08-24T08:02:52.555Z"
+    "fetchedAt": "2026-11-23T19:02:21.819Z",
+    "cachedAt": "2026-11-23T19:02:21.819Z"
   },
   "foo-fighters": {
     "artistName": "Foo Fighters",
     "normalizedName": "foo-fighters",
     "mbid": "67f66c07-6e61-4026-ade5-7e782fad3a5d",
-    "albumCount": 100,
+    "albumCount": 99,
     "albums": [
       {
         "id": "ba673a03-5a61-4c6c-a0c6-6508126451af",
@@ -21182,28 +21321,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/90862a96-1c5b-47a4-b9be-3099187c3f9e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "7260a102-bbaa-4c7a-900c-ce8f71b5eb74",
-        "title": "Making a Fire (Mark Ronson Re-version) / Chasing Birds (Preservation Hall Jazz Band Re-version)",
-        "releaseDate": "2022-04-23",
-        "year": 2022,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/7260a102-bbaa-4c7a-900c-ce8f71b5eb74/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "f6ed4e88-66fb-4e41-90a1-3e4e11d9cab3",
-        "title": "Chasing Birds (Preservation Hall Jazz Band Re-Version)",
-        "releaseDate": "2021-10-08",
-        "year": 2021,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/f6ed4e88-66fb-4e41-90a1-3e4e11d9cab3/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -21801,6 +21918,19 @@
         "coverAvailable": true
       },
       {
+        "id": "db823d2e-2746-4203-a07b-7c0ce0e007df",
+        "title": "Greatest Hits",
+        "releaseDate": "2009-11-03",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/db823d2e-2746-4203-a07b-7c0ce0e007df/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "c54ce9db-9877-4da3-afcd-4da272fb1ef4",
         "title": "Greatest Hits",
         "releaseDate": "2009-10-30",
@@ -22290,8 +22420,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:56.418Z",
-    "cachedAt": "2026-08-24T08:02:56.418Z"
+    "fetchedAt": "2026-11-23T19:02:23.831Z",
+    "cachedAt": "2026-11-23T19:02:23.831Z"
   },
   "future-islands": {
     "artistName": "Future Islands",
@@ -22912,14 +23042,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:02:57.607Z",
-    "cachedAt": "2026-08-24T08:02:57.607Z"
+    "fetchedAt": "2026-11-23T19:02:25.825Z",
+    "cachedAt": "2026-11-23T19:02:25.825Z"
   },
   "garbage": {
     "artistName": "Garbage",
     "normalizedName": "garbage",
     "mbid": "f9ef7a22-4262-4596-a2a8-1d19345b8e50",
-    "albumCount": 93,
+    "albumCount": 92,
     "albums": [
       {
         "id": "0f1a1b9a-93be-4ac8-8b62-48deef45c59d",
@@ -23768,19 +23898,6 @@
         "coverAvailable": true
       },
       {
-        "id": "f10c69f7-3873-439e-9fc0-f3a322cc9aba",
-        "title": "Release 2.1",
-        "releaseDate": "1998",
-        "year": 1998,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/f10c69f7-3873-439e-9fc0-f3a322cc9aba/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "faf8530b-e72f-4ca5-95cf-7ba1b1bca9f0",
         "title": "1998‐09‐25: San Jose University Event Center Arena, San Jose, CA, USA",
         "releaseDate": "1998",
@@ -24022,8 +24139,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:03.018Z",
-    "cachedAt": "2026-08-24T08:03:03.018Z"
+    "fetchedAt": "2026-11-23T19:02:27.829Z",
+    "cachedAt": "2026-11-23T19:02:27.829Z"
   },
   "gary-numan": {
     "artistName": "Gary Numan",
@@ -25293,15 +25410,28 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:04.970Z",
-    "cachedAt": "2026-08-24T08:03:04.970Z"
+    "fetchedAt": "2026-11-23T19:02:29.816Z",
+    "cachedAt": "2026-11-23T19:02:29.816Z"
   },
   "george-michael": {
     "artistName": "George Michael",
     "normalizedName": "george-michael",
     "mbid": "ccb8f30e-4d71-40c4-8b1d-846dafe73e2c",
-    "albumCount": 93,
+    "albumCount": 95,
     "albums": [
+      {
+        "id": "f9f7e17e-f597-4a92-bb67-33476dc88764",
+        "title": "The Faith Tour",
+        "releaseDate": "2026-11-06",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f9f7e17e-f597-4a92-bb67-33476dc88764/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "6a97e834-5946-4249-8059-65b7536d6f1b",
         "title": "Live in Rio",
@@ -25529,6 +25659,19 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/3aeeb6ae-31eb-4f30-83bb-897cf137e8d1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1c8c65cd-3170-4e1a-a53e-0a3c6410a02d",
+        "title": "The Complete Outtakes, Duets & Collaborations",
+        "releaseDate": "2008",
+        "year": 2008,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1c8c65cd-3170-4e1a-a53e-0a3c6410a02d/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -26390,8 +26533,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:07.688Z",
-    "cachedAt": "2026-08-24T08:03:07.688Z"
+    "fetchedAt": "2026-11-23T19:02:31.835Z",
+    "cachedAt": "2026-11-23T19:02:31.835Z"
   },
   "heaven-17": {
     "artistName": "Heaven 17",
@@ -27072,15 +27215,41 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:08.879Z",
-    "cachedAt": "2026-08-24T08:03:08.879Z"
+    "fetchedAt": "2026-11-23T19:02:33.829Z",
+    "cachedAt": "2026-11-23T19:02:33.829Z"
   },
   "howard-jones": {
     "artistName": "Howard Jones",
     "normalizedName": "howard-jones",
     "mbid": "23b2cc78-7595-4630-bebb-a349a4f25262",
-    "albumCount": 90,
+    "albumCount": 93,
     "albums": [
+      {
+        "id": "79e5341c-c8cf-4ec4-a50c-b0d834cd5b18",
+        "title": "Stand Up (The Remixes)",
+        "releaseDate": "2026-10-16",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/79e5341c-c8cf-4ec4-a50c-b0d834cd5b18/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "968c8661-ef43-4811-b464-60f790a6b54c",
+        "title": "Like To Get To Know You Well",
+        "releaseDate": "2026-09-18",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/968c8661-ef43-4811-b464-60f790a6b54c/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "3c9bac89-b9ba-496a-bf0f-7344b411aaf5",
         "title": "Live at the Marquee",
@@ -27763,6 +27932,19 @@
         "coverAvailable": true
       },
       {
+        "id": "2d34933a-e28b-4fe3-897a-19b1f54baa9f",
+        "title": "Best Of",
+        "releaseDate": "1993-01-01",
+        "year": 1993,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2d34933a-e28b-4fe3-897a-19b1f54baa9f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "c8598282-d5ba-349d-88c1-c1a702f3d239",
         "title": "What Is Love?",
         "releaseDate": "1993",
@@ -28147,15 +28329,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:13.541Z",
-    "cachedAt": "2026-08-24T08:03:13.541Z"
+    "fetchedAt": "2026-11-23T19:02:35.812Z",
+    "cachedAt": "2026-11-23T19:02:35.812Z"
   },
   "jesus-jones": {
     "artistName": "Jesus Jones",
     "normalizedName": "jesus-jones",
     "mbid": "f9776598-2689-41db-98d3-829f5510021c",
-    "albumCount": 46,
+    "albumCount": 47,
     "albums": [
+      {
+        "id": "ccea840d-5a02-4a44-9754-d1510af76923",
+        "title": "Twilight",
+        "releaseDate": "2026-09-18",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ccea840d-5a02-4a44-9754-d1510af76923/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "d4d3976f-fdba-432e-a447-fd9c5a5745fb",
         "title": "Some of the Answers",
@@ -28696,8 +28889,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:15.349Z",
-    "cachedAt": "2026-08-24T08:03:15.349Z"
+    "fetchedAt": "2026-11-23T19:02:37.824Z",
+    "cachedAt": "2026-11-23T19:02:37.824Z"
   },
   "jimmy-buffett": {
     "artistName": "Jimmy Buffett",
@@ -28727,6 +28920,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/fdf855f9-b6bf-3288-8369-03984edcaf82/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "275a3939-a6e1-422e-ba04-d302a5bb351e",
+        "title": "Live from Memphis, TN APR 27, 1995",
+        "releaseDate": "2021-03-01",
+        "year": 2021,
+        "primaryType": "Other",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/275a3939-a6e1-422e-ba04-d302a5bb351e/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -29276,32 +29482,6 @@
         "coverAvailable": true
       },
       {
-        "id": "677f2717-cea7-3099-82b7-f20dea82d464",
-        "title": "There's Nothing Soft About Hard Times, Volume 2",
-        "releaseDate": "2000-03-14",
-        "year": 2000,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/677f2717-cea7-3099-82b7-f20dea82d464/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "aee285be-db9f-35f6-a26b-1431bfe5707e",
-        "title": "There's Nothing Soft About Hard Times",
-        "releaseDate": "2000-03-14",
-        "year": 2000,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/aee285be-db9f-35f6-a26b-1431bfe5707e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "42f65176-aeb9-361d-9a30-a3751c084c07",
         "title": "Millennium Concert",
         "releaseDate": "1999-12-31",
@@ -29352,6 +29532,19 @@
         "coverAvailable": true
       },
       {
+        "id": "aee285be-db9f-35f6-a26b-1431bfe5707e",
+        "title": "Best Of Collection: There's Nothing Soft About Hard Times",
+        "releaseDate": "1999",
+        "year": 1999,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/aee285be-db9f-35f6-a26b-1431bfe5707e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "364cf999-8b5b-3375-889c-69bd71137e3a",
         "title": "Don't Stop the Carnival",
         "releaseDate": "1998-04-28",
@@ -29373,19 +29566,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/a1375e27-5d39-3653-87ff-664892af0210/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "83673f65-803f-3990-b25c-79002e60dac1",
-        "title": "Rancho Deluxe",
-        "releaseDate": "1997",
-        "year": 1997,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Soundtrack"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/83673f65-803f-3990-b25c-79002e60dac1/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -29802,6 +29982,19 @@
         "coverAvailable": true
       },
       {
+        "id": "83673f65-803f-3990-b25c-79002e60dac1",
+        "title": "Rancho Deluxe",
+        "releaseDate": "1975",
+        "year": 1975,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Soundtrack"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/83673f65-803f-3990-b25c-79002e60dac1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "e04baeae-3b27-3e54-9a93-219cd026b229",
         "title": "Havaña Daydreamin’",
         "releaseDate": "1975",
@@ -29868,8 +30061,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:17.885Z",
-    "cachedAt": "2026-08-24T08:03:17.885Z"
+    "fetchedAt": "2026-11-23T19:02:39.834Z",
+    "cachedAt": "2026-11-23T19:02:39.834Z"
   },
   "joe-jackson": {
     "artistName": "Joe Jackson",
@@ -30948,26 +31141,15 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:19.163Z",
-    "cachedAt": "2026-08-24T08:03:19.163Z"
+    "fetchedAt": "2026-11-23T19:02:41.825Z",
+    "cachedAt": "2026-11-23T19:02:41.826Z"
   },
   "kasabian": {
     "artistName": "Kasabian",
     "normalizedName": "kasabian",
     "mbid": "69b39eab-6577-46a4-a9f5-817839092033",
-    "albumCount": 69,
+    "albumCount": 71,
     "albums": [
-      {
-        "id": "f9f5ccac-8b32-4289-933e-a7e6d80f17ae",
-        "title": "ACT III",
-        "releaseDate": "2026-09-04",
-        "year": 2026,
-        "primaryType": "Album",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/f9f5ccac-8b32-4289-933e-a7e6d80f17ae/front-500.jpg",
-        "coverAvailable": true
-      },
       {
         "id": "c22432d9-802d-458c-b43e-3d1e646cee08",
         "title": "NOTHING BETTER THAN THIS",
@@ -30999,6 +31181,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/c210500d-4ddc-494b-b594-3658d8247f5c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "f9f5ccac-8b32-4289-933e-a7e6d80f17ae",
+        "title": "ACT III",
+        "releaseDate": "2026-04-02",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f9f5ccac-8b32-4289-933e-a7e6d80f17ae/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -31472,6 +31665,17 @@
         "coverAvailable": true
       },
       {
+        "id": "9fc34481-49f7-46d3-95ae-d2370e2c626c",
+        "title": "Vlad The Impaler",
+        "releaseDate": "2010-02-12",
+        "year": 2010,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9fc34481-49f7-46d3-95ae-d2370e2c626c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "f3652649-4fd4-4e7e-99a8-771f86f84796",
         "title": "Vlad the Impaler",
         "releaseDate": "2010-02",
@@ -31561,6 +31765,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/041780bf-f292-4c74-a661-ae7330ab806c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6c0cd14b-64ed-47da-a5f0-735534826671",
+        "title": "Live T in the Park 2007",
+        "releaseDate": "2007-07-08",
+        "year": 2007,
+        "primaryType": "Other",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6c0cd14b-64ed-47da-a5f0-735534826671/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -31708,7 +31925,7 @@
       {
         "id": "a3e970ee-40ff-3edf-ac99-c67477fca27e",
         "title": "L.S.F.",
-        "releaseDate": "2004-08-17",
+        "releaseDate": "2004-08-09",
         "year": 2004,
         "primaryType": "Single",
         "secondaryTypes": [],
@@ -31761,8 +31978,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:22.137Z",
-    "cachedAt": "2026-08-24T08:03:22.137Z"
+    "fetchedAt": "2026-11-23T19:02:43.828Z",
+    "cachedAt": "2026-11-23T19:02:43.828Z"
   },
   "kraftwerk": {
     "artistName": "Kraftwerk",
@@ -32163,20 +32380,6 @@
         "coverAvailable": true
       },
       {
-        "id": "cff2931e-1c82-4f5e-bba5-2c090196d00d",
-        "title": "Ultra Rare Traxx 3",
-        "releaseDate": "2004",
-        "year": 2004,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/cff2931e-1c82-4f5e-bba5-2c090196d00d/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "db2e8aad-f9f0-42fc-86a5-dee0b78cf69c",
         "title": "The Catalogue",
         "releaseDate": "2004",
@@ -32386,20 +32589,6 @@
         "coverAvailable": true
       },
       {
-        "id": "219665f2-1715-3162-8fcb-e46c24e5658f",
-        "title": "Ultra Rare Trax",
-        "releaseDate": "1997",
-        "year": 1997,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation",
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/219665f2-1715-3162-8fcb-e46c24e5658f/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "417046d4-7b36-3d0f-a306-8cdcdaab9d6d",
         "title": "Tribal Gathering",
         "releaseDate": "1997",
@@ -32426,6 +32615,19 @@
         "coverAvailable": true
       },
       {
+        "id": "90a5a689-3431-44b6-a910-b652839fd387",
+        "title": "The Man Machine / Radio‐Activity",
+        "releaseDate": "1996",
+        "year": 1996,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/90a5a689-3431-44b6-a910-b652839fd387/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "fdb2d60c-5c76-4af0-9ef7-4aa953695879",
         "title": "The Model / Showroom Dummies",
         "releaseDate": "1996",
@@ -32449,6 +32651,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/5d7870eb-dedb-3162-b8d8-7b22d6301ac7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "84bc74eb-5eda-4f6a-b2a8-39b087234546",
+        "title": "Werke",
+        "releaseDate": "1995",
+        "year": 1995,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/84bc74eb-5eda-4f6a-b2a8-39b087234546/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -32756,6 +32971,17 @@
         "coverAvailable": true
       },
       {
+        "id": "8974f587-5a09-483d-ac58-caacbc7081c6",
+        "title": "Spacelab",
+        "releaseDate": "1978",
+        "year": 1978,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/8974f587-5a09-483d-ac58-caacbc7081c6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "d5656b16-5408-4190-bbab-bf12006aaed8",
         "title": "Metropolis",
         "releaseDate": "1978",
@@ -32808,19 +33034,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/f7b596dc-7a34-3901-9184-4e5ac407bb46/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "02209abe-1152-4364-8849-b87cc10ea076",
-        "title": "Live in Dallas, 1 May 1975",
-        "releaseDate": "1975",
-        "year": 1975,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/02209abe-1152-4364-8849-b87cc10ea076/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -32962,8 +33175,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:23.423Z",
-    "cachedAt": "2026-08-24T08:03:23.423Z"
+    "fetchedAt": "2026-11-23T19:02:45.833Z",
+    "cachedAt": "2026-11-23T19:02:45.833Z"
   },
   "lee-rocker": {
     "artistName": "Lee Rocker",
@@ -33119,15 +33332,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:25.960Z",
-    "cachedAt": "2026-08-24T08:03:25.960Z"
+    "fetchedAt": "2026-11-23T19:02:47.826Z",
+    "cachedAt": "2026-11-23T19:02:47.826Z"
   },
   "lenny-kravitz": {
     "artistName": "Lenny Kravitz",
     "normalizedName": "lenny-kravitz",
     "mbid": "0ef3f425-9bd2-4216-9dd2-219d2fe90f1f",
-    "albumCount": 97,
+    "albumCount": 98,
     "albums": [
+      {
+        "id": "80cb4f63-1e10-40ea-aca1-c187066a1473",
+        "title": "highway robbery",
+        "releaseDate": "2026-05-08",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/80cb4f63-1e10-40ea-aca1-c187066a1473/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "f807e95d-8f5f-4db9-ba16-3bed9cb510b3",
         "title": "Let It Ride Remixes, Pt. 2",
@@ -34232,14 +34456,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:27.534Z",
-    "cachedAt": "2026-08-24T08:03:27.534Z"
+    "fetchedAt": "2026-11-23T19:02:49.840Z",
+    "cachedAt": "2026-11-23T19:02:49.840Z"
   },
   "maxi-priest": {
     "artistName": "Maxi Priest",
     "normalizedName": "maxi-priest",
     "mbid": "fc6548d9-cc7e-4311-bd6c-6eba9c0cd06f",
-    "albumCount": 32,
+    "albumCount": 33,
     "albums": [
       {
         "id": "c46ad9d3-290a-4160-b560-bbd254182f7a",
@@ -34272,6 +34496,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/c1fa43b4-8ae6-4e12-bebd-5f090263b0fe/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "72c5994d-08c5-4f66-bada-74fa78d2c578",
+        "title": "Leave the Door Open (Cover Version)",
+        "releaseDate": "2021-08-03",
+        "year": 2021,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/72c5994d-08c5-4f66-bada-74fa78d2c578/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -34606,8 +34841,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:29.674Z",
-    "cachedAt": "2026-08-24T08:03:29.674Z"
+    "fetchedAt": "2026-11-23T19:02:51.828Z",
+    "cachedAt": "2026-11-23T19:02:51.828Z"
   },
   "midnight-oil": {
     "artistName": "Midnight Oil",
@@ -35698,8 +35933,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:31.472Z",
-    "cachedAt": "2026-08-24T08:03:31.472Z"
+    "fetchedAt": "2026-11-23T19:02:53.843Z",
+    "cachedAt": "2026-11-23T19:02:53.843Z"
   },
   "mike-ness": {
     "artistName": "Mike Ness",
@@ -35741,8 +35976,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:33.780Z",
-    "cachedAt": "2026-08-24T08:03:33.780Z"
+    "fetchedAt": "2026-11-23T19:02:55.820Z",
+    "cachedAt": "2026-11-23T19:02:55.820Z"
   },
   "new-order": {
     "artistName": "New Order",
@@ -35775,17 +36010,6 @@
         "coverAvailable": true
       },
       {
-        "id": "99788c99-9003-4d97-b6ee-d6fcaf3b59bc",
-        "title": "State of the Nation (Japan Demo)",
-        "releaseDate": "2024-11-08",
-        "year": 2024,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/99788c99-9003-4d97-b6ee-d6fcaf3b59bc/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "1004d2d7-209a-407c-b208-716e5ae054ad",
         "title": "True Faith",
         "releaseDate": "2023-11-10",
@@ -35794,17 +36018,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/1004d2d7-209a-407c-b208-716e5ae054ad/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "4235b78c-35a3-41d2-8f22-6dbfc0c14616",
-        "title": "The Perfect Kiss (writing session recording)",
-        "releaseDate": "2022-11-10",
-        "year": 2022,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/4235b78c-35a3-41d2-8f22-6dbfc0c14616/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -35831,17 +36044,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/8de9a595-4ba9-4f58-9d75-6a5c7735f7b9/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "e6c6509d-5f83-48b2-b564-d1228d1dd6c9",
-        "title": "Be a Rebel",
-        "releaseDate": "2020-09-08",
-        "year": 2020,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/e6c6509d-5f83-48b2-b564-d1228d1dd6c9/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -36028,7 +36230,7 @@
       {
         "id": "ab0c0281-9e43-482d-8067-98aeed1792fe",
         "title": "Live in Glasgow",
-        "releaseDate": "2008",
+        "releaseDate": "2008-06-02",
         "year": 2008,
         "primaryType": "Album",
         "secondaryTypes": [
@@ -36177,6 +36379,19 @@
         "coverAvailable": true
       },
       {
+        "id": "2495875a-f40b-4f01-bc8a-28a673292ad6",
+        "title": "A Collection",
+        "releaseDate": "2005-09-19",
+        "year": 2005,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2495875a-f40b-4f01-bc8a-28a673292ad6/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "5fa80e6e-1ef5-41c1-b751-3bcdf60211d3",
         "title": "Best Remixes",
         "releaseDate": "2005-06-21",
@@ -36250,7 +36465,7 @@
       {
         "id": "c6b78162-3e14-303d-aad7-f9aba4cf846f",
         "title": "In Session",
-        "releaseDate": "2004-04-22",
+        "releaseDate": "2004-04-12",
         "year": 2004,
         "primaryType": "Album",
         "secondaryTypes": [
@@ -36395,8 +36610,21 @@
         "coverAvailable": true
       },
       {
+        "id": "1ce56947-b15a-4add-ba9f-bbb51e96f703",
+        "title": "Member's Revenge 11: Combative!",
+        "releaseDate": "2001",
+        "year": 2001,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1ce56947-b15a-4add-ba9f-bbb51e96f703/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "8126f042-56f6-4c0d-bd60-dba3e151895c",
-        "title": "316",
+        "title": "3 16",
         "releaseDate": "2001",
         "year": 2001,
         "primaryType": "Album",
@@ -36629,6 +36857,19 @@
         "coverAvailable": true
       },
       {
+        "id": "2a35d9d9-bc9d-4954-9314-54412206fe3e",
+        "title": "Substance II",
+        "releaseDate": "1989",
+        "year": 1989,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2a35d9d9-bc9d-4954-9314-54412206fe3e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "0897950a-87f5-34c0-9d37-12c9c8381f8e",
         "title": "Fine Time",
         "releaseDate": "1988-11-28",
@@ -36710,17 +36951,6 @@
         "coverAvailable": true
       },
       {
-        "id": "9f46bfe6-6c91-3536-9bfc-edb3e1f8bd7b",
-        "title": "Brotherhood",
-        "releaseDate": "1986-09-29",
-        "year": 1986,
-        "primaryType": "Album",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/9f46bfe6-6c91-3536-9bfc-edb3e1f8bd7b/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "769f7acb-dadc-32ab-b438-9c63c11087b8",
         "title": "The Peel Sessions",
         "releaseDate": "1986-09",
@@ -36731,6 +36961,17 @@
         ],
         "disambiguation": "1982-06-01",
         "coverUrl": "https://coverartarchive.org/release-group/769f7acb-dadc-32ab-b438-9c63c11087b8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9f46bfe6-6c91-3536-9bfc-edb3e1f8bd7b",
+        "title": "Brotherhood",
+        "releaseDate": "1986-09",
+        "year": 1986,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9f46bfe6-6c91-3536-9bfc-edb3e1f8bd7b/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -36925,8 +37166,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:35.507Z",
-    "cachedAt": "2026-08-24T08:03:35.507Z"
+    "fetchedAt": "2026-11-23T19:02:57.837Z",
+    "cachedAt": "2026-11-23T19:02:57.837Z"
   },
   "no-doubt": {
     "artistName": "No Doubt",
@@ -36945,19 +37186,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/23126fb2-3c0a-4ee5-a5c5-9e8875a7d752/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "a65780c9-792e-40c8-8faa-adfcffc9115c",
-        "title": "Live At The Metro, Chicago, IL, November 8, 1995",
-        "releaseDate": "2023-04-15",
-        "year": 2023,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/a65780c9-792e-40c8-8faa-adfcffc9115c/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -36988,7 +37216,7 @@
       },
       {
         "id": "1e01677f-bff2-4878-8bc9-0336c5f70dd4",
-        "title": "Karlsruhe, Germany (03.01.1997) [SDR3's World Wild Weekend]",
+        "title": "Karlsruhe, Germany (03.01.1997) (SDR3’s World Wild Weekend)",
         "releaseDate": "2022-07-14",
         "year": 2022,
         "primaryType": "Other",
@@ -37591,6 +37819,19 @@
         "coverAvailable": true
       },
       {
+        "id": "a8e38849-c47b-4e64-b83b-bacacc11fede",
+        "title": "No Doubt",
+        "releaseDate": "1991",
+        "year": 1991,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Demo"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a8e38849-c47b-4e64-b83b-bacacc11fede/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "26317703-aab7-431d-b804-6438c39b0ea9",
         "title": "No Doubt",
         "releaseDate": "1989",
@@ -37604,8 +37845,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:38.022Z",
-    "cachedAt": "2026-08-24T08:03:38.022Z"
+    "fetchedAt": "2026-11-23T19:02:59.822Z",
+    "cachedAt": "2026-11-23T19:02:59.822Z"
   },
   "oingo-boingo": {
     "artistName": "Oingo Boingo",
@@ -38148,8 +38389,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:41.620Z",
-    "cachedAt": "2026-08-24T08:03:41.620Z"
+    "fetchedAt": "2026-11-23T19:03:01.823Z",
+    "cachedAt": "2026-11-23T19:03:01.823Z"
   },
   "peter-gabriel": {
     "artistName": "Peter Gabriel",
@@ -38157,6 +38398,17 @@
     "mbid": "8e66ea2b-b57b-47d9-8df0-df4630aeb8e5",
     "albumCount": 100,
     "albums": [
+      {
+        "id": "1537fb97-3578-44f8-9ae5-9045eb4bfdf5",
+        "title": "o\\i",
+        "releaseDate": "2026-11-27",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1537fb97-3578-44f8-9ae5-9045eb4bfdf5/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "7dc5a2fe-452f-462b-a5c0-b303d3e60629",
         "title": "i/o",
@@ -38193,19 +38445,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/6e77a529-80d9-426d-af0c-12a701d30763/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "5d04606d-c5af-4fa1-95d6-7b2e8552a160",
-        "title": "Back to Front Winter 2014: 30.11.14 Sheffield, UK",
-        "releaseDate": "2014-11-14",
-        "year": 2014,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/5d04606d-c5af-4fa1-95d6-7b2e8552a160/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -39439,11 +39678,11 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:43.731Z",
-    "cachedAt": "2026-08-24T08:03:43.731Z"
+    "fetchedAt": "2026-11-23T19:03:03.826Z",
+    "cachedAt": "2026-11-23T19:03:03.826Z"
   },
   "prophets-of-rage": {
-    "artistName": "Prophets of Rage",
+    "artistName": "Prophets Of Rage",
     "normalizedName": "prophets-of-rage",
     "mbid": "ef217163-645d-43e6-a487-985ffe9b14ca",
     "albumCount": 10,
@@ -39565,14 +39804,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:48.231Z",
-    "cachedAt": "2026-08-24T08:03:48.231Z"
+    "fetchedAt": "2026-11-23T19:03:05.823Z",
+    "cachedAt": "2026-11-23T19:03:05.823Z"
   },
   "rancid": {
     "artistName": "Rancid",
     "normalizedName": "rancid",
     "mbid": "24f8d8a5-269b-475c-a1cb-792990b0b2ee",
-    "albumCount": 67,
+    "albumCount": 66,
     "albums": [
       {
         "id": "e50ca125-18d3-4470-8ebc-0c07f489a208",
@@ -39991,17 +40230,6 @@
         "coverAvailable": true
       },
       {
-        "id": "7f4ec6d5-03c8-4e5f-90d0-602531f0a93e",
-        "title": "Fall Back Down",
-        "releaseDate": "2003",
-        "year": 2003,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/7f4ec6d5-03c8-4e5f-90d0-602531f0a93e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "f0e43015-8b14-4cd7-86e4-b7b01d1f3195",
         "title": "Red Hot Moon",
         "releaseDate": "2003",
@@ -40069,7 +40297,7 @@
         "year": 2000,
         "primaryType": "Album",
         "secondaryTypes": [],
-        "disambiguation": "",
+        "disambiguation": "2000",
         "coverUrl": "https://coverartarchive.org/release-group/e9f1ea3e-d26b-3b33-b1b4-6d8033b7f2ec/front-500.jpg",
         "coverAvailable": true
       },
@@ -40329,7 +40557,7 @@
         "year": 1993,
         "primaryType": "Album",
         "secondaryTypes": [],
-        "disambiguation": "",
+        "disambiguation": "1993",
         "coverUrl": "https://coverartarchive.org/release-group/642238f2-24b6-3a0b-bfa7-9c0b4731989d/front-500.jpg",
         "coverAvailable": true
       },
@@ -40340,7 +40568,7 @@
         "year": 1992,
         "primaryType": "EP",
         "secondaryTypes": [],
-        "disambiguation": "",
+        "disambiguation": "EP",
         "coverUrl": "https://coverartarchive.org/release-group/218264f1-65ac-4dc4-8ed9-e423f08fd9fe/front-500.jpg",
         "coverAvailable": true
       },
@@ -40358,8 +40586,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:50.216Z",
-    "cachedAt": "2026-08-24T08:03:50.216Z"
+    "fetchedAt": "2026-11-23T19:03:07.828Z",
+    "cachedAt": "2026-11-23T19:03:07.828Z"
   },
   "rob-thomas": {
     "artistName": "Rob Thomas",
@@ -40618,7 +40846,7 @@
       {
         "id": "dbb8b358-52bf-4c75-a512-dd7c77985327",
         "title": "Cradlesong",
-        "releaseDate": "2009-06-25",
+        "releaseDate": "2009-06-22",
         "year": 2009,
         "primaryType": "Album",
         "secondaryTypes": [],
@@ -40763,24 +40991,57 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:52.202Z",
-    "cachedAt": "2026-08-24T08:03:52.202Z"
+    "fetchedAt": "2026-11-23T19:03:09.832Z",
+    "cachedAt": "2026-11-23T19:03:09.832Z"
   },
   "royal-blood": {
     "artistName": "Royal Blood",
     "normalizedName": "royal-blood",
     "mbid": "aa62b28e-b6d4-4086-91d4-e5fac1ed56f3",
-    "albumCount": 35,
+    "albumCount": 38,
     "albums": [
       {
         "id": "aa5ed3b0-de76-47cb-b54b-b62163549503",
         "title": "Dead Company",
-        "releaseDate": "2026-11-13",
+        "releaseDate": "2026-11-06",
         "year": 2026,
         "primaryType": "Album",
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/aa5ed3b0-de76-47cb-b54b-b62163549503/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c0f4c002-5384-4e8d-9e01-7185beebde02",
+        "title": "Mother Never Told You",
+        "releaseDate": "2026-11-04",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c0f4c002-5384-4e8d-9e01-7185beebde02/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "06943f7d-9142-4ce6-bb0c-03b716b55c9b",
+        "title": "Dead Company",
+        "releaseDate": "2026-10-06",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/06943f7d-9142-4ce6-bb0c-03b716b55c9b/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a3879ed2-5c5c-492c-b3f2-a626590aa778",
+        "title": "Swallow the Bomb",
+        "releaseDate": "2026-09-16",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a3879ed2-5c5c-492c-b3f2-a626590aa778/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -41176,8 +41437,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:54.999Z",
-    "cachedAt": "2026-08-24T08:03:54.999Z"
+    "fetchedAt": "2026-11-23T19:03:11.874Z",
+    "cachedAt": "2026-11-23T19:03:11.875Z"
   },
   "snarky-puppy": {
     "artistName": "Snarky Puppy",
@@ -42057,14 +42318,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:03:59.034Z",
-    "cachedAt": "2026-08-24T08:03:59.034Z"
+    "fetchedAt": "2026-11-23T19:03:13.830Z",
+    "cachedAt": "2026-11-23T19:03:13.830Z"
   },
   "social-distortion": {
     "artistName": "Social Distortion",
     "normalizedName": "social-distortion",
     "mbid": "e1e05cce-3922-44e1-8f20-015abe5e309d",
-    "albumCount": 43,
+    "albumCount": 44,
     "albums": [
       {
         "id": "453a2bca-8133-40bf-982a-d8c6a2faf48c",
@@ -42267,6 +42528,19 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/5e851079-2c81-37e2-a7ef-bdb075bc81ef/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d130d2a9-0a4c-4cf1-a5d3-d8d5c1d2878e",
+        "title": "Live in Orange County",
+        "releaseDate": "2004",
+        "year": 2004,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d130d2a9-0a4c-4cf1-a5d3-d8d5c1d2878e/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -42566,8 +42840,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:01.902Z",
-    "cachedAt": "2026-08-24T08:04:01.902Z"
+    "fetchedAt": "2026-11-23T19:03:15.834Z",
+    "cachedAt": "2026-11-23T19:03:15.834Z"
   },
   "squeeze": {
     "artistName": "Squeeze",
@@ -43430,8 +43704,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:03.579Z",
-    "cachedAt": "2026-08-24T08:04:03.579Z"
+    "fetchedAt": "2026-11-23T19:03:17.834Z",
+    "cachedAt": "2026-11-23T19:03:17.834Z"
   },
   "sting": {
     "artistName": "Sting",
@@ -43679,7 +43953,7 @@
       {
         "id": "881a3e8a-570e-4845-8570-3158c0c05e0d",
         "title": "25 Years",
-        "releaseDate": "2011-01-01",
+        "releaseDate": "2011-11-27",
         "year": 2011,
         "primaryType": "Album",
         "secondaryTypes": [
@@ -43718,7 +43992,7 @@
       {
         "id": "fdca52bf-f1dc-405d-8743-f88b0bc3d6eb",
         "title": "Symphonicities",
-        "releaseDate": "2010-07-09",
+        "releaseDate": "2010-01-01",
         "year": 2010,
         "primaryType": "Album",
         "secondaryTypes": [],
@@ -44505,7 +44779,7 @@
       {
         "id": "0ee80e72-b4cc-4791-9d32-48cad6f347c8",
         "title": "Bring On the Night",
-        "releaseDate": "1986",
+        "releaseDate": "1986-07-21",
         "year": 1986,
         "primaryType": "Album",
         "secondaryTypes": [
@@ -44637,14 +44911,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:06.135Z",
-    "cachedAt": "2026-08-24T08:04:06.135Z"
+    "fetchedAt": "2026-11-23T19:03:19.834Z",
+    "cachedAt": "2026-11-23T19:03:19.834Z"
   },
   "stray-cats": {
     "artistName": "Stray Cats",
     "normalizedName": "stray-cats",
     "mbid": "0e763b87-f3cd-4a63-986f-bebc4189f1f0",
-    "albumCount": 87,
+    "albumCount": 88,
     "albums": [
       {
         "id": "b0a10463-8539-4075-8f2c-34bd6685ab56",
@@ -45496,6 +45770,17 @@
         "coverAvailable": true
       },
       {
+        "id": "dd1fc4aa-7194-4fa9-8096-9b8e0a43beed",
+        "title": "Elvis On Velvet",
+        "releaseDate": "1992",
+        "year": 1992,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/dd1fc4aa-7194-4fa9-8096-9b8e0a43beed/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "9b0b9dad-9323-4313-a111-488cb383de53",
         "title": "The Best of the Stray Cats: Ultimate Selection",
         "releaseDate": "1991-08-21",
@@ -45739,14 +46024,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:07.431Z",
-    "cachedAt": "2026-08-24T08:04:07.431Z"
+    "fetchedAt": "2026-11-23T19:03:21.838Z",
+    "cachedAt": "2026-11-23T19:03:21.838Z"
   },
   "streetlight-manifesto": {
     "artistName": "Streetlight Manifesto",
     "normalizedName": "streetlight-manifesto",
     "mbid": "cbc9199f-944b-42e9-a945-627c9fc0ba6e",
-    "albumCount": 11,
+    "albumCount": 13,
     "albums": [
       {
         "id": "60e312b4-1204-48e9-ad3c-fa17e6dd1108",
@@ -45806,6 +46091,17 @@
         "coverAvailable": true
       },
       {
+        "id": "6853b9c5-7950-4fb0-8919-1ae1e9956510",
+        "title": "Fearless Music",
+        "releaseDate": "2009",
+        "year": 2009,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6853b9c5-7950-4fb0-8919-1ae1e9956510/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "9aff6516-0b8e-4316-8ae0-dd296c8a37a1",
         "title": "This Concert Goes Like This",
         "releaseDate": "2008",
@@ -45816,6 +46112,17 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/9aff6516-0b8e-4316-8ae0-dd296c8a37a1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fa7ea7b9-3854-4f67-b530-5345a9f54a9f",
+        "title": "Live at Annandale Hotel",
+        "releaseDate": "2008",
+        "year": 2008,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fa7ea7b9-3854-4f67-b530-5345a9f54a9f/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -45878,15 +46185,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:09.486Z",
-    "cachedAt": "2026-08-24T08:04:09.486Z"
+    "fetchedAt": "2026-11-23T19:03:24.145Z",
+    "cachedAt": "2026-11-23T19:03:24.145Z"
   },
   "stryper": {
     "artistName": "Stryper",
     "normalizedName": "stryper",
     "mbid": "89621490-e0ef-4915-8b1f-6ad57dba3d7a",
-    "albumCount": 39,
+    "albumCount": 40,
     "albums": [
+      {
+        "id": "9a602235-ebd2-4e64-aef4-2aecad5d6a66",
+        "title": "Throne of Thorns",
+        "releaseDate": "2026-09-25",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9a602235-ebd2-4e64-aef4-2aecad5d6a66/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "e3de18b0-e2be-4bf8-899d-302bae3b7214",
         "title": "The Greatest Gift of All",
@@ -46339,8 +46657,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:11.326Z",
-    "cachedAt": "2026-08-24T08:04:11.326Z"
+    "fetchedAt": "2026-11-23T19:03:25.838Z",
+    "cachedAt": "2026-11-23T19:03:25.838Z"
   },
   "tears-for-fears": {
     "artistName": "Tears for Fears",
@@ -46348,6 +46666,19 @@
     "mbid": "7c7f9c94-dee8-4903-892b-6cf44652e2de",
     "albumCount": 87,
     "albums": [
+      {
+        "id": "2e37be7d-01db-429d-ae02-74eae13781ea",
+        "title": "Transmission Impossible",
+        "releaseDate": "2026-06-12",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2e37be7d-01db-429d-ae02-74eae13781ea/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "1dc3eb08-15c1-47c6-b89a-8dcca2563c9e",
         "title": "Songs for a Nervous Planet",
@@ -47088,19 +47419,6 @@
         "coverAvailable": true
       },
       {
-        "id": "cb4e421d-116d-480c-979d-4997b36d3cde",
-        "title": "Tears Roll Down",
-        "releaseDate": "1992",
-        "year": 1992,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/cb4e421d-116d-480c-979d-4997b36d3cde/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "09a87b3a-7ff6-43ba-97b0-c861bd607f14",
         "title": "Amerika",
         "releaseDate": "1991",
@@ -47395,14 +47713,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:13.903Z",
-    "cachedAt": "2026-08-24T08:04:13.903Z"
+    "fetchedAt": "2026-11-23T19:03:27.839Z",
+    "cachedAt": "2026-11-23T19:03:27.839Z"
   },
   "the-alarm": {
     "artistName": "The Alarm",
     "normalizedName": "the-alarm",
     "mbid": "cee3e39e-fb10-414d-9f11-b50fa7d6fb7a",
-    "albumCount": 87,
+    "albumCount": 88,
     "albums": [
       {
         "id": "72510036-cf76-4ac6-9a54-6db78a552e10",
@@ -47479,6 +47797,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/7a61274e-5b15-4303-bec0-1e935a40e80e/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6e9316e9-feff-4597-b61b-c89aea4ff3f9",
+        "title": "Essentials",
+        "releaseDate": "2022",
+        "year": 2022,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6e9316e9-feff-4597-b61b-c89aea4ff3f9/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -48425,8 +48754,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:15.376Z",
-    "cachedAt": "2026-08-24T08:04:15.376Z"
+    "fetchedAt": "2026-11-23T19:03:29.836Z",
+    "cachedAt": "2026-11-23T19:03:29.836Z"
   },
   "the-black-keys": {
     "artistName": "The Black Keys",
@@ -48570,7 +48899,7 @@
       },
       {
         "id": "9ad6d5f8-faec-41a0-9183-461ec88fd13b",
-        "title": "Mi tormenta",
+        "title": "Mi Tormenta",
         "releaseDate": "2024-10-04",
         "year": 2024,
         "primaryType": "Single",
@@ -49497,8 +49826,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:19.473Z",
-    "cachedAt": "2026-08-24T08:04:19.473Z"
+    "fetchedAt": "2026-11-23T19:03:33.973Z",
+    "cachedAt": "2026-11-23T19:03:33.973Z"
   },
   "the-cult": {
     "artistName": "The Cult",
@@ -50491,8 +50820,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:21.981Z",
-    "cachedAt": "2026-08-24T08:04:21.981Z"
+    "fetchedAt": "2026-11-23T19:03:35.987Z",
+    "cachedAt": "2026-11-23T19:03:35.987Z"
   },
   "the-cure": {
     "artistName": "The Cure",
@@ -50655,6 +50984,19 @@
         "coverAvailable": true
       },
       {
+        "id": "0bff54e8-6117-46f9-9cd3-0e634bd75632",
+        "title": "3x3x3",
+        "releaseDate": "2010-05-20",
+        "year": 2010,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/0bff54e8-6117-46f9-9cd3-0e634bd75632/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "f2e14072-c55a-3f3e-9bb1-199f5b42d143",
         "title": "4:13 Dream",
         "releaseDate": "2008-10-24",
@@ -50760,25 +51102,14 @@
         "coverAvailable": true
       },
       {
-        "id": "330a89a3-4abb-4878-9697-d1a69e22dfa5",
-        "title": "The Black Sessions",
-        "releaseDate": "2005",
-        "year": 2005,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/330a89a3-4abb-4878-9697-d1a69e22dfa5/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "c8a5c1de-f25f-4681-bb54-4009a93eef2d",
         "title": "4play",
         "releaseDate": "2005",
         "year": 2005,
-        "primaryType": "EP",
-        "secondaryTypes": [],
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/c8a5c1de-f25f-4681-bb54-4009a93eef2d/front-500.jpg",
         "coverAvailable": true
@@ -50851,6 +51182,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/7998a36c-c94d-39f9-a092-777817534309/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "330a89a3-4abb-4878-9697-d1a69e22dfa5",
+        "title": "The Black Sessions",
+        "releaseDate": "2004",
+        "year": 2004,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/330a89a3-4abb-4878-9697-d1a69e22dfa5/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -51112,19 +51456,6 @@
         "coverAvailable": true
       },
       {
-        "id": "88a7424b-acf3-3587-b47f-a64493b20a27",
-        "title": "U.S.A. 1992",
-        "releaseDate": "1992",
-        "year": 1992,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "1992‐07‐11: Riverport Amphitheatre, Maryland Heights, MO, USA",
-        "coverUrl": "https://coverartarchive.org/release-group/88a7424b-acf3-3587-b47f-a64493b20a27/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "71dd0d3c-4d94-4076-8520-95508618f304",
         "title": "Assemblage",
         "releaseDate": "1991-08-19",
@@ -51240,19 +51571,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/a0cd9f1e-639f-3dc0-98ad-e63e480b0c38/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "6593aa1a-f296-4454-9252-4cbe26190aef",
-        "title": "Live at de Melkweg (10:15 on a Saturday Night, 10 Years Ago, It Was Just Right)",
-        "releaseDate": "1989",
-        "year": 1989,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/6593aa1a-f296-4454-9252-4cbe26190aef/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -51545,6 +51863,19 @@
         "coverAvailable": true
       },
       {
+        "id": "a53e2a3e-0d60-4db4-8028-3572a215cc2c",
+        "title": "Singles",
+        "releaseDate": "1982",
+        "year": 1982,
+        "primaryType": "EP",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a53e2a3e-0d60-4db4-8028-3572a215cc2c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "148a73e5-4ff6-34e2-8129-daffc7f49922",
         "title": "Charlotte Sometimes",
         "releaseDate": "1981-10-13",
@@ -51681,15 +52012,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:23.773Z",
-    "cachedAt": "2026-08-24T08:04:23.773Z"
+    "fetchedAt": "2026-11-23T19:03:38.107Z",
+    "cachedAt": "2026-11-23T19:03:38.107Z"
   },
   "the-dollyrots": {
     "artistName": "The Dollyrots",
     "normalizedName": "the-dollyrots",
     "mbid": "f121deb7-0668-4ace-b36e-4b3a9e804b4f",
-    "albumCount": 65,
+    "albumCount": 66,
     "albums": [
+      {
+        "id": "7bcf3f61-ad19-486d-b800-ec1404b3e388",
+        "title": "Apocalyptic Romance",
+        "releaseDate": "2026-10-30",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7bcf3f61-ad19-486d-b800-ec1404b3e388/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "dcc32329-8acb-4ae9-86d4-9f378b02f658",
         "title": "Attention Span",
@@ -52422,8 +52764,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:28.211Z",
-    "cachedAt": "2026-08-24T08:04:28.211Z"
+    "fetchedAt": "2026-11-23T19:03:39.957Z",
+    "cachedAt": "2026-11-23T19:03:39.957Z"
   },
   "the-go-go-s": {
     "artistName": "The Go-Go's",
@@ -52716,11 +53058,22 @@
     "cachedAt": "2026-11-09T17:12:37.034Z"
   },
   "the-head-and-the-heart": {
-    "artistName": "The Head and the Heart",
+    "artistName": "The Head And The Heart",
     "normalizedName": "the-head-and-the-heart",
     "mbid": "98cb416e-5271-484c-ab3b-6bed6b4aae12",
-    "albumCount": 40,
+    "albumCount": 42,
     "albums": [
+      {
+        "id": "a9b832d7-db80-4d5d-bcbb-c83d2f735114",
+        "title": "The Swimming Song",
+        "releaseDate": "2026-08-14",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a9b832d7-db80-4d5d-bcbb-c83d2f735114/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "048eaae9-59e5-4135-b2ca-f528b5827754",
         "title": "Live at Neumos (2011)",
@@ -52754,6 +53107,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/05cce861-f9c9-4fa4-8e65-b6338338322c/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d9d678ac-e800-423f-bd00-03183d67a722",
+        "title": "Cop Car",
+        "releaseDate": "2025-09-12",
+        "year": 2025,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d9d678ac-e800-423f-bd00-03183d67a722/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -53178,8 +53542,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:30.803Z",
-    "cachedAt": "2026-08-24T08:04:30.803Z"
+    "fetchedAt": "2026-11-23T19:03:41.964Z",
+    "cachedAt": "2026-11-23T19:03:41.964Z"
   },
   "the-human-league": {
     "artistName": "The Human League",
@@ -53325,6 +53689,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/a1294a51-4ad6-466d-9169-83c92a88df76/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "523b62ae-8827-4bf4-8970-9840bebd1672",
+        "title": "Dare / Fascination!",
+        "releaseDate": "2012-06-04",
+        "year": 2012,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/523b62ae-8827-4bf4-8970-9840bebd1672/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -53799,7 +54176,7 @@
       {
         "id": "dd6db9d0-338e-3029-a3a8-4629b36b7a6e",
         "title": "Greatest Hits",
-        "releaseDate": "1988-11-07",
+        "releaseDate": "1988-10-31",
         "year": 1988,
         "primaryType": "Album",
         "secondaryTypes": [
@@ -54067,19 +54444,6 @@
         "coverAvailable": true
       },
       {
-        "id": "523b62ae-8827-4bf4-8970-9840bebd1672",
-        "title": "Dare / Fascination!",
-        "releaseDate": "1981",
-        "year": 1981,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/523b62ae-8827-4bf4-8970-9840bebd1672/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "7059d2ac-1adc-4281-88d6-35863714ff16",
         "title": "Rock ’n’ Roll",
         "releaseDate": "1980-09-15",
@@ -54168,15 +54532,48 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:32.276Z",
-    "cachedAt": "2026-08-24T08:04:32.276Z"
+    "fetchedAt": "2026-11-23T19:03:43.966Z",
+    "cachedAt": "2026-11-23T19:03:43.966Z"
   },
   "the-interrupters": {
     "artistName": "The Interrupters",
     "normalizedName": "the-interrupters",
     "mbid": "f8ed032c-0d34-4ae6-a069-91417097509e",
-    "albumCount": 14,
+    "albumCount": 17,
     "albums": [
+      {
+        "id": "286901f9-709c-48a1-8eb0-1656d7aa662a",
+        "title": "Battle Scars",
+        "releaseDate": "2026-11-05",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/286901f9-709c-48a1-8eb0-1656d7aa662a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "39f14d60-59d9-4511-937a-6d6b96a89c8d",
+        "title": "Battle Scars",
+        "releaseDate": "2026-11-05",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/39f14d60-59d9-4511-937a-6d6b96a89c8d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "28832de8-f3a4-4218-a48d-f35a36a6b02a",
+        "title": "Warrior Spirit",
+        "releaseDate": "2026-10-08",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/28832de8-f3a4-4218-a48d-f35a36a6b02a/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "e6abece6-cf79-4d9e-8cf8-1a4f718067e4",
         "title": "Never Alone",
@@ -54334,15 +54731,65 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:34.836Z",
-    "cachedAt": "2026-08-24T08:04:34.836Z"
+    "fetchedAt": "2026-11-23T19:03:45.959Z",
+    "cachedAt": "2026-11-23T19:03:45.959Z"
   },
   "the-offspring": {
     "artistName": "The Offspring",
     "normalizedName": "the-offspring",
     "mbid": "23a03e33-a603-404e-bcbf-2c00159d7067",
-    "albumCount": 85,
+    "albumCount": 90,
     "albums": [
+      {
+        "id": "426c4bb6-260f-4473-a160-671e33ade483",
+        "title": "Just the Punk Stuff (Live at the Stone Pony)",
+        "releaseDate": "2027-01-29",
+        "year": 2027,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/426c4bb6-260f-4473-a160-671e33ade483/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "299a47d6-bb68-4a08-a42f-84148188d141",
+        "title": "Jennifer Lost the War (live at the Stone Pony)",
+        "releaseDate": "2026-11-20",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/299a47d6-bb68-4a08-a42f-84148188d141/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "abb6153d-1289-4173-ac0c-bec9a86e875a",
+        "title": "Oi to the World!",
+        "releaseDate": "2026-11-06",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/abb6153d-1289-4173-ac0c-bec9a86e875a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4ef8e57c-6fbf-4c8f-abc4-9d871b6b0103",
+        "title": "Coming for You (Hometown remix)",
+        "releaseDate": "2026-10-30",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [
+          "Remix"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4ef8e57c-6fbf-4c8f-abc4-9d871b6b0103/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "35b58853-6aa8-4387-84fe-8bad0ea309f4",
         "title": "Pretty Fly (For a White Guy) [8onthebeat mix]",
@@ -54889,6 +55336,17 @@
         "coverAvailable": true
       },
       {
+        "id": "42e19515-d0c1-4551-9f1d-a61699e5eed8",
+        "title": "I Wanna Be Sedated",
+        "releaseDate": "2003",
+        "year": 2003,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/42e19515-d0c1-4551-9f1d-a61699e5eed8/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "c4230aae-f058-3a73-82c5-7158b5ff4cac",
         "title": "Defy You",
         "releaseDate": "2002-02-22",
@@ -55007,6 +55465,19 @@
         "coverAvailable": true
       },
       {
+        "id": "fb407f86-7aa9-4772-9d55-2a697142bfcd",
+        "title": "Americana 2000",
+        "releaseDate": "1999",
+        "year": 1999,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fb407f86-7aa9-4772-9d55-2a697142bfcd/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "fb43ac3a-8d28-3686-8653-bbf15a5e4389",
         "title": "Americana",
         "releaseDate": "1998-11-16",
@@ -55106,17 +55577,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/80b38a96-8230-3a59-8721-b8a649c405fb/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "4604e1b2-60cc-409b-ad1c-3aa11e1b030a",
-        "title": "All I want",
-        "releaseDate": "1996",
-        "year": 1996,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/4604e1b2-60cc-409b-ad1c-3aa11e1b030a/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -55349,8 +55809,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:36.991Z",
-    "cachedAt": "2026-08-24T08:04:36.991Z"
+    "fetchedAt": "2026-11-23T19:03:47.978Z",
+    "cachedAt": "2026-11-23T19:03:47.978Z"
   },
   "the-roots": {
     "artistName": "The Roots",
@@ -56087,15 +56547,48 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:41.138Z",
-    "cachedAt": "2026-08-24T08:04:41.138Z"
+    "fetchedAt": "2026-11-23T19:03:49.973Z",
+    "cachedAt": "2026-11-23T19:03:49.973Z"
   },
   "the-skints": {
-    "artistName": "The Skints",
+    "artistName": "THE SKINTS",
     "normalizedName": "the-skints",
     "mbid": "7a279145-e778-4099-8f73-ea917a1956c9",
-    "albumCount": 13,
+    "albumCount": 16,
     "albums": [
+      {
+        "id": "ab27628a-2f7f-409b-b07a-24ef348ac43d",
+        "title": "Dead Inside",
+        "releaseDate": "2026-11-06",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/ab27628a-2f7f-409b-b07a-24ef348ac43d/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "39304d9b-d117-43c3-86bd-39865c2e7413",
+        "title": "Pressure",
+        "releaseDate": "2026-10-02",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/39304d9b-d117-43c3-86bd-39865c2e7413/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "b279a4dd-1e07-4726-bcd5-e2fa057161ba",
+        "title": "Home",
+        "releaseDate": "2026-07-31",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/b279a4dd-1e07-4726-bcd5-e2fa057161ba/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "308bd756-6a72-4b7a-b64f-9cb65a315ad5",
         "title": "Don't Speak",
@@ -56244,8 +56737,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:43.731Z",
-    "cachedAt": "2026-08-24T08:04:43.731Z"
+    "fetchedAt": "2026-11-23T19:03:51.957Z",
+    "cachedAt": "2026-11-23T19:03:51.957Z"
   },
   "the-smithereens": {
     "artistName": "The Smithereens",
@@ -56842,8 +57335,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:45.683Z",
-    "cachedAt": "2026-08-24T08:04:45.683Z"
+    "fetchedAt": "2026-11-23T19:03:53.962Z",
+    "cachedAt": "2026-11-23T19:03:53.962Z"
   },
   "the-tubes": {
     "artistName": "The Tubes",
@@ -57404,14 +57897,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:47.689Z",
-    "cachedAt": "2026-08-24T08:04:47.689Z"
+    "fetchedAt": "2026-11-23T19:03:56.236Z",
+    "cachedAt": "2026-11-23T19:03:56.236Z"
   },
   "thompson-twins": {
     "artistName": "Thompson Twins",
     "normalizedName": "thompson-twins",
     "mbid": "228af6b5-f691-4ed2-a63b-10cc6fcc1144",
-    "albumCount": 74,
+    "albumCount": 73,
     "albums": [
       {
         "id": "36c6b804-1935-4b24-a2e8-b1e941efcd81",
@@ -57927,17 +58420,6 @@
         "coverAvailable": true
       },
       {
-        "id": "4af7bf93-7ae5-461e-b5c5-3e53942d5b19",
-        "title": "Get That Love",
-        "releaseDate": "1987",
-        "year": 1987,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/4af7bf93-7ae5-461e-b5c5-3e53942d5b19/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "864ecdb8-7fe0-4ddc-a04c-324d4f06b796",
         "title": "Bush Baby",
         "releaseDate": "1987",
@@ -58289,8 +58771,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:49.599Z",
-    "cachedAt": "2026-08-24T08:04:49.599Z"
+    "fetchedAt": "2026-11-23T19:03:57.979Z",
+    "cachedAt": "2026-11-23T19:03:57.979Z"
   },
   "u2": {
     "artistName": "U2",
@@ -58298,6 +58780,17 @@
     "mbid": "a3cb23fc-acd3-4ce0-8f36-1e5aa6a18432",
     "albumCount": 100,
     "albums": [
+      {
+        "id": "09f9581c-52b0-4d2b-bb1b-d5902830b8c1",
+        "title": "Carnaval de Luz",
+        "releaseDate": "2026-11-13",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/09f9581c-52b0-4d2b-bb1b-d5902830b8c1/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "c0520470-f9f4-4e14-a76a-4f1bfbb883bd",
         "title": "Easter Lily EP",
@@ -58329,17 +58822,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/6d10108b-5f3c-43fa-a5a8-38d7db8c1738/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "200acfe9-da2e-4360-9830-095f613c65d1",
-        "title": "We Will Follow",
-        "releaseDate": "2025",
-        "year": 2025,
-        "primaryType": "Album",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/200acfe9-da2e-4360-9830-095f613c65d1/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -59050,19 +59532,6 @@
         "coverAvailable": true
       },
       {
-        "id": "027d2820-5afc-3c20-afb8-9101775cffe8",
-        "title": "The Very Best",
-        "releaseDate": "1995",
-        "year": 1995,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/027d2820-5afc-3c20-afb8-9101775cffe8/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "fd5178e0-0f54-35fc-9d06-80e1366db058",
         "title": "Zoo TV: Live From Sydney",
         "releaseDate": "1993-11-27",
@@ -59095,6 +59564,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/e8b6f09e-e0da-4da8-adeb-a1e03ad567ab/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "e3db9bbe-d787-3b1f-8493-41e5ea03c550",
+        "title": "Mysterious Ways",
+        "releaseDate": "1991-11-24",
+        "year": 1991,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/e3db9bbe-d787-3b1f-8493-41e5ea03c550/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -59502,8 +59982,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:56.391Z",
-    "cachedAt": "2026-08-24T08:04:56.391Z"
+    "fetchedAt": "2026-11-23T19:03:59.965Z",
+    "cachedAt": "2026-11-23T19:03:59.965Z"
   },
   "ub40": {
     "artistName": "UB40",
@@ -60685,14 +61165,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:04:59.016Z",
-    "cachedAt": "2026-08-24T08:04:59.016Z"
+    "fetchedAt": "2026-11-23T19:04:01.958Z",
+    "cachedAt": "2026-11-23T19:04:01.958Z"
   },
   "umphrey-s-mcgee": {
     "artistName": "Umphrey's McGee",
     "normalizedName": "umphrey-s-mcgee",
     "mbid": "3826a6e0-9ea5-4007-941c-25b9dd943981",
-    "albumCount": 96,
+    "albumCount": 95,
     "albums": [
       {
         "id": "c0595445-8e80-4319-8ce4-92dda89472ea",
@@ -60918,17 +61398,6 @@
         "coverAvailable": true
       },
       {
-        "id": "a8dd321d-3721-4eb1-bc70-2af8846786d0",
-        "title": "Anchor Drops Redux",
-        "releaseDate": "2019-05-17",
-        "year": 2019,
-        "primaryType": "Album",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/a8dd321d-3721-4eb1-bc70-2af8846786d0/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "f2b9f5e2-df43-4243-b55c-5a9c0cedd16c",
         "title": "Back at the 'Nac",
         "releaseDate": "2019-01-18",
@@ -60954,6 +61423,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/757c24ae-fcac-4755-8101-84cf5c472178/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d4ec3441-d34c-40db-8793-7f77d100c4bd",
+        "title": "BeSides (it's not us, it's you)",
+        "releaseDate": "2018-11-09",
+        "year": 2018,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Demo"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d4ec3441-d34c-40db-8793-7f77d100c4bd/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -61004,17 +61486,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/e2a8433e-d4de-4e6b-a8d6-3e5ef81dcb68/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "f7fe45e7-ddc4-4287-b21d-4c5157546fd7",
-        "title": "Mantis (Remastered)",
-        "releaseDate": "2017-07-24",
-        "year": 2017,
-        "primaryType": "Album",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/f7fe45e7-ddc4-4287-b21d-4c5157546fd7/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -61262,17 +61733,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/28bf3fe5-aee6-46fe-aabc-166868672472/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "166ad550-1516-4c22-a3c9-ebdde97bef82",
-        "title": "Safety in Numbers (Remastered)",
-        "releaseDate": "2016-04-01",
-        "year": 2016,
-        "primaryType": "Album",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/166ad550-1516-4c22-a3c9-ebdde97bef82/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -61524,6 +61984,19 @@
         "coverAvailable": true
       },
       {
+        "id": "32a97578-47a2-4c58-8357-ad855c4e54eb",
+        "title": "Similar Skin Bonus",
+        "releaseDate": "2014",
+        "year": 2014,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Demo"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/32a97578-47a2-4c58-8357-ad855c4e54eb/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "49569ec5-0584-4270-9150-3bac555207ae",
         "title": "2014-04-12: UM Covers It // Live From Wanee: Spirit of the Suwannee Music Park, Live Oak, FL, USA",
         "releaseDate": "2014",
@@ -61671,14 +62144,16 @@
         "coverAvailable": true
       },
       {
-        "id": "153e19ac-c93b-4080-98dc-d730597150e0",
-        "title": "Death By Stereo",
+        "id": "2c2ac4be-601d-40ec-b6a7-6259d36375a5",
+        "title": "Death By Stereo Demos",
         "releaseDate": "2011",
         "year": 2011,
         "primaryType": "Album",
-        "secondaryTypes": [],
+        "secondaryTypes": [
+          "Demo"
+        ],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/153e19ac-c93b-4080-98dc-d730597150e0/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/2c2ac4be-601d-40ec-b6a7-6259d36375a5/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -61929,8 +62404,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:00.548Z",
-    "cachedAt": "2026-08-24T08:05:00.548Z"
+    "fetchedAt": "2026-11-23T19:04:03.969Z",
+    "cachedAt": "2026-11-23T19:04:03.969Z"
   },
   "violent-femmes": {
     "artistName": "Violent Femmes",
@@ -62498,15 +62973,28 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:03.773Z",
-    "cachedAt": "2026-08-24T08:05:03.773Z"
+    "fetchedAt": "2026-11-23T19:04:05.967Z",
+    "cachedAt": "2026-11-23T19:04:05.967Z"
   },
   "wham": {
     "artistName": "Wham!",
     "normalizedName": "wham",
     "mbid": "d570bb31-b9ca-45a4-a2d9-11b186d9c159",
-    "albumCount": 40,
+    "albumCount": 41,
     "albums": [
+      {
+        "id": "09d9b63b-b3f5-4e86-8f61-4a0fa008b32f",
+        "title": "WHAM! 10 Days in China - The Live EP",
+        "releaseDate": "2026-12-04",
+        "year": 2026,
+        "primaryType": "EP",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/09d9b63b-b3f5-4e86-8f61-4a0fa008b32f/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "b3243174-f771-427e-bba2-3dd5b92cb8dc",
         "title": "A Ray of Sunshine (mikeandtess quick edit)",
@@ -62984,8 +63472,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:05.018Z",
-    "cachedAt": "2026-08-24T08:05:05.018Z"
+    "fetchedAt": "2026-11-23T19:04:07.957Z",
+    "cachedAt": "2026-11-23T19:04:07.957Z"
   },
   "x": {
     "artistName": "X",
@@ -63438,15 +63926,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:10.065Z",
-    "cachedAt": "2026-08-24T08:05:10.066Z"
+    "fetchedAt": "2026-11-23T19:04:09.955Z",
+    "cachedAt": "2026-11-23T19:04:09.955Z"
   },
   "ziggy-marley": {
     "artistName": "Ziggy Marley",
     "normalizedName": "ziggy-marley",
     "mbid": "7c09d8af-895a-4337-bb46-b4b6dcabff10",
-    "albumCount": 37,
+    "albumCount": 38,
     "albums": [
+      {
+        "id": "2107245c-00f2-402e-a947-dff988fdf424",
+        "title": "U R",
+        "releaseDate": "2026-10-06",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2107245c-00f2-402e-a947-dff988fdf424/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "539978bc-c73a-4ef5-a59b-6a227778c758",
         "title": "Brightside",
@@ -63884,14 +64383,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:14.045Z",
-    "cachedAt": "2026-08-24T08:05:14.045Z"
+    "fetchedAt": "2026-11-23T19:04:11.956Z",
+    "cachedAt": "2026-11-23T19:04:11.956Z"
   },
   "siouxsie-and-the-banshees": {
-    "artistName": "Siouxsie and the Banshees",
+    "artistName": "Siouxsie and The Banshees",
     "normalizedName": "siouxsie-and-the-banshees",
     "mbid": "78ea5ea1-3c4d-4b7e-ac5d-68900319ebe2",
-    "albumCount": 80,
+    "albumCount": 85,
     "albums": [
       {
         "id": "ae1add85-bb39-4edd-b495-077b87f3ea20",
@@ -64283,6 +64782,17 @@
         "coverAvailable": true
       },
       {
+        "id": "7a7b16c9-c141-4452-b43e-6cb6ef4d9edf",
+        "title": "Cascade",
+        "releaseDate": "1992",
+        "year": 1992,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/7a7b16c9-c141-4452-b43e-6cb6ef4d9edf/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "82cd05f5-d0d9-3371-a117-679cf0465f0e",
         "title": "Twice Upon a Time: 4-Cut Sampler",
         "releaseDate": "1992",
@@ -64349,6 +64859,17 @@
         "coverAvailable": true
       },
       {
+        "id": "61e2b0dd-2031-4e50-ab1c-07bfbb1ac0d4",
+        "title": "Overground",
+        "releaseDate": "1991",
+        "year": 1991,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/61e2b0dd-2031-4e50-ab1c-07bfbb1ac0d4/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "cff910e0-ddfd-4f17-89e0-15f102be831f",
         "title": "The Peel Sessions 1977–1978",
         "releaseDate": "1991",
@@ -64370,6 +64891,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/e62fe453-89e1-4fd2-8661-fc553ed47885/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "20f7b7f4-a24c-4765-9e0e-46018ea140c2",
+        "title": "Break Up",
+        "releaseDate": "1989",
+        "year": 1989,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/20f7b7f4-a24c-4765-9e0e-46018ea140c2/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -64517,6 +65049,32 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/0ed7fe4c-12ec-370c-8584-aa4c18108c84/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "4b31c631-2062-4f3e-b522-2b4f63fb27b5",
+        "title": "Once Upon a Time",
+        "releaseDate": "1986",
+        "year": 1986,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/4b31c631-2062-4f3e-b522-2b4f63fb27b5/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "37ea0a6e-1f5f-4aca-a290-de23ac0911cd",
+        "title": "Live – 1985‐10‐24",
+        "releaseDate": "1985-10-24",
+        "year": 1985,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/37ea0a6e-1f5f-4aca-a290-de23ac0911cd/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -64836,14 +65394,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:16.816Z",
-    "cachedAt": "2026-08-24T08:05:16.816Z"
+    "fetchedAt": "2026-11-23T19:04:14.061Z",
+    "cachedAt": "2026-11-23T19:04:14.061Z"
   },
   "the-brian-setzer-orchestra": {
     "artistName": "The Brian Setzer Orchestra",
     "normalizedName": "the-brian-setzer-orchestra",
     "mbid": "3c98e32e-5bf5-4484-bdab-bd8d1736112a",
-    "albumCount": 33,
+    "albumCount": 34,
     "albums": [
       {
         "id": "0234ae1b-5465-46b2-b1d9-b71b00ca064c",
@@ -65184,7 +65742,7 @@
       {
         "id": "6db6b23a-0c71-35f4-9810-5893279186f4",
         "title": "The Dirty Boogie",
-        "releaseDate": "1998-01-01",
+        "releaseDate": "1998-06-23",
         "year": 1998,
         "primaryType": "Album",
         "secondaryTypes": [],
@@ -65203,6 +65761,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/658b0a91-f3a7-42e8-aa61-399849c4c750/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a42f5652-d491-376a-88d6-b820fb964bd3",
+        "title": "Brian Setzer, His Orchestra & The Stray Cats",
+        "releaseDate": "1998",
+        "year": 1998,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a42f5652-d491-376a-88d6-b820fb964bd3/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -65239,8 +65810,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:18.060Z",
-    "cachedAt": "2026-08-24T08:05:18.060Z"
+    "fetchedAt": "2026-11-23T19:04:15.963Z",
+    "cachedAt": "2026-11-23T19:04:15.963Z"
   },
   "red-hot-chili-peppers": {
     "artistName": "Red Hot Chili Peppers",
@@ -65248,19 +65819,6 @@
     "mbid": "8bfac288-ccc5-448d-9573-c33ea2aa5c30",
     "albumCount": 100,
     "albums": [
-      {
-        "id": "b377d19f-5be6-4477-be3b-72f2c097a7d8",
-        "title": "Organic Anti Beat Box Band: Red Hot Chili Peppers and Special Guests",
-        "releaseDate": "2024-10-08",
-        "year": 2024,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Compilation"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/b377d19f-5be6-4477-be3b-72f2c097a7d8/front-500.jpg",
-        "coverAvailable": true
-      },
       {
         "id": "8352fb0a-6150-42a2-94a8-8db876dffe76",
         "title": "Return of the Dream Canteen",
@@ -65284,34 +65842,8 @@
         "coverAvailable": true
       },
       {
-        "id": "6c3b4992-293c-45f9-beee-f28d24911bc2",
-        "title": "Liquid Outer Space (Live 1986)",
-        "releaseDate": "2021-11-19",
-        "year": 2021,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/6c3b4992-293c-45f9-beee-f28d24911bc2/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "69011e5a-f511-48d2-8805-f21cf46d1d72",
-        "title": "Subway to Venus (Live)",
-        "releaseDate": "2021-06-18",
-        "year": 2021,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/69011e5a-f511-48d2-8805-f21cf46d1d72/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "6e54bb4e-558f-41b7-b8a4-66f99c5a082e",
-        "title": "Live 1991 Part Two (Live)",
+        "title": "Live 1991 Part Two (live)",
         "releaseDate": "2021-05-25",
         "year": 2021,
         "primaryType": "Album",
@@ -65324,7 +65856,7 @@
       },
       {
         "id": "2d0f9c74-7790-4ffc-bd43-98b75ff22f7a",
-        "title": "The Speed I Drive (Live 1991)",
+        "title": "The Speed I Drive (live 1991)",
         "releaseDate": "2021-03-25",
         "year": 2021,
         "primaryType": "Album",
@@ -65337,7 +65869,7 @@
       },
       {
         "id": "4fdbf869-a77b-4b9a-b053-15c0c5fcffcc",
-        "title": "Anarchy (Live)",
+        "title": "Anarchy (live)",
         "releaseDate": "2021-02-24",
         "year": 2021,
         "primaryType": "Album",
@@ -65350,7 +65882,7 @@
       },
       {
         "id": "6a28f9e7-f128-41dd-993d-0a6fdf8683a0",
-        "title": "Love Trilogy (Live)",
+        "title": "Love Trilogy (live)",
         "releaseDate": "2021-02-24",
         "year": 2021,
         "primaryType": "Album",
@@ -65363,7 +65895,7 @@
       },
       {
         "id": "88f58ae9-d249-4ed9-8c23-816268b3cf2c",
-        "title": "Anarchy In LA (Live)",
+        "title": "Anarchy in La (live)",
         "releaseDate": "2021-02-24",
         "year": 2021,
         "primaryType": "Album",
@@ -65376,7 +65908,7 @@
       },
       {
         "id": "9394c96b-8a6e-4411-b9d6-0c1f81aee24b",
-        "title": "Live In Kawasaki 1990 Part One (Live)",
+        "title": "Live in Kawasaki 1990 Part One (live)",
         "releaseDate": "2021-02-24",
         "year": 2021,
         "primaryType": "Album",
@@ -65389,7 +65921,7 @@
       },
       {
         "id": "9da6fdb9-cda1-4fe0-8bb6-deb937aa6744",
-        "title": "Backward Hollywood (Live)",
+        "title": "Backward Hollywood (live)",
         "releaseDate": "2021-02-24",
         "year": 2021,
         "primaryType": "Album",
@@ -65402,7 +65934,7 @@
       },
       {
         "id": "dc03a551-2bc9-48d6-b427-5aa20996abeb",
-        "title": "Funky Crime (Live)",
+        "title": "Funky Crime (live)",
         "releaseDate": "2021-02-24",
         "year": 2021,
         "primaryType": "Album",
@@ -65415,7 +65947,7 @@
       },
       {
         "id": "1ae2a8b0-1f96-4f72-98a9-b16deda9c3dd",
-        "title": "Portal To Another Dimension (Live)",
+        "title": "Portal to Another Dimension (live)",
         "releaseDate": "2021-02-02",
         "year": 2021,
         "primaryType": "Album",
@@ -65428,7 +65960,7 @@
       },
       {
         "id": "ad9cf0e7-73c9-436f-9ad0-2626dd398334",
-        "title": "Higher Ground (Live)",
+        "title": "Higher Ground (live)",
         "releaseDate": "2021-02-02",
         "year": 2021,
         "primaryType": "Album",
@@ -65441,7 +65973,7 @@
       },
       {
         "id": "f1631872-0b95-4393-a075-06c0ad5a3a19",
-        "title": "Blood.Sugar.Sex.Magic (Live)",
+        "title": "Blood.Sugar.Sex.Magic (live)",
         "releaseDate": "2021-01-27",
         "year": 2021,
         "primaryType": "Album",
@@ -65454,7 +65986,7 @@
       },
       {
         "id": "383d1b01-a6a0-470c-80d3-64bf9dd8e4ba",
-        "title": "My Lovely Man (Live)",
+        "title": "My Lovely Man (live)",
         "releaseDate": "2020-12-18",
         "year": 2020,
         "primaryType": "Album",
@@ -65467,7 +65999,7 @@
       },
       {
         "id": "0dba3f00-f418-4308-909f-d23c0bd764cd",
-        "title": "Suck My Kiss (Live)",
+        "title": "Suck My Kiss (live)",
         "releaseDate": "2020-09-30",
         "year": 2020,
         "primaryType": "Album",
@@ -65480,7 +66012,7 @@
       },
       {
         "id": "1f3fc7e4-213c-4ab2-b762-a7f977e5367f",
-        "title": "Blood Sugar Sex Magic (Live)",
+        "title": "Blood Sugar Sex Magic (live)",
         "releaseDate": "2020-09-30",
         "year": 2020,
         "primaryType": "Album",
@@ -65493,7 +66025,7 @@
       },
       {
         "id": "33883b09-e7a1-49fd-8f73-2c9915d40dec",
-        "title": "Bullet Proof (Live)",
+        "title": "Bullet Proof (live)",
         "releaseDate": "2020-09-30",
         "year": 2020,
         "primaryType": "Album",
@@ -65506,7 +66038,7 @@
       },
       {
         "id": "5979d95c-4b96-4682-bfbb-b557562452a6",
-        "title": "Me And My Friends (Live)",
+        "title": "Me and My Friends (live)",
         "releaseDate": "2020-09-30",
         "year": 2020,
         "primaryType": "Album",
@@ -65519,7 +66051,7 @@
       },
       {
         "id": "714e6534-aeef-47b1-9536-44433516c949",
-        "title": "Give It Away (Live)",
+        "title": "Give It Away (live)",
         "releaseDate": "2020-09-30",
         "year": 2020,
         "primaryType": "Album",
@@ -65532,7 +66064,7 @@
       },
       {
         "id": "b2975d22-e0d2-465f-9ce2-a7e80eb371c7",
-        "title": "Knock Me Down (Live)",
+        "title": "Knock Me Down (live)",
         "releaseDate": "2020-09-30",
         "year": 2020,
         "primaryType": "Album",
@@ -65545,7 +66077,7 @@
       },
       {
         "id": "1199b4c3-7a12-4e69-bb37-0c605cf6f940",
-        "title": "Red Hot Chili Peppers - Live at Woodstock (Live)",
+        "title": "Red Hot Chili Peppers: Live at Woodstock",
         "releaseDate": "2020-07-31",
         "year": 2020,
         "primaryType": "Album",
@@ -65558,7 +66090,7 @@
       },
       {
         "id": "86a3726f-be92-414d-ab1d-375d89564da4",
-        "title": "Me and My Friends (Live)",
+        "title": "Me and My Friends (live)",
         "releaseDate": "2020-07-31",
         "year": 2020,
         "primaryType": "Album",
@@ -65571,7 +66103,7 @@
       },
       {
         "id": "eeb5e376-d104-4ed3-bd98-02c316f466c1",
-        "title": "Stone Club Bush (Live)",
+        "title": "Stone Club Bush (live)",
         "releaseDate": "2020-07-31",
         "year": 2020,
         "primaryType": "Album",
@@ -65584,7 +66116,7 @@
       },
       {
         "id": "032f2f73-a8eb-4284-89a0-cf8c26444f48",
-        "title": "Nobody Weird Like Me (Live)",
+        "title": "Nobody Weird Like Me (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65597,7 +66129,7 @@
       },
       {
         "id": "0e77cc61-7102-4d41-9711-c8eb603a0912",
-        "title": "Hollywood Blood (Live)",
+        "title": "Hollywood Blood (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65610,7 +66142,7 @@
       },
       {
         "id": "13f9e85c-15ec-4845-99af-435c3ef1f3dc",
-        "title": "Live In Kawasaki 1990 Part Two (Live)",
+        "title": "Live in Kawasaki 1990 Part Two (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65636,7 +66168,7 @@
       },
       {
         "id": "1e89aee7-7ace-4c50-b702-fcc6665c93c7",
-        "title": "Live 1995 Part Two (Live)",
+        "title": "Live 1995 Part Two (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65649,7 +66181,7 @@
       },
       {
         "id": "207f7897-9f6e-4edf-96d3-61a8a3519d50",
-        "title": "Live 1991 Part One (Live)",
+        "title": "Live 1991 Part One (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65662,7 +66194,7 @@
       },
       {
         "id": "32c6cfe5-7aa9-4114-a094-97a95bf2e3e6",
-        "title": "All Over The World (Live)",
+        "title": "All Over the World (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65675,7 +66207,7 @@
       },
       {
         "id": "360e9107-6cbc-4a20-a583-daabc9d380e6",
-        "title": "Live 1995 Part One (Live)",
+        "title": "Live 1995 Part One (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65701,7 +66233,7 @@
       },
       {
         "id": "5c2cc657-b589-43b1-8ac0-a2d6a5be257c",
-        "title": "Warped Sense Of Reality (Live)",
+        "title": "Warped Sense of Reality (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65714,7 +66246,7 @@
       },
       {
         "id": "6811e956-236f-428d-9274-771344cb29e0",
-        "title": "Erase The Pain (Live)",
+        "title": "Erase the Pain (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65727,7 +66259,7 @@
       },
       {
         "id": "7d9f2f90-e8d0-421e-b7a3-354c72f98f0e",
-        "title": "Bullet Proof (Live)",
+        "title": "Bullet Proof (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65740,7 +66272,7 @@
       },
       {
         "id": "8344dddb-2877-4b66-bf51-533dc3cb2f86",
-        "title": "Black Eyed Blonde (Live)",
+        "title": "Black Eyed Blonde (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65753,7 +66285,7 @@
       },
       {
         "id": "84ac80fa-7529-456c-a3d8-46394bc07c52",
-        "title": "Knock Me Down (Live)",
+        "title": "Knock Me Down (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65766,7 +66298,7 @@
       },
       {
         "id": "951f7a47-ba88-42e6-9fed-17db4b32cf3e",
-        "title": "Stone Cold (Live)",
+        "title": "Stone Cold (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65779,7 +66311,7 @@
       },
       {
         "id": "e234d598-5e22-4fb7-8623-4077be292f92",
-        "title": "The California Way (Live)",
+        "title": "The California Way (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65792,7 +66324,7 @@
       },
       {
         "id": "ea4f46d7-5af9-475d-a5bd-bb687bc004af",
-        "title": "Bare Necessities (Live)",
+        "title": "Bare Necessities (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65805,7 +66337,7 @@
       },
       {
         "id": "ec54e3d0-1b47-4b80-8497-0b6de9ddf6fd",
-        "title": "Transcending (Live)",
+        "title": "Transcending (live)",
         "releaseDate": "2020-02-05",
         "year": 2020,
         "primaryType": "Album",
@@ -65831,7 +66363,7 @@
       },
       {
         "id": "122d5d4a-4d1d-40db-b80c-915dc71dcf63",
-        "title": "Rid Of The Pain (Live)",
+        "title": "Rid of the Pain (live)",
         "releaseDate": "2019-08-12",
         "year": 2019,
         "primaryType": "Album",
@@ -65844,7 +66376,7 @@
       },
       {
         "id": "55f1283c-28b7-47e4-9894-df8dede85e7f",
-        "title": "Over The Bridge (Live)",
+        "title": "Over the Bridge (live)",
         "releaseDate": "2019-08-12",
         "year": 2019,
         "primaryType": "Album",
@@ -65856,21 +66388,8 @@
         "coverAvailable": true
       },
       {
-        "id": "f7c0bbbb-5612-41b6-a298-46ae585d183b",
-        "title": "Organic Anti Beat Box Band (Live)",
-        "releaseDate": "2019-07-31",
-        "year": 2019,
-        "primaryType": "Album",
-        "secondaryTypes": [
-          "Live"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/f7c0bbbb-5612-41b6-a298-46ae585d183b/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "20498185-00c1-4fca-baca-19b3fe0d3755",
-        "title": "Organic Minds (Live)",
+        "title": "Organic Minds (live)",
         "releaseDate": "2019-05-01",
         "year": 2019,
         "primaryType": "Album",
@@ -65883,7 +66402,7 @@
       },
       {
         "id": "317de75c-ca1f-492c-8e84-760df7b9bb37",
-        "title": "Bullet Proof (Live)",
+        "title": "Bullet Proof (live)",
         "releaseDate": "2019-05-01",
         "year": 2019,
         "primaryType": "Album",
@@ -65935,7 +66454,7 @@
       },
       {
         "id": "d1e86e79-d577-402e-997d-9a76e6054a5c",
-        "title": "The Psycho's House (Live)",
+        "title": "The Psycho’s House (live)",
         "releaseDate": "2017-04-24",
         "year": 2017,
         "primaryType": "Album",
@@ -65948,7 +66467,7 @@
       },
       {
         "id": "d51b69f5-5858-4ec3-804a-9b39877b68ec",
-        "title": "Live In Santiago 1994 (Live)",
+        "title": "Live in Santiago 1994 (live)",
         "releaseDate": "2017-04-24",
         "year": 2017,
         "primaryType": "Album",
@@ -65974,7 +66493,7 @@
       },
       {
         "id": "f2780435-2899-4830-8468-6bfcf1091bdc",
-        "title": "If You Have To Ask (Live)",
+        "title": "If You Have to Ask (live)",
         "releaseDate": "2017-04-24",
         "year": 2017,
         "primaryType": "Album",
@@ -66089,6 +66608,19 @@
         "coverAvailable": true
       },
       {
+        "id": "1e1a50b9-66ae-40c9-bcac-39f5553e5d6f",
+        "title": "The Red Hot Chili Peppers / The Uplift Mofo Party Plan",
+        "releaseDate": "2014",
+        "year": 2014,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1e1a50b9-66ae-40c9-bcac-39f5553e5d6f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "5168ee4f-a6a5-4938-846f-535f2f3d667b",
         "title": "The EMI Years",
         "releaseDate": "2014",
@@ -66154,6 +66686,19 @@
         "coverAvailable": true
       },
       {
+        "id": "c14c91cf-e9ff-4dc6-9913-d548d83c13ce",
+        "title": "2012/08/15 Oakland, CA",
+        "releaseDate": "2012-08-15",
+        "year": 2012,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c14c91cf-e9ff-4dc6-9913-d548d83c13ce/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "c9ffebc3-0e00-4ba7-bef6-980c98d623b6",
         "title": "I’m With You",
         "releaseDate": "2011-08-26",
@@ -66204,6 +66749,19 @@
         "coverAvailable": true
       },
       {
+        "id": "af5af6fb-40c7-470c-9d84-5a1e040d9f9a",
+        "title": "10 Great Songs",
+        "releaseDate": "2009",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/af5af6fb-40c7-470c-9d84-5a1e040d9f9a/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "b45fd3fb-4f9f-4337-bb7c-fc05374ca0cc",
         "title": "The Videos",
         "releaseDate": "2009",
@@ -66214,6 +66772,19 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/b45fd3fb-4f9f-4337-bb7c-fc05374ca0cc/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "c3a171c0-92d6-4af3-b0cf-d4a69037f2a1",
+        "title": "10 Great Songs",
+        "releaseDate": "2009",
+        "year": 2009,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/c3a171c0-92d6-4af3-b0cf-d4a69037f2a1/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -66524,14 +67095,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:21.369Z",
-    "cachedAt": "2026-08-24T08:05:21.369Z"
+    "fetchedAt": "2026-11-23T19:04:17.966Z",
+    "cachedAt": "2026-11-23T19:04:17.966Z"
   },
   "bandits-of-the-acoustic-revolution": {
     "artistName": "Bandits of the Acoustic Revolution",
     "normalizedName": "bandits-of-the-acoustic-revolution",
     "mbid": "d77ef376-248f-459d-86fa-3f39006e32ae",
-    "albumCount": 2,
+    "albumCount": 3,
     "albums": [
       {
         "id": "94d8ec26-24ba-4f8f-ba9b-3251304d66ee",
@@ -66547,6 +67118,19 @@
         "coverAvailable": true
       },
       {
+        "id": "a88b17b7-ae2f-4518-94fe-e7fceae02ece",
+        "title": "Live at the Beacon Theater",
+        "releaseDate": "2018-01-13",
+        "year": 2018,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a88b17b7-ae2f-4518-94fe-e7fceae02ece/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "c7cbf5c2-c8f2-3a32-8390-661a8d1c3dea",
         "title": "A Call to Arms",
         "releaseDate": "2001-12-21",
@@ -66558,14 +67142,14 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:26.032Z",
-    "cachedAt": "2026-08-24T08:05:26.032Z"
+    "fetchedAt": "2026-11-23T19:04:20.309Z",
+    "cachedAt": "2026-11-23T19:04:20.309Z"
   },
   "the-aquabats": {
     "artistName": "The Aquabats!",
     "normalizedName": "the-aquabats",
     "mbid": "0396220e-d266-4980-b5f2-b0926d905bec",
-    "albumCount": 28,
+    "albumCount": 29,
     "albums": [
       {
         "id": "35af73db-bf57-4e20-8aa2-67192e1e4210",
@@ -66697,7 +67281,7 @@
       {
         "id": "6a83d758-067b-46d0-9df4-bcff8f59bf7c",
         "title": "Hi-Five Soup!",
-        "releaseDate": "2011-01-18",
+        "releaseDate": "2011-01-01",
         "year": 2011,
         "primaryType": "Album",
         "secondaryTypes": [],
@@ -66749,6 +67333,20 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/7f7af322-c02c-3d25-8f5d-deb950beede1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fe54311b-ef4c-43dd-a542-035b8854eb71",
+        "title": "A Double Disc DVD of… Serious Awesomeness!",
+        "releaseDate": "2003-11-18",
+        "year": 2003,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Compilation",
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fe54311b-ef4c-43dd-a542-035b8854eb71/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -66888,8 +67486,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:30.210Z",
-    "cachedAt": "2026-08-24T08:05:30.210Z"
+    "fetchedAt": "2026-11-23T19:04:21.988Z",
+    "cachedAt": "2026-11-23T19:04:21.988Z"
   },
   "gorillaz": {
     "artistName": "Gorillaz",
@@ -66900,12 +67498,23 @@
       {
         "id": "b82f59df-2659-4c23-a3b6-9eb2518b4327",
         "title": "The Mountain",
-        "releaseDate": "2026-02-27",
+        "releaseDate": "2026-02-24",
         "year": 2026,
         "primaryType": "Album",
         "secondaryTypes": [],
         "disambiguation": "पर्वत",
         "coverUrl": "https://coverartarchive.org/release-group/b82f59df-2659-4c23-a3b6-9eb2518b4327/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "f6c7f91f-d584-42d4-a738-a6174b439579",
+        "title": "WHISKEY (RELEASE ME)",
+        "releaseDate": "2026-01-16",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f6c7f91f-d584-42d4-a738-a6174b439579/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -67007,6 +67616,17 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/687e1d02-2fc4-467a-b548-679587ddca73/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "84312c94-5d05-46dc-b94b-d98caa0534a3",
+        "title": "Gorillaz: Deep Cuts",
+        "releaseDate": "2023",
+        "year": 2023,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/84312c94-5d05-46dc-b94b-d98caa0534a3/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -67276,19 +67896,6 @@
         "coverAvailable": true
       },
       {
-        "id": "4e3bf1fc-33d5-4ced-af83-9c0687496e1e",
-        "title": "Humility (remixes)",
-        "releaseDate": "2018-07-12",
-        "year": 2018,
-        "primaryType": "Single",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/4e3bf1fc-33d5-4ced-af83-9c0687496e1e/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
         "id": "593abbcc-0803-47ae-b0fc-e1f5666e9bbc",
         "title": "The Now Now",
         "releaseDate": "2018-06-29",
@@ -67352,19 +67959,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/64329a40-5ce4-497e-ae84-e04f10bbea66/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "00363fd1-478d-4743-8403-fe4628a892f7",
-        "title": "Andromeda (D.R.A.M. Special)",
-        "releaseDate": "2017-12-01",
-        "year": 2017,
-        "primaryType": "Single",
-        "secondaryTypes": [
-          "Remix"
-        ],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/00363fd1-478d-4743-8403-fe4628a892f7/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -67805,6 +68399,17 @@
         "coverAvailable": true
       },
       {
+        "id": "db3c001b-6844-4e10-b881-84c433a8c475",
+        "title": "(Dare) (EP Series)",
+        "releaseDate": "2006-11-06",
+        "year": 2006,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/db3c001b-6844-4e10-b881-84c433a8c475/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
         "id": "a20ceff8-35c6-38b9-a475-e729b71aaa40",
         "title": "Kids With Guns / El Mañana",
         "releaseDate": "2006-04-10",
@@ -67837,17 +68442,6 @@
         ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/a75149ba-c345-3500-9f2f-ace851e5ba14/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "db3c001b-6844-4e10-b881-84c433a8c475",
-        "title": "(Dare) (EP Series)",
-        "releaseDate": "2006",
-        "year": 2006,
-        "primaryType": "EP",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/db3c001b-6844-4e10-b881-84c433a8c475/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -68046,15 +68640,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:32.350Z",
-    "cachedAt": "2026-08-24T08:05:32.350Z"
+    "fetchedAt": "2026-11-23T19:04:23.977Z",
+    "cachedAt": "2026-11-23T19:04:23.977Z"
   },
   "billy-idol": {
     "artistName": "Billy Idol",
     "normalizedName": "billy-idol",
     "mbid": "47c8f88b-987a-4b64-9175-2b1b57809727",
-    "albumCount": 91,
+    "albumCount": 92,
     "albums": [
+      {
+        "id": "f45417b7-47ce-4016-971f-ffe3fd71480c",
+        "title": "Dying To Live",
+        "releaseDate": "2025-12-19",
+        "year": 2025,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f45417b7-47ce-4016-971f-ffe3fd71480c/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "abd6302d-1d30-48a8-b93c-752a430a7a8b",
         "title": "Dream Into It",
@@ -69147,24 +69752,24 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:34.537Z",
-    "cachedAt": "2026-08-24T08:05:34.537Z"
+    "fetchedAt": "2026-11-23T19:04:25.965Z",
+    "cachedAt": "2026-11-23T19:04:25.965Z"
   },
   "joe-satriani": {
     "artistName": "Joe Satriani",
     "normalizedName": "joe-satriani",
     "mbid": "29762c82-bb92-4acd-b1fb-09cc4da250d2",
-    "albumCount": 74,
+    "albumCount": 73,
     "albums": [
       {
-        "id": "9521e07b-736c-4633-91cd-1709f5d117d3",
-        "title": "SatchVai: Dancing",
-        "releaseDate": "2026-03-02",
+        "id": "0216dca4-4cb9-42e7-99be-2d63d2a820ef",
+        "title": "SatchVai: The Sea of Emotion",
+        "releaseDate": "2026-11-06",
         "year": 2026,
-        "primaryType": "Single",
+        "primaryType": "Album",
         "secondaryTypes": [],
         "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/9521e07b-736c-4633-91cd-1709f5d117d3/front-500.jpg",
+        "coverUrl": "https://coverartarchive.org/release-group/0216dca4-4cb9-42e7-99be-2d63d2a820ef/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -69176,17 +69781,6 @@
         "secondaryTypes": [],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/dcb16911-c55f-4746-8ba6-fe523cf1e501/front-500.jpg",
-        "coverAvailable": true
-      },
-      {
-        "id": "94becdd6-7bc0-433c-80a7-f062f13bab48",
-        "title": "Satch/Vai: I Wanna Play My Guitar",
-        "releaseDate": "2025-05-08",
-        "year": 2025,
-        "primaryType": "Single",
-        "secondaryTypes": [],
-        "disambiguation": "",
-        "coverUrl": "https://coverartarchive.org/release-group/94becdd6-7bc0-433c-80a7-f062f13bab48/front-500.jpg",
         "coverAvailable": true
       },
       {
@@ -69653,7 +70247,9 @@
         "releaseDate": "2004",
         "year": 2004,
         "primaryType": "Album",
-        "secondaryTypes": [],
+        "secondaryTypes": [
+          "Compilation"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/1b18a481-25d9-42f3-9133-34ddbb508879/front-500.jpg",
         "coverAvailable": true
@@ -69876,7 +70472,9 @@
         "releaseDate": "1992",
         "year": 1992,
         "primaryType": "Album",
-        "secondaryTypes": [],
+        "secondaryTypes": [
+          "Live"
+        ],
         "disambiguation": "",
         "coverUrl": "https://coverartarchive.org/release-group/73d32953-709d-48a8-a177-c676785c75e2/front-500.jpg",
         "coverAvailable": true
@@ -70029,15 +70627,26 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:37.663Z",
-    "cachedAt": "2026-08-24T08:05:37.663Z"
+    "fetchedAt": "2026-11-23T19:04:28.152Z",
+    "cachedAt": "2026-11-23T19:04:28.152Z"
   },
   "bell-biv-devoe": {
     "artistName": "Bell Biv DeVoe",
     "normalizedName": "bell-biv-devoe",
     "mbid": "9b16908a-a78c-45a7-8366-d2a41967f745",
-    "albumCount": 15,
+    "albumCount": 16,
     "albums": [
+      {
+        "id": "6dcb6c96-f460-4f2a-97af-1821ac2d65a2",
+        "title": "Act Like You Know",
+        "releaseDate": "2023-10-05",
+        "year": 2023,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6dcb6c96-f460-4f2a-97af-1821ac2d65a2/front-500.jpg",
+        "coverAvailable": true
+      },
       {
         "id": "09928b73-08f5-4858-a79a-1a0bc190387d",
         "title": "That Girl Is Poison",
@@ -70214,8 +70823,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:40.297Z",
-    "cachedAt": "2026-08-24T08:05:40.297Z"
+    "fetchedAt": "2026-11-23T19:04:30.290Z",
+    "cachedAt": "2026-11-23T19:04:30.290Z"
   },
   "abc": {
     "artistName": "ABC",
@@ -126498,8 +127107,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:41.400Z",
-    "cachedAt": "2026-08-24T08:05:41.400Z"
+    "fetchedAt": "2026-11-23T19:04:30.979Z",
+    "cachedAt": "2026-11-23T19:04:30.979Z"
   },
   "richard-cheese": {
     "artistName": "Richard Cheese",
@@ -126946,8 +127555,8 @@
         "coverAvailable": true
       }
     ],
-    "fetchedAt": "2026-08-24T08:05:45.707Z",
-    "cachedAt": "2026-08-24T08:05:45.707Z"
+    "fetchedAt": "2026-11-23T19:04:32.967Z",
+    "cachedAt": "2026-11-23T19:04:32.967Z"
   },
   "danger-painters": {
     "artistName": "Danger Painters",
@@ -138564,5 +139173,195 @@
     ],
     "fetchedAt": "2026-11-09T17:12:43.183Z",
     "cachedAt": "2026-11-09T17:12:43.183Z"
+  },
+  "bodega": {
+    "artistName": "Bodega",
+    "normalizedName": "bodega",
+    "mbid": "8a08d77c-d796-4546-8143-abca7ff9b62e",
+    "albumCount": 16,
+    "albums": [
+      {
+        "id": "6bdeca29-33be-493e-932a-3b0f148c8bf7",
+        "title": "All Inside Aquarium",
+        "releaseDate": "2026-10-09",
+        "year": 2026,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6bdeca29-33be-493e-932a-3b0f148c8bf7/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "01db36de-bcb1-43a8-a0a0-e44328b4b007",
+        "title": "Weather Me",
+        "releaseDate": "2026-08-05",
+        "year": 2026,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/01db36de-bcb1-43a8-a0a0-e44328b4b007/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "6571a552-0f63-4cda-a961-eeff2f251d93",
+        "title": "N.A.S.S. / City Is Taken",
+        "releaseDate": "2024-09-06",
+        "year": 2024,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/6571a552-0f63-4cda-a961-eeff2f251d93/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "1d650876-fd7b-4b50-a314-85fe62b21447",
+        "title": "Adaptation Of The Truth About Marie / Tarkovski",
+        "releaseDate": "2024-08-09",
+        "year": 2024,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/1d650876-fd7b-4b50-a314-85fe62b21447/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "fe3cbf35-dd01-43c6-ab09-9e544a40255f",
+        "title": "Our Brand Could Be Yr Life",
+        "releaseDate": "2024-04-12",
+        "year": 2024,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/fe3cbf35-dd01-43c6-ab09-9e544a40255f/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "387be989-68fb-4640-9946-cf1cabdc1ce0",
+        "title": "Audiotree Live",
+        "releaseDate": "2022-09-13",
+        "year": 2022,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/387be989-68fb-4640-9946-cf1cabdc1ce0/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "5d5ab783-c061-43e6-bded-4cb76685a5f2",
+        "title": "Xtra Equipment",
+        "releaseDate": "2022-07-15",
+        "year": 2022,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/5d5ab783-c061-43e6-bded-4cb76685a5f2/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9becaa2b-2bfc-4a69-a3d4-cb26e43cfaa0",
+        "title": "Broken Equipment",
+        "releaseDate": "2022-03-11",
+        "year": 2022,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9becaa2b-2bfc-4a69-a3d4-cb26e43cfaa0/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "a067f0ef-e92d-4e6b-971b-63260cd83070",
+        "title": "Statuette On The Console",
+        "releaseDate": "2022-02-16",
+        "year": 2022,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/a067f0ef-e92d-4e6b-971b-63260cd83070/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "d054b388-91e2-467a-b2d1-78767e47c668",
+        "title": "Doers",
+        "releaseDate": "2021-10-19",
+        "year": 2021,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/d054b388-91e2-467a-b2d1-78767e47c668/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "f4077fcf-5cdc-431f-8693-b57ae322cdf4",
+        "title": "Shiny New Model",
+        "releaseDate": "2019-10-11",
+        "year": 2019,
+        "primaryType": "EP",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/f4077fcf-5cdc-431f-8693-b57ae322cdf4/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "425dee10-9ed6-4cbc-9f3d-8dc1e37addc1",
+        "title": "Witness Scroll",
+        "releaseDate": "2019-03-01",
+        "year": 2019,
+        "primaryType": "Album",
+        "secondaryTypes": [
+          "Live"
+        ],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/425dee10-9ed6-4cbc-9f3d-8dc1e37addc1/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "2f9fcfa4-1279-4871-9535-2107e6957957",
+        "title": "Endless Scroll",
+        "releaseDate": "2018-07-06",
+        "year": 2018,
+        "primaryType": "Album",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/2f9fcfa4-1279-4871-9535-2107e6957957/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "9c020047-292d-4228-a614-b63f874370d9",
+        "title": "Jack in Titanic",
+        "releaseDate": "2018-05-03",
+        "year": 2018,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/9c020047-292d-4228-a614-b63f874370d9/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "79203c3a-221c-41fd-9fe5-822718b7f910",
+        "title": "Can't Knock the Hustle",
+        "releaseDate": "2018-04-03",
+        "year": 2018,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/79203c3a-221c-41fd-9fe5-822718b7f910/front-500.jpg",
+        "coverAvailable": true
+      },
+      {
+        "id": "47e2f031-14bc-4dc7-b54a-4d2497de2131",
+        "title": "How Did This Happen!?",
+        "releaseDate": "2018-02-28",
+        "year": 2018,
+        "primaryType": "Single",
+        "secondaryTypes": [],
+        "disambiguation": "",
+        "coverUrl": "https://coverartarchive.org/release-group/47e2f031-14bc-4dc7-b54a-4d2497de2131/front-500.jpg",
+        "coverAvailable": true
+      }
+    ],
+    "fetchedAt": "2026-11-23T19:04:39.245Z",
+    "cachedAt": "2026-11-23T19:04:39.245Z"
   }
 }

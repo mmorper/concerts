@@ -1,5 +1,5 @@
 {
-  "computedAt": "2026-11-16T16:51:56.482Z",
+  "computedAt": "2026-11-23T19:08:28.810Z",
   "facts": [
     {
       "id": "top-artist",
@@ -22,7 +22,7 @@
     {
       "id": "total-concerts",
       "category": "timeline",
-      "headline": "185 concerts since 1984",
+      "headline": "186 concerts since 1984",
       "detail": "44 years of live music memories",
       "route": "/?scene=timeline",
       "cta": "Explore the timeline",
@@ -49,7 +49,7 @@
     {
       "id": "top-state",
       "category": "geography",
-      "headline": "California: 122 concerts",
+      "headline": "California: 123 concerts",
       "detail": "Home base for most concert experiences",
       "route": "/?scene=geography",
       "cta": "Explore the map",
@@ -85,9 +85,9 @@
     {
       "id": "latest-concert",
       "category": "timeline",
-      "headline": "Latest: Nick Heyward (2027)",
-      "detail": "The most recent addition — Union Stage",
-      "route": "/?scene=artists&artist=nick-heyward",
+      "headline": "Latest: Royal Blood (2027)",
+      "detail": "The most recent addition — The Belasco",
+      "route": "/?scene=artists&artist=royal-blood",
       "cta": "View artist details",
       "priority": 10
     },

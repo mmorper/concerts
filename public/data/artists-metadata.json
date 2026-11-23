@@ -1847,5 +1847,15 @@
     "formed": "1982",
     "source": "theaudiodb",
     "fetchedAt": "2026-11-13T00:19:04.227Z"
+  },
+  "bodega": {
+    "name": "Bodega",
+    "image": "https://r2.theaudiodb.com/images/media/artist/thumb/df5n2x1714751661.jpg",
+    "genres": [
+      "Post-Punk"
+    ],
+    "formed": "2014",
+    "source": "theaudiodb",
+    "fetchedAt": "2026-11-23T18:59:55.519Z"
   }
 }

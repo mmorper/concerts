@@ -4715,17 +4715,43 @@
       "dayOfWeek": "Wednesday",
       "decade": "2020s",
       "location": {
-        "lat": 38.8790382,
-        "lng": -77.0243684
+        "lat": 38.8787636,
+        "lng": -77.02409879999999
+      }
+    },
+    {
+      "id": "concert-186",
+      "date": "2027-04-23",
+      "headliner": "Royal Blood",
+      "headlinerNormalized": "royal-blood",
+      "genre": "Alternative",
+      "genreNormalized": "alternative",
+      "openers": [
+        "Bodega"
+      ],
+      "venue": "The Belasco",
+      "venueNormalized": "the-belasco",
+      "city": "Los Angeles",
+      "state": "California",
+      "cityState": "Los Angeles, California",
+      "reference": "",
+      "year": 2027,
+      "month": 4,
+      "day": 23,
+      "dayOfWeek": "Friday",
+      "decade": "2020s",
+      "location": {
+        "lat": 34.0403336,
+        "lng": -118.2593883
       }
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-11-16T16:46:57.970Z",
-    "totalConcerts": 185,
+    "lastUpdated": "2026-11-23T18:59:48.551Z",
+    "totalConcerts": 186,
     "dateRange": {
       "earliest": "1984-04-27",
-      "latest": "2027-03-10"
+      "latest": "2027-04-23"
     },
     "uniqueArtists": 108,
     "uniqueVenues": 80,
