@@ -631,11 +631,11 @@
   },
   "royal-blood": {
     "narration": {
-      "context": "I only caught Royal Blood three times, with a pair of shows at the 9:30 Club in 2015 and 2017 before the trail picked up again in 2022 at House of Blues Anaheim.",
-      "closingArc": "Two nights at the 9:30 Club in 2015 and 2017 turned out to be the heart of it, with Anaheim arriving five years later like a distant echo."
+      "context": "I caught Royal Blood three times as a headliner, starting with back-to-back visits to D.C.'s 9:30 Club in 2015 and 2017 before catching up with them again in Anaheim in 2022.",
+      "closingArc": "What began as a reliable 9:30 Club pairing eventually drifted west, and now there's a date on the books at The Belasco to pick the thread back up."
     },
-    "inputHash": "sha256:a3b6647deb8a1a4ac9b032126563f70d77e168281e7f9013f6e67c247d256058",
-    "generatedAt": "2026-09-07T01:07:34.085Z",
+    "inputHash": "sha256:7b5536f5b26d286b39bd008e8d21abcf08716e7403852b3a6349cc76501bd8f7",
+    "generatedAt": "2026-11-23T19:08:48.939Z",
     "promptVersion": 3
   },
   "foo-fighters": {

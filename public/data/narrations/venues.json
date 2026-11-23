@@ -658,11 +658,11 @@
   },
   "the-belasco": {
     "narration": {
-      "context": "The Belasco in Los Angeles is a recent addition to my rotation — just three shows between July 2023 and December 2024, starting with Foals and running through Kasabian and Social Distortion.",
-      "closingArc": "Three shows, three different headliners, no repeats yet — it's still a room I'm just getting to know."
+      "context": "The Belasco in Los Angeles has shown up on my calendar three times so far — Foals with Andy Stavas opening in July 2023, Kasabian that November, and Social Distortion in December 2024.",
+      "closingArc": "Three different headliners in under two years, and with Royal Blood booked for 2027, this room still has more to tell me."
     },
-    "inputHash": "sha256:5cf3b54f5307d6adb60b646946d7ce2e41efa4d66282196ab297cca8d36bda0d",
-    "generatedAt": "2026-09-07T01:04:43.118Z",
+    "inputHash": "sha256:7db8a28a26dd6a7bad2d9696497627ac25d2bbbdf656c3d24fdfc94608240717",
+    "generatedAt": "2026-11-23T19:08:46.514Z",
     "promptVersion": 3
   },
   "peacock-theater": {
