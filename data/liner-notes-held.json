@@ -14,6 +14,20 @@
       "detector": "venue-ghost",
       "reason": "fact-checker: \"Adam Ant opened it for me on April 27, 1984, and Peter Gabriel closed it out on June 8, 2003, nearly 19 years and 1 month apart.\" (contradicted) — April 27, 1984 to June 8, 2003 is 19 years, 1 month, and 12 days — slightly more than 19 years and 1 month, not 'nearly' that amount.; \"it wasn't demolished until October 30, 2016, almost 13 years and 4 months after I last stood in that crowd for Gabriel's *Father, Son*.\" (contradicted) — June 8, 2003 to October 30, 2016 is 13 years, 4 ",
       "heldAt": "2026-11-16"
+    },
+    {
+      "id": "drought-comeback-the-smithereens",
+      "headline": "The Smithereens: 21 Years Between Shows",
+      "detector": "drought-comeback",
+      "reason": "claim check: \"The Smithereens: 21 Years Between Shows\" (internal) — The prose itself says 'almost 21 years later' (1992-06-04 to 2013-06-02 is actually 20 years, 11 months, 29 days — just under 21 years), contradicting the headline's flat '21 Years'.",
+      "heldAt": "2026-11-23"
+    },
+    {
+      "id": "venue-ghost-universal-amphitheater",
+      "headline": "Universal Amphitheater: 5 Shows Before It Was Demolished",
+      "detector": "venue-ghost",
+      "reason": "fact-checker: \"Between those two sat Siouxsie and the Banshees and the Brian Setzer Orchestra, just two other artists filling out five visits to the same room.\" (contradicted) — Universal Amphitheater's full show list includes Tears For Fears on 1993-11-04, which falls between the 1989 Howard Jones show and the 2005 Tears For Fears show — so three shows, not two artists, filled the middle.",
+      "heldAt": "2026-11-23"
     }
   ]
 }

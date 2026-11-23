@@ -1,7 +1,102 @@
 {
-  "generatedAt": "2026-11-16T18:07:24.830Z",
-  "dataHash": "e600cf52",
+  "generatedAt": "2026-11-23T19:58:10.235Z",
+  "dataHash": "8f9bbcf1",
   "posts": [
+    {
+      "id": "longevity-depeche-mode",
+      "slug": "depeche-mode-38-years-of-shows-2",
+      "category": "personal",
+      "temporality": "evergreen",
+      "headline": "Depeche Mode: 38 Years of Shows",
+      "prose": "I saw Depeche Mode first at Irvine Meadows in 1985, and the last time was Kia Forum in Inglewood, almost 38 years later in March 2023. Five shows, five different venues, and the one constant across all of them was \"Everything Counts\" — every single time, it was there. I think about that span more than I think about any one night: a song that outlasted the rooms it was played in, and outlasted a fair amount of my own life too. Thirty-seven years, eleven months, same band, same song closing the gap every time.",
+      "image": {
+        "url": "/images/shows/2023-03-28-depeche-mode-01.jpg",
+        "alt": "Depeche Mode",
+        "source": "show",
+        "ref": "depeche-mode",
+        "credit": "Mike Morper · 28 March 2023",
+        "shotOn": "2023-03-28",
+        "crop": {
+          "h": 0.9377,
+          "w": 1,
+          "x": 0,
+          "y": 0
+        }
+      },
+      "audio": {
+        "trackName": "Enjoy the Silence",
+        "artistName": "Depeche Mode",
+        "albumName": "Violator (Deluxe)",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/28/35/c7/2835c757-1235-6c93-66ca-49333342ffe1/mzaf_9241866861716136460.plus.aac.p.m4a",
+        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/5c/0e/66/5c0e66c0-d383-5641-3ec0-4bdb629c49ad/886445705119.jpg/100x100bb.jpg",
+        "streamingUrl": "https://music.apple.com/us/album/enjoy-the-silence/1174246686?i=1174246889&uo=4",
+        "source": "itunes"
+      },
+      "artists": [
+        "depeche-mode"
+      ],
+      "venues": [
+        "irvine-meadows",
+        "the-rose-bowl",
+        "dodger-stadium",
+        "staples-center",
+        "kia-forum"
+      ],
+      "years": [
+        1985,
+        1988,
+        1990,
+        2005,
+        2023
+      ],
+      "tags": [
+        "#artist-longevity",
+        "#multi-decade",
+        "#never-left"
+      ],
+      "deepLinks": [
+        {
+          "label": "Depeche Mode",
+          "url": "/?scene=artists&artist=depeche-mode",
+          "type": "artist"
+        },
+        {
+          "label": "Irvine Meadows",
+          "url": "/?scene=venues&venue=irvine-meadows",
+          "type": "venue"
+        },
+        {
+          "label": "The Rose Bowl",
+          "url": "/?scene=venues&venue=the-rose-bowl",
+          "type": "venue"
+        },
+        {
+          "label": "1985",
+          "url": "/?scene=timeline&year=1985",
+          "type": "timeline"
+        }
+      ],
+      "relatedSlugs": [
+        "25-shows-in-a-row-on-the-west-coast-1989-1999",
+        "depeche-mode-18-years-between-shows"
+      ],
+      "score": 41,
+      "detector": "artist-longevity",
+      "publishedAt": "2026-11-23T19:58:10.235Z",
+      "factsAsOf": "2026-11-23T19:58:10.236Z",
+      "social": {
+        "hook": "Five shows, five venues, one song that showed up every single time.",
+        "caption": "I heard Depeche Mode play 'Everything Counts' at every show I caught them at, across nearly thirty-eight years. The last was Kia Forum in March 2023.",
+        "beats": [
+          "I saw Depeche Mode for the first time in 1985, not knowing what would follow.",
+          "Four more shows came after, each one in a different venue.",
+          "'Everything Counts' closed the gap every time — the one constant across all five nights.",
+          "By March 2023, at Kia Forum, thirty-seven years and eleven months had passed since that first show.",
+          "Same band, same closing song, nearly four decades apart."
+        ],
+        "authoredAt": "2026-11-23T19:58:10.238Z"
+      }
+    },
     {
       "id": "festival-mega-bill-1993-09-18-peter-gabriel",
       "slug": "peter-gabriel-11-more-1993-festival-bill",
@@ -1133,7 +1228,7 @@
       "headline": "Pacific Amphitheatre: 17 Shows Over 5 Decades",
       "prose": "I keep coming back to Pacific Amphitheatre, seventeen times now, and the span still gets me: Tears For Fears on July 10, 1985, and Nile Rodgers on July 31, 2026. That's five decades under the same Costa Mesa sky, from the *Songs from the Big Chair* era straight through to a stage I still can't quite believe I was standing in front of in July 2026. In between, Run-DMC, UB40, the Art of Noise, the Beach Boys — fifteen artists total, and somehow this one amphitheater kept pulling me back for all of them. I don't have a tidy reason why. I just know I never once regretted the drive.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdB4jQ1l22vbw5g_uwIl4ay4_PrjTsiBxkTxmvdJCn2ZZouAer_uLQRUtaFdiM4KJvF0g3IVOoNiZPeOcJnxZRdSAuqv1JjeV_GZJPwgeiKyeD9q-I2rStZbxtUWaoIrrTcyKpaig=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfbaf36zqKJxCbdnaepVhFLzV3UhY3ItX4fIxZatwbM0JhkJBm8T4aIj3mSQJtBL7HGvokVfL2byR_Smf0rPFA2x9PBUxaiV39oHRzNcralUzw9UybEIPFptmWkgAAWy3keok7r5w=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -1315,7 +1410,7 @@
       "headline": "House of Blues Anaheim: 6 Shows Over 3 Decades",
       "prose": "I still think about walking into House of Blues Anaheim for the first time in August 2003 to see Joe Jackson — an artist who'd been making records since before I probably knew what a record was. Six shows across three decades under that name, from that night with Joe Jackson all the way to Social Distortion in December 2022, with Streetlight Manifesto, Future Islands, and Royal Blood filling the years in between. Five artists who share almost nothing sonically, which tells me the venue was doing something right. Somehow a club in Anaheim became a quiet constant in my concert life, and I never quite planned it that way.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdpXAyo1BnFCzA2vbOR9-CmCT1QNbBvw1dSEftusAp61Np3B-Y1KnlCiAkh1Fg4XzRzR_orkaMXeWiOWyPPewQaNeZUdDhzVjaC0o0g3Ptwn1oGpaJxCtU2R_rA2wWqYD6Phu3tag=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLekEe6E_ufUiKY7CL7dqSsw6pOdjE5DPSLC1mV0ENW44-1449M0Lu0idpGrYFvXCvSX05uW4xRSiogt929ddvscbHMey0Op9eSfNgPD8lOo2-UCWaAKVc620awqR6qidOYOpxkRZg=s4800-h1200",
         "alt": "House of Blues Anaheim",
         "source": "venue",
         "ref": "house-of-blues-anaheim"
@@ -4095,98 +4190,6 @@
       }
     },
     {
-      "id": "longevity-depeche-mode",
-      "slug": "depeche-mode-38-years-of-shows-2",
-      "category": "personal",
-      "temporality": "evergreen",
-      "headline": "Depeche Mode: 38 Years of Shows",
-      "prose": "I still remember walking into Irvine Meadows in 1985 for my first Depeche Mode show. Five shows across California venues, from that early synthpop energy through their Violator era and beyond, each one marking a different chapter of both their evolution and mine. The most recent was in 2023 at the Kia Forum in Inglewood, and I found myself thinking about that first night at Irvine Meadows, how certain bands just become part of your DNA. Some artists you see once; others become a parallel soundtrack to your entire adult life.",
-      "image": {
-        "url": "/images/shows/2023-03-28-depeche-mode-01.jpg",
-        "alt": "Depeche Mode",
-        "source": "show",
-        "ref": "depeche-mode",
-        "credit": "Mike Morper · 28 March 2023",
-        "shotOn": "2023-03-28",
-        "crop": {
-          "h": 0.9377,
-          "w": 1,
-          "x": 0,
-          "y": 0
-        }
-      },
-      "audio": {
-        "trackName": "Universal Soldier",
-        "artistName": "Depeche Mode",
-        "albumName": "HELP(2)",
-        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/bb/7e/0f/bb7e0fb7-ec0b-9fd2-4a0e-5e8ee18b2238/mzaf_5690086882308562359.plus.aac.p.m4a",
-        "albumArt": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e6/1c/41/e61c4157-3864-e904-acc3-75613984e326/191400691650.png/100x100bb.jpg",
-        "streamingUrl": "https://music.apple.com/us/album/universal-soldier/1870313498?i=1870313513&uo=4",
-        "source": "itunes"
-      },
-      "artists": [
-        "depeche-mode"
-      ],
-      "venues": [
-        "irvine-meadows",
-        "the-rose-bowl",
-        "dodger-stadium",
-        "staples-center",
-        "kia-forum"
-      ],
-      "years": [
-        1985,
-        1988,
-        1990,
-        2005,
-        2023
-      ],
-      "tags": [
-        "#artist-longevity",
-        "#multi-decade"
-      ],
-      "deepLinks": [
-        {
-          "label": "Depeche Mode",
-          "url": "/?scene=artists&artist=depeche-mode",
-          "type": "artist"
-        },
-        {
-          "label": "Irvine Meadows",
-          "url": "/?scene=venues&venue=irvine-meadows",
-          "type": "venue"
-        },
-        {
-          "label": "The Rose Bowl",
-          "url": "/?scene=venues&venue=the-rose-bowl",
-          "type": "venue"
-        },
-        {
-          "label": "1985",
-          "url": "/?scene=timeline&year=1985",
-          "type": "timeline"
-        }
-      ],
-      "relatedSlugs": [
-        "depeche-mode-18-years-between-shows"
-      ],
-      "score": 39,
-      "detector": "artist-longevity",
-      "publishedAt": "2026-02-01T08:48:00.000Z",
-      "social": {
-        "hook": "Five shows, and Violator arrived somewhere in the middle of all of it.",
-        "caption": "I was at Irvine Meadows in March 1985, when synthpop still felt like a dare. The most recent was the Kia Forum in Inglewood in 2023, and 38 years collapsed into about four bars.",
-        "beats": [
-          "Irvine Meadows, March 1985: my first Depeche Mode show of five.",
-          "Five California shows, four decades — Depeche Mode's sound darkened and so did mine.",
-          "Violator hit somewhere in the middle of that run, and everything they did before it suddenly made sense.",
-          "The Kia Forum in 2023: same band, same impulse to go, entirely different person standing there.",
-          "Some artists mark time the way a calendar does. Depeche Mode became mine."
-        ],
-        "authoredAt": "2026-08-31T20:47:55.074Z"
-      }
-    },
-    {
       "id": "city-pulse-los-angeles-uprising-after-the-rodney-king-verdict-1992",
       "slug": "the-smithereens-in-1992-the-year-of-los-angeles-uprising-after-the-rodney-king-v",
       "category": "cultural",
@@ -4359,7 +4362,7 @@
       "headline": "Maxi Priest + 6 More: 1991 Festival Bill",
       "prose": "This was reggae's moment in American mainstream consciousness, and I caught a perfect snapshot of it at Pacific Amphitheatre in June 1991. Bonafide was Maxi Priest's latest album, and he headlined a seven-artist bill that included Dennis Brown and Andrew Tosh — Peter Tosh's son, carrying forward his father's legacy. I remember the crowd being surprisingly diverse for Orange County, drawn by reggae's growing radio presence around that time. What struck me most was how the music unified this massive outdoor crowd, from the opening act through Priest's closing set under the California stars.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdB4jQ1l22vbw5g_uwIl4ay4_PrjTsiBxkTxmvdJCn2ZZouAer_uLQRUtaFdiM4KJvF0g3IVOoNiZPeOcJnxZRdSAuqv1JjeV_GZJPwgeiKyeD9q-I2rStZbxtUWaoIrrTcyKpaig=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfbaf36zqKJxCbdnaepVhFLzV3UhY3ItX4fIxZatwbM0JhkJBm8T4aIj3mSQJtBL7HGvokVfL2byR_Smf0rPFA2x9PBUxaiV39oHRzNcralUzw9UybEIPFptmWkgAAWy3keok7r5w=s4800-h1200",
         "alt": "Pacific Amphitheatre",
         "source": "venue",
         "ref": "pacific-amphitheatre"
@@ -4543,7 +4546,7 @@
       "headline": "Oingo Boingo + 5 More: 1987 Festival Bill",
       "prose": "This was the era when alternative rock was still finding its footing alongside new wave's final flourishes — and somehow I caught all of it on one stage in Tijuana. Six acts that would define different corners of the late-80s landscape: Oingo Boingo four months out from BOI-NGO, The Bangles, Squeeze's sophisticated pop craft, and Australia's Hoodoo Gurus bringing their garage rock energy just five years after forming. I remember the surreal border-crossing pilgrimage to Caliente Racetrack, where Chris Isaak's crooning and The Fixx's synth-rock completed this unlikely but perfect snapshot of 1987's musical diversity.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLc0h9NrxOEsSER_xFO31PX_QDALhnv2C3mvDAq1cgFVdV6RRseDgLXelAYUXeKBgA5_q4UzpnSdYR6-BNPl8Zy2fsrjFIh1ndz_xTlTf8xZ0ijLYVk4Wowmidv86QxFHi_0gUs9=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdlrNSZlCSB58z_OP7wQxULowO0N9sU1huEXkcr5xA3OEd7V1Q7mFnBcqqQUXe5an0n3TTQrrg3l8t3DC4Jp0_Qh6fDPH39Vfi_g2qE9D3SFIwtCkNI8MlRVmaWP0t9xSanYoJw=s4800-h1200",
         "alt": "Caliente Racetrack",
         "source": "venue",
         "ref": "caliente-racetrack"
@@ -4634,7 +4637,7 @@
       "headline": "50 Shows in a Row in the D.C. Area, 2009–2018",
       "prose": "For my first 25 years of shows, California was nearly the whole map: 71 of the first 76, starting with Adam Ant at Irvine Meadows in 1984. Then, from Rob Thomas at EagleBank Arena in November 2009 to Beck at The Anthem in April 2018, I saw 50 shows in a row in D.C., Maryland and Virginia, 11 of them at the 9:30 Club. Between Brian Setzer at Doheny in May 2009 and The Human League at Huntington State Beach in May 2018, I didn't see a single show in California. After that, 50 of the next 55 shows were back in California. Echo and the Bunnymen were one of the bands I saw on both coasts, Irvine Meadows in 1984 and The Black Cat in 2010 — the same band, a whole country apart.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeVL9WkiOt4wSUSzm_yn6XYFgvo4ngY9FUe_VP7fUmcqF-ewsppRTS5oORA5uKueE6Frvulb8RYNbcTzAV7XBZZEgO4Hs11WFSUu2vHN9QZmdLna4NVx6O5_KLfLujqP7L4YBbB=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeeCb0gvi80qBey-hHe4SqnNWdyxQNSmT-ByNylgBIOoQg7vK37jam10h_fCD5yYmUVQzYNAwMwqcQAHUvPG6ibirB_cBkFRTrxn0l_-j5l21YDUMEdrE_M1LCEBQmFQqjJ4dpJ=s4800-h1200",
         "alt": "EagleBank Arena",
         "source": "venue",
         "ref": "eaglebank-arena"
@@ -5181,7 +5184,7 @@
       "headline": "Kia Forum: 5 Shows Over 3 Decades",
       "prose": "I remember walking into the Forum for the first time in March 1990 to see Erasure, that massive bowl of a venue feeling both intimate and overwhelming. Five shows across 33 years have brought me back to Inglewood — from Bell Biv DeVoe's New Jack Swing energy to Elton John's piano grandeur to Tears for Fears' nostalgic pull. My most recent visit was Depeche Mode in 2023, and I realized I've been loyal to this place longer than some of my friendships. There's something about the Forum's acoustics that makes every synthesizer sound like it's coming from the future.",
       "image": {
-        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdarJUVcGJM8kmFqv-I8ZFHhjMp8F-U3iEmYzjRMYc4gJf98pHF7yuuztcvQQvYZx_mwjDWESkeCb8CJCGiK9ZN6YtMzgS5vRhQ8JhBbNvZgOR3Ic7HDOCUkxSEMA5HwZ9jAynQDg=s4800-h1200",
+        "url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcatBr3jIS7k5lhQIxHVV5gPUemTDxlStXScv5w19gRkD_lnAuQJf29ASIvGz6ZfVzMk6ZuRQDUR82jMsHtTioHanU_QW3OkFRzQh7dUaBq6fRAzWRJY1SrYT4M9kUagD-v31qA1A=s4800-h1200",
         "alt": "Kia Forum",
         "source": "venue",
         "ref": "kia-forum"
@@ -5264,9 +5267,9 @@
   ],
   "metadata": {
     "totalPosts": 59,
-    "totalGenerated": 103,
+    "totalGenerated": 106,
     "averageScore": 37.6,
-    "lastPipelineRun": "2026-11-16T18:07:24.830Z",
+    "lastPipelineRun": "2026-11-23T19:58:10.235Z",
     "concertsAnalyzed": 184,
     "feedUrl": "/liner-notes.xml"
   }
