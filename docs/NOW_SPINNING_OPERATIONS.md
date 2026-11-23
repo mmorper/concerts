@@ -1,15 +1,37 @@
 # Now Spinning: Raspberry Pi setup and operations
 
-How to take the Raspberry Pi from a sealed box to a machine that hears the turntable and can
-identify songs, and to checking that it can drive the Apple TV. Parts 1–11 are everything Phase 0
-needs. Part 12 (installing the listener service) is filled in when Phase 4 builds the listener.
+How to take the Raspberry Pi to a machine that hears the turntable and can identify songs, and to
+checking that it can drive the Apple TV. Parts 1–11 are everything Phase 0 needs. Part 12
+(installing the listener service) is filled in when Phase 4 builds the listener.
 
 **Spec:** [`specs/future/global-now-spinning/global-now-spinning-spec.md`](specs/future/global-now-spinning/global-now-spinning-spec.md).
 Its Phase 0 table numbers the checks; this guide says which step covers which check.
 **Checklist to tick off as you go:** issue #688. The whole project is tracked in epic #687.
 
-Commands are marked **Mac** (Terminal on your Mac) or **Pi** (after you've logged in to the Pi
-over SSH). Anything in `<angle brackets>` is a value you fill in.
+Commands are marked **Mac** (Terminal on your Mac), **Pi** (logged in to the Pi over SSH as
+`pi`) or **Pi (now-spinning)** (in a shell as the `now-spinning` user, which step 3 sets up).
+Anything in `<angle brackets>` is a value you fill in.
+
+---
+
+## This Pi is shared
+
+The Pi is `mh-unifi-now-playing`, at `192.168.1.244`, with the admin user `pi`. It also runs the
+UniFi MCP servers, which have their own runbook: "UniFi MCP on Raspberry Pi — Setup Guide", in
+the Unifi Administration project. That runbook owns the operating system: the card, SSH and the
+fixed address.
+
+The UniFi servers keep a console password on this Pi. It is a view-only account, but it can sign
+in to the console directly and see the network and the cameras. Three rules follow, and every
+step below keeps them:
+
+- **Never reflash the card for Now Spinning.** It would wipe the UniFi servers. If the card
+  itself fails, rebuild from the UniFi runbook first, then return to step 3 here.
+- **Now Spinning runs as its own user, `now-spinning`.** That user can't log in and has no
+  `sudo`, so it can't read the UniFi password. The `unifi-mcp` user can't read Now Spinning's
+  token either.
+- **This project's third-party code never runs as `pi` or as root.** That means `shazamio`,
+  `pyatv` and, later, the listener. `pi` can become root, and root can read everything.
 
 ---
 
@@ -44,6 +66,8 @@ Either way, step 8 still has to be done on the Pi.
 
 ## 1. Assemble the Pi
 
+Skip this step if the Pi is already assembled and running.
+
 1. **Active cooler.** Peel the backing off its thermal pads. Line its two spring pins up with
    the two holes beside the processor and press until they click. Plug its small 4-pin cable
    into the connector marked **FAN** on the board, between the GPIO header and the USB ports.
@@ -51,62 +75,71 @@ Either way, step 8 still has to be done on the Pi.
 2. **Case.** Seat the Pi in the case's base. **Don't connect the case's own fan.** The active
    cooler is enough for this job and is close to silent; the case fan may run at full speed all
    the time. You can add it later if the temperature check in step 5 says so.
-3. Leave the lid off for now, so you can get at the microSD slot.
+3. Fit the lid once the microSD card is in its slot on the underside.
 
 ---
 
-## 2. Put Raspberry Pi OS on the card (Mac)
+## 2. The operating system: already done
 
-1. Download **Raspberry Pi Imager** from raspberrypi.com/software and install it.
-2. Put the microSD card in the kit's USB reader and plug it into the Mac.
-3. In Imager:
-   - **Device:** Raspberry Pi 5.
-   - **Operating system:** *Raspberry Pi OS (other)* → **Raspberry Pi OS Lite (64-bit)**.
-     Lite has no desktop. That suits a box in a cabinet that you reach over the network. If you
-     later choose to have the Pi drive the TV (display option A in the spec), the desktop gets
-     installed then.
-   - **Storage:** the microSD card. Double-check it's the card and not another drive.
-4. When Imager offers **OS customisation**, choose to edit settings. Menu names move between
-   Imager versions, but these are the values to set:
+The UniFi runbook's Step 2 set the Pi up: Raspberry Pi OS Lite (64-bit), wired Ethernet, SSH with
+keys only and password logins off, and a fixed address on the main network. Nothing to do here.
 
-   | Setting | Value |
-   |---|---|
-   | Hostname | `now-spinning` |
-   | Username and password | A username (for example your first name in lowercase) and a strong password. Write the password in your password manager. |
-   | Wireless LAN | Leave unset. It's on Ethernet. |
-   | Locale | Your time zone, keyboard layout US |
-   | SSH | **Enable**, with **public-key authentication only** (see below) |
-   | Raspberry Pi Connect | Off |
-
-   **SSH key.** Imager can fill this in from your Mac. If it shows an empty box, you don't have a
-   key yet. Make one in Terminal and paste the printed line into Imager:
-   ```bash
-   # Mac
-   ssh-keygen -t ed25519 -C "now-spinning"      # press Enter to accept the defaults
-   cat ~/.ssh/id_ed25519.pub
-   ```
-5. Write the card. Imager verifies it and ejects it when done.
+Don't repeat that setup from this guide, and don't reflash (see [This Pi is shared](#this-pi-is-shared)).
 
 ---
 
-## 3. First boot and logging in
+## 3. Log in, check the basics, and create the Now Spinning user
 
-1. Put the card in the slot on the underside of the Pi, contacts facing the board. Fit the lid.
-2. Connect the Ethernet cable, then the power supply. Nothing else yet.
-3. Wait two to three minutes. The first boot resizes the card and reboots once by itself.
-4. Log in from the Mac:
-   ```bash
-   # Mac
-   ssh <username>@now-spinning.local
-   ```
-   Answer `yes` to the fingerprint question the first time. You should land at a prompt like
-   `<username>@now-spinning:~ $`.
+**Log in from the Mac:**
 
-If `now-spinning.local` isn't found, look in your router's list of connected devices for
-`now-spinning` and use its IP address instead (`ssh <username>@192.168.x.y`).
+```bash
+# Mac
+ssh pi@192.168.1.244
+```
 
-**Give the Pi a fixed address.** In the router, add a DHCP reservation for the Pi so its IP never
-changes. The Worker doesn't need it, but you'll SSH in by this address for years.
+You should land at the prompt `pi@mh-unifi-now-playing:~ $`.
+
+**Check the basics.** Each line should print what its comment says:
+
+```bash
+# Pi
+uname -m                                             # aarch64
+sudo sshd -T | grep -i '^passwordauthentication'     # passwordauthentication no
+sudo stat -c '%A %U' /home/unifi-mcp                 # drwx------ unifi-mcp
+```
+
+If the last line shows anything other than `drwx------`, other users can look inside that
+folder. Close it with `sudo chmod 700 /home/unifi-mcp`, and note it in the UniFi runbook.
+
+**Create the Now Spinning user.** It has no password and no login shell, and it isn't in the
+`sudo` group. The `audio` group lets it hear the Blackjack:
+
+```bash
+# Pi
+sudo adduser --system --group --home /var/lib/now-spinning now-spinning
+sudo usermod -aG audio now-spinning
+sudo chmod 700 /var/lib/now-spinning
+```
+
+**Open a shell as that user.** Steps 8 and 10 run their commands there:
+
+```bash
+# Pi
+sudo -H -u now-spinning bash
+cd                                 # to its home, /var/lib/now-spinning
+```
+
+The prompt changes to `now-spinning@mh-unifi-now-playing`. Type `exit` to return to `pi`.
+From that shell, check that it really can't reach the UniFi files or use `sudo`:
+
+```bash
+# Pi (now-spinning)
+ls /home/unifi-mcp                 # Permission denied
+sudo -n true                       # "a password is required" or "not in the sudoers file"
+exit
+```
+
+If either command succeeds, stop and fix that before running anything else as this user.
 
 ---
 
@@ -127,7 +160,9 @@ Wait a minute and SSH in again. Then check the clock, since recognition and logs
 timedatectl          # "System clock synchronized: yes" and your time zone
 ```
 
-Let the Pi install security updates by itself, so it doesn't need regular visits:
+Let the Pi install security updates by itself, so it doesn't need regular visits. The UniFi
+runbook's rule that nothing updates by itself is about its pinned MCP servers, which these
+updates don't touch. A reboot is safe for them too: they only run while a chat is using them.
 
 ```bash
 # Pi
@@ -163,20 +198,21 @@ vcgencmd measure_temp             # resting in the cabinet: well under 60 °C is
 Check it again after the Pi has been listening for an hour with the cabinet door closed. If it's
 above 70 °C, connect the case fan or give the cabinet more air.
 
-**Keep logs in memory.** Cutting power to the cabinet while the Pi is writing can corrupt the
-card. Keeping the system log in RAM removes most writes:
+**Keep the system log on the card, with a size cap.** This Pi holds credentials, so the record
+of who logged in over SSH has to survive a reboot:
 
 ```bash
 # Pi
 sudo mkdir -p /etc/systemd/journald.conf.d
-printf '[Journal]\nStorage=volatile\nRuntimeMaxUse=32M\n' | sudo tee /etc/systemd/journald.conf.d/now-spinning.conf
+printf '[Journal]\nStorage=persistent\nSystemMaxUse=64M\n' | sudo tee /etc/systemd/journald.conf.d/now-spinning.conf
 sudo systemctl restart systemd-journald
 ```
 
-Logs then vanish at each reboot. That's the trade, and it's the right one here.
+An earlier version of this guide kept logs in memory (`Storage=volatile`), which lost them at
+each reboot. If you ran that step, this one replaces it: it writes the same file.
 
 **Plug the Pi into an outlet that stays on,** not a switched strip that cuts with the
-receiver. To turn it off on purpose, run `sudo poweroff` and wait for the green light to stop
+receiver. Cutting power while the Pi is writing can corrupt the card. To turn it off on purpose, run `sudo poweroff` and wait for the green light to stop
 flashing before pulling the plug.
 
 ---
@@ -245,7 +281,7 @@ sox ~/level-test.wav -n stats 2>&1 | grep -E "Pk lev dB|RMS lev dB"
 
 ```bash
 # Mac: copy it over and play it
-scp <username>@now-spinning.local:level-test.wav ~/Desktop/
+scp pi@192.168.1.244:level-test.wav ~/Desktop/
 ```
 
 It should sound like the record, with no buzz or hum between tracks. If there's hum, move the
@@ -255,24 +291,29 @@ cable away from power cords. If one side is silent, check the L/R cables.
 
 ## 8. Test Shazam on your records (Phase 0 checks 2, 3 and 8)
 
-**Install a test environment** (it is thrown away once the real listener exists):
+`shazamio` is an unofficial client, so everything in this step runs as `now-spinning`, never
+as `pi`. Open that user's shell first (`sudo -H -u now-spinning bash`, then `cd`).
+
+**Install a test environment** (it is thrown away once the real listener exists). It uses `uv`
+and Python 3.13, the same tools as the UniFi servers. `uv` installs into this user's home only:
 
 ```bash
-# Pi
-python3 --version                 # write this down: Phase 0 check 8
-sudo apt install -y python3-venv
-python3 -m venv ~/ns-test
-~/ns-test/bin/pip install --upgrade pip shazamio
+# Pi (now-spinning)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+~/.local/bin/uv venv --python 3.13 ~/ns-test
+~/.local/bin/uv pip install --python ~/ns-test/bin/python shazamio
+~/ns-test/bin/python --version    # write this down: Phase 0 check 8
 ```
 
-**Check 8.** Note the Python version, and whether `pip` downloaded ready-made packages or started
-compiling Rust code. If it compiled, or failed, the `shazamio-core` package has no ready-made
-build for the Pi's Python. That changes how Phase 4 installs things, so record it either way.
+**Check 8.** Note the Python version, and whether `uv` downloaded ready-made packages or started
+building `shazamio-core` from Rust source. If it built, or failed, that package has no
+ready-made build for this Python on the Pi. Phase 4 then pins a Python version that has one, so
+record it either way.
 
 **A small test script:**
 
 ```bash
-# Pi
+# Pi (now-spinning)
 cat > ~/try-shazam.py <<'EOF'
 import asyncio, sys
 from shazamio import Shazam
@@ -297,7 +338,7 @@ EOF
 **Run it with a record playing:**
 
 ```bash
-# Pi: record 10 seconds, then identify it
+# Pi (now-spinning): record 10 seconds, then identify it
 arecord -q -D plughw:CARD=<card>,DEV=0 -f cd -d 10 /tmp/clip.wav && ~/ns-test/bin/python ~/try-shazam.py /tmp/clip.wav
 ```
 
@@ -315,12 +356,12 @@ a 45, and something obscure. For each one, write down:
 that matched, add a file name to the command and copy the file to your Mac:
 
 ```bash
-# Pi
-~/ns-test/bin/python ~/try-shazam.py /tmp/clip.wav ~/shazam-sample.json
+# Pi (now-spinning): saved in /tmp, because pi can't read this user's home
+~/ns-test/bin/python ~/try-shazam.py /tmp/clip.wav /tmp/shazam-sample.json
 ```
 ```bash
 # Mac
-scp <username>@now-spinning.local:shazam-sample.json ~/Desktop/
+scp pi@192.168.1.244:/tmp/shazam-sample.json ~/Desktop/
 ```
 
 Attach it to issue #688. It names the song you were playing and nothing else about you.
@@ -338,7 +379,11 @@ to do here.
 
 On the AV7703: Network → Network Control → **Always On**, so the receiver answers while in
 standby. Find its IP address in its Network Information menu, or in the router's device list,
-and give it a DHCP reservation too.
+and give it a fixed address in UniFi.
+
+**If the receiver is on a different network from the Pi** (the IoT VLAN, say), the commands
+below time out until a firewall rule lets `192.168.1.244` reach it. The UniFi MCP can tell you
+which network the receiver is on. Note what you find, and any rule you add, on #688.
 
 ```bash
 # Pi: ask the main zone which input it's on (expect "SIPHONO" while the turntable is selected)
@@ -391,19 +436,27 @@ and write down which you chose:
 On the Apple TV first: Settings → AirPlay and HomeKit → Allow Access → "Anyone on the Same
 Network", so the Pi can pair.
 
+Run these as `now-spinning`. `atvremote` saves the pairing in the home of the user that ran
+it, and the listener will run as this user.
+
 ```bash
-# Pi
-~/ns-test/bin/pip install pyatv
+# Pi (now-spinning)
+~/.local/bin/uv pip install --python ~/ns-test/bin/python pyatv
 ~/ns-test/bin/atvremote scan                                   # find the Apple TV; copy its Identifier
 ~/ns-test/bin/atvremote --id <identifier> --protocol companion pair   # type the PIN the TV shows
 ~/ns-test/bin/atvremote --id <identifier> --protocol airplay pair     # and again
 ```
 
+**If `scan` finds nothing,** the Apple TV may be on a different network from the Pi: device
+discovery doesn't cross VLANs. Give the Apple TV a fixed address in UniFi and point the scan at
+it with `~/ns-test/bin/atvremote --scan-hosts <apple-tv-ip> scan`. If that also finds nothing, a
+firewall rule is blocking `192.168.1.244`. Note the network and any rule on #688.
+
 Then try each of these and write down what happened. If a command isn't recognised, run
 `~/ns-test/bin/atvremote commands` to see the names your version uses.
 
 ```bash
-# Pi
+# Pi (now-spinning)
 ~/ns-test/bin/atvremote --id <identifier> power_state          # on or off?
 ~/ns-test/bin/atvremote --id <identifier> app_list             # the installed apps and their identifiers
 ~/ns-test/bin/atvremote --id <identifier> launch_app=com.apple.TVMusic    # does Music open?
@@ -426,22 +479,31 @@ gain positions, the ten-record table, the run-out finding, the Python version, t
 results from step 10, and the answers to checks 6 and 6b. That's what Phase 4 is designed
 against. Tick the same items off on issue #688.
 
-Then delete the test files:
+Then delete the test files. Keep `uv` and the Apple TV pairing; the listener uses both:
 
 ```bash
+# Pi (now-spinning)
+rm -rf ~/ns-test ~/try-shazam.py /tmp/clip.wav /tmp/shazam-sample.json
+```
+```bash
 # Pi
-rm -rf ~/ns-test ~/try-shazam.py ~/level-test.wav ~/shazam-sample.json /tmp/clip.wav
+rm -f ~/level-test.wav
 ```
 
 ---
 
 ## 12. Installing the listener (Phase 4)
 
-*To be written when Phase 4 builds the listener.* It will cover cloning the repo, the
-listener's Python environment, `/etc/now-spinning/env` (the Worker URL and the ingest token,
-readable by root only), pairing the listener with the Apple TV, the `now-spinning` systemd
-service, updating with `git pull` and a restart, and rotating the ingest token (also listed in
-[`SECRETS.md`](SECRETS.md)).
+*To be written when Phase 4 builds the listener.* It will cover:
+- the code in `/opt/now-spinning`, owned by root, so the service can't change its own code
+- its Python environment, built by `uv` from the committed lockfile
+- `/etc/now-spinning/env`: the Worker URL and the ingest token. Root-only; systemd reads it
+  before it starts the service.
+- the `now-spinning` systemd service, running as the `now-spinning` user with no access to
+  `/home`
+- the Apple TV pairing from step 10, which stays in `/var/lib/now-spinning`
+- updating on purpose: pull, rebuild from the lockfile, restart
+- rotating the ingest token (also listed in [`SECRETS.md`](SECRETS.md))
 
 Building and installing the tvOS app is done on the Mac, not the Pi: see issue #701.
 
@@ -511,15 +573,16 @@ On the Pi, once the listener is installed (step 12), these show what it is doing
 ```bash
 # Pi
 systemctl status now-spinning        # running, or why not
-journalctl -u now-spinning -n 50     # its last 50 log lines (logs are kept in memory; a reboot clears them)
+journalctl -u now-spinning -n 50     # its last 50 log lines
 ```
 
 ## Troubleshooting the Pi setup
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `now-spinning.local` not found | Name lookup on the network | Use the IP from the router |
-| `Permission denied (publickey)` | The key on the card isn't the Mac's key | Reflash with the right public key, or plug a keyboard and screen into the Pi |
+| `ssh pi@192.168.1.244` times out | The Pi is off, or its address changed | Check its power and its fixed address in UniFi |
+| `Permission denied (publickey)` | The Mac's key isn't the one on the Pi | Plug a keyboard and screen into the Pi and fix `~/.ssh/authorized_keys`. Don't reflash. |
+| `atvremote scan` finds nothing | The Apple TV is on another network | Step 10: scan it by address |
 | `arecord -l` lists no Blackjack | Cable, or not enough USB power | Try the other black USB port; run step 5's power check |
 | Recording is silent | Zone 2 off, or its source isn't Phono | Turn Zone 2 on and select Phono |
 | SIG/OL lights red | Too much level | Lower Zone 2's fixed level |
