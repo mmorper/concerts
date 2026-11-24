@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { emptyListener, initialRoom, LIVENESS_MS, nextAlarm, OFFLINE_MS, reduce, type Listener, type RoomEvent, type RoomState } from "./room-logic.js";
+import { emptyListener, initialRoom, LIVENESS_MS, nextAlarm, nextLocalMidnight, OFFLINE_MS, reduce, type Listener, type RoomEvent, type RoomState } from "./room-logic.js";
 import type { Track } from "./types.js";
 
 const TZ = "America/Los_Angeles";
@@ -19,15 +19,15 @@ const track = (title: string): Track => ({
 });
 
 /** Apply events in order, each `dt` ms after the last. */
-function run(events: [number, RoomEvent][], start: { room?: RoomState; listener?: Listener } = {}) {
-  let room = start.room ?? initialRoom(new Date(T0).toISOString());
+function run(events: [number, RoomEvent][], start: { room?: RoomState; listener?: Listener; at?: number; tz?: string } = {}) {
+  let now = start.at ?? T0;
+  let room = start.room ?? initialRoom(new Date(now).toISOString());
   let listener = start.listener ?? emptyListener();
-  let now = T0;
   const pushes: boolean[] = [];
   let alarmAt: number | null = null;
   for (const [dt, ev] of events) {
     now += dt;
-    const out = reduce(room, listener, ev, now, TZ);
+    const out = reduce(room, listener, ev, now, start.tz ?? TZ);
     room = out.room;
     listener = out.listener;
     pushes.push(out.push);
@@ -124,9 +124,102 @@ describe("listener health", () => {
   });
 });
 
+/** Run to the offline notice, then let each alarm fire exactly when the room asked for it. */
+function overnight(at: number, tz: string, alarms: number) {
+  let r = run([[0, { event: "alive" }], [OFFLINE_MS, { event: "alarm" }]], { at, tz });
+  const steps = [{ notice: r.room.state.notice, push: r.pushes.at(-1), alarmAt: r.alarmAt }];
+  for (let i = 0; i < alarms; i++) {
+    r = run([[0, { event: "alarm" }]], { room: r.room, listener: r.listener, at: r.alarmAt!, tz });
+    steps.push({ notice: r.room.state.notice, push: r.pushes.at(-1), alarmAt: r.alarmAt });
+  }
+  return steps;
+}
+
+describe("the offline notice overnight", () => {
+  it("adds the date at the next local midnight, tells displays once, and then wakes once a day", () => {
+    // Last seen 3:00 PM on Nov 21 in Los Angeles (UTC-8): midnight there is 08:00 UTC.
+    expect(overnight(T0, TZ, 2)).toEqual([
+      { notice: "The listener has been offline since 3:00 PM.", push: true, alarmAt: Date.parse("2026-11-22T08:00:00.000Z") },
+      { notice: "The listener has been offline since Nov 21, 3:00 PM.", push: true, alarmAt: Date.parse("2026-11-23T08:00:00.000Z") },
+      { notice: "The listener has been offline since Nov 21, 3:00 PM.", push: false, alarmAt: Date.parse("2026-11-24T08:00:00.000Z") },
+    ]);
+  });
+
+  it("goes by the home's midnight, not UTC's: the case seen live on 2026-11-24", () => {
+    // 01:06 UTC on the 24th is 5:06 PM on the 23rd in Los Angeles. UTC's date had already changed.
+    expect(overnight(Date.parse("2026-11-24T01:06:00.000Z"), TZ, 1)).toEqual([
+      { notice: "The listener has been offline since 5:06 PM.", push: true, alarmAt: Date.parse("2026-11-24T08:00:00.000Z") },
+      { notice: "The listener has been offline since Nov 23, 5:06 PM.", push: true, alarmAt: Date.parse("2026-11-25T08:00:00.000Z") },
+    ]);
+  });
+
+  it("works east of UTC and on a half-hour offset", () => {
+    // 4:30 PM on Nov 22 in Kolkata (UTC+5:30): midnight there is 18:30 UTC.
+    expect(overnight(Date.parse("2026-11-22T11:00:00.000Z"), "Asia/Kolkata", 2)).toEqual([
+      { notice: "The listener has been offline since 4:30 PM.", push: true, alarmAt: Date.parse("2026-11-22T18:30:00.000Z") },
+      { notice: "The listener has been offline since Nov 22, 4:30 PM.", push: true, alarmAt: Date.parse("2026-11-23T18:30:00.000Z") },
+      { notice: "The listener has been offline since Nov 22, 4:30 PM.", push: false, alarmAt: Date.parse("2026-11-24T18:30:00.000Z") },
+    ]);
+  });
+
+  it("writes the date straight away when the 15 minutes run past midnight", () => {
+    // Last seen 11:50 PM on Nov 21: the notice first appears at 12:05 AM on the 22nd.
+    const steps = overnight(Date.parse("2026-11-22T07:50:00.000Z"), TZ, 0);
+    expect(steps).toEqual([
+      { notice: "The listener has been offline since Nov 21, 11:50 PM.", push: true, alarmAt: Date.parse("2026-11-23T08:00:00.000Z") },
+    ]);
+  });
+
+  it("sets no midnight alarm while the listener is online", () => {
+    const r = run([[0, { event: "alive" }]]);
+    expect(r.alarmAt).toBe(T0 + OFFLINE_MS);
+  });
+
+  it("leaves the midnight alarm out while a track is showing: liveness comes first", () => {
+    // The alarm ran late, past both deadlines. The room is still on a track, so it retries at once.
+    const r = run([[0, dm()]]);
+    const late = T0 + OFFLINE_MS + 60_000;
+    expect(nextAlarm(r.room, r.listener, late, TZ)).toBe(late + 1000);
+  });
+});
+
+describe("nextLocalMidnight", () => {
+  const at = (iso: string, tz = TZ) => new Date(nextLocalMidnight(Date.parse(iso), tz)).toISOString();
+
+  it("is the start of the next day in the given time zone", () => {
+    expect(at("2026-11-21T23:00:00.000Z")).toBe("2026-11-22T08:00:00.000Z");
+    expect(at("2026-11-21T23:00:00.000Z", "UTC")).toBe("2026-11-22T00:00:00.000Z");
+    expect(at("2026-11-21T23:00:00.000Z", "Australia/Sydney")).toBe("2026-11-22T13:00:00.000Z");
+  });
+
+  it("is always later than now, even at midnight exactly and a millisecond before it", () => {
+    expect(at("2026-11-22T08:00:00.000Z")).toBe("2026-11-23T08:00:00.000Z");
+    expect(at("2026-11-22T07:59:59.999Z")).toBe("2026-11-22T08:00:00.000Z");
+  });
+
+  it("allows for the 23-hour day when clocks go forward", () => {
+    // Los Angeles, Sunday 2027-03-14: 12:30 AM PST, and the day ends 22.5 hours later, in PDT.
+    expect(at("2027-03-14T08:30:00.000Z")).toBe("2027-03-15T07:00:00.000Z");
+  });
+
+  it("allows for the 25-hour day when clocks go back", () => {
+    // Los Angeles, Sunday 2027-11-07: 12:30 AM PDT, and the day ends 24.5 hours later, in PST.
+    expect(at("2027-11-07T07:30:00.000Z")).toBe("2027-11-08T08:00:00.000Z");
+  });
+
+  it("copes with a zone that changes its clocks at midnight", () => {
+    // Santiago, 2026-09-06: Saturday's 11:59 PM is followed by 1:00 AM. There is no 12:00 AM.
+    expect(at("2026-09-05T16:00:00.000Z", "America/Santiago")).toBe("2026-09-06T04:00:00.000Z");
+    expect(at("2026-09-06T03:00:00.000Z", "America/Santiago")).toBe("2026-09-06T04:00:00.000Z");
+    // Santiago, 2026-04-04: 11:59 PM is followed by 11:00 PM again, so midnight comes an hour later.
+    expect(at("2026-04-04T16:00:00.000Z", "America/Santiago")).toBe("2026-04-05T04:00:00.000Z");
+    expect(at("2026-04-05T03:30:00.000Z", "America/Santiago")).toBe("2026-04-05T04:00:00.000Z");
+  });
+});
+
 describe("nextAlarm", () => {
   it("is null with nothing to watch", () => {
-    expect(nextAlarm(initialRoom(new Date(T0).toISOString()), emptyListener(), T0)).toBeNull();
+    expect(nextAlarm(initialRoom(new Date(T0).toISOString()), emptyListener(), T0, TZ)).toBeNull();
   });
 });
 

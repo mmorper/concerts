@@ -525,9 +525,16 @@ Without this, a dead Pi or a blocked recogniser looks exactly like "nothing play
   sets `notice` on the idle state: "The listener has been offline since 3:12 PM." or "Song
   recognition isn't working right now." Times use `DISPLAY_TZ`, a Worker var set to the home's
   time zone. Displays show `notice` under "Put a record on." and nowhere else.
-- **One alarm, two deadlines.** A Durable Object has a single alarm. Keep both deadlines
-  (liveness: 3 minutes after the last ingest while not idle; offline: 15 minutes after
-  `lastSeenAt`) and set the alarm to the earlier one.
+- **The time carries its date once the day changes.** A bare "since 3:12 PM" reads as today, so
+  from the next midnight in `DISPLAY_TZ` the notice says "since Nov 23, 3:12 PM". This is the
+  [honesty rule](#design-philosophy) applied to the notice.
+- **One alarm, three deadlines.** A Durable Object has a single alarm. Keep all three deadlines
+  and set the alarm to the earliest one:
+  - liveness: 3 minutes after the last ingest while not idle
+  - offline: 15 minutes after `lastSeenAt`
+  - the date: the next midnight in `DISPLAY_TZ`, while the room is idle and the listener is
+    offline. It rewrites the notice and pushes it; after that it fires once a day and changes
+    nothing. The midnight is worked out from the clock each time, so it needs no storage key.
 - **Operator dashboard.** `workers/dashboard-refresh` reads `/health` and shows one line: online,
   or last seen. That work is in the release issue, #699.
 
@@ -987,6 +994,7 @@ its shape:
 API and room-logic tests: `401` without a token, `401` for the wrong token on each route, `503`
 when a secret is unset, a repeated track doesn't push, a track after `gap` does, the liveness
 alarm sets `idle`, the offline notice appears after 15 minutes and clears on the next heartbeat,
+it gains its date at the next local midnight and the alarm then waits for the following one,
 `recognizer: "failing"` sets its notice, `/health` carries no song data, and storage holds
 exactly two keys after a hundred POSTs.
 
@@ -1125,6 +1133,10 @@ None open. Phase 0 (#688) will raise the next ones.
 
 ## Revision History
 
+- **2026-11-24, v1.6.1:** The offline notice gains its date at the next midnight in `DISPLAY_TZ`.
+  Before this nothing woke the room once the notice was up, so the day after the listener went
+  quiet the TV still read "offline since 5:06 PM", which reads as today. Seen on the live Worker.
+  The Durable Object's one alarm now serves three deadlines; it still stores two values.
 - **2026-11-23, v1.6.0:** The Pi is shared. It is the Raspberry Pi 5 (8 GB) that also runs Mike's
   UniFi MCP servers, which keep a view-only console password on it.
   - The listener runs as its own `now-spinning` user in a sandboxed systemd service, from
