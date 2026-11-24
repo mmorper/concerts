@@ -242,6 +242,17 @@ async function rules(browser, fail) {
   })
   ok('a long title is cut to two lines, ending "…"', long.lines <= 2.01 && long.text.endsWith('…') && LONG.startsWith(long.text.slice(0, -1)), JSON.stringify(long))
   ok('nothing clips the tails of the title\'s last line', long.clippedBy === null, `clipped by .${long.clippedBy}`)
+  // Google Fonts sends an alphabet only when a title first needs it, so a font can arrive after
+  // the title was fitted. Wider letters stand in for that font here.
+  const refit = await p.evaluate(() => {
+    const el = document.querySelector('.info .title')
+    const lines = () => el.offsetHeight / parseFloat(getComputedStyle(el).lineHeight)
+    el.style.letterSpacing = '.2em'
+    const before = lines()
+    document.fonts.dispatchEvent(new Event('loadingdone'))
+    return { before, after: lines(), text: el.textContent }
+  })
+  ok('a font that arrives later re-fits the title', refit.before > 2.01 && refit.after <= 2.01 && refit.text.endsWith('…'), JSON.stringify(refit))
   await send({ ...heard, at: at(0), now: at(0), track: { ...heard.track, title: 'Everything Counts' } })
   const short = await p.evaluate(() => document.querySelector('.info .title').textContent)
   ok('a title that fits is shown whole', short === 'Everything Counts', short)

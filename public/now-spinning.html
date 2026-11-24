@@ -391,8 +391,10 @@ function fitTitle() {
     el.textContent = text + '…';
   }
 }
-// The web fonts arrive after the first draw and change where the lines break.
+// The web fonts arrive after the first draw and change where the lines break. Google Fonts also
+// sends each alphabet (Cyrillic, Vietnamese…) only when a title first needs it, which is later.
 document.fonts?.ready.then(fitTitle);
+document.fonts?.addEventListener?.('loadingdone', () => fitTitle());
 
 /** The archive's part of the screen. Every word in it came from the Worker. */
 function live(t, screen) {
