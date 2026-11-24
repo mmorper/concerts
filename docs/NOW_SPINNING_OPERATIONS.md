@@ -41,9 +41,10 @@ and firmware in step 4, the log settings and (rarely) `config.txt` in step 5. Ea
 
 ## What you need
 
-- The Raspberry Pi 5 that already runs the UniFi servers, in its case with the active cooler
-- A power supply the Pi recognises as 5 A, such as the CanaKit 45 W one. Step 5 checks this,
-  whichever supply it is: the Blackjack draws its power from the Pi.
+- The Raspberry Pi 5 (8 GB) that already runs the UniFi servers, in its case with the active
+  cooler
+- Its CanaKit 45 W USB-C power supply. Step 5 checks that the Pi sees it as a 5 A supply: the
+  Blackjack draws its power from the Pi.
 - Mackie Onyx Blackjack, its USB-A → USB-B cable, and the dual RCA → dual 1/4" cable
 - An Ethernet cable to the switch in the AV cabinet
 - Your Mac, on the same home network

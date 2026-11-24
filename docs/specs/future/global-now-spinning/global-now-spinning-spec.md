@@ -881,17 +881,17 @@ The outline below is the original one.
 
 ## Hardware
 
-The Pi is the 4 GB board that already runs the UniFi MCP servers. A CanaKit Pi 5 kit was ordered
-on 2026-11-21. **To confirm in Phase 0:** whether this board, its power supply and its cooler are
-that kit's. Check 1c tests the supply whichever it is. The rows below that say "the kit's"
-describe that kit.
+The Pi is the board from the CanaKit Pi 5 kit ordered on 2026-11-21, and it also runs the UniFi
+MCP servers. The owner confirmed the hardware on 2026-11-24: a Raspberry Pi 5 with 8 GB of RAM,
+the CanaKit 45 W USB-C power supply and the official active cooler. The microSD card is
+whichever one the UniFi runbook set up.
 
 | Item | What it is | Notes |
 |---|---|---|
-| Computer | Raspberry Pi 5, 4 GB (`mh-unifi-now-playing`, `192.168.1.244`) | Shared with the UniFi MCP servers (see [A shared Pi](#pi-listener-now-spinningpi)). 4 GB is plenty: the listener is small, and those servers only run while a chat is using them. |
-| Power | The kit's CanaKit 45 W USB-C supply | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
-| Storage | The kit's 32 GB microSD, with its USB reader | Raspberry Pi OS Lite, 64-bit |
-| Cooling | The kit's official active cooler; the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
+| Computer | Raspberry Pi 5, 8 GB (`mh-unifi-now-playing`, `192.168.1.244`) | Shared with the UniFi MCP servers (see [A shared Pi](#pi-listener-now-spinningpi)). 8 GB is far more than both need: the listener is small, and those servers only run while a chat is using them. |
+| Power | CanaKit 45 W USB-C supply (confirmed) | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
+| Storage | The microSD the UniFi runbook set up | Raspberry Pi OS Lite, 64-bit. Never reflashed for Now Spinning. |
+| Cooling | Raspberry Pi 5 active cooler (confirmed); the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
 | TV | Samsung S95C 65" QD-OLED (already owned) | An OLED, so the display follows the [Screen care](#screen-care-the-tv-is-an-oled) rules. |
 | Display source | Apple TV 4K, 2026 (already owned) | Runs the Now Spinning tvOS app. Already the picture the TV shows while Phono plays. |
 | Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. It has no power socket: it runs on USB power from the Pi. The Pi 5 allows 1.6 A across its USB ports only when it recognises a 5 A supply (600 mA otherwise), so use the 5 A-capable supply from the kit, and keep phantom power off, which is the Blackjack's biggest draw. |
@@ -1126,7 +1126,7 @@ None open. Phase 0 (#688) will raise the next ones.
 
 ## Revision History
 
-- **2026-11-23, v1.6.0:** The Pi is shared. It is the Raspberry Pi 5 (4 GB) that also runs Mike's
+- **2026-11-23, v1.6.0:** The Pi is shared. It is the Raspberry Pi 5 (8 GB) that also runs Mike's
   UniFi MCP servers, which keep a view-only console password on it.
   - The listener runs as its own `now-spinning` user in a sandboxed systemd service, from
     root-owned code in `/opt/now-spinning`. Before this the spec named no user, so it would have
@@ -1141,6 +1141,8 @@ None open. Phase 0 (#688) will raise the next ones.
   - The system log stays on the card (capped), not in RAM.
   - The setup guide no longer flashes the card: the UniFi runbook owns the operating system.
   - Phase 0 notes which network the receiver and the Apple TV are on.
+  - Hardware, confirmed by the owner on 2026-11-24: the Pi is the CanaKit kit's 8 GB board, on
+    the kit's 45 W supply, with the official active cooler. The UniFi runbook lists it as 4 GB.
 - **2026-11-21, v1.5.2:** Added during the build, after QA: a heartbeat between each display and
   the Worker (`ping` every 30 s, answered `pong`), so a silently dropped connection is noticed
   within a minute. The web page's idle brand mark no longer shifts, which settles a
