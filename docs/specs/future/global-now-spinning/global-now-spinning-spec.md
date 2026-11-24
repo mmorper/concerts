@@ -201,11 +201,11 @@ history.
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, turn off the Apple TV's "Control TVs and Receivers" (or the receiver's HDMI Control) and try again. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
-| 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26. | The app can't put itself on screen. The Pi has to, for every record. |
+| 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26, which network the Apple TV is on, and any firewall rule or `--scan-hosts` it needed. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
-| 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
+| 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies, which network the receiver is on, and any firewall rule it needed. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
 | 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio). Answered from its source code in Phase 4. | So the privacy section states a fact |
-| 8 | Note the Pi's Python version, and whether `pip install shazamio` had to compile anything | The listener targets the Python the Pi ships, whatever that is |
+| 8 | As the `now-spinning` user, install `shazamio` with `uv` on Python 3.13. Note the Python version, and whether anything had to be compiled. | The listener pins its Python. If `shazamio-core` has no ready-made build for 3.13 on the Pi, Phase 4 pins a version that has one. |
 
 If check 2 fails, stop and pick another recogniser (ACRCloud, AudD) before going further.
 If check 4 or 5 fails with no workaround, the display falls back to the Pi driving the TV
@@ -575,11 +575,43 @@ in production. No CORS headers are needed anywhere.
 
 ## Pi listener (`now-spinning/pi/`)
 
-A Python service for **the Python that Raspberry Pi OS ships** (Phase 0 check 8 records which;
-`requires-python` and CI follow it). Run by systemd (`now-spinning.service`, restart on failure).
-`sounddevice` needs the `libportaudio2` system package. Config is in
-`/etc/now-spinning/env`: the Worker URL, the ingest token, the receiver's address, the Apple TV's
-identifier and the audio device.
+A Python service, installed with `uv` from a committed lockfile on **a pinned Python**: 3.13, the
+version the Pi's UniFi servers already use. Phase 0 check 8 confirms `shazamio-core` has a
+ready-made build for it on the Pi; if it doesn't, pin the newest version that has one.
+`requires-python` and CI follow the pin. Run by systemd (`now-spinning.service`, restart on
+failure). `sounddevice` needs the `libportaudio2` system package.
+
+Config is in `/etc/now-spinning/env`: the Worker URL, the ingest token, the receiver's address,
+the Apple TV's identifier and address, and the audio device. The file is readable by root only;
+systemd reads it (`EnvironmentFile=`) before it starts the service as its own user.
+
+**A shared Pi.** The Pi also runs the UniFi MCP servers, set up from their own runbook ("UniFi MCP
+on Raspberry Pi — Setup Guide", in the Unifi Administration project). They keep a view-only
+console password under `/home/unifi-mcp`. That password can sign in to the console directly and
+see the network and the cameras, so nothing of Now Spinning's may be able to read it:
+- **Its own user.** The listener runs as the system user `now-spinning`: no login shell, no
+  `sudo`, in the `audio` group, with its home at `/var/lib/now-spinning`.
+- **A sandboxed service.** `now-spinning.service` sets `User=now-spinning`, `NoNewPrivileges=yes`,
+  `ProtectSystem=strict`, `ProtectHome=yes` (the service sees no `/home` at all), `PrivateTmp=yes`,
+  `UMask=0077`, and `StateDirectory=now-spinning` with `StateDirectoryMode=0700`.
+- **Code it can't change.** The code, its Python environment and the interpreter itself live in
+  `/opt/now-spinning`, owned by root (`UV_PYTHON_INSTALL_DIR` under `/opt/now-spinning`, or the
+  system's Python). `uv` is a root-owned copy at a pinned version, in `/usr/local/bin`. The service
+  can read and run all of it, not write any of it.
+- **Its home holds data only.** `/var/lib/now-spinning` is the one place the service can write. It
+  holds the Apple TV pairing and nothing that is ever executed: **root never runs anything from
+  it.** A virtual environment's `python` is a link to its base interpreter, so an interpreter
+  kept there could be swapped by a compromised listener and then run by root at the next update.
+  The copy of `uv` that Phase 0 puts there is for testing, and is deleted afterwards.
+- **No third-party code as `pi` or root.** That covers `shazamio`, `pyatv` and the listener, in
+  Phase 0 as well as in service. The one exception is the installer: root runs its own pinned
+  `uv`, and installing must not build or run package code (`uv sync --frozen --no-build`).
+- **No open port.** The listener only makes outbound connections: to Shazam, the Worker, the
+  receiver and the Apple TV.
+- **The operating system belongs to the UniFi runbook.** Never reflash the card for Now Spinning.
+- **Other networks.** If the receiver or the Apple TV is on a different VLAN from the Pi, the
+  firewall has to let the Pi reach it, and `pyatv` is given the Apple TV's address, because
+  device discovery doesn't cross VLANs. Phase 0 checks 5 and 6b record what was needed.
 
 **Gating on the receiver.**
 - Listen only while the main zone is on and its input is Phono. Then turn Zone 2 on with source
@@ -595,7 +627,8 @@ identifier and the audio device.
 
 **Putting the app on the screen.** A tvOS app can't bring itself to the front, so the listener
 does it with `pyatv`, using the commands Phase 0 check 5 found to work.
-- Paired with the Apple TV once; the credentials live on the Pi, readable by root only.
+- Paired with the Apple TV once, as the `now-spinning` user; the credentials live in its home,
+  `/var/lib/now-spinning`, readable by that user only.
 - **When:** each time the listener hears sound after silence while the receiver is on Phono,
   before the song is identified. Not only when the input switches to Phono. This is what makes a
   second record an hour later appear instead of playing behind the screensaver, and it means
@@ -642,18 +675,23 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 **Testing without hardware.** `python -m now_spinning --wav sample.wav --dry-run` runs the
 loop on a file and prints what it would POST. Unit-test the silence gate, the two-in-a-row
 rule, the run-out timeout and the gating state machine with synthetic audio and a fake receiver.
-CI: `.github/workflows/now-spinning-pi-ci.yml` (pytest), plus a `pip` entry in dependabot.
+CI: `.github/workflows/now-spinning-pi-ci.yml` (pytest, on the lockfile), plus a `uv` entry in
+dependabot.
 
 **ShazamIO risk.** ShazamIO is an unofficial client for Shazam's private API. It can break or be
 blocked without notice. Keep recognition behind one `Recognizer` interface so ACRCloud or AudD,
 which are paid but official, can replace it with a config change. Phase 0 check 8 shows whether
-`shazamio-core` installs on the Pi's Python without compiling.
+`shazamio-core` installs on the pinned Python without compiling.
 
-**Running it.** Power the Pi from an outlet that stays on, and keep logs in RAM
-(`Storage=volatile` in journald), so cutting power to the cabinet can't corrupt the card.
-Updating is `git pull` and `systemctl restart now-spinning`. Phase 4 adds the install, update and
-token-rotation steps to `docs/NOW_SPINNING_OPERATIONS.md`, which already covers setting up the
-Pi itself.
+**Running it.** Power the Pi from an outlet that stays on, because cutting power while it is
+writing can corrupt the card. The system log stays on the card with a size cap
+(`Storage=persistent`, `SystemMaxUse=64M`): the Pi holds credentials, so the record of SSH
+logins has to survive a reboot.
+
+**Updating is done on purpose,** as for the UniFi servers: pull the new code into
+`/opt/now-spinning`, rebuild the environment from the lockfile, restart the service. Nothing
+updates itself. Phase 4 adds the install, update and token-rotation steps to
+`docs/NOW_SPINNING_OPERATIONS.md`, which already covers preparing the Pi.
 
 ---
 
@@ -729,9 +767,8 @@ The design is already mostly dark, with changing photos and text. These rules co
   offline since…" stays up, dim, and moves to a new position each minute. In the app, the notice
   shows on the idle screen until the screensaver starts, and again whenever the app is opened.
 - **No drift in the app or the page.** The layout and the brand mark stay put; the TV's own Pixel
-  Shift moves the whole panel. The one thing that moves is the notice on the page's black screen
-  (above), because it is the only thing drawn there.
-  Keep it on.
+  Shift moves the whole panel, so keep it on. The one thing that moves is the notice on the
+  page's black screen (above), because it is the only thing drawn there.
 - The web page's timer is its own. The 10 minutes count from `at` on the idle state, using
   `now − at`.
 - The mock shows all three: "Next record (mirrored)" and "Idle for 10 minutes (black)" in its
@@ -822,6 +859,15 @@ room. Mike has a paid Apple Developer Program membership.
 
 Only if Phase 0 check 4 or 5 rules the app out, or reinstalling becomes a nuisance. Nothing new
 is written: the Pi shows the web page.
+
+**This was designed before the Pi was shared, and it needs a second look before it is built.**
+The simplest answer is a second Pi for the kiosk. On the shared Pi it would need at least:
+- its own user for Chromium, which is third-party code and so can't run as `pi` or root
+- the display token kept off the command line, where every user on the Pi could read it,
+  `unifi-mcp` included (a launch URL appears in the process list)
+- the compositor and Chromium recorded in the UniFi runbook, since they change its system
+
+The outline below is the original one.
 - A kiosk session on the Pi starts Chromium full screen on the display page at boot: no desktop,
   no cursor, no screen blanking. The setup guide installs the no-desktop OS, so this adds a
   minimal compositor (`cage` or `labwc`) and Chromium.
@@ -835,14 +881,16 @@ is written: the Pi shows the web page.
 
 ## Hardware
 
-Ordered 2026-11-21, except the Blackjack, which Mike already owned.
+The Pi is the board from the CanaKit Pi 5 kit ordered on 2026-11-21, and it also runs the UniFi
+MCP servers. The owner confirmed the hardware on 2026-11-24: a Raspberry Pi 5 with 8 GB of RAM,
+the CanaKit 45 W USB-C power supply, the official active cooler and a 32 GB microSD card.
 
 | Item | What it is | Notes |
 |---|---|---|
-| Computer | Raspberry Pi 5, 8 GB (CanaKit Essentials Starter Kit) | More memory than this needs. |
-| Power | The kit's CanaKit 45 W USB-C supply | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
-| Storage | The kit's 32 GB microSD, with its USB reader | Raspberry Pi OS Lite, 64-bit |
-| Cooling | The kit's official active cooler; the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
+| Computer | Raspberry Pi 5, 8 GB (`mh-unifi-now-playing`, `192.168.1.244`) | Shared with the UniFi MCP servers (see [A shared Pi](#pi-listener-now-spinningpi)). 8 GB is far more than both need: the listener is small, and those servers only run while a chat is using them. |
+| Power | CanaKit 45 W USB-C supply (confirmed) | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
+| Storage | 32 GB microSD (confirmed), set up by the UniFi runbook | Raspberry Pi OS Lite, 64-bit. Never reflashed for Now Spinning. |
+| Cooling | Raspberry Pi 5 active cooler (confirmed); the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
 | TV | Samsung S95C 65" QD-OLED (already owned) | An OLED, so the display follows the [Screen care](#screen-care-the-tv-is-an-oled) rules. |
 | Display source | Apple TV 4K, 2026 (already owned) | Runs the Now Spinning tvOS app. Already the picture the TV shows while Phono plays. |
 | Audio in | **Mackie Onyx Blackjack (already owned)** | 2×2 USB interface. Its combo inputs take line level on the 1/4" jack with a gain trim from −15 dB, so the AV7703's 1.2 V pre-out sits comfortably, and the SIG/OL lights show clipping at a glance. It has no power socket: it runs on USB power from the Pi. The Pi 5 allows 1.6 A across its USB ports only when it recognises a 5 A supply (600 mA otherwise), so use the 5 A-capable supply from the kit, and keep phantom power off, which is the Blackjack's biggest draw. |
@@ -1033,7 +1081,7 @@ secrets (#693), `GET` returns `idle`.
 ingest token changes the page live.
 
 ### Phase 4: Pi listener (#696, then #697)
-**Create:** `now-spinning/pi/{pyproject.toml,now_spinning/*.py,tests/,now-spinning.service,README.md}`,
+**Create:** `now-spinning/pi/{pyproject.toml,uv.lock,now_spinning/*.py,tests/,now-spinning.service,README.md}`,
 `.github/workflows/now-spinning-pi-ci.yml`
 **Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§12: install, update, token rotation, pairing with
 the Apple TV), this spec's Privacy section (Phase 0 check 7)
@@ -1077,6 +1125,28 @@ None open. Phase 0 (#688) will raise the next ones.
 
 ## Revision History
 
+- **2026-11-23, v1.6.0:** The Pi is shared. It is the Raspberry Pi 5 (8 GB) that also runs Mike's
+  UniFi MCP servers, which keep a view-only console password on it.
+  - The listener runs as its own `now-spinning` user in a sandboxed systemd service, from
+    root-owned code in `/opt/now-spinning`. Before this the spec named no user, so it would have
+    run as root.
+  - The interpreter and `uv` are root-owned too, and root never runs anything from the service's
+    writable home. QA found that gap: a compromised listener could otherwise have swapped them
+    and had root run the swap at the next update.
+  - The fallback (the Pi drives the TV) is flagged as needing a second look on a shared Pi.
+  - No third-party code runs as `pi` or root, in Phase 0 or in service.
+  - The listener installs with `uv` on a pinned Python from a lockfile, and updates on purpose.
+    Phase 0 check 8 changes to match.
+  - The system log stays on the card (capped), not in RAM.
+  - The setup guide no longer flashes the card: the UniFi runbook owns the operating system.
+  - Phase 0 notes which network the receiver and the Apple TV are on.
+  - Hardware, confirmed by the owner on 2026-11-24: the Pi is the CanaKit kit's 8 GB board, on
+    the kit's 45 W supply, with the official active cooler and a 32 GB microSD card. The UniFi
+    runbook lists it as 4 GB.
+- **2026-11-21, v1.5.2:** Added during the build, after QA: a heartbeat between each display and
+  the Worker (`ping` every 30 s, answered `pong`), so a silently dropped connection is noticed
+  within a minute. The web page's idle brand mark no longer shifts, which settles a
+  contradiction with the Screen care rule (Mike's call).
 - **2026-11-21, Phase 0 result, check 2a:** Passed. Mike tried the Shazam app on his phone against
   records playing on the turntable, and it identified them. The catalogue knows these records
   even through speakers and room noise. Still to do in check 2 on the Pi: the same test through
