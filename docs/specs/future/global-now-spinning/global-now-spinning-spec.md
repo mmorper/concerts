@@ -123,7 +123,7 @@ fine left on for an hour.
 flowchart LR
   TT[Music Hall 2.3] -->|phono| AVR[Marantz AV7703]
   AVR -->|main zone| AMP[MM7055 → speakers]
-  AVR -->|Zone 2 PRE OUT, fixed level,<br/>RCA → 1/4" TS| USB[Mackie Onyx Blackjack<br/>USB audio interface]
+  AVR -->|Zone 2 PRE OUT, fixed level,<br/>RCA → 1/4-inch TS| USB[Mackie Onyx Blackjack<br/>USB audio interface]
   USB --> PI[Raspberry Pi<br/>now-spinning listener]
   PI -.->|network control<br/>input + Zone 2| AVR
   PI -->|ShazamIO| SZ[(Shazam)]
