@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-22T17:35:54.147Z",
+  "updatedAt": "2026-11-24T20:28:54.981Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -751,47 +751,43 @@
     },
     {
       "slug": "social-distortion-14-more-2018-festival-bill",
-      "hash": "967f68334eb272b7",
-      "checkedAt": "2026-11-22T17:35:27.870Z",
+      "hash": "034ba5da79f54fdc",
+      "checkedAt": "2026-11-24T20:28:54.981Z",
       "issues": [
         {
           "field": "caption",
           "sentence": "Bands that had been doing this since the late seventies shared a stage with acts that grew up on their records.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Formation years for these bands are not in the fact sheet; cannot confirm or deny the 'late seventies' claim.",
-          "replacement": "Bands that had been playing punk for decades shared a stage with acts that grew up on their records."
+          "evidence": "Fact sheet gives no formation years for any act; 'late seventies' is an external claim not supported by the data."
         },
         {
-          "field": "beat_1",
+          "field": "beat2",
+          "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
+          "kind": "invented-number",
+          "severity": "review",
+          "evidence": "No founding years or ages are given for these bands, so 'forty years of damage' has no basis in the fact sheet."
+        },
+        {
+          "field": "beat1",
           "sentence": "Social Distortion and Bad Religion on a beach in October — California punk's founding class, still running the room.",
           "kind": "external",
           "severity": "review",
-          "evidence": "No formation-year or 'founding class' claim appears in the fact sheet for either band."
-        },
-        {
-          "field": "beat_2",
-          "sentence": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill had forty years of damage between them.",
-          "kind": "invented-number",
-          "severity": "must-fix",
-          "evidence": "No figure totaling 'forty years' for these bands appears anywhere in the fact sheet.",
-          "replacement": "Fear, Suicidal Tendencies, T.S.O.L., Pennywise: the older half of the bill, still at it decades on."
+          "evidence": "Fact sheet gives no formation dates; describing them as the 'founding class' is an external claim not confirmed by the data."
         },
         {
           "field": "hook",
           "sentence": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one afternoon.",
-          "kind": "personal-invented",
+          "kind": "external",
           "severity": "review",
-          "evidence": "Set/door times are explicitly excluded from the data ('set times or door times' is listed under NOT IN THE DATA), so 'one afternoon' is an unconfirmed detail.",
-          "replacement": "Fear and Rancid on the same sand as Black Rebel Motorcycle Club — punk's whole family tree, one bill."
+          "evidence": "Set times are NOT IN DATA; calling the show an 'afternoon' show is unconfirmed."
         },
         {
-          "field": "beat_4",
+          "field": "beat4",
           "sentence": "Fifteen acts, one afternoon on the sand.",
-          "kind": "personal-invented",
+          "kind": "external",
           "severity": "review",
-          "evidence": "Set/door times are explicitly excluded from the data, so the time of day ('afternoon') is unconfirmed.",
-          "replacement": "Fifteen acts, one show on the sand."
+          "evidence": "Set times are NOT IN DATA; 'afternoon' is not supported by the fact sheet for the 2018-10-28 show."
         }
       ]
     },
