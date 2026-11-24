@@ -13,8 +13,8 @@
   way to tell a tvOS problem from a Pi or Worker problem. It runs no lookup and writes no
   sentence about the archive: every such word arrives in the state. The only words of its own are
   the fixed labels the screenshots show ("Now spinning", "Put a record on.", "Listening…",
-  "Nothing I recognise yet.", "From the night", "No photos from these nights yet", "+ N more",
-  "◉ photos" and the brand). The tvOS app carries the same list.
+  "Nothing I recognise yet.", "From the night", "No photos from these nights yet", "+ N more"
+  and the brand). The tvOS app carries the same list.
 
     /now-spinning#token=<display token>  once: stores the token and clears it from the address
     /now-spinning#debug                  the diagnostics panel
@@ -72,8 +72,10 @@
   .kicker { display:flex; align-items:center; gap:14px; font-size:22px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); }
   .dot { width:12px; height:12px; border-radius:50%; background:#f472b6; box-shadow:0 0 0 0 rgba(244,114,182,.7); animation:pulse 2s infinite; }
   @keyframes pulse { 70% { box-shadow:0 0 0 14px rgba(244,114,182,0); } 100% { box-shadow:0 0 0 0 rgba(244,114,182,0); } }
+  /* Two lines at most, kept by fitTitle() below. A CSS line clamp needs overflow:hidden, and at
+     this line height that cuts the tails off g, j, p, q and y on the last line. */
   .title { margin-top:26px; font-family:'Playfair Display',serif; font-weight:700; font-size:96px; line-height:1.0; letter-spacing:-.01em;
-           display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+           overflow-wrap:anywhere; }
   .artist { margin-top:22px; font-size:40px; font-weight:600; }
   .album { margin-top:8px; font-size:28px; color:var(--dim); font-style:italic; font-family:'Playfair Display',serif; }
 
@@ -90,7 +92,6 @@
   .nights li { display:flex; gap:18px; font-size:24px; color:var(--dim); white-space:nowrap; }
   .nights li .v { overflow:hidden; text-overflow:ellipsis; min-width:0; }
   .nights li b { color:var(--ink); font-weight:600; min-width:178px; flex:none; }
-  .nights li.cam::after { content:"◉ photos"; font-size:17px; letter-spacing:.08em; color:#f9a8d4; margin-left:6px; align-self:center; flex:none; }
 
   /* photo strip */
   .strip { position:absolute; left:120px; bottom:70px; right:110px; display:flex; align-items:flex-end; gap:22px; }
@@ -371,9 +372,27 @@ function showTrack(t, key) {
     <div class="artist">${esc(t.artist)}</div>
     ${album?.title ? `<div class="album">${esc(album.title)}${album.year ? ' · ' + esc(album.year) : ''}</div>` : ''}
     ${screen ? `<div class="live">${live(t, screen)}</div>` : ''}</div>`;
+  fitTitle();
 
   showPhotos(screen ? t : null, h);
 }
+
+/** Keeps the song title to two lines: drops words from the end, then letters, and adds "…". */
+function fitTitle() {
+  const el = document.querySelector('#info .title');
+  if (!el) return;
+  const full = el.dataset.full ?? (el.dataset.full = el.textContent);
+  const twoLines = parseFloat(getComputedStyle(el).lineHeight) * 2 + 1;
+  el.textContent = full;
+  let text = full;
+  while (el.offsetHeight > twoLines && text.length > 1) {
+    const cut = text.lastIndexOf(' ');
+    text = (cut > 0 ? text.slice(0, cut) : text.slice(0, -1)).replace(/[\s,;:·–—-]+$/, '');
+    el.textContent = text + '…';
+  }
+}
+// The web fonts arrive after the first draw and change where the lines break.
+document.fonts?.ready.then(fitTitle);
 
 /** The archive's part of the screen. Every word in it came from the Worker. */
 function live(t, screen) {
@@ -394,7 +413,7 @@ function nights(t) {
   const more = typeof t.moreNights === 'number' && t.moreNights > 0 ? t.moreNights : 0;
   if (!list.length && !more) return '';
   return `<ul class="nights">${list.map(x =>
-    `<li class="${x.hasPhotos ? 'cam' : ''}"><b>${esc(x.dateLabel)}</b><span class="v">${esc(x.text)}</span></li>`).join('')}
+    `<li><b>${esc(x.dateLabel)}</b><span class="v">${esc(x.text)}</span></li>`).join('')}
     ${more ? `<li>+ ${esc(more)} more</li>` : ''}</ul>`;
 }
 

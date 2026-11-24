@@ -457,6 +457,7 @@ interface NowSpinningState {
     headline: string;
     lines: string[];                         // 0–2 supporting lines, already written
     nights: { date: string; dateLabel: string; text: string; hasPhotos: boolean }[]; // max 4, newest first
+                                             // hasPhotos is sent but no display draws it (2026-11-24)
     moreNights: number;
     photos: { url: string; caption: string; fx: number; fy: number }[]; // absolute URLs, max 5
     accentHue: number;                       // hue() from the mock, for the generated sleeve and glow
@@ -1125,6 +1126,13 @@ None open. Phase 0 (#688) will raise the next ones.
 
 ## Revision History
 
+- **2026-11-24, v1.6.1:** After the first live test (tokens set, a test song sent to the page):
+  - Night rows no longer carry a "◉ photos" marker, on the page or in the tvOS app. The owner
+    saw no reason for it: the photos themselves are on screen. `hasPhotos` stays in the
+    contract, so nothing that reads it breaks.
+  - The page cut the tails off g, j, p, q and y on the last line of a song title. The title is
+    now kept to two lines by trimming the text, not by clipping the box.
+  - The screenshots in `screens/` were made before this and still show the marker.
 - **2026-11-23, v1.6.0:** The Pi is shared. It is the Raspberry Pi 5 (8 GB) that also runs Mike's
   UniFi MCP servers, which keep a view-only console password on it.
   - The listener runs as its own `now-spinning` user in a sandboxed systemd service, from
