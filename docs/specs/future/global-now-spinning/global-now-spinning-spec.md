@@ -883,14 +883,13 @@ The outline below is the original one.
 
 The Pi is the board from the CanaKit Pi 5 kit ordered on 2026-11-21, and it also runs the UniFi
 MCP servers. The owner confirmed the hardware on 2026-11-24: a Raspberry Pi 5 with 8 GB of RAM,
-the CanaKit 45 W USB-C power supply and the official active cooler. The microSD card is
-whichever one the UniFi runbook set up.
+the CanaKit 45 W USB-C power supply, the official active cooler and a 32 GB microSD card.
 
 | Item | What it is | Notes |
 |---|---|---|
 | Computer | Raspberry Pi 5, 8 GB (`mh-unifi-now-playing`, `192.168.1.244`) | Shared with the UniFi MCP servers (see [A shared Pi](#pi-listener-now-spinningpi)). 8 GB is far more than both need: the listener is small, and those servers only run while a chat is using them. |
 | Power | CanaKit 45 W USB-C supply (confirmed) | Underpowered Pis drop USB audio. Phase 0 check 1c confirms the Pi sees it as a 5 A supply. |
-| Storage | The microSD the UniFi runbook set up | Raspberry Pi OS Lite, 64-bit. Never reflashed for Now Spinning. |
+| Storage | 32 GB microSD (confirmed), set up by the UniFi runbook | Raspberry Pi OS Lite, 64-bit. Never reflashed for Now Spinning. |
 | Cooling | Raspberry Pi 5 active cooler (confirmed); the case fan left unplugged | The active cooler is temperature-controlled and close to silent. Add the case fan only if the cabinet runs hot. |
 | TV | Samsung S95C 65" QD-OLED (already owned) | An OLED, so the display follows the [Screen care](#screen-care-the-tv-is-an-oled) rules. |
 | Display source | Apple TV 4K, 2026 (already owned) | Runs the Now Spinning tvOS app. Already the picture the TV shows while Phono plays. |
@@ -1142,7 +1141,8 @@ None open. Phase 0 (#688) will raise the next ones.
   - The setup guide no longer flashes the card: the UniFi runbook owns the operating system.
   - Phase 0 notes which network the receiver and the Apple TV are on.
   - Hardware, confirmed by the owner on 2026-11-24: the Pi is the CanaKit kit's 8 GB board, on
-    the kit's 45 W supply, with the official active cooler. The UniFi runbook lists it as 4 GB.
+    the kit's 45 W supply, with the official active cooler and a 32 GB microSD card. The UniFi
+    runbook lists it as 4 GB.
 - **2026-11-21, v1.5.2:** Added during the build, after QA: a heartbeat between each display and
   the Worker (`ping` every 30 s, answered `pong`), so a silently dropped connection is noticed
   within a minute. The web page's idle brand mark no longer shifts, which settles a
