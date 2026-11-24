@@ -87,10 +87,81 @@ describe('road-tested — the upper bound (1,095 days)', () => {
 })
 
 describe('road-tested — the lower bound is precision, not a flat floor', () => {
-  it('never fires on a release date that is not day-precise', () => {
+  it("fires only when the gap clears the release date's own precision window", () => {
+    // The rule (docs/LINER_NOTES_PIPELINE.md, road-tested): a day-precise date
+    // needs more than 7 days, a month-precise date more than 31, and a bare
+    // year never fires.
+    //
+    // This used to assert that every finding was day-precise. That was true of
+    // the data, not of the rule. On 2026-11-23 MusicBrainz's date for New
+    // Order's Brotherhood went from 1986-09-29 to 1986-09, and the 1985-08-23
+    // finding ("Weirdo") stayed, as the rule says it should: 374 days measured
+    // to the first of the month, where it had been 402.
+    const floor: Record<string, number> = { day: 7, month: 31 }
     for (const f of findings) {
-      expect(f.dataPoints.releaseDatePrecision).toBe('day')
+      const precision = f.dataPoints.releaseDatePrecision as string
+      expect(Object.keys(floor)).toContain(precision)
+      expect(f.dataPoints.daysBeforeRelease as number).toBeGreaterThan(floor[precision])
     }
+  })
+
+  it('measures a month-precise date from the first of the month', () => {
+    // Generous to the album: an imprecise date must never inflate the gap.
+    for (const f of findings) {
+      if (f.dataPoints.releaseDatePrecision !== 'month') continue
+      const start = Date.parse(`${f.dataPoints.albumReleaseDate}-01T00:00:00Z`)
+      const night = Date.parse(`${f.dataPoints.date}T00:00:00Z`)
+      expect(f.dataPoints.daysBeforeRelease).toBe(Math.round((start - night) / 86_400_000))
+    }
+  })
+
+  it('holds the floor at its edge, on an invented night', () => {
+    // The one synthetic case in this file. Today's data has a single
+    // month-precise finding, at 374 days, so no real row sits near either floor.
+    const fire = (concertDate: string, releaseDate: string) =>
+      detectRoadTested(
+        [
+          {
+            date: concertDate,
+            year: Number(concertDate.slice(0, 4)),
+            headliner: 'Invented Act',
+            headlinerNormalized: 'invented-act',
+            venue: 'Nowhere',
+            venueNormalized: 'nowhere',
+            cityState: 'Nowhere, Nowhere',
+          } as Concert,
+        ],
+        buildSetlistIndex({
+          entries: {
+            x: {
+              date: concertDate,
+              artistName: 'Invented Act',
+              setlist: { sets: { set: [{ song: [{ name: 'New Song' }] }] } },
+            },
+          },
+        }),
+        {
+          songs: {
+            'invented-act::new-song': {
+              songTitle: 'New Song',
+              albumTitle: 'The Record',
+              mbid: 'x',
+              releaseDate,
+              coverAvailable: false,
+              matchTier: 1,
+            },
+          },
+        }
+      ).length
+
+    // Month-precise: more than 31 days, counted to the first of the month.
+    expect(fire('2000-08-31', '2000-10')).toBe(0) // 31 days
+    expect(fire('2000-08-30', '2000-10')).toBe(1) // 32 days
+    // Day-precise: more than 7 days.
+    expect(fire('2000-09-24', '2000-10-01')).toBe(0) // 7 days
+    expect(fire('2000-09-23', '2000-10-01')).toBe(1) // 8 days
+    // A bare year never fires.
+    expect(fire('2000-01-01', '2001')).toBe(0)
   })
 
   it("does NOT fire on Crowded House's 'In My Command' (Together Alone, 1993-10)", () => {
