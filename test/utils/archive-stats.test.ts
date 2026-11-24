@@ -97,8 +97,10 @@ describe('deriveArchiveStats — against the real archive', () => {
   const stats = deriveArchiveStats(data.concerts)
 
   it('agrees with every published surface', () => {
-    expect(stats.concerts).toBe(185)
-    expect(stats.artists).toBe(260)
+    // 186 and 261 since 2026-11-23: Royal Blood at The Belasco (2027-04-23) was
+    // added, and its opener, Bodega, is a billing the archive had not seen.
+    expect(stats.concerts).toBe(186)
+    expect(stats.artists).toBe(261)
     expect(stats.venues).toBe(80)
   })
 
@@ -118,7 +120,7 @@ describe('deriveArchiveStats — against the real archive', () => {
 
   it('counts BILLINGS, while the Artists scene counts ACTS — both live (#295)', () => {
     // The Artists scene alias-collapses (#227), so Brian Setzer is one card
-    // rather than four billings: 257 there against 260 everywhere else. Pinned
+    // rather than four billings: 258 there against 261 everywhere else. Pinned
     // so the gap stays a recorded decision rather than a surprise, and so that
     // closing it is a deliberate edit to this test.
     const billings = new Set<string>()
@@ -128,10 +130,10 @@ describe('deriveArchiveStats — against the real archive', () => {
     }
 
     expect(stats.artists).toBe(billings.size)
-    expect(stats.artists).toBe(260)
+    expect(stats.artists).toBe(261)
 
     const setzer = [...billings].filter((b) => /setzer/i.test(b))
-    expect(setzer.length).toBe(4) // 260 - 3 = the 257 the mosaic shows
+    expect(setzer.length).toBe(4) // 261 - 3 = the 258 the mosaic shows
   })
 
   it('includes dated-but-unplayed shows', () => {
