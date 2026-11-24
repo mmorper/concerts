@@ -136,16 +136,49 @@ export function reduce(room: RoomState, listener: Listener, ev: RoomEvent, nowMs
     }
   }
 
-  return { room: r, listener: l, push, alarmAt: nextAlarm(r, l, nowMs) };
+  return { room: r, listener: l, push, alarmAt: nextAlarm(r, l, nowMs, tz) };
 }
 
-/** One alarm, two deadlines: the earlier of liveness and the offline notice. */
-export function nextAlarm(room: RoomState, listener: Listener, nowMs: number): number | null {
+/** The local wall clock at an instant, as if it were UTC, to the second. */
+function wallClock(ms: number, tz: string): number {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: tz,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  }).formatToParts(ms);
+  const n = (type: Intl.DateTimeFormatPartTypes) => Number(parts.find((p) => p.type === type)?.value);
+  return Date.UTC(n("year"), n("month") - 1, n("day"), n("hour"), n("minute"), n("second"));
+}
+
+/** The start of the next calendar day in `tz`, in epoch ms. Always later than `nowMs`. */
+export function nextLocalMidnight(nowMs: number, tz: string): number {
+  const second = nowMs - (nowMs % 1000);
+  const wall = new Date(wallClock(second, tz));
+  const midnight = Date.UTC(wall.getUTCFullYear(), wall.getUTCMonth(), wall.getUTCDate() + 1);
+  // Right unless the clocks change before then. If they do, use the offset in force at midnight.
+  const guess = midnight - (wall.getTime() - second);
+  const at = midnight - (wallClock(guess, tz) - guess);
+  // Where the clocks go forward at midnight itself there is no 12:00 AM: the day starts at `guess`.
+  return wallClock(at, tz) === midnight ? at : guess;
+}
+
+/**
+ * One alarm, three deadlines: the earliest of liveness, the offline notice, and the local midnight
+ * that puts a date on a notice already showing ("since 5:06 PM" must not outlive its day).
+ */
+export function nextAlarm(room: RoomState, listener: Listener, nowMs: number, tz: string): number | null {
   const deadlines: number[] = [];
   if (room.state.kind !== "idle" && room.lastIngestAt) deadlines.push(Date.parse(room.lastIngestAt) + LIVENESS_MS);
   if (listener.lastSeenAt) {
     const offlineAt = Date.parse(listener.lastSeenAt) + OFFLINE_MS;
     if (offlineAt > nowMs) deadlines.push(offlineAt);
+    // Offline and idle: the notice is up, and it stays true only until the day changes.
+    else if (room.state.kind === "idle") deadlines.push(nextLocalMidnight(nowMs, tz));
   }
   const future = deadlines.filter((d) => d > nowMs);
   return future.length ? Math.min(...future) : deadlines.length ? nowMs + 1000 : null;

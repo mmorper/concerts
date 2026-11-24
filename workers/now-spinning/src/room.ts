@@ -3,7 +3,7 @@
  * listener's health, and every display's WebSocket.
  *
  * A thin shell around room-logic.ts. It stores exactly two keys ("state", "listener"), broadcasts
- * changes, and keeps one alarm set to the earlier of two deadlines. WebSockets use hibernation, so
+ * changes, and keeps one alarm set to the earliest of its deadlines. WebSockets use hibernation, so
  * an idle evening with a display connected costs nothing.
  *
  * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Behaviour
