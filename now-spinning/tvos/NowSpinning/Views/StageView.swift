@@ -549,14 +549,6 @@ private struct Nights: View {
                             .foregroundStyle(Theme.dim)
                             .lineLimit(1)
                             .truncationMode(.tail)
-                        if night.hasPhotos {
-                            Text("◉ photos")
-                                .font(Theme.sans(17))
-                                .trackingEm(0.08, size: 17)
-                                .foregroundStyle(Theme.notePink)
-                                .fixedSize()
-                                .padding(.leading, -12)
-                        }
                     }
                 }
                 if more > 0 {

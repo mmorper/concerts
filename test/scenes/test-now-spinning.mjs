@@ -47,6 +47,7 @@ async function run() {
         title: document.querySelector('.info .title')?.textContent ?? null,
         big: document.querySelector('.info .big')?.textContent ?? null,
         nights: document.querySelectorAll('.info .nights li').length,
+        marked: [...document.querySelectorAll('.info .nights li')].filter(li => getComputedStyle(li, '::after').content !== 'none' || li.textContent.includes('◉')).length,
         text: document.getElementById('stage').innerText,
         note: document.getElementById('idleNote').textContent,
         raw: diag.raw,
@@ -61,7 +62,9 @@ async function run() {
         if (seen.title !== 'Listening…') fail(name, `title "${seen.title}"`)
       } else {
         const t = state.track
-        if (seen.title !== t.title) fail(name, `title "${seen.title}", expected "${t.title}"`)
+        // Whole, or cut to two lines: then it ends in "…" and is the start of the real title.
+        const cut = seen.title?.endsWith('…') && t.title.startsWith(seen.title.slice(0, -1))
+        if (seen.title !== t.title && !cut) fail(name, `title "${seen.title}", expected "${t.title}"`)
         if (!seen.text.includes(t.artist)) fail(name, `artist "${t.artist}" not shown`)
         if (!seen.text.includes(t.headline)) fail(name, `headline not shown: "${t.headline}"`)
         for (const line of t.lines) if (!seen.text.includes(line)) fail(name, `line not shown: "${line}"`)
@@ -69,6 +72,8 @@ async function run() {
         if (t.count && seen.big?.includes('×') !== t.count.times) fail(name, `"×" should be ${t.count.times ? 'drawn' : 'absent'}`)
         const nights = Math.min(4, t.nights.length) + (t.moreNights > 0 ? 1 : 0)
         if (seen.nights !== nights) fail(name, `${seen.nights} night rows, expected ${nights}`)
+        // A night row is a date and a place. The photos are shown; no row is marked for having them.
+        if (seen.marked) fail(name, `${seen.marked} night row(s) carry a marker`)
         // The fixture's gap began 90 s before it was sent: the words have stepped back.
         if (state.kind === 'gap' && !seen.stage.includes('faded')) fail(name, `gap past 90 s not faded (${seen.stage})`)
       }
@@ -219,6 +224,38 @@ async function rules(browser, fail) {
   await send({ ...heard, at: at(0), now: at(0), track: { ...heard.track, screen: 'future-screen', title: 'Song Only' } })
   const unknownScreen = await p.evaluate(() => ({ title: document.querySelector('.info .title')?.textContent, live: !!document.querySelector('.info .live') }))
   ok('an unknown screen renders the song only', unknownScreen.title === 'Song Only' && !unknownScreen.live, JSON.stringify(unknownScreen))
+
+  // The song title: two lines at most, and nothing cuts the tails off g, j, p, q and y.
+  const LONG = 'Égalité jumping gypsy Élan lllh Íntimo fjord qqq ppp yyy and a great deal more besides'
+  await send({ ...heard, at: at(0), now: at(0), track: { ...heard.track, title: LONG } })
+  await p.evaluate(() => document.fonts.ready)
+  const long = await p.evaluate(() => {
+    const el = document.querySelector('.info .title')
+    const box = el.getBoundingClientRect()
+    const scale = box.height / el.offsetHeight   // the stage is scaled to the window
+    const tails = box.bottom + 0.25 * parseFloat(getComputedStyle(el).fontSize) * scale
+    let clippedBy = null
+    for (let n = el; n && n.id !== 'stage'; n = n.parentElement) {
+      if (getComputedStyle(n).overflowY !== 'visible' && n.getBoundingClientRect().bottom < tails) clippedBy = n.className || n.id
+    }
+    return { text: el.textContent, lines: el.offsetHeight / parseFloat(getComputedStyle(el).lineHeight), clippedBy }
+  })
+  ok('a long title is cut to two lines, ending "…"', long.lines <= 2.01 && long.text.endsWith('…') && LONG.startsWith(long.text.slice(0, -1)), JSON.stringify(long))
+  ok('nothing clips the tails of the title\'s last line', long.clippedBy === null, `clipped by .${long.clippedBy}`)
+  // Google Fonts sends an alphabet only when a title first needs it, so a font can arrive after
+  // the title was fitted. Wider letters stand in for that font here.
+  const refit = await p.evaluate(() => {
+    const el = document.querySelector('.info .title')
+    const lines = () => el.offsetHeight / parseFloat(getComputedStyle(el).lineHeight)
+    el.style.letterSpacing = '.2em'
+    const before = lines()
+    document.fonts.dispatchEvent(new Event('loadingdone'))
+    return { before, after: lines(), text: el.textContent }
+  })
+  ok('a font that arrives later re-fits the title', refit.before > 2.01 && refit.after <= 2.01 && refit.text.endsWith('…'), JSON.stringify(refit))
+  await send({ ...heard, at: at(0), now: at(0), track: { ...heard.track, title: 'Everything Counts' } })
+  const short = await p.evaluate(() => document.querySelector('.info .title').textContent)
+  ok('a title that fits is shown whole', short === 'Everything Counts', short)
 
   // Mirroring: each record after idle flips the layout, and the choice is remembered.
   await send({ v: 1, kind: 'idle', at: at(0), now: at(0) })
