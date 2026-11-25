@@ -637,6 +637,9 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
 - Listen only while the main zone is on and its input is Phono. Then turn Zone 2 on with source
   Phono. When the input leaves Phono or the main zone turns off: POST `stopped`, stop
   listening, and turn Zone 2 off if the listener turned it on.
+- **Keep Zone 2 on while it's needed.** Whenever a poll finds the main zone on Phono and Zone 2
+  off, turn Zone 2 back on. The receiver's Auto Standby for Zone 2 is set to 8 hours, so a long
+  session with no button presses can switch it off; this stops that leaving the listener deaf.
 - The listener never touches the main zone.
 - **Read both `ZM` and `SI`.** The receiver reports `SIPHONO` in standby too, so the input alone
   doesn't mean a record is playing.
@@ -956,6 +959,8 @@ The listener records the two channels as stereo and downmixes to mono itself.
 **Receiver setup, once:**
 - General → ZONE2 Setup → Volume Level: fixed at **60** (the loudest passage peaks at −13 dBFS with GAIN at U). Bass, Treble and channel levels 0 dB, High Pass Filter off, Stereo.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
+- General → Auto Standby: Main Zone Off; Zone 2 **8 hours**, a safety net if Zone 2 is left on
+  (while Zone 2 is on, the receiver doesn't go to standby).
 - Video Select on Phono stays on the Apple TV, as it is today.
 - Video → HDMI Setup: HDMI Control **On**; Power Off Control **Video** (was All). With All, the
   Apple TV going to sleep put the receiver in standby and stopped the record. With Video, the
@@ -1193,6 +1198,8 @@ Open, from Phase 0 (#688), for the owner before Phase 4:
     in standby. `Z2ON` from standby wakes the receiver without the main zone; `Z2OFF` then returns
     it to standby. With the main zone on, Zone 2 switching never interrupted the record.
     Details are on #688.
+  - Zone 2's Auto Standby stays at 8 hours, and the listener turns Zone 2 back on if it finds it
+    off while the main zone is on Phono.
 - **2026-11-25, Phase 0 results, checks 1, 1b, 8 and the first record of check 2:**
   - Check 1 passed. Phono plays out of ZONE2 PRE OUT on the AV7703 (Zone 2 renamed `USB-INT` in
     the Marantz app; telnet still calls it `Z2`). Working levels: Zone 2 Volume Level fixed at
