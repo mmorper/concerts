@@ -162,6 +162,7 @@ sequenceDiagram
   Pi->>AVR: Zone 2 on, source Phono
   Note over Pi: sound after silence → recognise at once
   Pi->>TV: wake the Apple TV, bring the app to the front (pyatv)
+  Note over TV: the TV itself may need turning on by hand (Phase 0 check 4)
   TV->>W: open WebSocket (display token)
   DO-->>TV: current state
   Pi->>W: POST {event: "track", artist, title, album, artworkUrl}
@@ -211,7 +212,7 @@ history.
 | 2a | Optional, and possible before the hardware arrives: try the Shazam app on a phone with the same ten records. Note what it calls each artist and title. | Same catalogue as the Pi will query. A match through speakers and room noise is a strong sign; a miss is ambiguous. It doesn't replace check 2. |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
-| 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, turn off the Apple TV's "Control TVs and Receivers" (or the receiver's HDMI Control) and try again. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
+| 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, change the receiver's HDMI settings and try again. The Apple TV's "Control TVs and Receivers" stays on (see [Design Philosophy](#design-philosophy)). **Passed 2026-11-25**, but the TV doesn't wake while the receiver is on Phono. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
 | 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26, which network the Apple TV is on, and any firewall rule or `--scan-hosts` it needed. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
 | 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies, which network the receiver is on, and any firewall rule it needed. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
@@ -660,7 +661,8 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
   `/var/lib/now-spinning`, readable by that user only.
 - **When:** each time the listener hears sound after silence while the receiver is on Phono,
   before the song is identified. Not only when the input switches to Phono. This is what makes a
-  second record an hour later appear instead of playing behind the screensaver, and it means
+  second record an hour later appear instead of playing behind the screensaver (once the TV is
+  on: see below), and it means
   "Listening…" is visible for a record Shazam doesn't know.
 - **What:** wake the Apple TV if it's asleep, then bring the app to the front if it isn't there,
   including from behind the screensaver.
@@ -1049,7 +1051,7 @@ when it can't be reached.
 - [ ] Needle up for 3 min → idle
 - [ ] Needle left in the run-out groove → idle within about 5 min
 - [ ] Pull the Pi's power mid-song → idle within about 3 min; about 15 min later the idle screen says the listener is offline; power back → it clears
-- [ ] A second record an hour later appears without touching the remote, with the layout mirrored
+- [ ] A second record an hour later appears without touching the Apple TV remote (the TV already on), with the layout mirrored
 - [ ] With the Apple TV asleep: needle down → the Apple TV wakes and the app is in front (turn the TV on by hand if it's off)
 - [ ] The Apple TV remote still turns the TV, receiver and Apple TV on and off together, from the Apple TV input
 - [ ] After a record session, the receiver is back on the Apple TV input before anyone next uses the Apple TV
@@ -1160,7 +1162,14 @@ site counts songs the same way the TV does.
 
 ## Questions for Review
 
-None open. Phase 0 (#688) will raise the next ones.
+Open, from Phase 0 (#688), for the owner before Phase 4:
+1. **Returning the receiver to the Apple TV input after records.** Manual for now. Doing it
+   automatically (after a long silence on Phono, `SIMPLAY` then `PWSTANDBY`) would break "the
+   listener never touches the main zone". Which rule wins?
+2. **Turning the TV on for the display.** Waking the Apple TV doesn't turn the TV on while the
+   receiver is on Phono, so for now it's by hand. Options: the TV's own network power-on
+   (depends on the model), or a short switch of the receiver to the Apple TV input during the
+   wake, which puts a gap in the music. Or leave it manual.
 
 ---
 
