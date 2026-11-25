@@ -115,6 +115,17 @@ fine left on for an hour.
 - A photo's caption always names the night it is from.
 - If the lookup itself fails, the screen shows the song and says nothing about the archive.
 
+**The Apple TV comes first.** The TV, receiver and Apple TV are used every day for watching and
+listening through the Apple TV: someone picks up the Apple TV remote, and the TV and receiver
+come on ready to use it. That is the main experience, and Now Spinning must never make it worse.
+The turntable is the exception. Where the two conflict, the turntable takes the cost: a manual
+step, a slower start, or no picture. In practice:
+- No setting is changed that stops the Apple TV remote turning the TV and receiver on and off.
+  "Control TVs and Receivers" stays on.
+- When a record session ends, the receiver must be back on the Apple TV input. Woken on Phono,
+  it doesn't pass the Apple TV's signal to turn the TV on (Phase 0 check 4).
+- The Now Spinning display may need the TV turned on by hand.
+
 ---
 
 ## Architecture
@@ -626,6 +637,16 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
   Phono. When the input leaves Phono or the main zone turns off: POST `stopped`, stop
   listening, and turn Zone 2 off if the listener turned it on.
 - The listener never touches the main zone.
+- **Read both `ZM` and `SI`.** The receiver reports `SIPHONO` in standby too, so the input alone
+  doesn't mean a record is playing.
+- **Confirm by asking.** A command doesn't always get a reply (`Z2ON` sent none when the receiver
+  was already on), so check the result with `Z2?`. The receiver also sends status lines nobody
+  asked for, nonstop while another controller is connected: keep reading, keep only `ZM`, `SI`,
+  `Z2` and `PW` lines, and use a fixed deadline, not a pause, to decide a reply is complete.
+- **Leaving the receiver.** When a record session ends, the receiver must be back on the Apple TV
+  input (see [Design Philosophy](#design-philosophy)). For now that is a manual step. Doing it
+  automatically (after a long silence on Phono, `SIMPLAY` then `PWSTANDBY`) would break "never
+  touches the main zone", so it is an open question for Phase 4, for the owner to decide.
 - Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
   Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
   commands Phase 0 check 6b found to work.
@@ -643,6 +664,10 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
   "Listening…" is visible for a record Shazam doesn't know.
 - **What:** wake the Apple TV if it's asleep, then bring the app to the front if it isn't there,
   including from behind the screensaver.
+- **The TV may stay off.** With the receiver on Phono, waking the Apple TV doesn't turn the TV
+  on (Phase 0 check 4). Until something else wakes it (the TV's own network control, or a short
+  switch of the receiver to the Apple TV input), the TV is turned on by hand. The listener still
+  wakes the Apple TV and brings the app forward, so it is ready when the TV comes on.
 - **Never interrupt.** If the Apple TV reports that something is playing, do nothing. A paused
   app is not protected: it goes to the background and keeps its place.
 - When the record stops, do nothing. The app goes idle and the Apple TV's screensaver takes over.
@@ -930,6 +955,11 @@ The listener records the two channels as stereo and downmixes to mono itself.
 - General → ZONE2 Setup → Volume Level: fixed at **60** (the loudest passage peaks at −13 dBFS with GAIN at U). Bass, Treble and channel levels 0 dB, High Pass Filter off, Stereo.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
 - Video Select on Phono stays on the Apple TV, as it is today.
+- Video → HDMI Setup: HDMI Control **On**; Power Off Control **Video** (was All). With All, the
+  Apple TV going to sleep put the receiver in standby and stopped the record. With Video, the
+  receiver still follows the TV off while it's on the Apple TV input.
+- Apple TV: Control TVs and Receivers stays **On**, so its remote still turns the TV and receiver
+  on and off.
 - TV and Apple TV: the settings under [Screen care](#screen-care-the-tv-is-an-oled).
 
 ---
@@ -1020,7 +1050,9 @@ when it can't be reached.
 - [ ] Needle left in the run-out groove → idle within about 5 min
 - [ ] Pull the Pi's power mid-song → idle within about 3 min; about 15 min later the idle screen says the listener is offline; power back → it clears
 - [ ] A second record an hour later appears without touching the remote, with the layout mirrored
-- [ ] With the Apple TV asleep: needle down → the Apple TV wakes and the app is on screen
+- [ ] With the Apple TV asleep: needle down → the Apple TV wakes and the app is in front (turn the TV on by hand if it's off)
+- [ ] The Apple TV remote still turns the TV, receiver and Apple TV on and off together, from the Apple TV input
+- [ ] After a record session, the receiver is back on the Apple TV input before anyone next uses the Apple TV
 - [ ] With the screensaver showing: needle down → the app is on screen
 - [ ] With a film playing on the Apple TV: nothing interrupts it
 - [ ] Waking the Apple TV never switches the receiver away from Phono
@@ -1134,6 +1166,24 @@ None open. Phase 0 (#688) will raise the next ones.
 
 ## Revision History
 
+- **2026-11-25, v1.7.0: Phase 0 checks 4, 6 and 6b, and a new design rule.**
+  - **The Apple TV comes first** (owner's rule): the daily Apple TV experience must never get
+    worse, and the turntable takes any cost. Added to [Design Philosophy](#design-philosophy).
+  - Check 4 passed: waking the Apple TV with the receiver on Phono doesn't switch the input, and
+    the record keeps playing. But with the receiver on Phono, the wake doesn't turn the TV on
+    either, so the display may need the TV turned on by hand. From the Apple TV input, the remote
+    turns the TV, receiver and Apple TV on and off together, as before.
+  - With Power Off Control on All, putting the Apple TV to sleep put the receiver in standby and
+    stopped the record. It is now **Video**; HDMI Control and the Apple TV's "Control TVs and
+    Receivers" stay on.
+  - Check 6 passed: with the Marantz app connected, the receiver still answered the Pi over
+    telnet. While a controller is connected, it sends status lines to every client about once a
+    second.
+  - Check 6b passed, with the receiver at 192.168.1.240 on the Pi's network (no firewall rule).
+    `ZM?`, `SI?`, `Z2ON`, `Z2PHONO`, `Z2OFF`, `Z2?` and `Z2MU?` all work. `SI?` says Phono even
+    in standby. `Z2ON` from standby wakes the receiver without the main zone; `Z2OFF` then returns
+    it to standby. With the main zone on, Zone 2 switching never interrupted the record.
+    Details are on #688.
 - **2026-11-25, Phase 0 results, checks 1, 1b, 8 and the first record of check 2:**
   - Check 1 passed. Phono plays out of ZONE2 PRE OUT on the AV7703 (Zone 2 renamed `USB-INT` in
     the Marantz app; telnet still calls it `Z2`). Working levels: Zone 2 Volume Level fixed at
