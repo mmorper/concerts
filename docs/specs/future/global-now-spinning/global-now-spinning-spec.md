@@ -919,7 +919,7 @@ reason recognition gets worse later.
 | Control | Setting |
 |---|---|
 | Inputs 1 and 2: LINE / HI-Z button | **LINE** (button out) |
-| Inputs 1 and 2: GAIN | Start at the lowest position (−15 dB) on both, matched. Raise both together only if peaks sit well below −12 dBFS with Zone 2 at a sensible fixed level. |
+| Inputs 1 and 2: GAIN | **U** (unity) on both, matched. Set the level with Zone 2's fixed Volume Level, not these knobs. At the lowest position (−15 dB), the loudest record peaked at −38 dBFS. |
 | PHANTOM | **Off.** Phantom power on a line output is the one setting that could harm something. |
 | INPUT MONITOR: MONO/STEREO, TO MON | Irrelevant to USB capture; leave TO MON at minimum |
 | MONITOR, PHONES | Minimum; nothing is plugged into them |
@@ -927,7 +927,7 @@ reason recognition gets worse later.
 The listener records the two channels as stereo and downmixes to mono itself.
 
 **Receiver setup, once:**
-- Zone 2 Setup → Volume Level: fixed.
+- General → ZONE2 Setup → Volume Level: fixed at **60** (the loudest passage peaks at −13 dBFS with GAIN at U). Bass, Treble and channel levels 0 dB, High Pass Filter off, Stereo.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
 - Video Select on Phono stays on the Apple TV, as it is today.
 - TV and Apple TV: the settings under [Screen care](#screen-care-the-tv-is-an-oled).
@@ -1134,6 +1134,19 @@ None open. Phase 0 (#688) will raise the next ones.
 
 ## Revision History
 
+- **2026-11-25, Phase 0 results, checks 1, 1b, 8 and the first record of check 2:**
+  - Check 1 passed. Phono plays out of ZONE2 PRE OUT on the AV7703 (Zone 2 renamed `USB-INT` in
+    the Marantz app; telnet still calls it `Z2`). Working levels: Zone 2 Volume Level fixed at
+    60, Blackjack GAIN at U on both inputs. The loudest passage peaks at −12.9 dBFS (L) and
+    −15.3 (R), RMS about −31 dB, with no hum. The starting point this spec gave (GAIN at −15 dB,
+    Zone 2 at a middle value) peaked at −38 dBFS, so [Audio interface settings](#audio-interface-settings)
+    and the setup guide now start from U and 60.
+  - Check 1b passed: `card 2: Blackjack [Onyx Blackjack]`, recording both channels.
+  - Check 8: Python 3.13.5. `shazamio` 0.9.0 and `shazamio-core` 2.0.0 installed as ready-made
+    aarch64 packages, with nothing compiled.
+  - Check 2, first record: Yazoo, "Nobody's Diary", *You and Me Both*, matched on the first
+    try. The full response is on #688. `shazamio` leaves its HTTP session open when the script
+    ends; the listener must close it.
 - **2026-11-24, v1.6.2:** After the first live test (tokens set, a test song sent to the page):
   - Night rows no longer carry a "◉ photos" marker, on the page or in the tvOS app. The owner
     saw no reason for it: the photos themselves are on screen. `hasPhotos` stays in the
