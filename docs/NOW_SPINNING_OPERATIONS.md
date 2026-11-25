@@ -272,7 +272,7 @@ The Blackjack's POWER and USB lights should come on.
 
 ```bash
 # Pi
-sudo apt install -y alsa-utils sox
+sudo apt install -y alsa-utils sox netcat-openbsd   # nc is used from step 7
 lsusb                              # a line naming Mackie or LOUD
 arecord -l                         # "card N: <Name> [...]": note the short name before the bracket
 sudo dmesg | grep -iE "over-current|undervolt"    # should print nothing
@@ -300,7 +300,8 @@ printf 'Z2ON\r'    | nc -w 2 <receiver-ip> 23
 printf 'Z2PHONO\r' | nc -w 2 <receiver-ip> 23
 ```
 
-The front panel shows MULTI ZONE, and a second line with Zone 2's name and Phono. Put on the
+If these time out, see step 9: the receiver needs Network Control set to Always On, and a
+firewall rule if it's on a different network from the Pi. The front panel shows MULTI ZONE, and a second line with Zone 2's name and Phono. Put on the
 loudest record you own.
 
 **Watch a live meter on the Pi:**
@@ -311,9 +312,10 @@ arecord -D plughw:CARD=<card>,DEV=0 -f cd -V stereo /dev/null      # Ctrl-C to s
 ```
 
 The meter is a line of text with a bar and a percentage for each channel. The percentage is the
-peak as a share of full scale: 25% is about −12 dBFS, 50% about −6, 100% is clipping. Anything
-below about −40 dBFS shows as `00%`, so a reading of `+00%|00%+` can mean a signal that is
-there but far too quiet. Step 7's `sox` check below tells the two apart: `-inf` is silence, a
+peak as a share of full scale: 25% is about −12 dBFS, 50% about −6, 100% is clipping. A very
+quiet signal still reads `+00%|00%+`: on the bench (2026-11-25), a clip whose loudest moment was
+−38 dBFS by `sox` showed `00%` on the meter, which samples moment to moment and can miss a
+single click. Step 7's `sox` check below tells the two apart: `-inf` is silence, a
 number is a quiet signal.
 
 - **Aim for peaks around −12 dBFS on the loudest passages:** the bars reach roughly a quarter of
@@ -364,7 +366,7 @@ means step 3 was skipped), the installs run as `pi`. If that happens, remove wha
 
 ```bash
 # Pi (as pi)
-rm -rf ~/ns-test ~/.cache/uv ~/.local/share/uv
+rm -rf ~/ns-test ~/.cache/uv ~/.local/share/uv ~/try-shazam.py
 rm -f ~/.local/bin/uv ~/.local/bin/uvx ~/.local/bin/env ~/.local/bin/env.fish
 sed -i '/\.local\/bin\/env/d' ~/.profile ~/.bashrc     # the lines the uv installer added
 ```

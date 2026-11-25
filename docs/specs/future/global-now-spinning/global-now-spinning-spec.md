@@ -919,7 +919,7 @@ reason recognition gets worse later.
 | Control | Setting |
 |---|---|
 | Inputs 1 and 2: LINE / HI-Z button | **LINE** (button out) |
-| Inputs 1 and 2: GAIN | **U** (unity) on both, matched. Set the level with Zone 2's fixed Volume Level, not these knobs. At the lowest position (−15 dB), the loudest record peaked at −38 dBFS. |
+| Inputs 1 and 2: GAIN | **U** (unity) on both, matched. Set the level with Zone 2's fixed Volume Level, not these knobs. At the lowest position (−15 dB), with Zone 2 at 40–55, the loudest record peaked at −38 dBFS. |
 | PHANTOM | **Off.** Phantom power on a line output is the one setting that could harm something. |
 | INPUT MONITOR: MONO/STEREO, TO MON | Irrelevant to USB capture; leave TO MON at minimum |
 | MONITOR, PHONES | Minimum; nothing is plugged into them |
