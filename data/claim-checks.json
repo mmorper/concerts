@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-24T20:28:54.981Z",
+  "updatedAt": "2026-11-25T19:44:28.692Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -179,6 +179,21 @@
       "issues": []
     },
     {
+      "slug": "house-of-blues-anaheim-6-shows-over-3-decades-2",
+      "hash": "b20e47a84cda58c5",
+      "checkedAt": "2026-11-25T19:44:22.518Z",
+      "issues": [
+        {
+          "field": "Beat 5",
+          "sentence": "Six shows. Three decades.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "House of Blues Anaheim shows run from 2003-08-29 (Joe Jackson) to 2022-12-08 (Social Distortion) — a span of about 19 years, not three decades.",
+          "replacement": "Six shows. Two decades."
+        }
+      ]
+    },
+    {
       "slug": "howard-jones-17-years-between-shows",
       "hash": "72c0f72784ec86c2",
       "checkedAt": "2026-10-13T17:19:53.167Z",
@@ -213,6 +228,34 @@
       "hash": "520fb64357c626b7",
       "checkedAt": "2026-10-11T16:07:35.619Z",
       "issues": []
+    },
+    {
+      "slug": "july-16-40-years-since-beach-boys",
+      "hash": "9457a5918c1f701b",
+      "checkedAt": "2026-11-25T19:44:28.692Z",
+      "issues": [
+        {
+          "field": "Hook",
+          "sentence": "Twenty-five years in and they still made it sound like the first time.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet contains no formation year for the Beach Boys, so the claim they were '25 years in' by 1986 cannot be verified against the archive data."
+        },
+        {
+          "field": "Caption",
+          "sentence": "The Beach Boys had been a band for 25 years the night I saw them at Pacific Amphitheatre in July 1986.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "No formation year is given in the fact sheet; the band's age as of 1986 is not something the archive can confirm."
+        },
+        {
+          "field": "Beat 1",
+          "sentence": "The Beach Boys had been together 25 years, and the harmonies hit like they were brand new.",
+          "kind": "external",
+          "severity": "review",
+          "evidence": "Fact sheet has no data on band formation date to support a '25 years' claim."
+        }
+      ]
     },
     {
       "slug": "june-21-35-years-since-jimmy-buffett",
@@ -883,36 +926,43 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "04201a411e66cc10",
-      "checkedAt": "2026-11-22T17:35:52.142Z",
+      "hash": "fa914ca5b8411b6e",
+      "checkedAt": "2026-11-25T19:44:13.798Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Radiohead's 'The Bends' release date (March 13, 1995) is not in the fact sheet; cannot confirm from archive data, though likely true externally."
+          "evidence": "Radiohead's The Bends release date (March 13, 1995) is not in the fact sheet; it's a plausible historical fact but cannot be verified against the archive."
         },
         {
           "field": "caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Album release date not present in fact sheet; external claim, plausible but unverifiable from archive."
+          "evidence": "Release date for an unrelated artist is not part of the fact sheet; likely true but unverifiable from archive data."
         },
         {
-          "field": "beat",
+          "field": "caption",
+          "sentence": "Thirteen days later I was watching Brian Setzer's pompadour and upright bass pull rock back to the 1950s instead.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Concrete personal recollection of watching the show is not in OWNER-CONFIRMED PERSONAL FACTS (only Orange County residence circa 1992 is confirmed)."
+        },
+        {
+          "field": "beat1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Same unverifiable external release date claim repeated."
+          "evidence": "Release date for Radiohead's album is not in the fact sheet; cannot be confirmed via archive data."
         },
         {
-          "field": "beat",
+          "field": "beat3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no birth year or age for Brian Setzer; '40 years older' is an invented age comparison."
+          "evidence": "No age or era-comparison figure is given in the fact sheet for rockabilly's age relative to 1995; this number has no basis."
         }
       ]
     },
@@ -1030,40 +1080,47 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "7b840272c2ef267c",
-      "checkedAt": "2026-11-22T17:35:43.894Z",
+      "hash": "46f6f537ba9a246b",
+      "checkedAt": "2026-11-25T19:43:55.819Z",
       "issues": [
         {
           "field": "hook",
           "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 — the anniversary (Sept 9) had not yet occurred by July 21, so only about 34 years had elapsed, not 35.",
-          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 34 years after the first time."
+          "evidence": "First show was 1988-09-09, second was 2023-07-21 — that's 34 years and about 10 months, not a full 35 years.",
+          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
         },
         {
           "field": "caption",
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is roughly 34 years and 10 months, not a full 35 years.",
-          "replacement": "Thirty-four years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years and roughly 10 months, short of a full 35 years.",
+          "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
-          "field": "beat",
+          "field": "beat 3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Same date math as above: 1988-09-09 to 2023-07-21 is about 34 years, not 35.",
-          "replacement": "Thirty-four years went by before I bought another ticket."
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years and about 10 months, not a full 35 years.",
+          "replacement": "Nearly thirty-five years went by before I bought another ticket."
         },
         {
-          "field": "beat",
+          "field": "beat 2",
           "sentence": "The Labour of Love covers felt like they'd always existed.",
-          "kind": "invented-number",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "No setlist is on record for 1988-09-09; the fact sheet shows the 1988 show was touring behind the self-titled 'UB40' album (album 10 of 26), not Labour of Love, and only the 2023 setlist is documented.",
+          "replacement": "The songs off the new self-titled record felt like they'd always existed."
+        },
+        {
+          "field": "beat 4",
+          "sentence": "the thing I'd wondered about in the parking lot",
+          "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No setlist is on record for the 1988-09-09 show; the only documented setlist (covers included) is from 2023-07-21, so attributing specific 'Labour of Love' covers to the 1988 show is unsupported.",
-          "replacement": "Whatever they played that night felt like it had always existed."
+          "evidence": "No OWNER-CONFIRMED PERSONAL FACT supports a specific parking-lot recollection; this is a concrete personal detail not in the fact sheet."
         }
       ]
     },

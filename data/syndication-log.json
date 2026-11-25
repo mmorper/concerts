@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-24T20:29:04.411Z",
+  "updatedAt": "2026-11-25T19:45:16.270Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -518,26 +518,21 @@
     {
       "slug": "july-16-40-years-since-beach-boys",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "july-16-40-years-since-beach-boys",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n35wb7fajx2i",
+      "rkey": "3n35wb7fajx2i",
+      "postedAt": "2026-11-25T19:44:33.304Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "july-16-40-years-since-beach-boys",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "july-16-40-years-since-beach-boys",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117678795390004393",
+      "postedAt": "2026-11-25T19:45:16.270Z",
+      "tier": 2,
+      "source": "artist-deezer"
     },
     {
       "slug": "july-31-40-years-since-the-art-of-noise",
