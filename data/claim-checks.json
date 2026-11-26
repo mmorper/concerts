@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-25T19:44:28.692Z",
+  "updatedAt": "2026-11-26T19:25:20.608Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -180,16 +180,16 @@
     },
     {
       "slug": "house-of-blues-anaheim-6-shows-over-3-decades-2",
-      "hash": "b20e47a84cda58c5",
-      "checkedAt": "2026-11-25T19:44:22.518Z",
+      "hash": "874093791394d08a",
+      "checkedAt": "2026-11-26T19:24:55.524Z",
       "issues": [
         {
-          "field": "Beat 5",
+          "field": "beat5",
           "sentence": "Six shows. Three decades.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "House of Blues Anaheim shows run from 2003-08-29 (Joe Jackson) to 2022-12-08 (Social Distortion) — a span of about 19 years, not three decades.",
-          "replacement": "Six shows. Two decades."
+          "evidence": "House of Blues Anaheim shows run from 2003-08-29 to 2022-12-08, a span of about 19 years, not three decades.",
+          "replacement": "Six shows. Nineteen years."
         }
       ]
     },
@@ -749,6 +749,12 @@
       ]
     },
     {
+      "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
+      "hash": "69d01ffda452216e",
+      "checkedAt": "2026-11-26T19:25:20.608Z",
+      "issues": []
+    },
+    {
       "slug": "peter-gabriel-11-more-1993-festival-bill",
       "hash": "d79e9b2bba6ac621",
       "checkedAt": "2026-10-08T17:10:34.296Z",
@@ -926,43 +932,36 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "fa914ca5b8411b6e",
-      "checkedAt": "2026-11-25T19:44:13.798Z",
+      "hash": "492108a9d0c9fe30",
+      "checkedAt": "2026-11-26T19:24:48.814Z",
       "issues": [
         {
-          "field": "hook",
+          "field": "Hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Radiohead's The Bends release date (March 13, 1995) is not in the fact sheet; it's a plausible historical fact but cannot be verified against the archive."
+          "evidence": "The Bends release date (March 13, 1995) is not in the fact sheet; cannot confirm or deny this external music history claim."
         },
         {
-          "field": "caption",
+          "field": "Caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Release date for an unrelated artist is not part of the fact sheet; likely true but unverifiable from archive data."
+          "evidence": "This release date is not present in the fact sheet and cannot be verified against it."
         },
         {
-          "field": "caption",
-          "sentence": "Thirteen days later I was watching Brian Setzer's pompadour and upright bass pull rock back to the 1950s instead.",
-          "kind": "personal-invented",
-          "severity": "review",
-          "evidence": "Concrete personal recollection of watching the show is not in OWNER-CONFIRMED PERSONAL FACTS (only Orange County residence circa 1992 is confirmed)."
-        },
-        {
-          "field": "beat1",
+          "field": "Beat 1",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Release date for Radiohead's album is not in the fact sheet; cannot be confirmed via archive data."
+          "evidence": "Release date and characterization of Radiohead's impact are not in the fact sheet."
         },
         {
-          "field": "beat3",
+          "field": "Beat 3",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "No age or era-comparison figure is given in the fact sheet for rockabilly's age relative to 1995; this number has no basis."
+          "evidence": "Fact sheet gives no birth year or age for Brian Setzer, so this age comparison is unsupported."
         }
       ]
     },
@@ -1080,15 +1079,15 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "46f6f537ba9a246b",
-      "checkedAt": "2026-11-25T19:43:55.819Z",
+      "hash": "9d3f7dc240218930",
+      "checkedAt": "2026-11-26T19:24:43.127Z",
       "issues": [
         {
           "field": "hook",
-          "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
+          "sentence": "'Red Red Wine' made the setlist when I finally saved UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show was 1988-09-09, second was 2023-07-21 — that's 34 years and about 10 months, not a full 35 years.",
+          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's about 34 years and 10 months, not a full 35 years.",
           "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
         },
         {
@@ -1096,31 +1095,40 @@
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is 34 years and roughly 10 months, short of a full 35 years.",
-          "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
+          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years (34 years, 10 months).",
+          "replacement": "Almost thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
           "field": "beat 3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is 34 years and about 10 months, not a full 35 years.",
-          "replacement": "Nearly thirty-five years went by before I bought another ticket."
+          "evidence": "Gap between 1988-09-09 and 2023-07-21 is just shy of 35 years.",
+          "replacement": "Nearly thirty-five years went by before I saw them again."
+        },
+        {
+          "field": "beat 3",
+          "sentence": "Thirty-five years went by before I bought another ticket.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "Ticket purchase detail is not supported by the fact sheet and ticket details are explicitly excluded from the data.",
+          "replacement": "Nearly thirty-five years went by before I saw them again."
         },
         {
           "field": "beat 2",
           "sentence": "The Labour of Love covers felt like they'd always existed.",
-          "kind": "contradicted",
-          "severity": "must-fix",
-          "evidence": "No setlist is on record for 1988-09-09; the fact sheet shows the 1988 show was touring behind the self-titled 'UB40' album (album 10 of 26), not Labour of Love, and only the 2023 setlist is documented.",
-          "replacement": "The songs off the new self-titled record felt like they'd always existed."
+          "kind": "invented-number",
+          "severity": "review",
+          "evidence": "No setlist is on record for the 1988-09-09 show, so no specific songs (Labour of Love covers or otherwise) can be confirmed for that night.",
+          "replacement": "The songs felt like they'd always existed."
         },
         {
           "field": "beat 4",
           "sentence": "the thing I'd wondered about in the parking lot",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "No OWNER-CONFIRMED PERSONAL FACT supports a specific parking-lot recollection; this is a concrete personal detail not in the fact sheet."
+          "evidence": "A specific location detail (parking lot) is not supported by the fact sheet and is not in owner-confirmed personal facts.",
+          "replacement": "the thing I'd wondered about ever since"
         }
       ]
     },

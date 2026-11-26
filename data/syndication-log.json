@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-25T19:45:16.270Z",
+  "updatedAt": "2026-11-26T19:27:43.865Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -1114,26 +1114,21 @@
     {
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
       "platform": "bluesky",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
-      "platform": "instagram",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "at://did:plc:zmrewnmc4lh2vytxmsa5flyd/app.bsky.feed.post/3n3afnwhsle2j",
+      "rkey": "3n3afnwhsle2j",
+      "postedAt": "2026-11-26T19:25:25.797Z",
+      "tier": 2,
+      "source": "venue-places"
     },
     {
       "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
       "platform": "mastodon",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
-    },
-    {
-      "slug": "pacific-amphitheatre-16-shows-over-5-decades-2",
-      "platform": "x",
-      "status": "seeded",
-      "seededAt": "2026-08-22T04:22:15.524Z"
+      "status": "posted",
+      "uri": "117684388734414550",
+      "postedAt": "2026-11-26T19:27:43.864Z",
+      "tier": 2,
+      "source": "venue-places"
     },
     {
       "slug": "peter-gabriel-11-more-1993-festival-bill",
