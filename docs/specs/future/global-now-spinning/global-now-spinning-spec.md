@@ -654,14 +654,20 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
 - **Leaving the receiver** (owner's decision, 2026-11-26). When a record session ends, the
   listener puts the receiver back on the Apple TV input (`SIMPLAY`), so the next press of the
   Apple TV remote brings everything up as usual (see [Design Philosophy](#design-philosophy)).
-  - It acts only while the main zone's input is Phono, and when it finds the receiver in standby
-    with Phono as its last input. Two timers, counted from when it posts `stopped` (owner's
-    choice):
+  - **Receiver in standby with Phono as its last input:** at once, with no timer. Someone turned
+    the receiver off, so nobody is listening; this is what keeps the next press of the Apple TV
+    remote working.
+  - **Main zone on, input Phono:** one of two timers, counted from when it posts `stopped`
+    (owner's choice):
     - **Needle lifted** (`stopped` after 3 minutes of silence): **15 minutes**. Time to look for
       the next record before the receiver gives up.
     - **Needle left in the run-out groove** (`stopped` after 5 minutes of sound with no match,
       at click level): **60 minutes**. Someone is probably still using the turntable, but this
       still recovers if they walked away and forgot the needle.
+  - Which timer runs depends on the sound since `stopped`: while it is at music level, neither
+    runs; silence starts (or restarts) the 15 minutes; click-level sound starts the 60. So an
+    unrecognised record that plays on past `stopped` holds both off, and when it ends, the 15
+    minutes start.
   - **Music-level sound cancels either timer**, recognised or not, as does the loop leaving
     `stopped` (a new `track`, or `unmatched` after real silence and fresh sound). A record
     Shazam doesn't know also ends in `stopped` after 5 minutes of unmatched sound, so the loop
@@ -1099,6 +1105,10 @@ when it can't be reached.
 - [ ] With the TV off and the Apple TV asleep: needle down → the TV comes on, the Apple TV wakes and the app is in front; the record keeps playing
 - [ ] The Apple TV remote still turns the TV, receiver and Apple TV on and off together, from the Apple TV input
 - [ ] After a record session, the listener puts the receiver back on the Apple TV input, and the Apple TV remote then brings everything up as usual
+- [ ] Needle lifted: the receiver goes back to the Apple TV input about 15 minutes after the record is `stopped`, not sooner
+- [ ] Needle left in the run-out groove: about 60 minutes after `stopped`
+- [ ] A record Shazam doesn't know plays a whole side without the receiver switching away
+- [ ] Receiver turned off while on Phono: the next press of the Apple TV remote brings everything up
 - [ ] With the screensaver showing: needle down → the app is on screen
 - [ ] With a film playing on the Apple TV: nothing interrupts it
 - [ ] Waking the Apple TV never switches the receiver away from Phono
