@@ -213,7 +213,7 @@ history.
 | 1c | On the Pi: `vcgencmd get_throttled` reads `0x0`, `/proc/device-tree/chosen/power/max_current` reads 5000 (a recognised 5 A supply), and `dmesg` shows no USB over-current or under-voltage warnings with the Blackjack plugged in. Steps in [`NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md) §5. | The Blackjack draws its power from the Pi's USB ports |
 | 2a | Optional, and possible before the hardware arrives: try the Shazam app on a phone with the same ten records. Note what it calls each artist and title. | Same catalogue as the Pi will query. A match through speakers and room noise is a strong sign; a miss is ambiguous. It doesn't replace check 2. |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
-| 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
+| 3 | Leave the needle in the run-out groove and watch the level. Record its RMS: it sets the music-level threshold that cancels the 15-minute return to the Apple TV input. | The Music Hall has no auto-lift, so the click may never read as silence |
 | 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, change the receiver's HDMI settings and try again. The Apple TV's "Control TVs and Receivers" stays on (see [Design Philosophy](#design-philosophy)). **Passed 2026-11-25**, but the TV doesn't wake while the receiver is on Phono; the listener wakes it with Wake-on-LAN instead (check 5, [Pi listener](#pi-listener-now-spinningpi)). | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
 | 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26, which network the Apple TV is on, and any firewall rule or `--scan-hosts` it needed. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
@@ -668,13 +668,14 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
   - Why 15 minutes (owner): time to look for the next record before the receiver gives up.
   - Whether `SIMPLAY` changes the input of a receiver in standby without waking it is still to
     test (#688). If it wakes it, the listener follows with `ZMOFF` so it ends in standby on the
-    Apple TV input. When the 15 minutes run out with the main zone on, it sends `SIMPLAY` then
-    `PWSTANDBY`.
+    Apple TV input. When the 15 minutes run out with the main zone on (once the threshold is set),
+    it sends `SIMPLAY` then `PWSTANDBY`.
   - Cost, on the turntable side: someone who leaves the turntable for longer than that and comes
     back has to turn the receiver on and choose Phono again.
   - Cost, briefly, on the Apple TV side: until the return happens, the receiver is still on Phono,
     so the Apple TV remote won't bring the TV up (Phase 0 check 4). Someone who reaches for it
-    within those minutes switches the receiver to the Apple TV by hand.
+    within those minutes switches the receiver to the Apple TV by hand. Accepted by the owner,
+    2026-11-26.
 - Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
   Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
   commands Phase 0 check 6b found to work.
