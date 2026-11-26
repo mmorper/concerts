@@ -4,7 +4,7 @@
 **Target Version:** v7.0.0
 **Priority:** Medium
 **Estimated Complexity:** Very High (hardware, a Python listener, a new Worker with a Durable Object, a display)
-**Dependencies:** Bug #689 comes before Phase 1. Phase 0 (a hardware evening, #688) comes before Phase 4. Bug #690 comes before the release.
+**Dependencies:** Bug #689 comes before Phase 1. Phase 0 (a hardware evening, #688) comes before Phase 4; done 2026-11-26. Bug #690 comes before the release.
 **Tracking:** epic #687
 
 **Kit in this folder:**
@@ -87,7 +87,7 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 
 **Implementation Approach:**
 - Prerequisite: #689 merged before Window 1 (#690 is needed before the release, not before Window 1)
-- Phase 0 (Mike, hardware evening, #688): must be done and recorded in this spec before Window 4
+- Phase 0 (Mike, hardware evening, #688): done and recorded in this spec, 2026-11-26 (v1.9.0)
 - Window 1: match module + index builder + pure identify() with fixture tests
 - Window 2: Worker API, Durable Object, auth, liveness, CI + deploy
 - Window 3: web display page (the development display)
@@ -205,6 +205,11 @@ real records (check 2), the run-out groove (3), the receiver not switching input
 TV wakes (4), and the Pi being able to put an app on the Apple TV's screen (5). Test them with
 the Pi, the Onyx Blackjack and the Apple TV, and record the results in this spec's revision
 history.
+
+**Status, 2026-11-26:** done. Every check below passed except 7, which Phase 4 answers from
+`shazamio`'s source code. Check 2 used nine records (the owner's call), and its gapless record
+was also live, so gapless and live weren't told apart. Results are in the
+[Revision History](#revision-history) (v1.7.0 to v1.9.0) and on #688.
 
 | # | Check | Why it matters |
 |---|---|---|
@@ -676,8 +681,10 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
     | **−75** to −45 | the run-out groove (clicks, surface noise): the 60-minute timer |
     | below **−75** | needle lifted: the 15-minute timer |
 
-    The run-out sits below the loop's −50 silence threshold, so a side left in the run-out
-    still reaches `stopped` after 3 minutes; the level since then picks the timer. Measure
+    The run-out (−52) sits just under the loop's −50 silence threshold, only 2 dB below it. So
+    a side left in the run-out reaches `stopped` either way: after 3 minutes as silence, or, if
+    its level wavers above −50, after 5 minutes as sound with no match. The level since then
+    picks the timer. Measure
     again if the Zone 2 level or GAIN changes.
   - Which timer runs follows the level since `stopped`: while it is at music level, neither
     runs; below −75 starts (or restarts) the 15 minutes; between −75 and −45 starts the 60. So
@@ -753,7 +760,7 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.
 
-**What the listener sends.** To be confirmed against the raw response saved in Phase 0 check 2:
+**What the listener sends.** The raw response saved in Phase 0 check 2 is on #688; Phase 4 confirms this mapping against it:
 
 | Field | From Shazam's response |
 |---|---|
@@ -1228,13 +1235,13 @@ site counts songs the same way the TV does.
 
 ## Questions for Review
 
-None open. Phase 0 (#688) is complete: every check passed (see Revision History).
+None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is answered in Phase 4). See Revision History.
 
 ---
 
 ## Revision History
 
-- **2026-11-26, v1.9.0: Phase 0 complete.** Every check passed. Details are on #688.
+- **2026-11-26, v1.9.0: Phase 0 complete.** Every check Phase 0 runs passed; check 7 is answered in Phase 4. Details are on #688.
   - **Check 2 (Shazam on the line feed):** nine records. Every one in Shazam's catalogue matched
     on the first try: 1980s pressings, a 45 ("Funkytown"), live tracks, a megamix. Misses: a
     1971 soundtrack, and later tracks on a rare Devo live record (catalogue gaps, not audio).
