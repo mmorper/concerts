@@ -85,8 +85,8 @@ page sends its token as a WebSocket subprotocol, which may not contain `/` or `=
 
 | Secret | Homes | Notes |
 |--------|-------|-------|
-| `NOW_SPINNING_INGEST_TOKEN` | prod `wrangler secret` (now-spinning) · `workers/now-spinning/.dev.vars` · the Pi's `/etc/now-spinning/env` (root-only) | Rotating it: set the new value on the Worker and on the Pi together; until both match, songs aren't shown. |
-| `NOW_SPINNING_DISPLAY_TOKEN` | prod `wrangler secret` (now-spinning) · `workers/now-spinning/.dev.vars` · prod `wrangler secret` (dashboard-refresh, to read `/health`) · `Secrets.xcconfig` on Mike's Mac (built into the tvOS app) · each browser that has opened `/now-spinning` | Rotating it signs every display out: rebuild the tvOS app from Xcode, and open `/now-spinning#token=…` again in each browser. |
+| `NOW_SPINNING_INGEST_TOKEN` | 1Password (the copy to restore from) · prod `wrangler secret` (now-spinning) · `workers/now-spinning/.dev.vars` (gitignored; create it from 1Password on each Mac) · the Pi's `/etc/now-spinning/env` (root-only) | Rotating it: set the new value on the Worker and on the Pi together; until both match, songs aren't shown. |
+| `NOW_SPINNING_DISPLAY_TOKEN` | 1Password (the copy to restore from) · prod `wrangler secret` (now-spinning) · `workers/now-spinning/.dev.vars` (gitignored; create it from 1Password on each Mac) · prod `wrangler secret` (dashboard-refresh, to read `/health`) · `Secrets.xcconfig` on Mike's Mac (built into the tvOS app) · each browser that has opened `/now-spinning` | Rotating it signs every display out: rebuild the tvOS app from Xcode, and open `/now-spinning#token=…` again in each browser. |
 
 ```bash
 cd workers/now-spinning

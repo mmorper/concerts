@@ -209,3 +209,14 @@ describe("photos", () => {
     expect(r.photos.length).toBeLessThanOrEqual(5);
   });
 });
+
+describe("CPU on a cold isolate", () => {
+  // The free tier allows 10 ms of CPU per request. The first localeCompare in a fresh isolate loads
+  // ICU collation (~8 ms), which put the deployed lookup at 9-10 ms (#692). Dates are ISO strings
+  // and sort correctly as plain strings, so the lookup never needs it.
+  it("the lookup uses no locale-aware comparison", async () => {
+    const { readFileSync } = await import("node:fs");
+    const src = readFileSync(new URL("./identify.ts", import.meta.url), "utf8");
+    expect(src.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "")).not.toMatch(/localeCompare|Intl\.Collator/);
+  });
+});
