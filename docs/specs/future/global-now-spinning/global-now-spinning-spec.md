@@ -658,9 +658,13 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
     (owner's choice), and when it finds the receiver in standby with Phono as its last input.
     Counting from `stopped`, not from silence, covers a needle left in the run-out groove, where
     Zone 2 never goes quiet: `stopped` comes after 3 minutes of silence or 5 minutes of sound
-    with no match. Only the loop leaving `stopped` cancels it: a new `track`, or `unmatched`
-    after real silence and fresh sound (a record Shazam doesn't know). Clicks in the run-out
-    groove keep the loop in `stopped`, so they don't cancel it.
+    with no match. It is cancelled by the loop leaving `stopped` (a new `track`, or `unmatched`
+    after real silence and fresh sound), **or by sound at music level**. A record Shazam doesn't
+    know also ends in `stopped` after 5 minutes, so the loop alone can't tell it from the run-out
+    groove; loudness can. Run-out clicks sit well below music, so the listener keeps a short
+    running RMS and treats sustained sound above a threshold as music. The threshold comes from
+    Phase 0 check 3, which measures the run-out groove's level. Until it is set, the listener
+    doesn't act on the 15 minutes while the main zone is on, only on a receiver in standby.
   - Why 15 minutes (owner): time to look for the next record before the receiver gives up.
   - Whether `SIMPLAY` changes the input of a receiver in standby without waking it is still to
     test (#688). If it wakes it, the listener follows with `ZMOFF` so it ends in standby on the
