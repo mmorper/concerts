@@ -33,3 +33,20 @@ class_name = "NowSpinningRoom"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["NowSpinningRoom"]
+
+# Workers Paid since 2026-11-26 (#692): over-limit use is billed, not refused. This caps any one
+# request (and any Durable Object call) at 100 ms of CPU, about 10x what these Workers ran under on
+# the free tier, so a runaway bug or abuse fails fast instead of running up CPU.
+[limits]
+cpu_ms = 100
+
+# Workers Logs: errors, exceptions and console output, kept 7 days in the dashboard (#723).
+# Invocation logs stay off: they record request headers, and this Worker receives credentials in
+# headers (bearer tokens, the display token's WebSocket subprotocol). CPU time per request is on the
+# Worker's Metrics tab instead. Billing: Cloudflare Observability pricing from 2026-12-01; this
+# Worker's log volume is tiny.
+[observability]
+enabled = true
+
+[observability.logs]
+invocation_logs = false
