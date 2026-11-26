@@ -123,8 +123,10 @@ step, a slower start, or no picture. In practice:
 - No setting is changed that stops the Apple TV remote turning the TV and receiver on and off.
   "Control TVs and Receivers" stays on.
 - When a record session ends, the receiver must be back on the Apple TV input. Woken on Phono,
-  it doesn't pass the Apple TV's signal to turn the TV on (Phase 0 check 4).
-- The Now Spinning display may need the TV turned on by hand.
+  it doesn't pass the Apple TV's signal to turn the TV on (Phase 0 check 4). The listener does
+  this itself (owner's decision, 2026-11-26): see [Pi listener](#pi-listener-now-spinningpi).
+- The listener turns the TV on over the network (Wake-on-LAN), never through the Apple TV or the
+  receiver, so nothing about the Apple TV remote changes.
 
 ---
 
@@ -161,8 +163,8 @@ sequenceDiagram
   AVR-->>Pi: Phono, main zone on
   Pi->>AVR: Zone 2 on, source Phono
   Note over Pi: sound after silence → recognise at once
+  Note over Pi: Wake-on-LAN to the TV first (Phase 0)
   Pi->>TV: wake the Apple TV, bring the app to the front (pyatv)
-  Note over TV: the TV itself may need turning on by hand (Phase 0 check 4)
   TV->>W: open WebSocket (display token)
   DO-->>TV: current state
   Pi->>W: POST {event: "track", artist, title, album, artworkUrl}
@@ -211,8 +213,8 @@ history.
 | 1c | On the Pi: `vcgencmd get_throttled` reads `0x0`, `/proc/device-tree/chosen/power/max_current` reads 5000 (a recognised 5 A supply), and `dmesg` shows no USB over-current or under-voltage warnings with the Blackjack plugged in. Steps in [`NOW_SPINNING_OPERATIONS.md`](../../../NOW_SPINNING_OPERATIONS.md) §5. | The Blackjack draws its power from the Pi's USB ports |
 | 2a | Optional, and possible before the hardware arrives: try the Shazam app on a phone with the same ten records. Note what it calls each artist and title. | Same catalogue as the Pi will query. A match through speakers and room noise is a strong sign; a miss is ambiguous. It doesn't replace check 2. |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
-| 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
-| 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, change the receiver's HDMI settings and try again. The Apple TV's "Control TVs and Receivers" stays on (see [Design Philosophy](#design-philosophy)). **Passed 2026-11-25**, but the TV doesn't wake while the receiver is on Phono. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
+| 3 | Leave the needle in the run-out groove and watch the level. Record its RMS: it sets the music-level threshold that tells run-out clicks from music, for the return to the Apple TV input. | The Music Hall has no auto-lift, so the click may never read as silence |
+| 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, change the receiver's HDMI settings and try again. The Apple TV's "Control TVs and Receivers" stays on (see [Design Philosophy](#design-philosophy)). **Passed 2026-11-25**, but the TV doesn't wake while the receiver is on Phono; the listener wakes it with Wake-on-LAN instead (check 5, [Pi listener](#pi-listener-now-spinningpi)). | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
 | 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26, which network the Apple TV is on, and any firewall rule or `--scan-hosts` it needed. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
 | 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies, which network the receiver is on, and any firewall rule it needed. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
@@ -602,7 +604,8 @@ ready-made build for it on the Pi; if it doesn't, pin the newest version that ha
 failure). `sounddevice` needs the `libportaudio2` system package.
 
 Config is in `/etc/now-spinning/env`: the Worker URL, the ingest token, the receiver's address,
-the Apple TV's identifier and address, and the audio device. The file is readable by root only;
+the Apple TV's identifier and address, the TV's MAC address (for Wake-on-LAN), and the audio
+device. The file is readable by root only;
 systemd reads it (`EnvironmentFile=`) before it starts the service as its own user.
 
 **A shared Pi.** The Pi also runs the UniFi MCP servers, set up from their own runbook ("UniFi MCP
@@ -640,17 +643,50 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
 - **Keep Zone 2 on while it's needed.** Whenever a poll finds the main zone on Phono and Zone 2
   off, turn Zone 2 back on. The receiver's Auto Standby for Zone 2 is set to 8 hours, so a long
   session with no button presses can switch it off; this stops that leaving the listener deaf.
-- The listener never touches the main zone.
+- The listener touches the main zone in one case only: returning it to the Apple TV input when a
+  record session ends (below). It never changes the main zone while anything else is playing.
 - **Read both `ZM` and `SI`.** The receiver reports `SIPHONO` in standby too, so the input alone
   doesn't mean a record is playing.
 - **Confirm by asking.** A command doesn't always get a reply (`Z2ON` sent none when the receiver
   was already on), so check the result with `Z2?`. The receiver also sends status lines nobody
   asked for, nonstop while another controller is connected: keep reading, keep only `ZM`, `SI`,
   `Z2` and `PW` lines, and use a fixed deadline, not a pause, to decide a reply is complete.
-- **Leaving the receiver.** When a record session ends, the receiver must be back on the Apple TV
-  input (see [Design Philosophy](#design-philosophy)). For now that is a manual step. Doing it
-  automatically (after a long silence on Phono, `SIMPLAY` then `PWSTANDBY`) would break "never
-  touches the main zone", so it is an open question for Phase 4, for the owner to decide.
+- **Leaving the receiver** (owner's decision, 2026-11-26). When a record session ends, the
+  listener puts the receiver back on the Apple TV input (`SIMPLAY`), so the next press of the
+  Apple TV remote brings everything up as usual (see [Design Philosophy](#design-philosophy)).
+  - **Receiver in standby with Phono as its last input:** at once, with no timer. Someone turned
+    the receiver off, so nobody is listening; this is what keeps the next press of the Apple TV
+    remote working.
+  - **Main zone on, input Phono:** one of two timers, counted from when it posts `stopped`
+    (owner's choice):
+    - **Needle lifted** (`stopped` after 3 minutes of silence): **15 minutes**. Time to look for
+      the next record before the receiver gives up.
+    - **Needle left in the run-out groove** (`stopped` after 5 minutes of sound with no match,
+      at click level): **60 minutes**. Someone is probably still using the turntable, but this
+      still recovers if they walked away and forgot the needle.
+  - Which timer runs depends on the sound since `stopped`: while it is at music level, neither
+    runs; silence starts (or restarts) the 15 minutes; click-level sound starts the 60. So an
+    unrecognised record that plays on past `stopped` holds both off, and when it ends, the 15
+    minutes start.
+  - **Music-level sound cancels either timer**, recognised or not, as does the loop leaving
+    `stopped` (a new `track`, or `unmatched` after real silence and fresh sound). A record
+    Shazam doesn't know also ends in `stopped` after 5 minutes of unmatched sound, so the loop
+    alone can't tell it from the run-out groove; loudness can. Run-out clicks sit well below
+    music, so the listener keeps a short running RMS and treats sustained sound above a
+    threshold as music. The threshold comes from Phase 0 check 3, which measures the run-out
+    groove's level. Until it is set, the listener acts only on a receiver in standby, never
+    while the main zone is on.
+  - Whether `SIMPLAY` changes the input of a receiver in standby without waking it is still to
+    test (#688). If it wakes it, the listener follows with `ZMOFF` so it ends in standby on the
+    Apple TV input. When a timer runs out with the main zone on (once the threshold is set), it
+    sends `SIMPLAY` then `PWSTANDBY`.
+  - Cost, on the turntable side: someone who leaves the turntable for longer than that and comes
+    back has to turn the receiver on and choose Phono again. A needle left in the run-out groove
+    rides it for up to an hour: mild extra stylus wear, which the listener can't prevent.
+  - Cost, briefly, on the Apple TV side: until the return happens, the receiver is still on Phono,
+    so the Apple TV remote won't bring the TV up (Phase 0 check 4). Someone who reaches for it
+    within those minutes (about 20 after a lifted needle, about 65 after a forgotten run-out)
+    switches the receiver to the Apple TV by hand. Accepted by the owner, 2026-11-26.
 - Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
   Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
   commands Phase 0 check 6b found to work.
@@ -667,12 +703,18 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
   second record an hour later appear instead of playing behind the screensaver (once the TV is
   on: see below), and it means
   "Listening…" is visible for a record Shazam doesn't know.
-- **What:** wake the Apple TV if it's asleep, then bring the app to the front if it isn't there,
-  including from behind the screensaver.
-- **The TV may stay off.** With the receiver on Phono, waking the Apple TV doesn't turn the TV
-  on (Phase 0 check 4). Until something else wakes it (the TV's own network control, or a short
-  switch of the receiver to the Apple TV input), the TV is turned on by hand. The listener still
-  wakes the Apple TV and brings the app forward, so it is ready when the TV comes on.
+- **What, in order:**
+  1. **Wake the TV** with a Wake-on-LAN packet to its MAC address (broadcast on the Pi's network).
+     Waking the Apple TV over the network never turns the TV on, whatever the receiver's input
+     (Phase 0 checks 4 and 5). The TV must keep "Power On with Mobile" on. It works over Wi-Fi,
+     including after a night in standby; the record keeps playing.
+  2. **Wake the Apple TV** (`turn_on`) if it's asleep.
+  3. **Bring the app to the front** (`launch_app`). One call also clears the screensaver.
+- **Connect by address.** Give `pyatv` the Apple TV's address (192.168.1.111, fixed in UniFi);
+  don't rely on network discovery, which sometimes misses a sleeping Apple TV.
+- **Don't trust the current-app report right after a launch.** It can still name the previous
+  app; check again a moment later, or don't depend on it.
+- **Pin `srptools` below 2** in the lockfile. With 2.0.0, `pyatv` 0.18.0 can't pair.
 - **Never interrupt.** If the Apple TV reports that something is playing, do nothing. A paused
   app is not protected: it goes to the background and keeps its place.
 - When the record stops, do nothing. The app goes idle and the Apple TV's screensaver takes over.
@@ -959,6 +1001,9 @@ The listener records the two channels as stereo and downmixes to mono itself.
 **Receiver setup, once:**
 - General → ZONE2 Setup → Volume Level: fixed at **60** (the loudest passage peaks at −13 dBFS with GAIN at U). Bass, Treble and channel levels 0 dB, High Pass Filter off, Stereo.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
+- TV (Samsung): **Power On with Mobile: On** (under the network settings; the exact menu path
+  varies by firmware), so Wake-on-LAN works. Fixed address 192.168.1.231 in UniFi (set
+  2026-11-26). Wi-Fi is enough; Ethernet is optional.
 - General → Auto Standby: Main Zone Off; Zone 2 **8 hours**, a safety net if Zone 2 is left on
   (while Zone 2 is on, the receiver doesn't go to standby).
 - Video Select on Phono stays on the Apple TV, as it is today.
@@ -1056,10 +1101,14 @@ when it can't be reached.
 - [ ] Needle up for 3 min → idle
 - [ ] Needle left in the run-out groove → idle within about 5 min
 - [ ] Pull the Pi's power mid-song → idle within about 3 min; about 15 min later the idle screen says the listener is offline; power back → it clears
-- [ ] A second record an hour later appears without touching the Apple TV remote (the TV already on), with the layout mirrored
-- [ ] With the Apple TV asleep: needle down → the Apple TV wakes and the app is in front (turn the TV on by hand if it's off)
+- [ ] A second record an hour later appears without touching the Apple TV remote, with the layout mirrored
+- [ ] With the TV off and the Apple TV asleep: needle down → the TV comes on, the Apple TV wakes and the app is in front; the record keeps playing
 - [ ] The Apple TV remote still turns the TV, receiver and Apple TV on and off together, from the Apple TV input
-- [ ] After a record session, the receiver is back on the Apple TV input before anyone next uses the Apple TV
+- [ ] After a record session, the listener puts the receiver back on the Apple TV input, and the Apple TV remote then brings everything up as usual
+- [ ] Needle lifted: the receiver goes back to the Apple TV input about 15 minutes after the record is `stopped`, not sooner
+- [ ] Needle left in the run-out groove: about 60 minutes after `stopped`
+- [ ] A record Shazam doesn't know plays a whole side without the receiver switching away
+- [ ] Receiver turned off while on Phono: the next press of the Apple TV remote brings everything up
 - [ ] With the screensaver showing: needle down → the app is on screen
 - [ ] With a film playing on the Apple TV: nothing interrupts it
 - [ ] Waking the Apple TV never switches the receiver away from Phono
@@ -1167,19 +1216,26 @@ site counts songs the same way the TV does.
 
 ## Questions for Review
 
-Open, from Phase 0 (#688), for the owner before Phase 4:
-1. **Returning the receiver to the Apple TV input after records.** Manual for now. Doing it
-   automatically (after a long silence on Phono, `SIMPLAY` then `PWSTANDBY`) would break "the
-   listener never touches the main zone". Which rule wins?
-2. **Turning the TV on for the display.** Waking the Apple TV doesn't turn the TV on while the
-   receiver is on Phono, so for now it's by hand. Options: the TV's own network power-on
-   (depends on the model), or a short switch of the receiver to the Apple TV input during the
-   wake, which puts a gap in the music. Or leave it manual.
+None open. Both Phase 0 questions were answered on 2026-11-26 (see Revision History). Still to
+test before Phase 4: what `SIMPLAY` does to a receiver in standby, and `playing` with a film
+paused (#688).
 
 ---
 
 ## Revision History
 
+- **2026-11-26, v1.8.0: Phase 0 check 5, the TV, and the owner's two answers.**
+  - **The listener turns the TV on with Wake-on-LAN.** The TV (Samsung S95C, Power On with Mobile
+    on) woke over Wi-Fi after a night in standby. The full sequence (Wake-on-LAN, then `turn_on`
+    and `launch_app` on the Apple TV) worked with the receiver on Phono, and the record kept
+    playing. Ethernet to the TV is optional.
+  - **The listener returns the receiver to the Apple TV input after records** (owner's
+    decision): 15 minutes after `stopped` from silence, 60 after `stopped` in the run-out
+    groove, with music-level sound cancelling either. "Never touches the main zone" now has that
+    one exception.
+  - Check 5 passed: pairing (with `srptools` < 2), `turn_on`, `launch_app` (which also clears
+    the screensaver) and `playing` (reports live TV as Playing) all work. Network discovery can
+    miss a sleeping Apple TV, so the listener connects by address. Details are on #688.
 - **2026-11-25, v1.7.0: Phase 0 checks 4, 6 and 6b, and a new design rule.**
   - **The Apple TV comes first** (owner's rule): the daily Apple TV experience must never get
     worse, and the turntable takes any cost. Added to [Design Philosophy](#design-philosophy).
