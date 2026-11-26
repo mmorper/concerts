@@ -85,7 +85,13 @@ command = ""
 [limits]
 cpu_ms = 100
 
-# Workers Logs (dashboard, 7-day retention): CPU time, errors and console output per request.
-# Included in Workers Paid (20M events/month); this Worker uses a tiny fraction of that.
+# Workers Logs: errors, exceptions and console output, kept 7 days in the dashboard (#723).
+# Invocation logs stay off: they record request headers, and this Worker receives credentials in
+# headers (bearer tokens, the display token's WebSocket subprotocol). CPU time per request is on the
+# Worker's Metrics tab instead. Billing: Cloudflare Observability pricing from 2026-12-01; this
+# Worker's log volume is tiny.
 [observability]
 enabled = true
+
+[observability.logs]
+invocation_logs = false
