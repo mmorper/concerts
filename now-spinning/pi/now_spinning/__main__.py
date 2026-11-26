@@ -37,7 +37,7 @@ async def serve(cfg: config.Config) -> int:
     stream = LevelStream(cfg.audio_device, loop)
     stream.start()
     try:
-        await Listener(cfg).serve(stream.queue)
+        await Listener(cfg).serve(stream.queue, restart_audio=stream.restart)
     finally:
         stream.stop()
     return 0

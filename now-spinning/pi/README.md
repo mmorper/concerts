@@ -11,6 +11,9 @@ Runs on the Raspberry Pi as the `now-spinning` systemd service. **Phase 4a** (#6
 - **The display wakes** when music starts after silence on Phono: the TV by Wake-on-LAN, then the
   Apple TV, then the app (Music for now). Never while the Apple TV is playing something.
 - **A health check-in** to the Worker every 5 minutes (`recognizer: "off"` until Phase 4b).
+- **No reading isn't silence.** If the Blackjack stops delivering audio, the timers stand still
+  (a playing record is never taken for a lifted needle) and the stream is restarted every minute;
+  the journal says so.
 
 Phase 4b adds song recognition (Shazam) and posting what's playing.
 

@@ -120,3 +120,9 @@ def test_an_unreachable_receiver_raises_oserror():
         return False
 
     assert asyncio.run(go())
+
+
+def test_zone2_sources_with_digits_or_a_slash():
+    for code in ("AUX1", "USB/IPOD", "CD", "PHONO", "NET"):
+        st = parse(split_lines(f"PWON\rZMON\rSIMPLAY\rZ2ON\rZ2{code}\rZ260\rZ2STBY8H\rZ2MUOFF\r".encode()))
+        assert st is not None and st.zone2_source == code, code

@@ -27,11 +27,18 @@ def magic_packet(mac: str) -> bytes:
     return b"\xff" * 6 + raw * 16
 
 
-def wake_on_lan(mac: str, broadcast: str = "255.255.255.255", port: int = 9) -> None:
-    packet = magic_packet(mac)
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.sendto(packet, (broadcast, port))
+def wake_on_lan(mac: str, broadcast: str = "255.255.255.255", port: int = 9) -> bool:
+    """Send the magic packet. Never raises: a network error is logged, and the Apple TV is still
+    woken (the TV may already be on)."""
+    try:
+        packet = magic_packet(mac)
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            s.sendto(packet, (broadcast, port))
+        return True
+    except (OSError, ValueError) as e:
+        log.warning("display: Wake-on-LAN not sent (%s)", e)
+        return False
 
 
 class AppleTv(Protocol):

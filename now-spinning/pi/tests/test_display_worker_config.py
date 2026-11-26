@@ -7,10 +7,10 @@ from now_spinning.display import magic_packet, wake_display
 
 
 def test_magic_packet():
-    p = magic_packet("b0:99:d7:de:1c:58")
-    assert len(p) == 102 and p[:6] == b"\xff" * 6 and p[6:12] == bytes.fromhex("b099d7de1c58")
+    p = magic_packet("aa:bb:cc:dd:ee:ff")
+    assert len(p) == 102 and p[:6] == b"\xff" * 6 and p[6:12] == bytes.fromhex("aabbccddeeff")
     with pytest.raises(ValueError):
-        magic_packet("b0:99:d7")
+        magic_packet("aa:bb:cc")
 
 
 class FakeAtv:
@@ -74,9 +74,9 @@ ENV = {
     "NS_WORKER_URL": "https://concerts.morperhaus.org/",
     "NS_INGEST_TOKEN": "x" * 64,
     "NS_RECEIVER_HOST": "192.168.1.240",
-    "NS_APPLE_TV_ID": "2766E653-3618-484F-AA5C-7BD2C5DA5D3E",
+    "NS_APPLE_TV_ID": "00000000-0000-0000-0000-000000000000",
     "NS_APPLE_TV_HOST": "192.168.1.111",
-    "NS_TV_MAC": "b0:99:d7:de:1c:58",
+    "NS_TV_MAC": "aa:bb:cc:dd:ee:ff",
 }
 
 
@@ -91,3 +91,19 @@ def test_config_names_the_missing_setting():
     env = dict(ENV, NS_TV_MAC="")
     with pytest.raises(config.ConfigError, match="NS_TV_MAC"):
         config.load(env)
+
+
+def test_wake_on_lan_never_raises(monkeypatch):
+    class Bad:
+        def __init__(self, *a):
+            pass
+
+        def __enter__(self):
+            raise OSError("network is unreachable")
+
+        def __exit__(self, *a):
+            return False
+
+    monkeypatch.setattr(display.socket, "socket", Bad)
+    assert display.wake_on_lan("aa:bb:cc:dd:ee:ff") is False
+    assert display.wake_on_lan("not a mac") is False

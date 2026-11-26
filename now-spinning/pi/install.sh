@@ -23,7 +23,7 @@ PY=/usr/bin/python3.13
 
 [[ $EUID -eq 0 ]] || { echo "run with sudo"; exit 1; }
 [[ -x $PY ]] || { echo "$PY not found"; exit 1; }
-id now-spinning >/dev/null 2>&1 || { echo "the now-spinning user doesn't exist (runbook step 3)"; exit 1; }
+id now-spinning >/dev/null 2>&1 || { echo "the now-spinning user doesn't exist (NOW_SPINNING_OPERATIONS.md §3)"; exit 1; }
 dpkg -s libportaudio2 >/dev/null 2>&1 || apt-get install -y libportaudio2
 
 # A root-owned uv at a pinned version (spec: never the copy in the service's home).

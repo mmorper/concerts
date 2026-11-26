@@ -57,6 +57,16 @@ class LevelStream:
         log.info("audio: listening on %r", self.device_name)
 
     def stop(self) -> None:
-        if self._stream is not None:
-            self._stream.stop()
-            self._stream.close()
+        stream, self._stream = self._stream, None
+        if stream is not None:
+            try:
+                stream.stop()
+                stream.close()
+            except Exception as e:  # noqa: BLE001 - a stream whose device has gone can fail to close
+                log.debug("audio: closing: %s", e)
+
+    def restart(self) -> None:
+        """Close the stream and open it again, finding the device afresh (its number can change
+        when the Blackjack is replugged). Raises if it isn't there."""
+        self.stop()
+        self.start()

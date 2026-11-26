@@ -1,6 +1,9 @@
 """The service: one loop, ticking once a second.
 
-- every second: the newest loudness reading → the controller
+- every second: the newest loudness reading → the controller. No new reading means "unknown", not
+  silence: the controller isn't called, so its timers stand still and a record that is playing is
+  never taken for a lifted needle. After AUDIO_STALL_S without a reading the stream is logged as
+  stalled and restarted, every AUDIO_RETRY_S until readings come back.
 - every 5 seconds: the receiver's status → the controller (three failures in a row: unreachable)
 - every 5 minutes: the health check-in to the Worker
 Actions the controller returns are carried out here. With --dry-run they are logged instead,
@@ -13,6 +16,7 @@ import asyncio
 import logging
 import math
 import time
+from collections.abc import Callable
 
 from . import worker
 from .config import Config
@@ -25,6 +29,8 @@ log = logging.getLogger("now_spinning")
 
 POLL_EVERY_S = 5
 UNREACHABLE_AFTER = 3
+AUDIO_STALL_S = 30
+AUDIO_RETRY_S = 60
 
 
 class Listener:
@@ -38,6 +44,9 @@ class Listener:
         self.apple_tv_ok = True
         self._tasks: set[asyncio.Task] = set()
         self._dry_logged: dict[Action, float] = {}
+        self.audio_ok = True
+        self._last_reading_at = 0.0
+        self._restart_failures = 0
 
     @property
     def receiver_ok(self) -> bool:
@@ -89,7 +98,11 @@ class Listener:
                 log.warning("receiver: %s failed (%s)", a.value, e)
 
     async def _wake(self) -> None:
-        self.apple_tv_ok = await wake_display(self.apple_tv, self.cfg.tv_mac, self.cfg.wol_broadcast, self.cfg.app_bundle_id)
+        try:
+            self.apple_tv_ok = await wake_display(self.apple_tv, self.cfg.tv_mac, self.cfg.wol_broadcast, self.cfg.app_bundle_id)
+        except Exception as e:  # noqa: BLE001 - a background task: log, never lose it silently
+            log.warning("display: wake failed (%s)", e)
+            self.apple_tv_ok = False
 
     async def heartbeat(self) -> None:
         if not self.cfg.dry_run:
@@ -105,14 +118,47 @@ class Listener:
         self._tasks.add(t)
         t.add_done_callback(self._tasks.discard)
 
-    async def serve(self, readings: asyncio.Queue[float]) -> None:
+    def check_audio(self, now: float, got_reading: bool, restart_audio: Callable[[], None] | None) -> None:
+        """Track the audio stream: stalled after AUDIO_STALL_S without a reading, then restarted
+        every AUDIO_RETRY_S. Each restart gets a fresh AUDIO_STALL_S to deliver a reading."""
+        if got_reading:
+            if not self.audio_ok:
+                log.info("audio: readings are back")
+            self.audio_ok = True
+            self._restart_failures = 0
+            self._last_reading_at = now
+            return
+        if now - self._last_reading_at < (AUDIO_STALL_S if self.audio_ok else AUDIO_RETRY_S):
+            return
+        if self.audio_ok:
+            log.warning("audio: no reading for %ds; timers paused until it's back", AUDIO_STALL_S)
+            self.audio_ok = False
+        self._last_reading_at = now  # wait a full interval before the next attempt
+        if restart_audio is not None:
+            try:
+                restart_audio()
+                log.info("audio: stream restarted")
+                self._restart_failures = 0
+            except Exception as e:  # noqa: BLE001 - e.g. the Blackjack unplugged; try again later
+                self._restart_failures += 1
+                # Once, then hourly: an unplugged Blackjack shouldn't fill the journal.
+                level = logging.WARNING if self._restart_failures % 60 == 1 else logging.DEBUG
+                log.log(level, "audio: restart failed (%s); retrying every %ds", e, AUDIO_RETRY_S)
+
+    async def tick(self, now: float, readings: asyncio.Queue[float], restart_audio: Callable[[], None] | None = None) -> None:
+        dbfs = None
+        while not readings.empty():
+            dbfs = readings.get_nowait()
+        self.check_audio(now, dbfs is not None, restart_audio)
+        if dbfs is not None:
+            await self.on_reading(now, dbfs)
+
+    async def serve(self, readings: asyncio.Queue[float], restart_audio: Callable[[], None] | None = None) -> None:
         last_poll = last_beat = -math.inf
+        self._last_reading_at = time.monotonic()
         while True:
             now = time.monotonic()
-            dbfs = -math.inf
-            while not readings.empty():
-                dbfs = readings.get_nowait()
-            await self.on_reading(now, dbfs)
+            await self.tick(now, readings, restart_audio)
             if now - last_poll >= POLL_EVERY_S:
                 last_poll = now
                 await self.poll_receiver(now)

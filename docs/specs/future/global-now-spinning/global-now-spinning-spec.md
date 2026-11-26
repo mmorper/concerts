@@ -764,6 +764,10 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - **Phase 4a, before recognition:** "the record has stopped" (which starts the return timers) is
   three minutes without music-level sound (−45 dBFS), and the display wakes when music-level sound
   follows silence on Phono. Phase 4b adds the `gap`, `unmatched` and `stopped` events above.
+- **No reading is not silence.** When the audio stream delivers nothing (the Blackjack unplugged
+  or the capture stalled), the loudness is unknown: the timers stand still, so a playing record is
+  never taken for a lifted needle. The stream is restarted every minute and the journal says so.
+  Phase 4b also reports an outage in the health check-in.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.
 
@@ -1265,6 +1269,7 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
   - Receiver control is telnet, one short connection per 5-second poll, replacing the earlier
     preference for HTTP control: Phase 0 checks 6 and 6b settled it.
   - In 4a, "the record has stopped" is three minutes without music-level sound.
+  - No audio reading counts as unknown, not silence (QA on #724).
 - **2026-11-26, v1.9.0: Phase 0 complete.** Every check Phase 0 runs passed; check 7 is answered in Phase 4. Details are on #688.
   - **Check 2 (Shazam on the line feed):** nine records. Every one in Shazam's catalogue matched
     on the first try: 1980s pressings, a 45 ("Funkytown"), live tracks, a megamix. Misses: a

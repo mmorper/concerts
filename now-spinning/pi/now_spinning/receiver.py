@@ -55,11 +55,26 @@ def parse(lines: list[str]) -> ReceiverStatus | None:
             si = line[2:]
         elif line in ("Z2ON", "Z2OFF"):
             z2p = line == "Z2ON"
-        elif line.startswith("Z2") and line[2:].isalpha() and not line.startswith(("Z2MU", "Z2SLP", "Z2CV", "Z2PS", "Z2HPF", "Z2CS")):
+        elif _is_zone2_source(line):
             z2s = line[2:]
     if None in (pw, zm, si, z2p):
         return None
     return ReceiverStatus(power_on=pw, main_on=zm, source=si, zone2_on=z2p, zone2_source=z2s or "")
+
+
+# Zone 2 lines that aren't its source: mute, sleep, channel volume, settings, auto standby, quick
+# select. A source code can have digits or a slash (Z2AUX1, Z2USB/IPOD); a bare number (Z260) is
+# the volume.
+_Z2_NOT_SOURCE = ("Z2MU", "Z2SLP", "Z2CV", "Z2PS", "Z2HPF", "Z2CS", "Z2STBY", "Z2QUICK", "Z2SMART", "Z2HDA")
+
+
+def _is_zone2_source(line: str) -> bool:
+    rest = line[2:]
+    return (
+        line.startswith("Z2") and rest[:1].isalpha() and rest not in ("ON", "OFF")
+        and not line.startswith(_Z2_NOT_SOURCE)
+        and all(c.isalnum() or c in "/." for c in rest)
+    )
 
 
 def split_lines(data: bytes) -> list[str]:

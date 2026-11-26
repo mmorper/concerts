@@ -82,3 +82,80 @@ def test_heartbeat_reports_health_and_recognition_off(monkeypatch):
     url, body = posted[0]
     assert url == "https://example.invalid/api/now-spinning"
     assert body["recognizer"] == "off" and body["receiver"] == "unreachable" and body["appleTv"] == "ok"
+
+
+# ── Audio stalls (QA round 1, #724) ──────────────────────────────────────────
+
+PHONO = ReceiverStatus(power_on=True, main_on=True, source="PHONO", zone2_on=True, zone2_source="PHONO")
+
+
+def _evening(lis, rx_statuses, seconds, reading_at):
+    """Drive the listener one second at a time, like serve(); reading_at(t) is the dBFS reading
+    that arrives at second t, or None for none."""
+    lis.receiver = FakeReceiver(rx_statuses)
+    q: asyncio.Queue = asyncio.Queue()
+
+    async def go():
+        lis._last_reading_at = 0.0
+        await lis.poll_receiver(0.0)
+        for t in range(1, seconds):
+            r = reading_at(t)
+            if r is not None:
+                q.put_nowait(r)
+            await lis.tick(float(t), q, lis_restart)
+    restarts = []
+
+    def lis_restart():
+        restarts.append(True)
+        raise LookupError("no Blackjack")
+
+    asyncio.run(go())
+    return restarts
+
+
+def test_a_dead_stream_mid_record_never_returns_the_receiver():
+    """The Blackjack drops while a record plays: no readings is unknown, not silence, so the
+    receiver is never switched away from the record."""
+    rx = FakeReceiver([])
+    lis = Listener(CFG, receiver=rx, apple_tv=FakeAtv())
+    sent = []
+    lis.run = _recorder(lis, sent)
+    restarts = _evening(lis, [PHONO], 3 * 3600, lambda t: -30.0 if t < 600 else None)
+    assert Action.RETURN_TO_APPLE_TV not in sent
+    assert not lis.audio_ok
+    assert len(restarts) >= 3  # retried while it stays down
+
+
+def test_silence_still_returns_the_receiver():
+    """The same evening with the stream alive and the needle lifted: the timer does run."""
+    lis = Listener(CFG, receiver=FakeReceiver([]), apple_tv=FakeAtv())
+    sent = []
+    lis.run = _recorder(lis, sent)
+    _evening(lis, [PHONO], 3 * 3600, lambda t: -30.0 if t < 600 else -96.0)
+    assert Action.RETURN_TO_APPLE_TV in sent and lis.audio_ok
+
+
+def test_audio_coming_back_clears_the_stall():
+    lis = Listener(CFG, receiver=FakeReceiver([]), apple_tv=FakeAtv())
+    lis.run = _recorder(lis, [])
+    _evening(lis, [PHONO], 200, lambda t: None if 10 < t < 100 else -30.0)
+    assert lis.audio_ok
+
+
+def _recorder(lis, sent):
+    real = lis.run
+
+    async def run(actions):
+        sent.extend(actions)
+        await real([a for a in actions if a is not Action.WAKE_DISPLAY])
+    return run
+
+
+def test_a_failing_wake_is_logged_not_lost(monkeypatch):
+    async def boom(*a, **k):
+        raise RuntimeError("pyatv blew up")
+
+    monkeypatch.setattr(app, "wake_display", boom)
+    lis = Listener(CFG, receiver=FakeReceiver([]), apple_tv=FakeAtv())
+    asyncio.run(lis._wake())
+    assert lis.apple_tv_ok is False

@@ -604,6 +604,10 @@ Everything here runs as `pi`. The listener itself runs as `now-spinning`, from c
   starts the service.
 - the Apple TV pairing from step 10, which stays in `/var/lib/now-spinning`.
 
+**Before you start:** the `now-spinning` user must already exist (§3) and the Apple TV must be
+paired as that user (§10). `install.sh` stops and says so if the user is missing; it never creates
+it.
+
 **1. Get the code.** The repository is public, so no login is needed. This only downloads files;
 nothing runs.
 
