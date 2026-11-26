@@ -654,15 +654,17 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
 - **Leaving the receiver** (owner's decision, 2026-11-26). When a record session ends, the
   listener puts the receiver back on the Apple TV input (`SIMPLAY`), so the next press of the
   Apple TV remote brings everything up as usual (see [Design Philosophy](#design-philosophy)).
-  - It acts only while the main zone's input is Phono: after a long silence on Phono (a starting
-    value of 30 minutes, longer than a side flip), and when it finds the receiver in standby with
-    Phono as its last input.
+  - It acts only while the main zone's input is Phono: **15 minutes after it posts `stopped`**
+    (owner's choice), and when it finds the receiver in standby with Phono as its last input.
+    Counting from `stopped`, not from silence, covers a needle left in the run-out groove, where
+    Zone 2 never goes quiet: `stopped` comes after 3 minutes of silence or 5 minutes of sound
+    with no match. Any new sound before the 15 minutes are up cancels it.
   - Whether `SIMPLAY` changes the input of a receiver in standby without waking it is still to
     test (#688). If it wakes it, the listener follows with `ZMOFF` so it ends in standby on the
-    Apple TV input. After a long silence with the main zone on, it sends `SIMPLAY` then
+    Apple TV input. When the 15 minutes run out with the main zone on, it sends `SIMPLAY` then
     `PWSTANDBY`.
-  - Cost, on the turntable side: someone who leaves a record off for longer than the timeout and
-    comes back has to choose Phono again.
+  - Cost, on the turntable side: someone who leaves the turntable for longer than that and comes
+    back has to turn the receiver on and choose Phono again.
 - Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
   Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
   commands Phase 0 check 6b found to work.
@@ -1201,7 +1203,8 @@ paused (#688).
     and `launch_app` on the Apple TV) worked with the receiver on Phono, and the record kept
     playing. Ethernet to the TV is optional.
   - **The listener returns the receiver to the Apple TV input after records** (owner's
-    decision). "Never touches the main zone" now has that one exception.
+    decision), 15 minutes after the record is `stopped`. "Never touches the main zone" now has
+    that one exception.
   - Check 5 passed: pairing (with `srptools` < 2), `turn_on`, `launch_app` (which also clears
     the screensaver) and `playing` (reports live TV as Playing) all work. Network discovery can
     miss a sleeping Apple TV, so the listener connects by address. Details are on #688.
