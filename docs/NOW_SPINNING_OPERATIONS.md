@@ -767,6 +767,10 @@ systemctl status now-spinning        # running, or why not
 journalctl -u now-spinning -n 50     # its last 50 log lines
 ```
 
+A line starting `audio:` means the Blackjack stopped delivering sound: it's unplugged, or its USB
+cable is loose. While that lasts the listener decides nothing on sound (it won't return the receiver
+to the Apple TV input) and tries again every minute. `audio: readings are back` means it recovered.
+
 ## Troubleshooting the Pi setup
 
 | Symptom | Likely cause | Fix |

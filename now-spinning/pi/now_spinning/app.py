@@ -1,8 +1,8 @@
 """The service: one loop, ticking once a second.
 
 - every second: the newest loudness reading → the controller. No new reading means "unknown", not
-  silence: the controller isn't called, so its timers stand still and a record that is playing is
-  never taken for a lifted needle. After AUDIO_STALL_S without a reading the stream is logged as
+  silence: the controller isn't called during an outage, and when readings come back its return
+  timers start again from zero, so a record that is playing is never taken for a lifted needle. After AUDIO_STALL_S without a reading the stream is logged as
   stalled and restarted, every AUDIO_RETRY_S until readings come back.
 - every 5 seconds: the receiver's status → the controller (three failures in a row: unreachable)
 - every 5 minutes: the health check-in to the Worker
@@ -123,7 +123,9 @@ class Listener:
         every AUDIO_RETRY_S. Each restart gets a fresh AUDIO_STALL_S to deliver a reading."""
         if got_reading:
             if not self.audio_ok:
-                log.info("audio: readings are back")
+                log.info("audio: readings are back; return timers start again from now")
+                self.controller.audio_resumed(now)
+                self.tracker = LevelTracker()
             self.audio_ok = True
             self._restart_failures = 0
             self._last_reading_at = now

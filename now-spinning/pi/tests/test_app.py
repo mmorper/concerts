@@ -159,3 +159,28 @@ def test_a_failing_wake_is_logged_not_lost(monkeypatch):
     lis = Listener(CFG, receiver=FakeReceiver([]), apple_tv=FakeAtv())
     asyncio.run(lis._wake())
     assert lis.apple_tv_ok is False
+
+
+def test_an_outage_past_a_set_deadline_doesnt_return_on_the_first_readings():
+    """Needle lifted (15-minute timer set), the Blackjack drops, a record starts, audio comes back
+    after the deadline: no return; the timer starts again from zero (QA round 2, #724)."""
+    lis = Listener(CFG, receiver=FakeReceiver([]), apple_tv=FakeAtv())
+    sent = []
+    lis.run = _recorder(lis, sent)
+    # music to 600 s, lifted to 1000 s (stopped at ~780, deadline ~1680), out to 2000 s, then music
+    _evening(lis, [PHONO], 3000, lambda t: -30.0 if t < 600 else -96.0 if t < 1000 else None if t < 2000 else -30.0)
+    assert Action.RETURN_TO_APPLE_TV not in sent
+    assert lis.audio_ok
+
+
+def test_after_an_outage_quiet_still_returns_after_a_fresh_interval():
+    lis = Listener(CFG, receiver=FakeReceiver([]), apple_tv=FakeAtv())
+    sent = []
+    lis.run = _recorder(lis, sent)
+    _evening(lis, [PHONO], 2900, lambda t: -30.0 if t < 600 else -96.0 if t < 1000 else None if t < 2000 else -96.0)
+    assert Action.RETURN_TO_APPLE_TV not in sent  # 2000 + 900 not reached yet
+    lis2 = Listener(CFG, receiver=FakeReceiver([]), apple_tv=FakeAtv())
+    sent2 = []
+    lis2.run = _recorder(lis2, sent2)
+    _evening(lis2, [PHONO], 2920, lambda t: -30.0 if t < 600 else -96.0 if t < 1000 else None if t < 2000 else -96.0)
+    assert Action.RETURN_TO_APPLE_TV in sent2

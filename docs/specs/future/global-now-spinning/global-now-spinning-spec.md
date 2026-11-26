@@ -765,8 +765,9 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
   three minutes without music-level sound (−45 dBFS), and the display wakes when music-level sound
   follows silence on Phono. Phase 4b adds the `gap`, `unmatched` and `stopped` events above.
 - **No reading is not silence.** When the audio stream delivers nothing (the Blackjack unplugged
-  or the capture stalled), the loudness is unknown: the timers stand still, so a playing record is
-  never taken for a lifted needle. The stream is restarted every minute and the journal says so.
+  or the capture stalled), the loudness is unknown: nothing is decided during the outage, and the
+  return timers start again from zero when readings come back, so a playing record is never taken
+  for a lifted needle. The stream is restarted every minute and the journal says so.
   Phase 4b also reports an outage in the health check-in.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.

@@ -109,5 +109,12 @@ class Controller:
                 self.on_phono = False  # until the next poll says otherwise
         return actions
 
+    def audio_resumed(self, now: float) -> None:
+        """Readings are back after an outage. Nothing heard during it counts: a return needs a
+        fresh interval of quiet from now, and a record playing gets a fresh 3 minutes."""
+        self.quiet_kind, self.deadline = None, None
+        if self.session is Session.PLAYING:
+            self.last_music_at = now
+
     def _stop(self) -> None:
         self.session, self.quiet_kind, self.deadline = Session.STOPPED, None, None
