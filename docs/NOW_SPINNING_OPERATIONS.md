@@ -257,7 +257,7 @@ plug.
 | Control | Setting |
 |---|---|
 | Inputs 1 and 2: LINE / HI-Z | **LINE** (button out) |
-| Inputs 1 and 2: GAIN | Fully anticlockwise (−15 dB), both the same |
+| Inputs 1 and 2: GAIN | **U** (unity), both the same |
 | PHANTOM | **Off** (light off) |
 | TO MON, MONITOR, PHONES | Minimum |
 
@@ -272,22 +272,37 @@ The Blackjack's POWER and USB lights should come on.
 
 ```bash
 # Pi
-sudo apt install -y alsa-utils sox
+sudo apt install -y alsa-utils sox netcat-openbsd   # nc is used from step 7
 lsusb                              # a line naming Mackie or LOUD
 arecord -l                         # "card N: <Name> [...]": note the short name before the bracket
 sudo dmesg | grep -iE "over-current|undervolt"    # should print nothing
 ```
 
-In the commands below, `<card>` is that short name, for example `Blackjack`. Using the name
-rather than the number matters, because the number can change between boots.
+In the commands below, `<card>` is that short name. On this Pi it is `Blackjack`
+(`card 2: Blackjack [Onyx Blackjack]`). Using the name rather than the number matters, because
+the number can change between boots.
 
 ---
 
 ## 7. Set the levels (Phase 0 check 1)
 
-**On the AV7703** (once): Zone 2 Setup → Volume Level → **fixed**, at a middle value to start.
-Then turn on Zone 2 with **Phono** as its source, from the front panel or the remote's zone
-button. Put on the loudest record you own.
+**On the AV7703** (once): General → ZONE2 Setup → Volume Level → **60**. Leave Bass, Treble,
+Lch and Rch Level at 0 dB, High Pass Filter off and Channel on Stereo. Volume Limit and Power On
+Volume turn grey: that is how you can tell the level is fixed. On this receiver, 60 with GAIN at
+U put the loudest passage at −13 dBFS (2026-11-25). Each step is 1 dB.
+
+Setting the level doesn't turn the zone on. Turn on Zone 2 with **Phono** as its source, from
+the remote's zone button, the Marantz app, or the Pi (the receiver's address is in step 9):
+
+```bash
+# Pi
+printf 'Z2ON\r'    | nc -w 2 <receiver-ip> 23
+printf 'Z2PHONO\r' | nc -w 2 <receiver-ip> 23
+```
+
+If these time out, see step 9: the receiver needs Network Control set to Always On, and a
+firewall rule if it's on a different network from the Pi. The front panel shows MULTI ZONE, and a second line with Zone 2's name and Phono. Put on the
+loudest record you own.
 
 **Watch a live meter on the Pi:**
 
@@ -296,15 +311,23 @@ button. Put on the loudest record you own.
 arecord -D plughw:CARD=<card>,DEV=0 -f cd -V stereo /dev/null      # Ctrl-C to stop
 ```
 
+The meter is a line of text with a bar and a percentage for each channel. The percentage is the
+peak as a share of full scale: 25% is about −12 dBFS, 50% about −6, 100% is clipping. A very
+quiet signal still reads `+00%|00%+`: on the bench (2026-11-25), a clip whose loudest moment was
+−38 dBFS by `sox` showed `00%` on the meter, which samples moment to moment and can miss a
+single click. Step 7's `sox` check below tells the two apart: `-inf` is silence, a
+number is a quiet signal.
+
 - **Aim for peaks around −12 dBFS on the loudest passages:** the bars reach roughly a quarter of
-  the scale, and never the end.
+  the scale, and never the end. Anywhere from −15 to −10 is fine.
 - The Blackjack's **SIG/OL lights must never turn red.** If they do, lower Zone 2's fixed level.
-- **Too quiet?** Raise Zone 2's fixed level first. Turn the two GAIN knobs only if that isn't
-  enough, and always by the same amount.
+- **Adjust with Zone 2's level only**, leaving GAIN at U. Each step on the receiver is 1 dB, so a
+  peak of −18 needs about 6 more.
 - **Write down the final Zone 2 level and the GAIN knob positions.** A bumped knob is the most
   likely reason recognition gets worse months from now.
 
-**Record a sample and listen to it:**
+**Record a sample, measure it and listen to it.** Measure on a loud, dense passage: a surface
+click can read as the peak of a quiet clip.
 
 ```bash
 # Pi
@@ -317,6 +340,9 @@ sox ~/level-test.wav -n stats 2>&1 | grep -E "Pk lev dB|RMS lev dB"
 scp pi@192.168.1.244:level-test.wav ~/Desktop/
 ```
 
+`Pk lev dB` is the peak, first for both channels together, then left, then right. The `scp`
+runs on the Mac, not the Pi: on the Pi it tries to log in to itself and is refused.
+
 It should sound like the record, with no buzz or hum between tracks. If there's hum, move the
 cable away from power cords. If one side is silent, check the L/R cables.
 
@@ -325,7 +351,25 @@ cable away from power cords. If one side is silent, check the L/R cables.
 ## 8. Test Shazam on your records (Phase 0 checks 2, 3 and 8)
 
 `shazamio` is an unofficial client, so everything in this step runs as `now-spinning`, never
-as `pi`. Open that user's shell first (`sudo -H -u now-spinning bash`, then `cd`).
+as `pi`. Open that user's shell first, **on its own**:
+
+```bash
+# Pi
+sudo -H -u now-spinning bash
+cd
+```
+
+Paste nothing else until the prompt reads `now-spinning@mh-unifi-now-playing`. If you paste the
+switch and the installs as one block and the switch fails (`sudo: unknown user now-spinning`
+means step 3 was skipped), the installs run as `pi`. If that happens, remove what they put in
+`pi`'s home, create the user (step 3), and start this step again:
+
+```bash
+# Pi (as pi)
+rm -rf ~/ns-test ~/.cache/uv ~/.local/share/uv ~/try-shazam.py
+rm -f ~/.local/bin/uv ~/.local/bin/uvx ~/.local/bin/env ~/.local/bin/env.fish
+sed -i '/\.local\/bin\/env/d' ~/.profile ~/.bashrc     # the lines the uv installer added
+```
 
 **Install a test environment.** It uses `uv` and Python 3.13, the same tools as the UniFi
 servers. `uv` and its Python install into this user's home only, and they are for these tests
@@ -370,12 +414,18 @@ asyncio.run(main(sys.argv[1]))
 EOF
 ```
 
-**Run it with a record playing:**
+**Run it with a record playing.** If it can't open the audio device, the `audio` group hasn't
+taken effect in this shell: `exit` and open the shell again.
 
 ```bash
 # Pi (now-spinning): record 10 seconds, then identify it
 arecord -q -D plughw:CARD=<card>,DEV=0 -f cd -d 10 /tmp/clip.wav && ~/ns-test/bin/python ~/try-shazam.py /tmp/clip.wav
 ```
+
+It prints `artist | title | album`, or `no match`. A few lines about an "Unclosed client
+session" follow: `shazamio` leaves its connection open when the script ends. They're harmless
+here (Phase 4's listener closes it). Add `2>/dev/null` to hide them, and drop it again if a run
+prints nothing at all.
 
 Repeat for **ten records**: an old pressing, a live album, an album with no gaps between tracks,
 a 45, and something obscure. For each one, write down:
