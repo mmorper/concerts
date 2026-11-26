@@ -127,7 +127,7 @@ export async function lookup(input: TrackInput, load: Loader): Promise<Track> {
     }
   }
 
-  return describe(input, act, [...rows.values()].sort((a, b) => a.d.localeCompare(b.d)));
+  return describe(input, act, [...rows.values()].sort((a, b) => cmp(a.d, b.d)));
 }
 
 interface HeardNight {
@@ -151,7 +151,7 @@ export function describe(input: TrackInput, act: ActFile | null, covers: CoverRo
   const heard: HeardNight[] = [...byNight.entries()]
     .map(([i, medley]) => ({ night: act!.nights[i], medley }))
     .filter((h) => h.night)
-    .sort((a, b) => a.night.d.localeCompare(b.night.d));
+    .sort((a, b) => cmp(a.night.d, b.night.d));
 
   const coverOfThis = t ? covers.filter((r) => r.k.includes(t)) : [];
   const nk = nearKey(input.title);
@@ -320,11 +320,16 @@ function coverNights(rows: CoverRow[], label: (r: CoverRow) => string): Pick<Tra
 /** Photos from these nights, newest night first. Every caption names the night it is from. */
 function photosOf(nights: { d: string; venue: string; photos: Photo[] }[]): Track["photos"] {
   const out: Track["photos"] = [];
-  for (const n of [...nights].sort((a, b) => b.d.localeCompare(a.d))) {
+  for (const n of [...nights].sort((a, b) => cmp(b.d, a.d))) {
     for (const p of n.photos) {
       out.push({ url: `${SITE}${p.u}`, caption: `${dateLabel(n.d)} · ${n.venue}`, fx: p.fx, fy: p.fy });
       if (out.length === MAX_PHOTOS) return out;
     }
   }
   return out;
+}
+
+/** ISO dates (YYYY-MM-DD) sort as plain strings. localeCompare would load ICU collation on a cold isolate (~8 ms of CPU). */
+function cmp(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
 }
