@@ -536,8 +536,10 @@ interface NowSpinningState {
 
 Without this, a dead Pi or a blocked recogniser looks exactly like "nothing playing".
 
-- The Pi POSTs `{ event: "status", recognizer: "ok" | "failing", receiver: "ok" | "unreachable",
-  appleTv: "ok" | "unreachable", version }` every 5 minutes, playing or not.
+- The Pi POSTs `{ event: "status", recognizer: "ok" | "failing" | "off", receiver: "ok" | "unreachable",
+  appleTv: "ok" | "unreachable", version }` every 5 minutes, playing or not. `off` means the
+  listener isn't recognising songs at all (Phase 4a, before Shazam): unlike `failing`, it puts no
+  notice on the idle screen, and the `#debug` panel shows it neutral, not red.
 - The Durable Object keeps `listener: { lastSeenAt, recognizer, receiver, appleTv, version }` beside the
   state. Every ingest POST refreshes `lastSeenAt`. It holds no song data.
 - `GET /api/now-spinning/health` returns it, plus `online` (seen in the last 15 minutes).
@@ -704,9 +706,10 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
     so the Apple TV remote won't bring the TV up (Phase 0 check 4). Someone who reaches for it
     within those minutes (about 20 after a lifted needle, about 65 after a forgotten run-out)
     switches the receiver to the Apple TV by hand. Accepted by the owner, 2026-11-26.
-- Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
-  Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
-  commands Phase 0 check 6b found to work.
+- **Telnet, a short connection per poll, every 5 s** (`PW?`, `ZM?`, `SI?`, `Z2?`), closed each
+  time, so the listener never holds the port. Phase 0 check 6 showed the receiver answers more
+  than one client at a time, and check 6b tested every command used here, so the HTTP control
+  this spec first preferred isn't needed.
 - **Receiver unreachable.** After three failed polls, stop gating and listen on sound alone. If
   Zone 2 is off there is only silence, so nothing is posted. Report `receiver: "unreachable"`
   in the status heartbeat and keep polling.
@@ -756,7 +759,11 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
   two minutes until something matches or real silence resets the loop.
 - **Heartbeats.** POST `alive` every 60 s while there is a track, a gap or `unmatched`. POST
   `status` every 5 minutes always (see [Listener health](#listener-health)); `recognizer` is
-  `failing` when the last three recognition calls raised errors, as opposed to finding no match.
+  `failing` when the last three recognition calls raised errors, as opposed to finding no match,
+  and `off` in Phase 4a, which has no recognition.
+- **Phase 4a, before recognition:** "the record has stopped" (which starts the return timers) is
+  three minutes without music-level sound (−45 dBFS), and the display wakes when music-level sound
+  follows silence on Phono. Phase 4b adds the `gap`, `unmatched` and `stopped` events above.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.
 
@@ -1197,12 +1204,21 @@ secrets (#693), `GET` returns `idle`.
 ingest token changes the page live.
 
 ### Phase 4: Pi listener (#696, then #697)
-**Create:** `now-spinning/pi/{pyproject.toml,uv.lock,now_spinning/*.py,tests/,now-spinning.service,README.md}`,
-`.github/workflows/now-spinning-pi-ci.yml`
-**Modify:** `docs/NOW_SPINNING_OPERATIONS.md` (§12: install, update, token rotation, pairing with
-the Apple TV), this spec's Privacy section (Phase 0 check 7)
-**Done when:** `--wav --dry-run` prints the right POSTs, pytest passes, and the hardware
-checklist (#697) passes.
+Built in two steps (owner's decision, 2026-11-26), each installed the same way:
+- **4a, receiver control and the display:** Zone 2 follows Phono, the return to the Apple TV input
+  (both timers and the standby case), waking the TV and the Apple TV (Music in front until the
+  tvOS app is installed, #701), and the health check-in with `recognizer: "off"`. No Shazam, no
+  ingest events but `status`.
+- **4b, recognition:** Shazam behind the `Recognizer` interface, the identification loop and its
+  events, `--wav --dry-run`, and the Privacy section (Phase 0 check 7).
+
+**Create (4a):** `now-spinning/pi/{pyproject.toml,uv.lock,now_spinning/*.py,tests/,now-spinning.service,install.sh,env.example,README.md}`,
+`.github/workflows/now-spinning-pi-ci.yml`, a `uv` entry in `.github/dependabot.yml`
+**Modify (4a):** `docs/NOW_SPINNING_OPERATIONS.md` §12 (install, check, update, token rotation),
+the Worker's `status` validation (`recognizer: "off"`), the page's `#debug` panel
+**Done when:** pytest passes (including a check that every locked package has an aarch64 wheel
+for Python 3.13, since the Pi installs with `--no-build`), and the hardware checklist (#697)
+passes; 4a's part of it is in the operations guide §12.
 
 ### Phase 5: tvOS app (#698, then #701)
 **Create:**
@@ -1241,6 +1257,14 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
 
 ## Revision History
 
+- **2026-11-26, v1.10.0: Phase 4 split into 4a and 4b; 4a built.**
+  - 4a (owner's decision): receiver control, the return to the Apple TV input, waking the display
+    with Music in front until #701, and the health check-in. 4b adds recognition.
+  - `recognizer: "off"` added to the `status` event, for a listener with no recognition: no idle
+    notice, neutral in the `#debug` panel.
+  - Receiver control is telnet, one short connection per 5-second poll, replacing the earlier
+    preference for HTTP control: Phase 0 checks 6 and 6b settled it.
+  - In 4a, "the record has stopped" is three minutes without music-level sound.
 - **2026-11-26, v1.9.0: Phase 0 complete.** Every check Phase 0 runs passed; check 7 is answered in Phase 4. Details are on #688.
   - **Check 2 (Shazam on the line feed):** nine records. Every one in Shazam's catalogue matched
     on the first try: 1980s pressings, a 45 ("Funkytown"), live tracks, a megamix. Misses: a

@@ -113,6 +113,12 @@ describe("listener health", () => {
     expect(r.listener).toMatchObject({ recognizer: "failing", receiver: "ok", appleTv: "ok", version: "1" });
   });
 
+  it("puts no notice up when recognition is off (Phase 4a, before Shazam)", () => {
+    const r = run([[0, { event: "status", recognizer: "off", receiver: "ok", appleTv: "ok", version: "pi-0.4.0" }]]);
+    expect(r.room.state.notice).toBeUndefined();
+    expect(r.listener).toMatchObject({ recognizer: "off" });
+  });
+
   it("names the date when the listener went quiet on an earlier day", () => {
     const r = run([[0, { event: "alive" }], [24 * 60 * 60_000, { event: "alarm" }]]);
     expect(r.room.state.notice).toBe("The listener has been offline since Nov 21, 3:00 PM.");

@@ -590,17 +590,107 @@ rm -f ~/level-test.wav
 
 ## 12. Installing the listener (Phase 4)
 
-*To be written when Phase 4 builds the listener.* It will cover:
-- the code in `/opt/now-spinning`, owned by root, so the service can't change its own code
-- its Python environment, built from the committed lockfile by a copy of `uv` and a Python that
-  root owns. Root never runs anything from `/var/lib/now-spinning`.
-- `/etc/now-spinning/env`: the Worker URL and the ingest token. Root-only; systemd reads it
-  before it starts the service.
-- the `now-spinning` systemd service, running as the `now-spinning` user with no access to
-  `/home`
-- the Apple TV pairing from step 10, which stays in `/var/lib/now-spinning`
-- updating on purpose: pull, rebuild from the lockfile, restart
-- rotating the ingest token (also listed in [`SECRETS.md`](SECRETS.md))
+**Phase 4a** (#696) is what this step installs: Zone 2 follows Phono, the receiver goes back to the
+Apple TV input after records, the TV and Apple TV wake when a record starts, and a health check-in
+every 5 minutes. Song recognition (Shazam) is Phase 4b; it installs the same way, as an update.
+What it does and why: `now-spinning/pi/README.md` and the spec's §Pi listener.
+
+Everything here runs as `pi`. The listener itself runs as `now-spinning`, from code root owns:
+- the code in `/opt/now-spinning/app` and its Python environment in `/opt/now-spinning/venv`,
+  owned by root, built from the committed lock file by a pinned, root-owned `uv` and the system's
+  Python 3.13, with nothing compiled (`--frozen --no-build`). Root never runs anything from
+  `/var/lib/now-spinning`.
+- its settings in `/etc/now-spinning/env`, readable by root only. systemd reads them before it
+  starts the service.
+- the Apple TV pairing from step 10, which stays in `/var/lib/now-spinning`.
+
+**1. Get the code.** The repository is public, so no login is needed. This only downloads files;
+nothing runs.
+
+```bash
+# Pi
+sudo apt install -y git                      # if `git` isn't there yet
+git clone --depth 1 https://github.com/mmorper/concerts.git ~/concerts
+```
+
+**2. Install.** It installs `libportaudio2` if it's missing, puts a pinned `uv` in
+`/usr/local/bin` (checked against its published checksum), builds the environment, installs the
+service and creates `/etc/now-spinning/env` from the template. It doesn't start anything.
+
+```bash
+# Pi
+cd ~/concerts/now-spinning/pi && sudo ./install.sh
+```
+
+**3. Fill in the settings.** `sudo nano /etc/now-spinning/env`. The addresses are already filled
+in. Three values aren't, because the repository is public:
+- `NS_INGEST_TOKEN`: from 1Password, "Now Spinning ingest token".
+- `NS_APPLE_TV_ID`: the Apple TV's identifier from step 10. To read it again:
+  `sudo -u now-spinning -H /opt/now-spinning/venv/bin/atvremote --scan-hosts 192.168.1.111 scan`
+  and copy the first identifier under "Family Room".
+- `NS_TV_MAC`: the TV's MAC address. With the TV on: `ip neigh show 192.168.1.231`, the value
+  after `lladdr`.
+
+**4. Check it before it controls anything.** This reads the receiver once and one second of audio,
+prints both and exits, as the `now-spinning` user with the real settings:
+
+```bash
+# Pi
+sudo systemd-run --pipe --wait --quiet -p User=now-spinning -p SupplementaryGroups=audio \
+  -p EnvironmentFile=/etc/now-spinning/env -p WorkingDirectory=/opt/now-spinning/app \
+  -p Environment=HOME=/var/lib/now-spinning \
+  /opt/now-spinning/venv/bin/python -m now_spinning --check
+```
+
+Expect a `ReceiverStatus(...)` line and a dBFS reading. `no complete reply` means the receiver
+didn't answer (step 9's notes apply); `no input device` means the Blackjack isn't seen (step 6).
+
+Optional: the same command with `--dry-run` instead of `--check` runs everything but only logs
+what it would do. Put a record on and watch; Ctrl-C to stop.
+
+**5. Start it.**
+
+```bash
+# Pi
+sudo systemctl enable --now now-spinning
+journalctl -u now-spinning -f               # its log; Ctrl-C to stop watching
+```
+
+Within 5 minutes the page's `#debug` panel shows the listener online, with song recognition
+`off`. That's correct for Phase 4a.
+
+**6. Check it on the equipment** (Phase 4a's part of #697). Tick each on #697:
+- [ ] Main zone to Phono → Zone 2 turns on within about 5 seconds (MULTI ZONE on the display).
+- [ ] Main zone back to the Apple TV → Zone 2 turns off.
+- [ ] Record playing, TV off, Apple TV asleep → the TV comes on and Music is in front; the record
+  keeps playing.
+- [ ] A film playing on the Apple TV, then Phono and a record → the film isn't interrupted.
+- [ ] Needle lifted at the end of a side → about 18 minutes later (3 to call it stopped, then 15)
+  the receiver goes to standby on the Apple TV input, and the Apple TV remote brings everything up.
+- [ ] Needle left in the run-out → nothing at 18 minutes; about 63 minutes later the same return.
+- [ ] Receiver turned off with its remote while on Phono → within a few seconds it is set to the
+  Apple TV input and stays in standby.
+- [ ] A side longer than 15 minutes plays through without anything switching.
+
+**Record this in the UniFi runbook:** the `now-spinning` service, `libportaudio2`,
+`/usr/local/bin/uv` (pinned), `/opt/now-spinning` and `/etc/now-spinning`.
+
+**Updating, on purpose.** Pull, re-run the installer, which rebuilds from the lock file and
+restarts the service:
+
+```bash
+# Pi
+cd ~/concerts && git pull && cd now-spinning/pi && sudo ./install.sh
+```
+
+**Stopping it.** `sudo systemctl disable --now now-spinning`. Zone 2 then stays as it is; switch
+it off from the Marantz app if needed.
+
+**Rotating the ingest token.** Generate a new one (`openssl rand -hex 32`), set it on the Worker
+(`npx wrangler secret put NOW_SPINNING_INGEST_TOKEN` in `workers/now-spinning`), put it in
+`/etc/now-spinning/env` and 1Password, then `sudo systemctl restart now-spinning`. Until both
+match, the check-in fails and the panel shows the listener offline. Also in
+[`SECRETS.md`](SECRETS.md).
 
 Building and installing the tvOS app is done on the Mac, not the Pi: see issue #701.
 

@@ -1,0 +1,43 @@
+name: Now Spinning Pi CI
+
+# Tests for the Pi listener (now-spinning/pi, #696). Python 3.13 (the Pi's), installed from the
+# committed uv.lock, so CI tests exactly what the Pi installs. No deploy: the owner installs on the
+# Pi by hand (NOW_SPINNING_OPERATIONS.md §12).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'now-spinning/pi/**'
+      - '.github/workflows/now-spinning-pi-ci.yml'
+  pull_request:
+    paths:
+      - 'now-spinning/pi/**'
+      - '.github/workflows/now-spinning-pi-ci.yml'
+
+concurrency:
+  group: now-spinning-pi-ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: now-spinning/pi
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # The same uv version install.sh pins for the Pi.
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/0.11.32/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      # Same flags as the Pi's install: the lock file as committed, nothing built from source.
+      - name: Install dependencies
+        run: uv sync --python 3.13 --frozen --no-build
+
+      - name: Test
+        run: uv run --frozen python -m pytest -q

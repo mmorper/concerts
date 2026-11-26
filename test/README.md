@@ -22,7 +22,9 @@ suites that were genuinely failing.
 **`npm run test:run` covers the root app only.** Use `npm run test:everything`
 for full coverage, and note that CI runs the root gate (`.github/workflows/ci.yml`)
 while each Worker has its own path-filtered workflow (`mcp-ci.yml`, `ask-chat-ci.yml`,
-`now-spinning-ci.yml`).
+`now-spinning-ci.yml`). The Now Spinning Pi listener is Python and outside npm entirely:
+`now-spinning/pi`, tested with `uv run --frozen python -m pytest -q` there and in
+`now-spinning-pi-ci.yml`.
 
 ## Quick Start
 
