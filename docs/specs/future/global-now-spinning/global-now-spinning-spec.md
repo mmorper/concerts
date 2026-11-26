@@ -4,7 +4,7 @@
 **Target Version:** v7.0.0
 **Priority:** Medium
 **Estimated Complexity:** Very High (hardware, a Python listener, a new Worker with a Durable Object, a display)
-**Dependencies:** Bug #689 comes before Phase 1. Phase 0 (a hardware evening, #688) comes before Phase 4. Bug #690 comes before the release.
+**Dependencies:** Bug #689 comes before Phase 1. Phase 0 (a hardware evening, #688) comes before Phase 4; done 2026-11-26. Bug #690 comes before the release.
 **Tracking:** epic #687
 
 **Kit in this folder:**
@@ -87,7 +87,7 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 
 **Implementation Approach:**
 - Prerequisite: #689 merged before Window 1 (#690 is needed before the release, not before Window 1)
-- Phase 0 (Mike, hardware evening, #688): must be done and recorded in this spec before Window 4
+- Phase 0 (Mike, hardware evening, #688): done and recorded in this spec, 2026-11-26 (v1.9.0)
 - Window 1: match module + index builder + pure identify() with fixture tests
 - Window 2: Worker API, Durable Object, auth, liveness, CI + deploy
 - Window 3: web display page (the development display)
@@ -205,6 +205,11 @@ real records (check 2), the run-out groove (3), the receiver not switching input
 TV wakes (4), and the Pi being able to put an app on the Apple TV's screen (5). Test them with
 the Pi, the Onyx Blackjack and the Apple TV, and record the results in this spec's revision
 history.
+
+**Status, 2026-11-26:** done. Every check below passed except 7, which Phase 4 answers from
+`shazamio`'s source code. Check 2 used nine records (the owner's call), and its gapless record
+was also live, so gapless and live weren't told apart. Results are in the
+[Revision History](#revision-history) (v1.7.0 to v1.9.0) and on #688.
 
 | # | Check | Why it matters |
 |---|---|---|
@@ -656,30 +661,42 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
   Apple TV remote brings everything up as usual (see [Design Philosophy](#design-philosophy)).
   - **Receiver in standby with Phono as its last input:** at once, with no timer. Someone turned
     the receiver off, so nobody is listening; this is what keeps the next press of the Apple TV
-    remote working.
+    remote working. In standby the receiver ignores `SIMPLAY` (Phase 0), so the listener sends
+    `ZMON`, then `SIMPLAY`, then `PWSTANDBY`: a few seconds awake, silent, the TV stays off.
+    `ZMON` rather than `PWON`, so Zone 2 stays off.
   - **Main zone on, input Phono:** one of two timers, counted from when it posts `stopped`
     (owner's choice):
-    - **Needle lifted** (`stopped` after 3 minutes of silence): **15 minutes**. Time to look for
-      the next record before the receiver gives up.
-    - **Needle left in the run-out groove** (`stopped` after 5 minutes of sound with no match,
-      at click level): **60 minutes**. Someone is probably still using the turntable, but this
-      still recovers if they walked away and forgot the needle.
-  - Which timer runs depends on the sound since `stopped`: while it is at music level, neither
-    runs; silence starts (or restarts) the 15 minutes; click-level sound starts the 60. So an
-    unrecognised record that plays on past `stopped` holds both off, and when it ends, the 15
-    minutes start.
+    - **Needle lifted** (level below the needle-lifted threshold): **15 minutes**. Time to look
+      for the next record before the receiver gives up.
+    - **Needle left in the run-out groove** (level between the two thresholds): **60 minutes**.
+      Someone is probably still using the turntable, but this still recovers if they walked
+      away and forgot the needle.
+  - **Three levels, measured in Phase 0 check 3** (30 s RMS through the line feed, at Zone 2 60
+    and GAIN U): loud music −31 dBFS, quiet music −35 (the sparsest intro tried, −36), the
+    run-out groove −52, the needle lifted −96. So:
+
+    | Threshold (short running RMS, held several seconds) | Means |
+    |---|---|
+    | above **−45 dBFS** | music: holds both timers off |
+    | **−75** to −45 | the run-out groove (clicks, surface noise): the 60-minute timer |
+    | below **−75** | needle lifted: the 15-minute timer |
+
+    The run-out (−52) sits just under the loop's −50 silence threshold, only 2 dB below it. So
+    a side left in the run-out reaches `stopped` either way: after 3 minutes as silence, or, if
+    its level wavers above −50, after 5 minutes as sound with no match. The level since then
+    picks the timer. Measure
+    again if the Zone 2 level or GAIN changes.
+  - Which timer runs follows the level since `stopped`: while it is at music level, neither
+    runs; below −75 starts (or restarts) the 15 minutes; between −75 and −45 starts the 60. So
+    an unrecognised record that plays on past `stopped` holds both off, and when it ends, the
+    right timer starts.
   - **Music-level sound cancels either timer**, recognised or not, as does the loop leaving
     `stopped` (a new `track`, or `unmatched` after real silence and fresh sound). A record
     Shazam doesn't know also ends in `stopped` after 5 minutes of unmatched sound, so the loop
     alone can't tell it from the run-out groove; loudness can. Run-out clicks sit well below
-    music, so the listener keeps a short running RMS and treats sustained sound above a
-    threshold as music. The threshold comes from Phase 0 check 3, which measures the run-out
-    groove's level. Until it is set, the listener acts only on a receiver in standby, never
-    while the main zone is on.
-  - Whether `SIMPLAY` changes the input of a receiver in standby without waking it is still to
-    test (#688). If it wakes it, the listener follows with `ZMOFF` so it ends in standby on the
-    Apple TV input. When a timer runs out with the main zone on (once the threshold is set), it
-    sends `SIMPLAY` then `PWSTANDBY`.
+    music, so the listener keeps a short running RMS and treats sustained sound above −45 dBFS
+    as music (Phase 0 check 3).
+  - When a timer runs out with the main zone on, it sends `SIMPLAY` then `PWSTANDBY`.
   - Cost, on the turntable side: someone who leaves the turntable for longer than that and comes
     back has to turn the receiver on and choose Phono again. A needle left in the run-out groove
     rides it for up to an hour: mild extra stylus wear, which the listener can't prevent.
@@ -730,8 +747,10 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
   gap. That keeps calls to Shazam near two a minute.
 - **No flapping.** Replacing an established track needs two results in a row that agree. The
   first result after a gap, `unmatched` or idle posts straight away.
-- **Silence.** RMS below −50 dBFS for ≥ 4 s → POST `gap` once; for ≥ 3 min → `stopped`. Tune the
-  threshold in Phase 0 against real surface noise.
+- **Silence.** RMS below −50 dBFS for ≥ 4 s → POST `gap` once; for ≥ 3 min → `stopped`. Phase 0
+  check 3 measured the run-out groove at −52 and quiet music at −35, so −50 stays: surface noise
+  between tracks and in the run-out counts as silence here. The return to the Apple TV input
+  uses two more levels (−45, −75); see [Gating on the receiver](#pi-listener-now-spinningpi).
 - **No match.** Three misses in a row → POST `unmatched` once. Five minutes of sound with no
   match (the run-out groove, a record Shazam doesn't know) → POST `stopped` and try once every
   two minutes until something matches or real silence resets the loop.
@@ -741,7 +760,7 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.
 
-**What the listener sends.** To be confirmed against the raw response saved in Phase 0 check 2:
+**What the listener sends.** The raw response saved in Phase 0 check 2 is on #688; Phase 4 confirms this mapping against it:
 
 | Field | From Shazam's response |
 |---|---|
@@ -1216,14 +1235,27 @@ site counts songs the same way the TV does.
 
 ## Questions for Review
 
-None open. Both Phase 0 questions were answered on 2026-11-26 (see Revision History). Still to
-test before Phase 4: what `SIMPLAY` does to a receiver in standby, and `playing` with a film
-paused (#688).
+None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is answered in Phase 4). See Revision History.
 
 ---
 
 ## Revision History
 
+- **2026-11-26, v1.9.0: Phase 0 complete.** Every check Phase 0 runs passed; check 7 is answered in Phase 4. Details are on #688.
+  - **Check 2 (Shazam on the line feed):** nine records. Every one in Shazam's catalogue matched
+    on the first try: 1980s pressings, a 45 ("Funkytown"), live tracks, a megamix. Misses: a
+    1971 soundtrack, and later tracks on a rare Devo live record (catalogue gaps, not audio).
+    Spellings to pin in tests: "Echo & The Bunnymen" and "Echo And The Bunnymen" for one act;
+    "Lipps, Inc."; titles with "(Live)" and "(Live 1981)"; albums with "(Remastered)" and
+    "- Single", and live tracks with no album.
+  - **Check 3 (levels):** loud music −31 dBFS RMS, quiet music −35 (sparsest intro −36), run-out
+    groove −52, needle lifted −96. The return timers use −45 (music) and −75 (needle lifted);
+    the loop's −50 silence threshold stays.
+  - **Check 5, finished:** `power_state`, `app_list`, and `playing` reporting Paused as well as
+    Playing.
+  - **Check 1c:** `throttled=0x0`, the 5 A supply recognised, no over-current warnings.
+  - **Standby return:** in standby the receiver ignores `SIMPLAY`; `ZMON`, `SIMPLAY`,
+    `PWSTANDBY` works quietly, and the Apple TV remote then brings everything up.
 - **2026-11-26, v1.8.0: Phase 0 check 5, the TV, and the owner's two answers.**
   - **The listener turns the TV on with Wake-on-LAN.** The TV (Samsung S95C, Power On with Mobile
     on) woke over Wi-Fi after a night in standby. The full sequence (Wake-on-LAN, then `turn_on`
