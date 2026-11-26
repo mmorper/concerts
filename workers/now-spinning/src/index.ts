@@ -100,10 +100,12 @@ export function parseEvent(body: unknown): IngestEvent | null {
     case "alive":
       return { event: b.event };
     case "status":
-      if (!okOrBad(b.recognizer, "ok", "failing") || !okOrBad(b.receiver, "ok", "unreachable") || !okOrBad(b.appleTv, "ok", "unreachable")) return null;
+      // "off": the listener isn't recognising songs at all (Phase 4a, before Shazam). Honest,
+      // and unlike "failing" it puts no notice on the idle screen.
+      if (!(okOrBad(b.recognizer, "ok", "failing") || b.recognizer === "off") || !okOrBad(b.receiver, "ok", "unreachable") || !okOrBad(b.appleTv, "ok", "unreachable")) return null;
       return {
         event: "status",
-        recognizer: b.recognizer as "ok" | "failing",
+        recognizer: b.recognizer as "ok" | "failing" | "off",
         receiver: b.receiver as "ok" | "unreachable",
         appleTv: b.appleTv as "ok" | "unreachable",
         version: str(b.version, 40) ?? "unknown",

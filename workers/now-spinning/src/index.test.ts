@@ -190,6 +190,14 @@ describe("ingest", () => {
     expect(JSON.stringify(h)).not.toContain("Silence");
   });
 
+  it("accepts recognizer \"off\" from a listener without song recognition (Phase 4a)", async () => {
+    const { env } = makeEnv();
+    const r = await handle(post({ event: "status", recognizer: "off", receiver: "ok", appleTv: "ok", version: "pi-0.4.0" }), env);
+    expect(r.status).toBe(200);
+    const h = (await (await handle(req("/api/now-spinning/health", { token: DISPLAY }), env)).json()) as Record<string, unknown>;
+    expect(h).toMatchObject({ recognizer: "off" });
+  });
+
   it("sets the alarm, and the alarm sends the room idle", async () => {
     const { env, storage, roomObj } = makeEnv();
     await handle(post({ event: "track", artist: "Depeche Mode", title: "Enjoy the Silence" }), env);

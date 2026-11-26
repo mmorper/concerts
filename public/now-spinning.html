@@ -580,7 +580,7 @@ const ago = ms => {
   const s = Math.round(ms / 1000);
   return s < 60 ? `${s} s ago` : s < 3600 ? `${Math.floor(s / 60)} min ${s % 60} s ago` : `${Math.floor(s / 3600)} h ago`;
 };
-const cls = v => (v === 'ok' || v === true ? 'ok' : v == null ? 'warn' : 'bad');
+const cls = v => (v === 'ok' || v === true ? 'ok' : v == null || v === 'off' ? 'warn' : 'bad'); // 'off': no recognition yet (Phase 4a)
 
 function renderDebug() {
   const el = $('debug');

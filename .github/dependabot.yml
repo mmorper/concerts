@@ -176,6 +176,22 @@ updates:
         exclude-patterns:
           - typescript
 
+  # The Pi listener's Python lock file (#696). Weekly, grouped like the npm ones. Its CI installs
+  # with --no-build, so a bump that only ships a source build for some package fails the PR there,
+  # before it can reach the Pi.
+  - package-ecosystem: uv
+    directory: /now-spinning/pi
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # pyatv 0.18.0 can't pair with srptools 2 (Phase 0 check 5, #688).
+      - dependency-name: srptools
+        versions: [">=2"]
+
   # deploy.yml already worries, in a comment, that `cloudflare/wrangler-action@v3`
   # is a floating major. This is what would have flagged it.
   - package-ecosystem: github-actions

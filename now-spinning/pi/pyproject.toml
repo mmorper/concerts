@@ -1,0 +1,23 @@
+[project]
+name = "now-spinning"
+version = "0.4.0"
+description = "Now Spinning listener for the Raspberry Pi: receiver control, display wake, health (Phase 4a, #696)"
+readme = "README.md"
+requires-python = "==3.13.*"
+dependencies = [
+  "aiohttp>=3.9",
+  "numpy>=2.0",
+  "pyatv==0.18.0",
+  # pyatv 0.18.0 can't pair with srptools 2.x (Phase 0 check 5, #688).
+  "srptools>=1.0,<2",
+  "sounddevice>=0.4.6",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

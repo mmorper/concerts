@@ -21,7 +21,7 @@ export const OFFLINE_MS = 15 * 60_000;
 
 export interface Listener {
   lastSeenAt: string | null;
-  recognizer: "ok" | "failing" | null;
+  recognizer: "ok" | "failing" | "off" | null;
   receiver: "ok" | "unreachable" | null;
   appleTv: "ok" | "unreachable" | null;
   version: string | null;
@@ -41,7 +41,7 @@ export type RoomEvent =
   | { event: "unmatched" }
   | { event: "stopped" }
   | { event: "alive" }
-  | { event: "status"; recognizer: "ok" | "failing"; receiver: "ok" | "unreachable"; appleTv: "ok" | "unreachable"; version: string }
+  | { event: "status"; recognizer: "ok" | "failing" | "off"; receiver: "ok" | "unreachable"; appleTv: "ok" | "unreachable"; version: string }
   | { event: "alarm" };
 
 export interface Outcome {

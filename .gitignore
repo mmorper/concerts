@@ -144,3 +144,6 @@ now-spinning/tvos/Secrets.xcconfig
 now-spinning/tvos/build/
 xcuserdata/
 DerivedData/
+
+# Now Spinning Pi listener (uv)
+now-spinning/pi/.venv/
