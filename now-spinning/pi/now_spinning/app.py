@@ -2,8 +2,9 @@
 
 - every second: the newest loudness reading → the controller. No new reading means "unknown", not
   silence: the controller isn't called during an outage, and when readings come back its return
-  timers start again from zero, so a record that is playing is never taken for a lifted needle. After AUDIO_STALL_S without a reading the stream is logged as
-  stalled and restarted, every AUDIO_RETRY_S until readings come back.
+  timers start again from zero, so a record that is playing is never taken for a lifted needle.
+  After AUDIO_STALL_S without a reading the stream is logged as stalled and restarted, every
+  AUDIO_RETRY_S until readings come back.
 - every 5 seconds: the receiver's status → the controller (three failures in a row: unreachable)
 - every 5 minutes: the health check-in to the Worker
 Actions the controller returns are carried out here. With --dry-run they are logged instead,
@@ -133,7 +134,7 @@ class Listener:
         if now - self._last_reading_at < (AUDIO_STALL_S if self.audio_ok else AUDIO_RETRY_S):
             return
         if self.audio_ok:
-            log.warning("audio: no reading for %ds; timers paused until it's back", AUDIO_STALL_S)
+            log.warning("audio: no reading for %ds; nothing is decided on sound until it's back", AUDIO_STALL_S)
             self.audio_ok = False
         self._last_reading_at = now  # wait a full interval before the next attempt
         if restart_audio is not None:
