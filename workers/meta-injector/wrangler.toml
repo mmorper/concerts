@@ -37,3 +37,9 @@ command = ""  # No build step needed for vanilla JS worker
 # - 100,000 requests/day
 # - 10ms CPU time per request
 # - 128 MB memory
+
+# Workers Paid since 2026-11-26 (#692): over-limit use is billed, not refused. This caps any one
+# request (and any Durable Object call) at 100 ms of CPU, about 10x what these Workers ran under on
+# the free tier, so a runaway bug or abuse fails fast instead of running up CPU.
+[limits]
+cpu_ms = 100

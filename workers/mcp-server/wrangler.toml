@@ -78,3 +78,14 @@ new_sqlite_classes = ["MorperhausMcp"]
 
 [build]
 command = ""
+
+# Workers Paid since 2026-11-26 (#692): over-limit use is billed, not refused. This caps any one
+# request (and any Durable Object call) at 100 ms of CPU, about 10x what these Workers ran under on
+# the free tier, so a runaway bug or abuse fails fast instead of running up CPU.
+[limits]
+cpu_ms = 100
+
+# Workers Logs (dashboard, 7-day retention): CPU time, errors and console output per request.
+# Included in Workers Paid (20M events/month); this Worker uses a tiny fraction of that.
+[observability]
+enabled = true
