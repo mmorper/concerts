@@ -163,8 +163,8 @@ sequenceDiagram
   AVR-->>Pi: Phono, main zone on
   Pi->>AVR: Zone 2 on, source Phono
   Note over Pi: sound after silence → recognise at once
-  Pi->>TV: wake the Apple TV, bring the app to the front (pyatv)
   Note over Pi: Wake-on-LAN to the TV first (Phase 0)
+  Pi->>TV: wake the Apple TV, bring the app to the front (pyatv)
   TV->>W: open WebSocket (display token)
   DO-->>TV: current state
   Pi->>W: POST {event: "track", artist, title, album, artworkUrl}
@@ -214,7 +214,7 @@ history.
 | 2a | Optional, and possible before the hardware arrives: try the Shazam app on a phone with the same ten records. Note what it calls each artist and title. | Same catalogue as the Pi will query. A match through speakers and room noise is a strong sign; a miss is ambiguous. It doesn't replace check 2. |
 | 2 | Run `shazamio` on ten records: an old pressing, a live album, an album with no gaps between tracks, a 45, something obscure. Note the hit rate, the time to first match, and what Shazam calls each artist and title. Save one complete raw response; Phase 4 maps its fields. | The whole feature rests on this. Turntable speed drift and surface noise are the unknowns. |
 | 3 | Leave the needle in the run-out groove and watch the level | The Music Hall has no auto-lift, so the click may never read as silence |
-| 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, change the receiver's HDMI settings and try again. The Apple TV's "Control TVs and Receivers" stays on (see [Design Philosophy](#design-philosophy)). **Passed 2026-11-25**, but the TV doesn't wake while the receiver is on Phono. | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
+| 4 | **Required.** With the receiver on Phono and a record playing, wake the Apple TV. Does the receiver switch input to it? If it does, change the receiver's HDMI settings and try again. The Apple TV's "Control TVs and Receivers" stays on (see [Design Philosophy](#design-philosophy)). **Passed 2026-11-25**, but the TV doesn't wake while the receiver is on Phono; the listener wakes it with Wake-on-LAN instead (check 5, [Pi listener](#pi-listener-now-spinningpi)). | If HDMI Control (CEC) switches the input, waking the Apple TV stops the record. The display depends on this. |
 | 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26, which network the Apple TV is on, and any firewall rule or `--scan-hosts` it needed. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
 | 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies, which network the receiver is on, and any firewall rule it needed. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
@@ -658,13 +658,20 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
     (owner's choice), and when it finds the receiver in standby with Phono as its last input.
     Counting from `stopped`, not from silence, covers a needle left in the run-out groove, where
     Zone 2 never goes quiet: `stopped` comes after 3 minutes of silence or 5 minutes of sound
-    with no match. Any new sound before the 15 minutes are up cancels it.
+    with no match. Only the loop leaving `stopped` cancels it: a new `track`, or `unmatched`
+    after real silence and fresh sound (a record Shazam doesn't know). Clicks in the run-out
+    groove keep the loop in `stopped`, so they don't cancel it.
+  - Why 15 minutes (owner): time to look for the next record before the receiver gives up.
   - Whether `SIMPLAY` changes the input of a receiver in standby without waking it is still to
     test (#688). If it wakes it, the listener follows with `ZMOFF` so it ends in standby on the
     Apple TV input. When the 15 minutes run out with the main zone on, it sends `SIMPLAY` then
     `PWSTANDBY`.
   - Cost, on the turntable side: someone who leaves the turntable for longer than that and comes
     back has to turn the receiver on and choose Phono again.
+  - Cost, briefly, on the Apple TV side: until the return happens, the receiver is still on Phono,
+    so the Apple TV remote won't bring the TV up (Phase 0 check 4). Someone who reaches for it
+    within those minutes switches the receiver to the Apple TV by hand. Accepted by the owner in
+    choosing the 15 minutes.
 - Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
   Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
   commands Phase 0 check 6b found to work.
@@ -979,8 +986,9 @@ The listener records the two channels as stereo and downmixes to mono itself.
 **Receiver setup, once:**
 - General → ZONE2 Setup → Volume Level: fixed at **60** (the loudest passage peaks at −13 dBFS with GAIN at U). Bass, Treble and channel levels 0 dB, High Pass Filter off, Stereo.
 - Network → Network Control: Always On, so the Pi can reach the receiver in standby.
-- TV (Samsung): Settings → General → Network → Expert Settings → Power On with Mobile: **On**, so
-  Wake-on-LAN works. Fixed address 192.168.1.231 in UniFi. Wi-Fi is enough; Ethernet is optional.
+- TV (Samsung): **Power On with Mobile: On** (under the network settings; the exact menu path
+  varies by firmware), so Wake-on-LAN works. Fixed address 192.168.1.231 in UniFi (set
+  2026-11-26). Wi-Fi is enough; Ethernet is optional.
 - General → Auto Standby: Main Zone Off; Zone 2 **8 hours**, a safety net if Zone 2 is left on
   (while Zone 2 is on, the receiver doesn't go to standby).
 - Video Select on Phono stays on the Apple TV, as it is today.
