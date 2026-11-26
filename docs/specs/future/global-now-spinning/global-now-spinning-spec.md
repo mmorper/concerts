@@ -670,8 +670,7 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
     back has to turn the receiver on and choose Phono again.
   - Cost, briefly, on the Apple TV side: until the return happens, the receiver is still on Phono,
     so the Apple TV remote won't bring the TV up (Phase 0 check 4). Someone who reaches for it
-    within those minutes switches the receiver to the Apple TV by hand. Accepted by the owner in
-    choosing the 15 minutes.
+    within those minutes switches the receiver to the Apple TV by hand.
 - Prefer the receiver's HTTP control (what the `denonavr` library uses) and poll every 5 s.
   Don't hold the telnet port open unless Phase 0 check 6 shows nothing else needs it. Use the
   commands Phase 0 check 6b found to work.
