@@ -164,12 +164,33 @@ def test_music_after_silence_on_phono_wakes_the_display_once():
     assert [a for _, a in acts] == [Action.WAKE_DISPLAY]
 
 
-def test_the_next_side_wakes_the_display_again():
+def test_gaps_between_songs_dont_wake_the_display():
+    """Seen on the equipment (#697): a stream paused mid-record, then the next gap between songs
+    put Music in front over it. A gap is not a new record."""
+    c = Controller()
+    c.on_status(0, ON_PHONO)
+    acts, t = [], 0
+    for _ in range(10):  # ten songs, 4 minutes each, with a 6-second gap
+        acts += run(c, t, 240, Level.MUSIC)
+        acts += run(c, t + 240, 6, Level.RUNOUT)
+        t += 246
+    assert [a for _, a in acts] == [Action.WAKE_DISPLAY]  # once, at the first song
+
+
+def test_a_side_flip_doesnt_wake_the_display_again():
     c = Controller()
     c.on_status(0, ON_PHONO)
     run(c, 0, 600, Level.MUSIC)
-    run(c, 600, 120, Level.LIFTED)  # flipping the record
-    acts = run(c, 720, 60, Level.MUSIC)
+    run(c, 600, 120, Level.LIFTED)  # flipping the record: under 3 minutes
+    assert run(c, 720, 60, Level.MUSIC) == []
+
+
+def test_the_next_record_after_a_stop_wakes_the_display_again():
+    c = Controller()
+    c.on_status(0, ON_PHONO)
+    run(c, 0, 600, Level.MUSIC)
+    run(c, 600, STOPPED_AFTER_S + 60, Level.LIFTED)  # stopped; the 15-minute timer is running
+    acts = run(c, 600 + STOPPED_AFTER_S + 60, 60, Level.MUSIC)
     assert [a for _, a in acts] == [Action.WAKE_DISPLAY]
 
 

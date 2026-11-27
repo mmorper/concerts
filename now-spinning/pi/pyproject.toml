@@ -1,6 +1,6 @@
 [project]
 name = "now-spinning"
-version = "0.4.0"
+version = "0.4.1"
 description = "Now Spinning listener for the Raspberry Pi: receiver control, display wake, health (Phase 4a, #696)"
 readme = "README.md"
 requires-python = "==3.13.*"

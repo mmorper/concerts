@@ -8,8 +8,9 @@ Runs on the Raspberry Pi as the `now-spinning` systemd service. **Phase 4a** (#6
 - **The receiver goes back to the Apple TV input** after records: 15 minutes after the record
   stops with the needle lifted, 60 with the needle left in the run-out, at once if the receiver is
   put in standby on Phono. Music-level sound cancels the timers.
-- **The display wakes** when music starts after silence on Phono: the TV by Wake-on-LAN, then the
-  Apple TV, then the app (Music for now). Never while the Apple TV is playing something.
+- **The display wakes** when a record starts on Phono, not at the gaps between songs: the TV by
+  Wake-on-LAN, then the Apple TV, then the app (Music for now). Never while the Apple TV is
+  playing something.
 - **A health check-in** to the Worker every 5 minutes (`recognizer: "off"` until Phase 4b).
 - **No reading isn't silence.** If the Blackjack stops delivering audio, nothing is decided
   while it's out, and the return timers start again from zero when it's back, so a playing record

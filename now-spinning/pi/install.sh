@@ -50,7 +50,7 @@ chmod -R go-w "$OPT"
 install -d -o root -g root -m 0700 /etc/now-spinning
 if [[ ! -f /etc/now-spinning/env ]]; then
   install -o root -g root -m 0600 "$SRC/env.example" /etc/now-spinning/env
-  echo "created /etc/now-spinning/env: fill in NS_INGEST_TOKEN (sudo nano /etc/now-spinning/env)"
+  echo "created /etc/now-spinning/env: fill in NS_INGEST_TOKEN, NS_APPLE_TV_ID and NS_TV_MAC (sudo nano /etc/now-spinning/env)"
 fi
 
 install -o root -g root -m 0644 "$SRC/now-spinning.service" /etc/systemd/system/now-spinning.service
@@ -59,5 +59,5 @@ if systemctl is-enabled --quiet now-spinning; then
   systemctl restart now-spinning
   echo "updated and restarted"
 else
-  echo "installed. Next: fill in the token, then: sudo systemctl enable --now now-spinning"
+  echo "installed, not started. Next: docs/NOW_SPINNING_OPERATIONS.md §12 steps 3-5 (settings, --check, then enable)"
 fi
