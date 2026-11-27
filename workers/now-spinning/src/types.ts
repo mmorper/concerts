@@ -5,7 +5,7 @@
  * (10 ms of CPU per request), and parsing one 360 KB file was too close to that. A lookup reads
  * the manifest, then at most one act file and the covers files the manifest lists.
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Data, §Worker API
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Data, §Worker API
  */
 
 export const INDEX_VERSION = 1 as const;

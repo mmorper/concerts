@@ -1,7 +1,7 @@
 import SwiftUI
 
 // One preview per state in test/fixtures/now-spinning-states.json. Compare each with its
-// screenshot in docs/specs/future/global-now-spinning/screens/ (the spec's Screen states section
+// screenshot in docs/specs/implemented/global-now-spinning/screens/ (the spec's Screen states section
 // maps them). A name missing from the file shows the idle screen.
 
 #Preview("heard") { StageView(display: Fixtures.display("heard")) }

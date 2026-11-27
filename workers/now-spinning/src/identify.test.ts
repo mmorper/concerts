@@ -3,7 +3,7 @@
  * (test/fixtures/index/, see test-loader.ts). Exact expectations, so they live here and not
  * against live data, which moves.
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Testing Strategy
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Testing Strategy
  */
 import { describe, expect, it } from "vitest";
 import { lookup } from "./identify.js";

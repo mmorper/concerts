@@ -29,7 +29,7 @@ equipment since 2026-11-27:
   `NS_RECOGNIZER=off` turns recognition off and leaves the 4a listener.
 - The return to the Apple TV input still follows loudness alone, so it works when Shazam doesn't.
 
-The rules and their reasons are in the spec, `docs/specs/future/global-now-spinning/global-now-spinning-spec.md`
+The rules and their reasons are in the spec, `docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md`
 §Pi listener. Installing, updating and checking it on the Pi: `docs/NOW_SPINNING_OPERATIONS.md` §12.
 
 ## Layout

@@ -11,7 +11,7 @@
  * `lookup` takes a loader rather than fetching, so the same code runs in the Worker (cached
  * fetches) and in tests (an in-memory index).
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Lookup, §Screen states
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Lookup, §Screen states
  */
 
 import { actKey, actKeysFor, foldSongTitle, nearKey, rulesFingerprint, stripFeat, tidyTitle } from "./match.js";

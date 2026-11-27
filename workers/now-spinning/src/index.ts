@@ -11,7 +11,7 @@
  * Fails closed: if either secret is missing, every request gets 503. That is what makes the first
  * deploy safe — CI deploys on merge, before the secrets are set (#693).
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Worker API
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Worker API
  */
 
 import { sameToken, tokenOf, wantsSubprotocol } from "./auth.js";

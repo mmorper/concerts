@@ -9,7 +9,7 @@
  * Privacy: the room holds exactly two things, the current state and the listener's health. No
  * history, no list. Stopping the record erases the last track.
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Behaviour, §Listener health
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Behaviour, §Listener health
  */
 
 import { INDEX_VERSION, type Kind, type NowSpinningState, type Track } from "./types.js";

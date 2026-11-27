@@ -1,6 +1,6 @@
 # Now Spinning
 
-**Status:** Built and installed (2026-11-27). The release (#699) waits on the last equipment checks (#697).
+**Status:** Released in v7.0.0 (2026-11-27). The remaining equipment checks and the operator dashboard's listener line follow in v7.0.x (#697).
 **Target Version:** v7.0.0
 **Priority:** Medium
 **Estimated Complexity:** Very High (hardware, a Python listener, a new Worker with a Durable Object, a display)
@@ -74,9 +74,9 @@ I need to implement the Now Spinning feature for Morperhaus Concerts.
 - The screen never says something the data can't back up
 
 **Key References:**
-- Full Design Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md
+- Full Design Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md
 - Epic and issues: #687 (work the issue for your phase; its checklist is the definition of done)
-- Reference layout + copy: docs/specs/future/global-now-spinning/mock/index.html and screens/
+- Reference layout + copy: docs/specs/implemented/global-now-spinning/mock/index.html and screens/
 - Matching utilities to reuse, not reinvent: scripts/utils/song-title.ts, scripts/utils/act-name.ts
 - Worker patterns to copy: workers/mcp-server (wrangler.toml, data.ts cachedJsonFetch, CI workflow with its deploy job)
 - Build-time generator precedent: scripts/gen-mcp-landing.ts
@@ -1279,6 +1279,12 @@ Changelog, `CLAUDE.md` project structure, roadmap, context file, the spec moved 
 The release gate is Phases 1–5 and #690: a record plays, the tvOS app shows it on the TV, and the
 site counts songs the same way the TV does.
 
+**As released (owner's decision, 2026-11-27):** v7.0.0 shipped with the gate met end to end (a
+record on the turntable showed on the TV through the app) but with part of #697 still open: the
+Pi power-pull and recovery, the temperature reading, a side flip, the film and asleep-Apple-TV
+cases, a second record an hour later, and the `#debug` recognition line. Those, and the operator
+dashboard's listener-health line, move to v7.0.x under #697.
+
 ---
 
 ## Future Enhancements
@@ -1298,6 +1304,9 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
 
 ## Revision History
 
+- **2026-11-27, v1.12.0: Released in v7.0.0.** The spec moves to `docs/specs/implemented/`. The
+  release went out before #697 was fully ticked, by the owner's decision; what remains, with the
+  operator dashboard's listener line, is v7.0.x (see Release v7.0.0 above).
 - **2026-11-27, v1.11.1: Cleanup after installing.** Status: built and installed. The Cloudflare
   plan and CPU budget lines follow the move to Workers Paid (#692). The tvOS app's quiet headline
   follows the web page's 48 px (#727). The listener brings the Now Spinning app forward

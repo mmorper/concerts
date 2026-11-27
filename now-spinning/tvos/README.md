@@ -2,7 +2,7 @@
 
 The TV's display for Now Spinning. It shows what the Worker sends, laid out exactly as the web
 page at `/now-spinning` does, and writes no words of its own. Spec:
-`docs/specs/future/global-now-spinning/global-now-spinning-spec.md` §On the TV. Installing it is
+`docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md` §On the TV. Installing it is
 issue #701.
 
 ## Build and run (on the Mac)
@@ -25,7 +25,7 @@ nothing else. The token is the Worker's `NOW_SPINNING_DISPLAY_TOKEN` (`docs/SECR
 
 `NowSpinning/Preview/Previews.swift` has one preview per state in
 `test/fixtures/now-spinning-states.json`. Open it with the canvas showing (⌥⌘↩) and compare each
-with its screenshot in `docs/specs/future/global-now-spinning/screens/`. Photos and album art
+with its screenshot in `docs/specs/implemented/global-now-spinning/screens/`. Photos and album art
 load from the site, so the Mac needs a network connection.
 
 ## What's where

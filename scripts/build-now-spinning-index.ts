@@ -19,7 +19,7 @@
  *   npx tsx scripts/build-now-spinning-index.ts --out <dir> --only depeche-mode,devo --covers wham,devo
  *     (a subset, for the Worker's frozen test fixture)
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Data
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Data
  */
 
 import fs from "node:fs";

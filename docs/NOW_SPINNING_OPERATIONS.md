@@ -4,7 +4,7 @@ How to take the Raspberry Pi to a machine that hears the turntable and can ident
 checking that it can drive the Apple TV. Parts 1–11 are everything Phase 0 needs. Part 12
 (installing the listener service) is filled in when Phase 4 builds the listener.
 
-**Spec:** [`specs/future/global-now-spinning/global-now-spinning-spec.md`](specs/future/global-now-spinning/global-now-spinning-spec.md).
+**Spec:** [`specs/implemented/global-now-spinning/global-now-spinning-spec.md`](specs/implemented/global-now-spinning/global-now-spinning-spec.md).
 Its Phase 0 table numbers the checks; this guide says which step covers which check.
 **Checklist to tick off as you go:** issue #688. The whole project is tracked in epic #687.
 
