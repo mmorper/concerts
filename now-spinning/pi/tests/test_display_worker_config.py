@@ -107,3 +107,33 @@ def test_wake_on_lan_never_raises(monkeypatch):
     monkeypatch.setattr(display.socket, "socket", Bad)
     assert display.wake_on_lan("aa:bb:cc:dd:ee:ff") is False
     assert display.wake_on_lan("not a mac") is False
+
+
+def test_recognizer_setting(monkeypatch):
+    assert config.load(ENV).recognizer == "shazam"
+    assert config.load({**ENV, "NS_RECOGNIZER": "OFF"}).recognizer == "off"
+    with pytest.raises(config.ConfigError, match="NS_RECOGNIZER"):
+        config.load({**ENV, "NS_RECOGNIZER": "acrcloud"})
+
+
+def test_wav_mode_runs_the_loop_on_a_file(tmp_path, monkeypatch, capsys):
+    """`--wav FILE` needs no settings, receiver or Worker; with recognition off it shows the
+    silence gate on its own: 40 s of tone, 200 s of silence."""
+    import wave
+
+    import numpy as np
+
+    from now_spinning.__main__ import main
+
+    rate = 8_000
+    t = np.arange(rate * 40) / rate
+    pcm = np.concatenate([0.3 * np.sin(2 * np.pi * 440 * t), np.zeros(rate * 200)])
+    path = tmp_path / "side.wav"
+    with wave.open(str(path), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        w.writeframes((pcm * 32767).astype("<i2").tobytes())
+    monkeypatch.setenv("NS_RECOGNIZER", "off")
+    assert main(["--wav", str(path)]) == 0
+    assert "would POST" not in capsys.readouterr().out  # nothing shown, so no gap or stopped to say

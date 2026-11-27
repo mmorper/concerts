@@ -1,7 +1,8 @@
 """The health check-in to the Worker: POST {event: "status"} every 5 minutes, playing or not.
 
-Phase 4a has no song recognition, so `recognizer` is "off": honest, and the Worker shows no
-"isn't working" notice for it. The token is sent as a Bearer header and never logged.
+`recognizer` is "ok", "failing" (three recognition errors in a row, or no audio), or "off" when
+recognition is turned off (NS_RECOGNIZER=off): honest, and the Worker shows no "isn't working"
+notice for "off". The token is sent as a Bearer header and never logged.
 """
 
 from __future__ import annotations

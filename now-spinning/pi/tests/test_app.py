@@ -184,3 +184,165 @@ def test_after_an_outage_quiet_still_returns_after_a_fresh_interval():
     lis2.run = _recorder(lis2, sent2)
     _evening(lis2, [PHONO], 2920, lambda t: -30.0 if t < 600 else -96.0 if t < 1000 else None if t < 2000 else -96.0)
     assert Action.RETURN_TO_APPLE_TV in sent2
+
+
+# ── Phase 4b: recognition in the service ─────────────────────────────────────
+
+from now_spinning.recognition import Match, RecognitionError  # noqa: E402
+
+SONG = Match(title="Nobody's Diary", artist="Yazoo", album="You and Me Both", shazam_id="20066955")
+APPLE_TV_INPUT = ReceiverStatus(power_on=True, main_on=True, source="MPLAY", zone2_on=True, zone2_source="PHONO")
+
+
+class FakeRecognizer:
+    def __init__(self, answer=SONG):
+        self.answer, self.calls = answer, 0
+
+    async def recognize(self, wav):
+        self.calls += 1
+        if isinstance(self.answer, Exception):
+            raise self.answer
+        return self.answer
+
+
+def _listener(statuses, recognizer=None):
+    lis = Listener(CFG, receiver=FakeReceiver(statuses), apple_tv=FakeAtv(), recognizer=recognizer, clip=lambda: b"RIFF")
+    lis._wake = _no_wake
+    return lis
+
+
+async def _no_wake():
+    return None
+
+
+def _events(lis):
+    out = []
+    while not lis.events.empty():
+        out.append(lis.events.get_nowait())
+    return out
+
+
+async def _seconds(lis, start, n, dbfs):
+    q: asyncio.Queue = asyncio.Queue()
+    for t in range(start, start + n):
+        q.put_nowait(dbfs)
+        await lis.tick(float(t), q)
+        await asyncio.sleep(0)  # let a recognition task run
+
+
+def test_on_phono_a_record_is_recognised_and_posted(caplog):
+    caplog.set_level("INFO")
+    rec = FakeRecognizer()
+    lis = _listener([PHONO], rec)
+
+    async def go():
+        await lis.poll_receiver(0)
+        await _seconds(lis, 1, 20, -30.0)
+
+    asyncio.run(go())
+    events = _events(lis)
+    assert events == [SONG.event()]
+    assert rec.calls == 1
+    assert "Yazoo" not in caplog.text and "Nobody" not in caplog.text  # no play history in the journal
+    assert "event: track" in caplog.text
+
+
+def test_leaving_phono_posts_stopped_and_stops_listening():
+    rec = FakeRecognizer()
+    lis = _listener([PHONO, APPLE_TV_INPUT], rec)
+
+    async def go():
+        await lis.poll_receiver(0)
+        await _seconds(lis, 1, 20, -30.0)
+        _events(lis)
+        await lis.poll_receiver(21)
+        lis.update_gate(21)
+        await _seconds(lis, 22, 60, -30.0)
+
+    asyncio.run(go())
+    assert _events(lis) == [{"event": "stopped"}]
+    assert rec.calls == 1  # nothing recognised off Phono
+
+
+def test_off_phono_nothing_is_recognised():
+    rec = FakeRecognizer()
+    lis = _listener([APPLE_TV_INPUT], rec)
+
+    async def go():
+        await lis.poll_receiver(0)
+        await _seconds(lis, 1, 60, -30.0)
+
+    asyncio.run(go())
+    assert rec.calls == 0 and _events(lis) == []
+
+
+def test_receiver_unreachable_listens_on_sound_alone():
+    rec = FakeRecognizer()
+    lis = _listener([OSError("down")] * 3, rec)
+
+    async def go():
+        for t in range(3):
+            await lis.poll_receiver(t)
+        lis.update_gate(3)
+        await _seconds(lis, 4, 20, -30.0)
+
+    asyncio.run(go())
+    assert _events(lis) == [SONG.event()]
+
+
+def test_recognition_off_is_the_4a_listener():
+    lis = _listener([PHONO], None)
+
+    async def go():
+        await lis.poll_receiver(0)
+        await _seconds(lis, 1, 60, -30.0)
+
+    asyncio.run(go())
+    assert _events(lis) == [] and lis.recognizer_status == "off"
+
+
+def test_status_is_failing_after_three_errors_or_without_audio():
+    rec = FakeRecognizer(RecognitionError("blocked"))
+    lis = _listener([PHONO], rec)
+
+    async def go():
+        await lis.poll_receiver(0)
+        await _seconds(lis, 1, 120, -30.0)
+
+    asyncio.run(go())
+    assert rec.calls >= 3 and lis.recognizer_status == "failing"
+    assert _events(lis) == []  # errors never post "unmatched"
+
+    ok = _listener([PHONO], FakeRecognizer())
+    assert ok.recognizer_status == "ok"
+    ok.audio_ok = False
+    assert ok.recognizer_status == "failing"
+
+
+def test_events_go_out_in_order_with_retries(monkeypatch):
+    sent, fails = [], {"gap": 2}
+
+    async def fake_post(url, token, body):
+        if fails.get(body["event"], 0) > 0:
+            fails[body["event"]] -= 1
+            return False
+        sent.append(body["event"])
+        return True
+
+    async def no_sleep(s):
+        return None
+
+    monkeypatch.setattr(worker, "post", fake_post)
+    monkeypatch.setattr(app.asyncio, "sleep", no_sleep)
+    lis = _listener([], None)
+    for e in ("track", "gap", "alive", "stopped"):
+        lis.events.put_nowait({"event": e})
+
+    async def go():
+        task = asyncio.ensure_future(lis.poster())
+        while len(sent) < 4:
+            await asyncio.wait([task], timeout=0.01)
+        task.cancel()
+
+    asyncio.run(go())
+    assert sent == ["track", "gap", "alive", "stopped"]
