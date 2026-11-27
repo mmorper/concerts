@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-26T19:25:20.608Z",
+  "updatedAt": "2026-11-27T19:20:22.531Z",
   "entries": [
     {
       "slug": "25-shows-in-a-row-on-the-west-coast-1989-1999",
@@ -180,16 +180,16 @@
     },
     {
       "slug": "house-of-blues-anaheim-6-shows-over-3-decades-2",
-      "hash": "874093791394d08a",
-      "checkedAt": "2026-11-26T19:24:55.524Z",
+      "hash": "0cfaeba4e8f2f45a",
+      "checkedAt": "2026-11-27T19:20:16.197Z",
       "issues": [
         {
-          "field": "beat5",
+          "field": "beat_5",
           "sentence": "Six shows. Three decades.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "House of Blues Anaheim shows run from 2003-08-29 to 2022-12-08, a span of about 19 years, not three decades.",
-          "replacement": "Six shows. Nineteen years."
+          "evidence": "House of Blues Anaheim shows span 2003-08-29 to 2022-12-08 — about 19 years, not three decades.",
+          "replacement": "Six shows. Two decades."
         }
       ]
     },
@@ -254,6 +254,28 @@
           "kind": "external",
           "severity": "review",
           "evidence": "Fact sheet has no data on band formation date to support a '25 years' claim."
+        }
+      ]
+    },
+    {
+      "slug": "july-31-40-years-since-the-art-of-noise",
+      "hash": "8f53c2d936159c91",
+      "checkedAt": "2026-11-27T19:20:22.531Z",
+      "issues": [
+        {
+          "field": "Beat 3",
+          "sentence": "*(Who's Afraid of) The Art of Noise?* was already out.",
+          "kind": "contradicted",
+          "severity": "must-fix",
+          "evidence": "Fact sheet states the 1986-07-31 show was touring behind \"In Visible Silence\" (released 1986-05-01), not \"(Who's Afraid of) The Art of Noise?\" (1984).",
+          "replacement": "*In Visible Silence* was the record they were touring behind that summer."
+        },
+        {
+          "field": "Beat 1",
+          "sentence": "I drove to Costa Mesa with no idea what a live Art of Noise show could possibly be.",
+          "kind": "personal-invented",
+          "severity": "review",
+          "evidence": "The fact sheet's OWNER-CONFIRMED PERSONAL FACTS only states living in Orange County around 1992; driving to the venue is not confirmed."
         }
       ]
     },
@@ -932,36 +954,37 @@
     },
     {
       "slug": "the-brian-setzer-orchestra-days-after-the-bends-dropped",
-      "hash": "492108a9d0c9fe30",
-      "checkedAt": "2026-11-26T19:24:48.814Z",
+      "hash": "c38f12a28c8adb28",
+      "checkedAt": "2026-11-27T19:20:06.392Z",
       "issues": [
         {
-          "field": "Hook",
+          "field": "hook",
           "sentence": "Thirteen days after The Bends, rockabilly had a different answer to the same question.",
           "kind": "external",
           "severity": "review",
-          "evidence": "The Bends release date (March 13, 1995) is not in the fact sheet; cannot confirm or deny this external music history claim."
+          "evidence": "The Bends' release date (March 13, 1995) is not in the fact sheet; this appears to be true but is sourced from outside the archive data."
         },
         {
-          "field": "Caption",
+          "field": "caption",
           "sentence": "Radiohead released The Bends on March 13, 1995.",
           "kind": "external",
           "severity": "review",
-          "evidence": "This release date is not present in the fact sheet and cannot be verified against it."
+          "evidence": "Radiohead/The Bends release date is not part of the fact sheet; believed true but unconfirmed by archive data."
         },
         {
-          "field": "Beat 1",
+          "field": "beat",
           "sentence": "The Bends landed March 13, 1995 — Radiohead signaling that guitar music could go somewhere new.",
           "kind": "external",
           "severity": "review",
-          "evidence": "Release date and characterization of Radiohead's impact are not in the fact sheet."
+          "evidence": "The Bends release date and characterization are external to the fact sheet, which contains no information about Radiohead."
         },
         {
-          "field": "Beat 3",
+          "field": "beat",
           "sentence": "Setzer's was 40 years older.",
           "kind": "invented-number",
           "severity": "must-fix",
-          "evidence": "Fact sheet gives no birth year or age for Brian Setzer, so this age comparison is unsupported."
+          "evidence": "No birth year or age is given in the fact sheet for Brian Setzer; this age comparison is fabricated.",
+          "replacement": "Setzer's version looked decades older."
         }
       ]
     },
@@ -1079,39 +1102,39 @@
     },
     {
       "slug": "ub40-35-years-between-shows",
-      "hash": "9d3f7dc240218930",
-      "checkedAt": "2026-11-26T19:24:43.127Z",
+      "hash": "31ae92b786fa5bd0",
+      "checkedAt": "2026-11-27T19:19:46.937Z",
       "issues": [
         {
           "field": "hook",
-          "sentence": "'Red Red Wine' made the setlist when I finally saved UB40 again in 2023, 35 years after the first time.",
+          "sentence": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, 35 years after the first time.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's about 34 years and 10 months, not a full 35 years.",
-          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, nearly 35 years after the first time."
+          "evidence": "First show 1988-09-09, second show 2023-07-21 — that's 34 years and about 10 months, not 35 years.",
+          "replacement": "'Red Red Wine' made the setlist when I finally saw UB40 again in 2023, almost 35 years after the first time."
         },
         {
           "field": "caption",
           "sentence": "Thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years (34 years, 10 months).",
-          "replacement": "Almost thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
+          "evidence": "1988-09-09 to 2023-07-21 is just under 35 years (34 years, ~10 months), not a full 35 years.",
+          "replacement": "Nearly thirty-five years later at Peacock Theater, the Birmingham-meets-Jamaica thing landed exactly the same."
         },
         {
           "field": "beat 3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "contradicted",
           "severity": "must-fix",
-          "evidence": "Gap between 1988-09-09 and 2023-07-21 is just shy of 35 years.",
-          "replacement": "Nearly thirty-five years went by before I saw them again."
+          "evidence": "1988-09-09 to 2023-07-21 is 34 years and about 10 months, short of 35 years.",
+          "replacement": "Nearly thirty-five years went by before I went to another show."
         },
         {
           "field": "beat 3",
           "sentence": "Thirty-five years went by before I bought another ticket.",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "Ticket purchase detail is not supported by the fact sheet and ticket details are explicitly excluded from the data.",
+          "evidence": "The fact sheet does not confirm a ticket purchase; ticket details are explicitly listed as NOT IN THE DATA.",
           "replacement": "Nearly thirty-five years went by before I saw them again."
         },
         {
@@ -1119,7 +1142,7 @@
           "sentence": "The Labour of Love covers felt like they'd always existed.",
           "kind": "invented-number",
           "severity": "review",
-          "evidence": "No setlist is on record for the 1988-09-09 show, so no specific songs (Labour of Love covers or otherwise) can be confirmed for that night.",
+          "evidence": "No setlist is on record for the 1988-09-09 show; only the 2023-07-21 setlist is documented, so specific setlist content for the 1988 show is unsupported.",
           "replacement": "The songs felt like they'd always existed."
         },
         {
@@ -1127,8 +1150,7 @@
           "sentence": "the thing I'd wondered about in the parking lot",
           "kind": "personal-invented",
           "severity": "review",
-          "evidence": "A specific location detail (parking lot) is not supported by the fact sheet and is not in owner-confirmed personal facts.",
-          "replacement": "the thing I'd wondered about ever since"
+          "evidence": "No fact sheet entry supports a specific memory of wondering in a parking lot; not in OWNER-CONFIRMED PERSONAL FACTS."
         }
       ]
     },
