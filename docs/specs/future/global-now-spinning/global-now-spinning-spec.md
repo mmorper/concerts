@@ -718,8 +718,11 @@ see the network and the cameras, so nothing of Now Spinning's may be able to rea
 does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - Paired with the Apple TV once, as the `now-spinning` user; the credentials live in its home,
   `/var/lib/now-spinning`, readable by that user only.
-- **When:** each time the listener hears sound after silence while the receiver is on Phono,
-  before the song is identified. Not only when the input switches to Phono. This is what makes a
+- **When:** each time a record starts while the receiver is on Phono: music-level sound after the
+  receiver was switched to Phono, or after 3 minutes without it (the record had stopped), before
+  the song is identified. Not only when the input switches to Phono. Not at a gap between two
+  songs or a side flip: that would push a paused app aside mid-record and keep the screensaver
+  away (seen on the equipment, #697). This is what makes a
   second record an hour later appear instead of playing behind the screensaver (once the TV is
   on: see below), and it means
   "Listening…" is visible for a record Shazam doesn't know.
@@ -1271,6 +1274,8 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
     preference for HTTP control: Phase 0 checks 6 and 6b settled it.
   - In 4a, "the record has stopped" is three minutes without music-level sound.
   - No audio reading counts as unknown, not silence (QA on #724).
+  - The display wakes when a record starts, not at every gap between songs (found on the
+    equipment, #697).
 - **2026-11-26, v1.9.0: Phase 0 complete.** Every check Phase 0 runs passed; check 7 is answered in Phase 4. Details are on #688.
   - **Check 2 (Shazam on the line feed):** nine records. Every one in Shazam's catalogue matched
     on the first try: 1980s pressings, a 45 ("Funkytown"), live tracks, a megamix. Misses: a

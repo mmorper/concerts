@@ -7,4 +7,4 @@ Song recognition arrives in Phase 4b.
 Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Pi listener
 """
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"

@@ -87,8 +87,13 @@ class Controller:
             return actions
 
         if level is Level.MUSIC:
-            if started and (self.last_wake_at is None or now - self.last_wake_at >= WAKE_MIN_INTERVAL_S):
-                # Sound after silence on Phono: put the app on the screen, before anything else.
+            new_record = started and self.session is not Session.PLAYING
+            if new_record and (self.last_wake_at is None or now - self.last_wake_at >= WAKE_MIN_INTERVAL_S):
+                # A record starting on Phono: put the app on the screen, before anything else. Only
+                # when nothing was playing (no music for STOPPED_AFTER_S, or just switched to
+                # Phono): the gap between two songs, or a side flip, is not a new record. Waking
+                # there would push a paused app aside mid-record and keep the screensaver away
+                # (seen on the equipment, #697).
                 actions.append(Action.WAKE_DISPLAY)
                 self.last_wake_at = now
             self.session, self.last_music_at = Session.PLAYING, now
