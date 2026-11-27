@@ -637,9 +637,16 @@ in. Three values aren't, because the repository is public:
 - `NS_TV_MAC`: the TV's MAC address. With the TV on: `ip neigh show 192.168.1.231`, the value
   after `lladdr`.
 
+Both identifiers are also kept in 1Password. `NS_APP_BUNDLE_ID` is
+already set to the Now Spinning tvOS app (`org.morperhaus.nowspinning`). To check the app's ID on
+the Apple TV:
+`sudo -u now-spinning -H /opt/now-spinning/venv/bin/atvremote --scan-hosts 192.168.1.111 --id <NS_APPLE_TV_ID> app_list | tr ',' '\n' | grep -i spin`
+
 **4. Check it before it controls anything.** With a record playing on Phono, this reads the receiver
 once, one second of audio and one 12-second clip through Shazam, prints them and exits, as the
-`now-spinning` user with the real settings:
+`now-spinning` user with the real settings. If the service is already running (an update, or a
+re-check later), stop it first with `sudo systemctl stop now-spinning`, since it holds the
+Blackjack, and start it again afterwards with `sudo systemctl start now-spinning`:
 
 ```bash
 # Pi
