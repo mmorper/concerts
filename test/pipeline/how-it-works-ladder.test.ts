@@ -27,9 +27,16 @@ describe('How It Works: honesty ladder', () => {
     expect(seen.has('never') && seen.has('maybe')).toBe(true)
   })
 
+  it('gives every example a cover, as Shazam would, so the screen never falls back to a generated sleeve', async () => {
+    for (const ex of EXAMPLES) {
+      const t = await lookup({ artist: ex.artist, title: ex.title, album: ex.album, artworkUrl: ex.artworkUrl }, loader)
+      expect(t.album?.coverUrl, `${ex.artist}, "${ex.title}"`).toMatch(/^https:\/\//)
+    }
+  })
+
   for (const ex of EXAMPLES) {
     it(`${ex.artist}, "${ex.title}" lands on ${ex.expect}${ex.wording ? ` (${ex.wording})` : ''}`, async () => {
-      const t = await lookup({ artist: ex.artist, title: ex.title }, loader)
+      const t = await lookup({ artist: ex.artist, title: ex.title, album: ex.album, artworkUrl: ex.artworkUrl }, loader)
       expect(rungOf(t)).toEqual(ex.wording ? { rung: ex.expect, wording: ex.wording } : { rung: ex.expect })
     })
   }

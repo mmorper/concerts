@@ -66,7 +66,7 @@ export function HonestyLadder() {
     setTrack(null)
     setWalk(animate && !reduced ? 0 : RUNG_ORDER.length)
     const ex = EXAMPLES[i]
-    const t = await ask({ artist: ex.artist, title: ex.title }, load)
+    const t = await ask({ artist: ex.artist, title: ex.title, album: ex.album, artworkUrl: ex.artworkUrl }, load)
     if (id !== runId.current) return
     setTrack(t)
   }
@@ -111,6 +111,7 @@ export function HonestyLadder() {
             </button>
           ))}
         </div>
+        <TvScreen track={settled ? track : null} />
       </div>
 
       <ol className="px-4 sm:px-6 py-6" style={{ listStyle: 'none' }}>
@@ -200,7 +201,6 @@ export function HonestyLadder() {
                     })}
                   </ul>
                 )}
-                {isHit && track && <TvCard t={track} />}
               </div>
             </li>
           )
@@ -218,81 +218,72 @@ export function HonestyLadder() {
   )
 }
 
-function TvCard({ t }: { t: Track }) {
-  const photos = t.photos.slice(0, 3)
+/**
+ * The real TV screen: public/now-spinning.html in ?embed mode, the web twin of the tvOS app,
+ * drawn from the same state. It is framed rather than copied, so any change to the screen's
+ * design shows here too. It repaints only once the ladder has settled.
+ */
+const SCREEN_URL = import.meta.env.DEV ? '/now-spinning.html?embed' : '/now-spinning?embed'
+
+function TvScreen({ track }: { track: Track | null }) {
+  const frame = useRef<HTMLIFrameElement>(null)
+  const [ready, setReady] = useState(false)
+  const [shown, setShown] = useState<Track | null>(null)
+
+  useEffect(() => {
+    const on = (e: MessageEvent) => {
+      if (e.origin === location.origin && e.source === frame.current?.contentWindow && e.data?.type === 'now-spinning:ready') setReady(true)
+    }
+    addEventListener('message', on)
+    return () => removeEventListener('message', on)
+  }, [])
+
+  useEffect(() => {
+    if (!ready || !track) return
+    const now = new Date().toISOString()
+    frame.current?.contentWindow?.postMessage(
+      // Mirrored: the sleeve on the right, as on the TV in the photo at the top of the page.
+      { type: 'now-spinning:show', mirrored: true, state: { v: 1, kind: 'track', at: now, now, track } },
+      location.origin,
+    )
+    setShown(track)
+  }, [ready, track])
+
   return (
-    <div
-      className="mt-4"
-      style={{
-        borderRadius: 12,
-        padding: '16px 18px',
-        background: `radial-gradient(400px 200px at 85% 0%, hsl(${t.accentHue} 70% 35% / 0.45), transparent 70%), linear-gradient(160deg, #0d1b4d, #081032)`,
-        border: '1px solid rgba(96,165,250,0.35)',
-        animation: 'hiw-pop 0.4s ease both',
-      }}
-    >
-      <div className="hiw-kicker" style={{ fontSize: 10, letterSpacing: '0.22em' }}>
-        <span className="hiw-dot" style={{ width: 7, height: 7 }} aria-hidden="true" />
-        Now spinning
+    <div className="mt-6">
+      <div
+        style={{
+          position: 'relative',
+          aspectRatio: '16 / 9',
+          borderRadius: 12,
+          overflow: 'hidden',
+          background: '#0b0918',
+          border: '6px solid #05060d',
+          outline: '1px solid rgba(165,180,252,0.22)',
+          boxShadow: '0 30px 60px rgba(0,0,0,0.45), 0 0 80px rgba(59,130,246,0.12)',
+        }}
+      >
+        <iframe
+          ref={frame}
+          src={SCREEN_URL}
+          title="The Now Spinning TV screen"
+          aria-hidden="true"
+          tabIndex={-1}
+          loading="lazy"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0, pointerEvents: 'none' }}
+        />
       </div>
-      <div className="flex gap-4 items-start mt-2">
-        {t.count && (
-          <div className="hiw-title shrink-0" style={{ fontSize: 46, lineHeight: 1, color: '#fff' }} aria-hidden="true">
-            {t.count.n}
-            {t.count.times && <span style={{ fontSize: 22, color: '#a5b4fc' }}>×</span>}
-          </div>
+      {/* The screen's words, readable on a phone (where the TV is too small) and by a screen reader. */}
+      <div className="mt-3 sm:sr-only" aria-live="polite">
+        {shown && (
+          <p className="font-sans" style={{ fontSize: 15, lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
+            <span style={{ color: 'var(--hiw-ink)', fontWeight: 600 }}>
+              {shown.title}, {shown.artist}.
+            </span>{' '}
+            {shown.headline} {shown.lines.join(' ')}
+          </p>
         )}
-        <div className="min-w-0">
-          <div className="hiw-title" style={{ fontSize: 22, color: '#fff' }}>
-            {t.title}
-          </div>
-          <div className="font-sans" style={{ fontSize: 14, color: '#c7d2fe' }}>
-            {t.artist}
-            {t.album ? ` · ${t.album.title}${t.album.year ? `, ${t.album.year}` : ''}` : ''}
-          </div>
-        </div>
       </div>
-      <p className="font-sans mt-3" style={{ fontSize: 16, fontWeight: 600, color: '#fff', lineHeight: 1.4 }}>
-        {t.headline}
-      </p>
-      {t.lines.map((l) => (
-        <p key={l} className="font-sans mt-1" style={{ fontSize: 14, color: '#c7d2fe', lineHeight: 1.5 }}>
-          {l}
-        </p>
-      ))}
-      {t.nights.length > 0 && (
-        <ul className="mt-3 font-sans" style={{ listStyle: 'none', fontSize: 13.5, color: '#dbe2ff' }}>
-          {t.nights.slice(0, 3).map((n) => (
-            <li key={n.date + n.text} className="flex gap-3" style={{ lineHeight: 1.7 }}>
-              <span style={{ fontWeight: 600, minWidth: 92, flex: 'none' }}>{n.dateLabel}</span>
-              <span className="min-w-0" style={{ color: '#b9c0e8' }}>
-                {n.text}
-              </span>
-            </li>
-          ))}
-          {t.nights.length + t.moreNights > 3 && <li style={{ color: '#8189b5' }}>+ {t.nights.length + t.moreNights - 3} more</li>}
-        </ul>
-      )}
-      {photos.length > 0 && (
-        <div className="flex gap-2 mt-3">
-          {photos.map((p) => (
-            <img
-              key={p.url}
-              src={p.url}
-              alt={p.caption}
-              loading="lazy"
-              style={{
-                width: 64,
-                height: 80,
-                objectFit: 'cover',
-                objectPosition: `${Math.round(p.fx * 100)}% ${Math.round(p.fy * 100)}%`,
-                borderRadius: 6,
-                border: '1px solid rgba(255,255,255,0.18)',
-              }}
-            />
-          ))}
-        </div>
-      )}
     </div>
   )
 }
