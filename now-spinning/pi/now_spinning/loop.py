@@ -13,8 +13,9 @@ spec's §Pi listener "Identification loop":
   something matches or real silence (a gap) resets the loop.
 - `alive` every 60 s while the screen shows a song, a gap or `unmatched`.
 - Recognition errors (not "no match") count separately: three in a row → the health check-in
-  says `failing`. An error is not a miss, and doesn't count toward the five minutes either: a
-  Shazam outage mid-record never says the record stopped.
+  says `failing`. An error is not a miss (it never posts `unmatched`), but the five minutes
+  without a match run on through errors: after a long outage the song clears rather than stay
+  up stale, and the idle screen says recognition isn't working.
 - Resync: when an event is dropped after its retries, the Worker may have lost the current state,
   so the next reading re-posts it. `alive` alone can't: the Worker ignores it while idle, and the
   same song posts nothing new. After an audio outage the loop starts afresh instead: the next clip
@@ -182,8 +183,9 @@ class Loop:
         if isinstance(result, Failed):
             self.errors += 1
             self.next_clip_at = now + ERROR_RETRY_S
-            # Unknown, not "no match": the five-minute window starts again from here.
-            self.last_match_at = now
+            # Not a miss (never "unmatched"), but no match either: the five minutes run on, so a
+            # long outage clears the song instead of leaving a stale one up. The idle screen then
+            # says recognition isn't working (the check-in reports `failing`).
             return out
         self.errors = 0
 

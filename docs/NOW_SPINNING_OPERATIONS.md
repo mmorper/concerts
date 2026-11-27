@@ -695,8 +695,9 @@ since recognition is on unless `/etc/now-spinning/env` says `NS_RECOGNIZER=off`.
 4. To turn recognition off again without a code change: add `NS_RECOGNIZER=off` to
    `/etc/now-spinning/env`, then `sudo systemctl restart now-spinning`.
 
-The log names what the listener does (`event: track`, `event: gap`), never the songs: it keeps no
-play history.
+The service's log (`journalctl -u now-spinning`) names what the listener does (`event: track`,
+`event: gap`), never the songs: it keeps no play history. Only the tools you run by hand
+(`--check`, `--wav`, `--dry-run`) print song names, on your screen.
 
 **Updating, on purpose.** Pull, re-run the installer, which rebuilds from the lock file and
 restarts the service:

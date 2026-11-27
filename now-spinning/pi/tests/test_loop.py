@@ -192,9 +192,19 @@ def test_after_an_audio_outage_the_song_is_posted_afresh():
     assert after and after[0][1] == A.event() and after[0][0] <= 340 + CLIP_S + 4
 
 
-def test_a_shazam_outage_mid_record_doesnt_say_stopped():
+def test_a_shazam_outage_mid_record_clears_the_song_not_unmatched():
+    """Errors are not misses (no "unmatched"), but a song isn't left up stale: five minutes after
+    the last match it clears, and the check-in says failing (the idle screen's notice)."""
     ev = Evening(lambda t: A if t < 60 else Failed()).play(60 + NO_MATCH_STOP_S + 300, MUSIC)
-    assert ev.kinds() == [A.title] and ev.lp.failing
+    assert ev.kinds() == [A.title, "stopped"] and ev.lp.failing
+    a_t = next(t for t, e in ev.posts if e["event"] == "track")
+    stop_t = next(t for t, e in ev.posts if e["event"] == "stopped")
+    assert stop_t - a_t <= NO_MATCH_STOP_S + RECHECK_S + 4  # within five minutes of the last match
+
+
+def test_shazam_coming_back_after_an_outage_shows_the_song_again():
+    ev = Evening(lambda t: A if t < 60 or t > 600 else Failed()).play(900, MUSIC)
+    assert ev.kinds() == [A.title, "stopped", A.title] and not ev.lp.failing
 
 
 def test_a_track_body_fits_the_worker_limit_in_any_script():

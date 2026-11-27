@@ -762,8 +762,10 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - **No match.** Three misses in a row → POST `unmatched` once. Five minutes of sound with no
   match (the run-out groove, a record Shazam doesn't know) → POST `stopped` and try once every
   two minutes until something matches or real silence resets the loop.
-  A recognition error is not a miss and restarts those five minutes: a Shazam outage mid-record
-  leaves the last song showing and reports `failing`, and never says the record stopped.
+  A recognition error is not a miss: it never posts `unmatched`. The five minutes without a match
+  run on through errors, though, so a long Shazam outage clears the song after five minutes
+  rather than leave it up stale ([honesty rule](#design-philosophy)), and the idle screen says
+  "Song recognition isn't working right now" (the check-in reports `failing`).
 - **Heartbeats.** POST `alive` every 60 s while there is a track, a gap or `unmatched`. POST
   `status` every 5 minutes always (see [Listener health](#listener-health)); `recognizer` is
   `failing` when the last three recognition calls raised errors, as opposed to finding no match,
@@ -1293,8 +1295,8 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
   - The return timers keep 4a's loudness rule, apart from the loop's `stopped`, so the return
     doesn't depend on Shazam. `NS_RECOGNIZER=off` gives the 4a listener.
   - No audio reports `recognizer: "failing"`. The journal names event kinds, never songs.
-  - QA on #726: a dropped event is re-posted (not left to `alive`); recognition errors don't count
-    toward "five minutes with no match"; a `track` body is kept under 2048 bytes in any script.
+  - QA on #726: a dropped event is re-posted (not left to `alive`); recognition errors are not misses
+    (never `unmatched`), but a long outage still clears the song after five minutes; a `track` body is kept under 2048 bytes in any script.
   - 4a passed on the equipment on 2026-11-27 (#697): every check, with the run-out check
     skipped for stylus wear.
 - **2026-11-26, v1.10.0: Phase 4 split into 4a and 4b; 4a built.**
