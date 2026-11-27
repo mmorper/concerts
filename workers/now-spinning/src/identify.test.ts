@@ -208,6 +208,34 @@ describe("photos", () => {
     }
     expect(r.photos.length).toBeLessThanOrEqual(5);
   });
+
+  it("carry the index's 4:5 thumbnail box as `thumb`", async () => {
+    const r = await look("Brian Setzer", "Rock This Town");
+    for (const p of r.photos) {
+      expect(p.thumb, p.url).toBeDefined();
+      const { x, y, w, h } = p.thumb!;
+      expect(x + w).toBeLessThanOrEqual(1.001);
+      expect(y + h).toBeLessThanOrEqual(1.001);
+    }
+  });
+
+  it.each([
+    ["missing", undefined],
+    ["the wrong length", [0, 0, 1]],
+    ["not numbers", ["0", 0, 1, 1]],
+    ["past the image's edge", [0.5, 0, 0.6, 1]],
+    ["empty", [0, 0, 0, 1]],
+  ])("leave out a thumbnail box that is %s, and keep the photo", async (_, t) => {
+    const loader = alteredLoader({
+      "acts/brian-setzer.json": (a) => ({
+        ...a,
+        nights: a.nights.map((n: { photos: { t?: unknown }[] }) => ({ ...n, photos: n.photos.map((p) => ({ ...p, t })) })),
+      }),
+    });
+    const r = await lookup({ artist: "Brian Setzer", title: "Rock This Town" }, loader);
+    expect(r.photos.length).toBeGreaterThan(0);
+    for (const p of r.photos) expect(p.thumb).toBeUndefined();
+  });
 });
 
 describe("CPU on a cold isolate", () => {

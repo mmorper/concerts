@@ -93,9 +93,13 @@ struct Track: Decodable, Equatable, Sendable {
     struct Photo: Equatable, Sendable, Identifiable {
         let url: URL
         let caption: String
-        /// The focal point, 0–1 across and down: the crop Mike chose.
+        /// The focal point, 0–1 across and down: the centre of the crop Mike chose. Places the
+        /// blurred backdrop.
         let fx: Double
         let fy: Double
+        /// The thumbnail's 4:5 box, in fractions of the image: Mike's crop. Nil from an older
+        /// Worker; the thumbnail then crops around the focal point.
+        var thumb: CGRect? = nil
         var id: URL { url }
     }
 
@@ -118,7 +122,8 @@ struct Track: Decodable, Equatable, Sendable {
         case title, artist, album, screen, count, headline, lines, nights, moreNights, photos, accentHue
     }
     private enum AlbumKeys: String, CodingKey { case title, year, coverUrl }
-    private enum PhotoKeys: String, CodingKey { case url, caption, fx, fy }
+    private enum PhotoKeys: String, CodingKey { case url, caption, fx, fy, thumb }
+    private enum BoxKeys: String, CodingKey { case x, y, w, h }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -153,7 +158,8 @@ struct Track: Decodable, Equatable, Sendable {
                         url: url,
                         caption: (try? p.decode(String.self, forKey: .caption)) ?? "",
                         fx: Self.unit(try? p.decode(Double.self, forKey: .fx)),
-                        fy: Self.unit(try? p.decode(Double.self, forKey: .fy))
+                        fy: Self.unit(try? p.decode(Double.self, forKey: .fy)),
+                        thumb: Self.box(try? p.nestedContainer(keyedBy: BoxKeys.self, forKey: .thumb))
                     ))
                 }
             }
@@ -171,6 +177,16 @@ struct Track: Decodable, Equatable, Sendable {
     private static func https(_ s: String?) -> URL? {
         guard let s, let url = URL(string: s), url.scheme == "https" else { return nil }
         return url
+    }
+
+    /// A box inside the image, or nil: anything else would draw the wrong part of the photo.
+    private static func box(_ b: KeyedDecodingContainer<BoxKeys>?) -> CGRect? {
+        guard let b,
+              let x = try? b.decode(Double.self, forKey: .x), let y = try? b.decode(Double.self, forKey: .y),
+              let w = try? b.decode(Double.self, forKey: .w), let h = try? b.decode(Double.self, forKey: .h),
+              [x, y, w, h].allSatisfy(\.isFinite),
+              x >= 0, y >= 0, w > 0, h > 0, x + w <= 1.001, y + h <= 1.001 else { return nil }
+        return CGRect(x: x, y: y, width: w, height: h)
     }
 
     private static func unit(_ x: Double?) -> Double {

@@ -55,7 +55,13 @@
           "url": "https://concerts.morperhaus.org/images/shows/2023-03-28-depeche-mode-01.jpg",
           "caption": "Mar 28, 2023 · Kia Forum",
           "fx": 0.5,
-          "fy": 0.469
+          "fy": 0.469,
+          "thumb": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.938
+          }
         }
       ]
     }
@@ -132,25 +138,49 @@
           "url": "https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-07.jpg",
           "caption": "Sep 14, 2026 · The Fillmore Silver Spring",
           "fx": 0.5,
-          "fy": 0.515
+          "fy": 0.515,
+          "thumb": {
+            "x": 0,
+            "y": 0.046,
+            "w": 1,
+            "h": 0.938
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-03.jpg",
           "caption": "Sep 14, 2026 · The Fillmore Silver Spring",
           "fx": 0.5,
-          "fy": 0.469
+          "fy": 0.469,
+          "thumb": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.938
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2026-09-14-danny-elfman-04.jpg",
           "caption": "Sep 14, 2026 · The Fillmore Silver Spring",
           "fx": 0.5,
-          "fy": 0.531
+          "fy": 0.531,
+          "thumb": {
+            "x": 0,
+            "y": 0.062,
+            "w": 1,
+            "h": 0.938
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2022-10-28-danny-elfman-01.jpg",
           "caption": "Oct 28, 2022 · Hollywood Bowl",
           "fx": 0.509,
-          "fy": 0.532
+          "fy": 0.532,
+          "thumb": {
+            "x": 0.309,
+            "y": 0.199,
+            "w": 0.4,
+            "h": 0.667
+          }
         }
       ]
     }
@@ -208,7 +238,13 @@
           "url": "https://concerts.morperhaus.org/images/shows/2023-03-28-depeche-mode-01.jpg",
           "caption": "Mar 28, 2023 · Kia Forum",
           "fx": 0.5,
-          "fy": 0.469
+          "fy": 0.469,
+          "thumb": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.938
+          }
         }
       ]
     }
@@ -252,19 +288,37 @@
           "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-04.jpg",
           "caption": "Nov 16, 2023 · YouTube Theatre",
           "fx": 0.555,
-          "fy": 0.583
+          "fy": 0.583,
+          "thumb": {
+            "x": 0.288,
+            "y": 0.167,
+            "w": 0.534,
+            "h": 0.833
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-01.jpg",
           "caption": "Nov 16, 2023 · YouTube Theatre",
           "fx": 0.52,
-          "fy": 0.583
+          "fy": 0.583,
+          "thumb": {
+            "x": 0.27,
+            "y": 0.166,
+            "w": 0.5,
+            "h": 0.834
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-02.jpg",
           "caption": "Nov 16, 2023 · YouTube Theatre",
           "fx": 0.531,
-          "fy": 0.541
+          "fy": 0.541,
+          "thumb": {
+            "x": 0.131,
+            "y": 0.166,
+            "w": 0.8,
+            "h": 0.75
+          }
         }
       ]
     }
@@ -357,19 +411,37 @@
           "url": "https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-06.jpg",
           "caption": "Jul 31, 2026 · Pacific Amphitheatre",
           "fx": 0.49,
-          "fy": 0.416
+          "fy": 0.416,
+          "thumb": {
+            "x": 0.24,
+            "y": 0,
+            "w": 0.5,
+            "h": 0.833
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-04.jpg",
           "caption": "Jul 31, 2026 · Pacific Amphitheatre",
           "fx": 0.455,
-          "fy": 0.5
+          "fy": 0.5,
+          "thumb": {
+            "x": 0.155,
+            "y": 0,
+            "w": 0.6,
+            "h": 1
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2026-07-31-nile-rodgers-05.jpg",
           "caption": "Jul 31, 2026 · Pacific Amphitheatre",
           "fx": 0.424,
-          "fy": 0.351
+          "fy": 0.351,
+          "thumb": {
+            "x": 0.049,
+            "y": 0,
+            "w": 0.75,
+            "h": 0.703
+          }
         }
       ]
     }
@@ -423,31 +495,61 @@
           "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-04.jpg",
           "caption": "Nov 16, 2023 · YouTube Theatre",
           "fx": 0.555,
-          "fy": 0.583
+          "fy": 0.583,
+          "thumb": {
+            "x": 0.288,
+            "y": 0.167,
+            "w": 0.534,
+            "h": 0.833
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-01.jpg",
           "caption": "Nov 16, 2023 · YouTube Theatre",
           "fx": 0.52,
-          "fy": 0.583
+          "fy": 0.583,
+          "thumb": {
+            "x": 0.27,
+            "y": 0.166,
+            "w": 0.5,
+            "h": 0.834
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2023-11-16-devo-02.jpg",
           "caption": "Nov 16, 2023 · YouTube Theatre",
           "fx": 0.531,
-          "fy": 0.541
+          "fy": 0.541,
+          "thumb": {
+            "x": 0.131,
+            "y": 0.166,
+            "w": 0.8,
+            "h": 0.75
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2017-10-12-foo-fighters-01.jpg",
           "caption": "Oct 12, 2017 · The Anthem",
           "fx": 0.5,
-          "fy": 0.532
+          "fy": 0.532,
+          "thumb": {
+            "x": 0,
+            "y": 0.081,
+            "w": 1,
+            "h": 0.903
+          }
         },
         {
           "url": "https://concerts.morperhaus.org/images/shows/2017-10-12-foo-fighters-02.jpg",
           "caption": "Oct 12, 2017 · The Anthem",
           "fx": 0.503,
-          "fy": 0.593
+          "fy": 0.593,
+          "thumb": {
+            "x": 0.053,
+            "y": 0.187,
+            "w": 0.9,
+            "h": 0.813
+          }
         }
       ]
     }
@@ -570,7 +672,13 @@
           "url": "https://concerts.morperhaus.org/images/shows/2023-03-28-depeche-mode-01.jpg",
           "caption": "Mar 28, 2023 · Kia Forum",
           "fx": 0.5,
-          "fy": 0.469
+          "fy": 0.469,
+          "thumb": {
+            "x": 0,
+            "y": 0,
+            "w": 1,
+            "h": 0.938
+          }
         }
       ]
     }
