@@ -7,7 +7,7 @@
  * specifics (addresses, hostnames, what else runs on the Pi, how tokens are kept) stay out.
  */
 import type { ReactNode } from 'react'
-import { motion } from 'framer-motion'
+import { motion, MotionConfig } from 'framer-motion'
 import { PageNav } from '../../liner-notes/PageNav'
 import { Hood, MoreChapters, usePageTitle } from '../shared'
 import { RoundTrip } from './RoundTrip'
@@ -37,6 +37,7 @@ export function NowSpinningChapter() {
   usePageTitle('How Now Spinning Works | Morperhaus Concert Archives')
 
   return (
+    <MotionConfig reducedMotion="user">
     <main className="hiw h-screen overflow-y-auto">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-12 pt-10">
         <PageNav current="how-it-works" theme="dark" />
@@ -71,7 +72,7 @@ export function NowSpinningChapter() {
               src="/images/how-it-works/now-spinning-living-room.jpg"
               width={1280}
               height={960}
-              alt="A turntable and two speakers on a sideboard under a wall-mounted TV. The Royal Blood album leans on the centre speaker. On the TV: Now Spinning, “Out of the Black” by Royal Blood. You’ve heard this one live 3 times: May 7, 2022 at the House of Blues Anaheim, and June 6, 2017 and June 10, 2015 at the 9:30 Club."
+              alt="A turntable and speakers on a sideboard under a wall-mounted TV. The Royal Blood album leans on the centre speaker. On the TV: Now Spinning, “Out of the Black” by Royal Blood. You’ve heard this one live 3 times: May 7, 2022 at the House of Blues Anaheim, and June 6, 2017 and June 10, 2015 at the 9:30 Club."
               className="block w-full h-auto"
               style={{ borderRadius: 20, border: '1px solid var(--hiw-panel-line)' }}
             />
@@ -123,7 +124,7 @@ export function NowSpinningChapter() {
               </p>
             </Prose>
             <div className="mt-6">
-              <Hood id="ear" title="Gating, silence and the 12-second clip">
+              <Hood chapter="now-spinning" id="ear" title="Gating, silence and the 12-second clip">
                 <ul>
                   <li>
                     <strong>The signal.</strong> The receiver’s Zone 2 pre-out, set to Phono at a fixed level, feeds a
@@ -168,7 +169,7 @@ export function NowSpinningChapter() {
             <Wide>
               <Fingerprint />
             </Wide>
-            <Hood id="name" title="What actually gets sent, and how well it works">
+            <Hood chapter="now-spinning" id="name" title="What actually gets sent, and how well it works">
               <ul>
                 <li>
                   <strong>The client</strong> is <code>shazamio</code>, an unofficial Python library for Shazam. Its
@@ -208,7 +209,7 @@ export function NowSpinningChapter() {
               </p>
             </Prose>
             <div className="mt-6">
-              <Hood id="memory" title="The index, the matching rules and the dead-man’s switch">
+              <Hood chapter="now-spinning" id="memory" title="The index, the matching rules and the dead-man’s switch">
                 <ul>
                   <li>
                     <strong>A Cloudflare Worker</strong> receives the song from the Pi (an authenticated POST) and runs the
@@ -236,9 +237,9 @@ export function NowSpinningChapter() {
                     disagrees, it says nothing rather than miss real matches.
                   </li>
                   <li>
-                    <strong>Only the present.</strong> A Durable Object holds the current screen and nothing else. The Pi
-                    checks in every 60 seconds while a record plays; if it goes quiet for 3 minutes, an alarm sets the
-                    screen to idle on its own.
+                    <strong>Only the present.</strong> A Durable Object holds the current screen and when the listener last
+                    checked in, and nothing else. The Pi checks in every 60 seconds while a record plays; if it goes quiet
+                    for 3 minutes, an alarm sets the screen to idle on its own.
                   </li>
                 </ul>
               </Hood>
@@ -262,7 +263,7 @@ export function NowSpinningChapter() {
             <Wide>
               <HonestyLadder />
             </Wide>
-            <Hood id="screen" title="The app, waking the TV, and screen care">
+            <Hood chapter="now-spinning" id="screen" title="The app, waking the TV, and screen care">
               <ul>
                 <li>
                   <strong>A tvOS app</strong> in SwiftUI holds a WebSocket to the Worker and falls back to polling while
@@ -291,7 +292,7 @@ export function NowSpinningChapter() {
               {[
                 ['No microphone', 'It hears the turntable down a wire, and only while the turntable is playing.'],
                 ['No audio leaves the house', 'Only the fingerprint goes to Shazam.'],
-                ['No history', 'The cloud remembers what’s playing now and nothing else. Stop the record and it’s gone. Nothing is logged, anywhere.'],
+                ['No history', 'The cloud remembers what’s playing now and nothing else. Stop the record and it’s gone. No song is ever logged.'],
                 [
                   'No change to watching TV',
                   'The Apple TV remote works exactly as it did. When the record session ends, the Pi puts the receiver back on the Apple TV.',
@@ -341,5 +342,6 @@ export function NowSpinningChapter() {
 
       <MoreChapters current="now-spinning" />
     </main>
+    </MotionConfig>
   )
 }

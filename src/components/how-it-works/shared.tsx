@@ -37,13 +37,13 @@ export function usePageTitle(title: string) {
  * "Under the hood": the engineering detail, folded away so the story reads straight through.
  * A native <details>, so it works with the keyboard and a screen reader with no extra wiring.
  */
-export function Hood({ id, title, children }: { id: string; title: string; children: ReactNode }) {
+export function Hood({ chapter, id, title, children }: { chapter: string; id: string; title: string; children: ReactNode }) {
   return (
     <details
       className="hiw-hood"
       onToggle={(e) => {
         if ((e.currentTarget as HTMLDetailsElement).open) {
-          analytics.trackEvent('how_it_works_hood_opened', { chapter: 'now-spinning', section: id })
+          analytics.trackEvent('how_it_works_hood_opened', { chapter, section: id })
         }
       }}
     >

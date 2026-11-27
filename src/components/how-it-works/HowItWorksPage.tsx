@@ -2,7 +2,7 @@
  * /how-it-works: the landing page for the explainers. One card per chapter (chapters.ts).
  */
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, MotionConfig } from 'framer-motion'
 import { PageNav } from '../liner-notes/PageNav'
 import { analytics } from '../../services/analytics'
 import { ALSO, CHAPTERS } from './chapters'
@@ -65,6 +65,7 @@ export function HowItWorksPage() {
   usePageTitle('How It Works | Morperhaus Concert Archives')
 
   return (
+    <MotionConfig reducedMotion="user">
     <main className="hiw h-screen overflow-y-auto">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-12 py-10">
         <PageNav current="how-it-works" theme="dark" />
@@ -153,5 +154,6 @@ export function HowItWorksPage() {
         </div>
       </div>
     </main>
+    </MotionConfig>
   )
 }

@@ -186,8 +186,10 @@ export default {
     let html = await response.text();
 
     // Inject dynamic meta tags — pathname routes take precedence over query params
-    if (url.pathname === '/how-it-works') {
-      html = await injectHowItWorksMeta(html, url.origin, ctx);
+    if (url.pathname === '/how-it-works' || url.pathname === '/how-it-works/the-archive') {
+      html = await injectHowItWorksMeta(html, url.origin, ctx, url.pathname);
+    } else if (url.pathname === '/how-it-works/now-spinning') {
+      html = injectNowSpinningChapterMeta(html, url.origin);
     } else if (url.pathname === '/about') {
       html = await injectAboutMeta(html, url.origin, ctx);
     } else if (url.pathname === '/liner-notes') {
@@ -1110,9 +1112,10 @@ async function injectSharedSongMeta(html, artistSlug, songSlug, url, ctx) {
 }
 
 /**
- * Inject meta tags for /how-it-works — the interactive data pipeline explainer
+ * Inject meta tags for /how-it-works (the landing page for the explainers) and its first chapter,
+ * /how-it-works/the-archive (the interactive data pipeline explainer).
  */
-async function injectHowItWorksMeta(html, origin, ctx) {
+async function injectHowItWorksMeta(html, origin, ctx, pathname = '/how-it-works') {
   try {
     const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
     if (!concertsResponse.ok) return html;
@@ -1122,9 +1125,14 @@ async function injectHowItWorksMeta(html, origin, ctx) {
     const years = concertsData.concerts.map(c => c.year);
     const yearSpan = Math.max(...years) - Math.min(...years) + 1;
 
-    const title = `How It Works | Morperhaus Concert Archives`;
-    const description = `See how ${concertCount} concerts come to life. An interactive walkthrough of the data enrichment pipeline — from a single artist, venue, and date through seven APIs across six tiers, building ${yearSpan} years of live music history.`;
-    const pageUrl = `${origin}/how-it-works`;
+    const chapter = pathname === '/how-it-works/the-archive';
+    const title = chapter
+      ? `How It Works: The Enrichment Cascade | Morperhaus Concert Archives`
+      : `How It Works | Morperhaus Concert Archives`;
+    const description = chapter
+      ? `See how ${concertCount} concerts come to life. An interactive walkthrough of the data enrichment pipeline — from a single artist, venue, and date through seven APIs across six tiers, building ${yearSpan} years of live music history.`
+      : `The machinery behind ${concertCount} concerts and ${yearSpan} years of live music, explained for the curious: how the archive is built, and how the turntable in the living room knows every night a song was heard live.`;
+    const pageUrl = `${origin}${chapter ? pathname : '/how-it-works'}`;
 
     html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
     html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
@@ -1142,6 +1150,31 @@ async function injectHowItWorksMeta(html, origin, ctx) {
     console.error(`Error injecting how-it-works meta: ${error.message}`);
     return html;
   }
+}
+
+/**
+ * Inject meta tags for /how-it-works/now-spinning. Static copy and the living-room photo, cropped
+ * to a share card (public/og/how-it-works/now-spinning.jpg), so a link sent to a friend previews
+ * the real screen. Indexable, unlike the shared-answer cards that applyShareMeta marks noindex.
+ */
+function injectNowSpinningChapterMeta(html, origin) {
+  const title = `How Now Spinning Works | Morperhaus Concert Archives`;
+  const description = `Put a record on, and seconds later the TV knows the song and every night it was heard live. How a Raspberry Pi, a Shazam fingerprint and forty years of setlists make it happen.`;
+  const pageUrl = `${origin}/how-it-works/now-spinning`;
+  const imageUrl = `${origin}/og/how-it-works/now-spinning.jpg`;
+  const set = (pattern, tag) => (html = html.replace(pattern, () => tag));
+  set(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
+  set(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+  set(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+  set(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+  set(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+  set(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`);
+  set(/<meta property="twitter:title" content="[^"]*" \/>/, `<meta property="twitter:title" content="${escapeHtml(title)}" />`);
+  set(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+  set(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`);
+  html = injectPageIdentity(html, title, pageUrl);
+  console.log(`[How It Works: Now Spinning Meta Injected]`);
+  return html;
 }
 
 /**
