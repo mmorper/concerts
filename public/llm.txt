@@ -516,12 +516,12 @@ default view.
 
 #### How It Works: Now Spinning (`/how-it-works/now-spinning`)
 **Title:** "How Now Spinning Works | Morperhaus Concert Archives"
-**Purpose:** Explains Now Spinning: when a record plays on the owner's living-room turntable, the TV shows the song and every night he heard it live.
+**Purpose:** Explains Now Spinning: when a record plays on the owner's living-room turntable, the TV shows the song and the concerts where he heard it live.
 
 **What it covers:**
 - The ear: a Raspberry Pi hears the receiver's Zone 2 line output (no microphone) and starts a 12-second clip when sound follows silence
 - The name: the Pi makes a fingerprint of the clip and sends only that to Shazam; no audio leaves the house
-- The memory: a Cloudflare Worker looks the song up against every setlist in the archive, openers included, using the same matching rules as the site
+- The memory: a Cloudflare Worker looks the song up against the setlists in the archive (most concerts have one), openers included, using the same matching rules as the site
 - The screen: a tvOS app receives the answer over a WebSocket. The screen never claims more than the setlists can prove
 - Interactive diagrams: the round trip (with a "Simple / Under the hood" toggle), the fingerprint, and an "honesty ladder" that runs the real lookup against the published index
 - No play history is kept anywhere

@@ -54,7 +54,7 @@ export function NowSpinningChapter() {
               Now Spinning
             </h1>
             <p className="font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
-              When I play a record, the TV shows the song and every time I’ve heard it live.
+              When I play a record, the TV shows the song and the concerts where I heard it live.
             </p>
           </motion.header>
 
@@ -79,7 +79,7 @@ export function NowSpinningChapter() {
             <Prose>
               <p>
                 When a record plays on our living-room turntable, the TV shows three things: the song, the album, and
-                every concert where I heard that song live. It also shows my photos from those concerts. Nobody has to
+                the concerts where I heard that song live. It also shows my photos from those concerts. Nobody has to
                 touch a phone or a remote.
               </p>
               <p>
@@ -201,8 +201,9 @@ export function NowSpinningChapter() {
             <Prose>
               <p>
                 Shazam knows the song’s name, but it doesn’t know my history. For that, the Pi sends the song’s name to
-                my concert archive. The archive is a small program running on Cloudflare, a cloud service. It has every
-                setlist from every concert I’ve been to, including the opening acts.
+                my concert archive. The archive is a small program running on Cloudflare, a cloud service. It knows every
+                concert I’ve been to. For most of them it also has the setlist: the songs each band played that night,
+                opening acts included.
               </p>
               <p>
                 The tricky part is that the same song can be written in different ways. Shazam might say{' '}
@@ -221,14 +222,13 @@ export function NowSpinningChapter() {
                 <ul>
                   <li>
                     <strong>Where it runs.</strong> A Cloudflare Worker, a small program that runs on Cloudflare’s
-                    servers, receives the song from the Pi and does the lookup. Only the Pi, using a secret key, can send
-                    it songs.
+                    servers, receives the song from the Pi and does the lookup. Only the Pi can send it songs.
                   </li>
                   <li>
                     <strong>Fast, because it’s prepared ahead of time.</strong> Each time the website is published, it
                     also builds an index: a short table of contents, plus one small file per band. A lookup reads three
-                    files at most and takes 4–10 milliseconds. It’s split into small files because one big 360 KB file
-                    was too slow for Cloudflare’s free plan, which allows 10 milliseconds per request.
+                    files at most and takes 4–10 milliseconds. It’s split into small files because reading one big 360 KB
+                    file came too close to the 10-millisecond limit of Cloudflare’s free plan.
                   </li>
                   <li>
                     <strong>How names are tidied.</strong> The rules remove version labels such as “Remastered” or
@@ -264,8 +264,8 @@ export function NowSpinningChapter() {
                 song, the album, one sentence about my history with the song, and my photos from those concerts.
               </p>
               <p>
-                What matters most to me is what the screen <em>won’t</em> say. My setlists aren’t complete. Some older
-                concerts have no setlist at all. So the screen never claims more than the setlists can prove.
+                What matters most to me is what the screen <em>won’t</em> say. My setlists aren’t complete. Some
+                concerts, especially older ones, have no setlist at all. So the screen never claims more than the setlists can prove.
               </p>
               <p>
                 The screen checks a list of statements in order and uses the first one that’s true. Pick a record below

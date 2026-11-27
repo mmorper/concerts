@@ -1131,7 +1131,7 @@ async function injectHowItWorksMeta(html, origin, ctx, pathname = '/how-it-works
       : `How It Works | Morperhaus Concert Archives`;
     const description = chapter
       ? `See how ${concertCount} concerts come to life. An interactive walkthrough of the data enrichment pipeline — from a single artist, venue, and date through seven APIs across six tiers, building ${yearSpan} years of live music history.`
-      : `The machinery behind ${concertCount} concerts and ${yearSpan} years of live music, explained for the curious: how the archive is built, and how the turntable in the living room knows every night a song was heard live.`;
+      : `The machinery behind ${concertCount} concerts and ${yearSpan} years of live music, explained for the curious: how the archive is built, and how the turntable in the living room knows when a song was heard live.`;
     const pageUrl = `${origin}${chapter ? pathname : '/how-it-works'}`;
 
     html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
@@ -1159,7 +1159,7 @@ async function injectHowItWorksMeta(html, origin, ctx, pathname = '/how-it-works
  */
 function injectNowSpinningChapterMeta(html, origin) {
   const title = `How Now Spinning Works | Morperhaus Concert Archives`;
-  const description = `Put a record on, and seconds later the TV knows the song and every night it was heard live. How a Raspberry Pi, a Shazam fingerprint and forty years of setlists make it happen.`;
+  const description = `Put a record on, and seconds later the TV knows the song and the concerts where it was heard live. How a Raspberry Pi, a Shazam fingerprint and forty years of setlists make it happen.`;
   const pageUrl = `${origin}/how-it-works/now-spinning`;
   const imageUrl = `${origin}/og/how-it-works/now-spinning.jpg`;
   const set = (pattern, tag) => (html = html.replace(pattern, () => tag));

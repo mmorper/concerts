@@ -25,7 +25,7 @@ export const CHAPTERS: Chapter[] = [
     id: 'now-spinning',
     path: '/how-it-works/now-spinning',
     title: 'Now Spinning',
-    dek: 'When I play a record, the TV shows the song and every time I’ve heard it live. Here’s how.',
+    dek: 'When I play a record, the TV shows the song and the concerts where I heard it live. Here’s how.',
   },
 ]
 
