@@ -60,18 +60,29 @@ private struct StageBackground: View {
 }
 
 /// CSS `radial-gradient(<w>px <h>px at x y, color, transparent <fade>)`.
+///
+/// Drawn from `GlowMask`, which is dithered: a plain RadialGradient this faint, over the dark
+/// stage, rounds into rings that show on the TV.
 private struct Glow: View {
     let color: Color
     let center: CGPoint
     let radii: CGSize
     let fade: CGFloat
 
+    @Environment(\.displayScale) private var displayScale
+
     var body: some View {
-        RadialGradient(colors: [color, color.opacity(0)], center: .center, startRadius: 0, endRadius: radii.width * fade)
-            .frame(width: radii.width * 2, height: radii.width * 2)
-            .scaleEffect(x: 1, y: radii.height / radii.width)
-            .position(center)
-            .allowsHitTesting(false)
+        // The glow reaches transparent at `fade` of each radius. One image pixel per screen pixel,
+        // so the dither isn't smoothed away by scaling.
+        let width = Int((radii.width * fade * 2 * displayScale).rounded())
+        let height = Int((radii.height * fade * 2 * displayScale).rounded())
+        if let mask = GlowMask.image(width: width, height: height) {
+            Image(decorative: mask, scale: displayScale)
+                .renderingMode(.template)
+                .foregroundStyle(color)
+                .position(center)
+                .allowsHitTesting(false)
+        }
     }
 }
 
