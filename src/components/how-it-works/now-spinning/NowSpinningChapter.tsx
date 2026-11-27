@@ -3,7 +3,7 @@
  *
  * Written for friends: the story reads straight through, and each step has an "Under the hood"
  * panel for the engineers. Facts come from the spec
- * (docs/specs/future/global-now-spinning/global-now-spinning-spec.md) and the code; home-network
+ * (docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md) and the code; home-network
  * specifics (addresses, hostnames, what else runs on the Pi, how tokens are kept) stay out.
  */
 import type { ReactNode } from 'react'

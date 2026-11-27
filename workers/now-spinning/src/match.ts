@@ -13,7 +13,7 @@
  * The index builder (scripts/build-now-spinning-index.ts) and the Worker both import this file,
  * so the two sides of every comparison are folded by the same code.
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Data
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Data
  */
 
 import { foldSongTitle, songIndexKeys } from "../../../scripts/utils/song-title.js";

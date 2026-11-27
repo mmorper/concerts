@@ -2,7 +2,7 @@ import Foundation
 
 /// The state contract's examples, `test/fixtures/now-spinning-states.json`, bundled for previews.
 /// The same file the Worker's tests write and the web page's `?fixture=` reads, so each preview
-/// can be checked against its screenshot in `docs/specs/future/global-now-spinning/screens/`.
+/// can be checked against its screenshot in `docs/specs/implemented/global-now-spinning/screens/`.
 enum Fixtures {
     static let all: [String: NowSpinningState] = {
         guard let url = Bundle.main.url(forResource: "now-spinning-states", withExtension: "json"),

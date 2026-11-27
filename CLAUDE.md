@@ -3,7 +3,7 @@
 Interactive web application for exploring personal concert history (1984-present).
 
 **Live:** https://concerts.morperhaus.org
-**Version:** v6.3.0 | 186 concerts, 261 artists, 80 venues
+**Version:** v7.0.0 | 186 concerts, 261 artists, 80 venues
 **Stack:** Vite 8, React 18, TypeScript 7, Tailwind 4, D3.js 7, Leaflet
 
 ---
@@ -99,6 +99,10 @@ src/
 
 public/data/               # Generated data files
 scripts/                   # Data pipeline scripts
+workers/                   # Cloudflare Workers (meta-injector, mcp-server, ask-chat,
+                           #   dashboard-refresh, now-spinning)
+now-spinning/pi/           # Now Spinning: the Raspberry Pi listener (Python, uv)
+now-spinning/tvos/         # Now Spinning: the tvOS app (SwiftUI, XcodeGen)
 docs/                      # Documentation & specs
 .claude/                   # Claude Code configuration
 ```

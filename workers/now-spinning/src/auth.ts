@@ -8,7 +8,7 @@
  * why tokens are hex: a subprotocol can't contain the `/` or `=` that base64 produces. Never in a
  * query string, which ends up in logs.
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Auth and secrets
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Auth and secrets
  */
 
 export const SUBPROTOCOL = "now-spinning.v1";

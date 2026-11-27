@@ -6,7 +6,7 @@
  * changes, and keeps one alarm set to the earliest of its deadlines. WebSockets use hibernation, so
  * an idle evening with a display connected costs nothing.
  *
- * Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Behaviour
+ * Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Behaviour
  */
 
 import { SUBPROTOCOL } from "./auth.js";
