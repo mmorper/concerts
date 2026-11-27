@@ -50,6 +50,9 @@ struct FocalImage: View {
 
 /// An image showing exactly `box` (fractions of the image) in its frame: the thumbnail's 4:5 box
 /// in a 4:5 frame, like the page's `background-size` and `background-position` for it.
+///
+/// The Worker can't see the image's size. A box that doesn't match the frame's shape on the real
+/// image would stretch it, so that falls back to filling the frame around the box's centre.
 struct BoxImage: View {
     let url: URL
     let box: CGRect
@@ -58,11 +61,18 @@ struct BoxImage: View {
     var body: some View {
         GeometryReader { geo in
             if let image {
-                let w = geo.size.width / box.width, h = geo.size.height / box.height
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: w, height: h)
-                    .offset(x: -box.minX * w, y: -box.minY * h)
+                let size = image.size
+                let boxShape = (box.width * size.width) / max(box.height * size.height, 1)
+                let frameShape = geo.size.width / max(geo.size.height, 1)
+                if abs(boxShape / frameShape - 1) <= 0.025 {
+                    let w = geo.size.width / box.width, h = geo.size.height / box.height
+                    Image(uiImage: image)
+                        .resizable()
+                        .frame(width: w, height: h)
+                        .offset(x: -box.minX * w, y: -box.minY * h)
+                } else {
+                    FocalImage(url: url, fx: box.midX, fy: box.midY)
+                }
             }
         }
         .clipped()

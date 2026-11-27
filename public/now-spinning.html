@@ -218,6 +218,16 @@ const frameThumb = (el, p) => {
   if (!ok) { el.style.backgroundPosition = focal(p); return; }
   el.style.backgroundSize = `${100 / b.w}% ${100 / b.h}%`;
   el.style.backgroundPosition = `${b.w < 1 ? b.x / (1 - b.w) * 100 : 0}% ${b.h < 1 ? b.y / (1 - b.h) * 100 : 0}%`;
+  // The Worker can't see the image's size. A box that isn't 4:5 on the real image would stretch
+  // it, so check once it loads (from the cache: it's the same URL) and fall back to the focal crop.
+  const img = new Image();
+  img.onload = () => {
+    if (Math.abs((b.w * img.naturalWidth) / (b.h * img.naturalHeight) - 0.8) > 0.02) {
+      el.style.backgroundSize = 'cover';
+      el.style.backgroundPosition = focal(p);
+    }
+  };
+  img.src = p.url;
 };
 const clamp01 = x => (typeof x === 'number' && isFinite(x) ? Math.min(1, Math.max(0, x)) : 0.5);
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
