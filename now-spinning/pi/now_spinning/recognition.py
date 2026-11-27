@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import asyncio
 import io
+import json
 import wave
 from dataclasses import dataclass
 from typing import Any, Protocol
@@ -30,6 +31,7 @@ TIMEOUT_S = 30  # one recognition, fingerprint and request together
 _MAX_TEXT = 300
 _MAX_URL = 1000
 _MAX_ID = 100
+_MAX_BODY = 2048
 
 
 class RecognitionError(Exception):
@@ -63,7 +65,20 @@ class Match:
         ):
             if value and len(value) <= limit:
                 body[key] = value
+        # The Worker refuses a body over 2048 bytes. Per-field caps count characters, and non-Latin
+        # text takes up to 4 bytes each: drop the optional fields, least useful first, then shorten.
+        for key in ("isrc", "artworkUrl", "album", "shazamId"):
+            if body_size(body) <= _MAX_BODY:
+                return body
+            body.pop(key, None)
+        while body_size(body) > _MAX_BODY:
+            body["title"], body["artist"] = body["title"][:-10] or body["title"][:1], body["artist"][:-10] or body["artist"][:1]
         return body
+
+
+def body_size(body: dict) -> int:
+    """Bytes on the wire, as worker.post sends it (UTF-8, not ASCII escapes)."""
+    return len(json.dumps(body, ensure_ascii=False).encode())
 
 
 class Recognizer(Protocol):

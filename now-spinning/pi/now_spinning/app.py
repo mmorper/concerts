@@ -151,6 +151,7 @@ class Listener:
                     break
                 if wait is None:
                     log.warning("worker: %s dropped after %d attempts", body["event"], len(POST_RETRIES_S) + 1)
+                    self.loop.resync()  # the Worker may now show the wrong thing: tell it again
                 else:
                     await asyncio.sleep(wait)
 

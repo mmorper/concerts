@@ -7,6 +7,7 @@ notice for "off". The token is sent as a Bearer header and never logged.
 
 from __future__ import annotations
 
+import json
 import logging
 
 import aiohttp
@@ -33,7 +34,10 @@ async def post(url: str, token: str, body: dict) -> bool:
     try:
         timeout = aiohttp.ClientTimeout(total=15)
         async with aiohttp.ClientSession(timeout=timeout) as s:
-            async with s.post(url, json=body, headers={"Authorization": f"Bearer {token}"}) as r:
+            # UTF-8, not aiohttp's ASCII escapes, which take 6 bytes a character (the 2 KB limit).
+            data = json.dumps(body, ensure_ascii=False).encode()
+            headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+            async with s.post(url, data=data, headers=headers) as r:
                 if r.status != 200:
                     log.warning("worker: %s answered %s", body.get("event"), r.status)
                     return False

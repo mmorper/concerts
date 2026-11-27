@@ -137,3 +137,33 @@ def test_wav_mode_runs_the_loop_on_a_file(tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("NS_RECOGNIZER", "off")
     assert main(["--wav", str(path)]) == 0
     assert "would POST" not in capsys.readouterr().out  # nothing shown, so no gap or stopped to say
+
+
+def test_post_sends_utf8_json_with_the_token():
+    """A real POST to a local server: what the Worker receives, byte for byte."""
+    from aiohttp import web
+
+    got = {}
+
+    async def handler(request):
+        got["auth"] = request.headers.get("Authorization")
+        got["type"] = request.headers.get("Content-Type")
+        got["raw"] = await request.read()
+        return web.json_response({"ok": True})
+
+    async def go():
+        app = web.Application()
+        app.router.add_post("/api/now-spinning", handler)
+        runner = web.AppRunner(app)
+        await runner.setup()
+        site = web.TCPSite(runner, "127.0.0.1", 0)
+        await site.start()
+        port = site._server.sockets[0].getsockname()[1]
+        try:
+            return await worker.post(f"http://127.0.0.1:{port}/api/now-spinning", "tok", {"event": "track", "artist": "Björk", "title": "Jóga"})
+        finally:
+            await runner.cleanup()
+
+    assert asyncio.run(go()) is True
+    assert got["auth"] == "Bearer tok" and got["type"].startswith("application/json")
+    assert got["raw"] == '{"event": "track", "artist": "Björk", "title": "Jóga"}'.encode()

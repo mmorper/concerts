@@ -165,9 +165,44 @@ def test_closing_the_gate_with_nothing_shown_posts_nothing():
     assert lp.set_gate(5, False) == []
 
 
-def test_an_audio_outage_doesnt_count_as_silence():
+def test_an_audio_outage_doesnt_count_as_silence_and_resumes_afresh():
     ev = Evening(lambda t: A).play(100, MUSIC)
     ev.lp.audio_resumed()  # readings stopped at 100 and come back at 400
     ev.t = 400
     ev.play(30, MUSIC)
-    assert ev.kinds() == [A.title]
+    assert "gap" not in ev.kinds() and "stopped" not in ev.kinds()
+    assert ev.kinds() == [A.title, A.title]  # posted again, from what was heard after the outage
+
+
+def test_a_dropped_post_is_resent_at_the_next_reading():
+    """QA on #726: after a `track` post is dropped, `alive` alone leaves the Worker idle."""
+    ev = Evening(lambda t: A).play(40, MUSIC)
+    ev.lp.resync()  # what the service does when an event is dropped after its retries
+    ev.play(1, MUSIC)
+    assert [e for t, e in ev.posts if t == ev.t - 1] == [A.event()]
+
+
+def test_after_an_audio_outage_the_song_is_posted_afresh():
+    """The Worker went idle during a 5-minute outage; the record still plays."""
+    ev = Evening(lambda t: A).play(40, MUSIC)
+    ev.lp.audio_resumed()
+    ev.t = 340
+    ev.play(30, MUSIC)
+    after = [(t, e) for t, e in ev.posts if t >= 340 and e["event"] != "alive"]
+    assert after and after[0][1] == A.event() and after[0][0] <= 340 + CLIP_S + 4
+
+
+def test_a_shazam_outage_mid_record_doesnt_say_stopped():
+    ev = Evening(lambda t: A if t < 60 else Failed()).play(60 + NO_MATCH_STOP_S + 300, MUSIC)
+    assert ev.kinds() == [A.title] and ev.lp.failing
+
+
+def test_a_track_body_fits_the_worker_limit_in_any_script():
+    import json
+
+    m = Match(title="長" * 300, artist="名" * 300, album="盤" * 300, artwork_url="https://x/" + "y" * 990, isrc="I" * 12, shazam_id="1")
+    body = m.event()
+    from now_spinning.recognition import body_size
+
+    assert body_size(body) <= 2048 and body["title"] and body["artist"]
+    assert len(json.dumps(body, ensure_ascii=False).encode()) == body_size(body)

@@ -13,7 +13,12 @@ spec's §Pi listener "Identification loop":
   something matches or real silence (a gap) resets the loop.
 - `alive` every 60 s while the screen shows a song, a gap or `unmatched`.
 - Recognition errors (not "no match") count separately: three in a row → the health check-in
-  says `failing`.
+  says `failing`. An error is not a miss, and doesn't count toward the five minutes either: a
+  Shazam outage mid-record never says the record stopped.
+- Resync: when an event is dropped after its retries, the Worker may have lost the current state,
+  so the next reading re-posts it. `alive` alone can't: the Worker ignores it while idle, and the
+  same song posts nothing new. After an audio outage the loop starts afresh instead: the next clip
+  posts what is playing then.
 
 The loop runs only while the gate is open: the main zone on Phono, or the receiver unreachable.
 Closing the gate posts `stopped`. The return to the Apple TV input is not decided here: it stays
@@ -75,6 +80,7 @@ class Loop:
         self.in_flight = False
         self.epoch = 0
         self.last_post_at = -math.inf
+        self.need_resync = False
 
     @property
     def failing(self) -> bool:
@@ -91,10 +97,19 @@ class Loop:
         return out
 
     def audio_resumed(self) -> None:
-        """Readings are back after an outage: nothing heard during it counts (as controller.py)."""
+        """Readings are back after an outage: nothing heard during it counts (as controller.py).
+        What was showing may have ended, and the Worker went idle if the outage outlasted its
+        3-minute liveness alarm. So start afresh, posting nothing: the next clip (12 s after sound
+        returns) posts what is actually playing, never a stale song."""
+        self.shown, self.track, self.candidate = "idle", None, None
         self.sound_since = self.silent_since = None
+        self.next_clip_at = -math.inf
         self.epoch += 1
         self.in_flight = False
+
+    def resync(self) -> None:
+        """Re-post what the screen should show at the next reading (the Worker may have lost it)."""
+        self.need_resync = True
 
     # ── loudness, once a second ───────────────────────────────────────────────────────────
 
@@ -136,6 +151,12 @@ class Loop:
                 self.slow = True
                 self.next_clip_at = now + SLOW_RETRY_S
 
+        if self.need_resync:
+            self.need_resync = False
+            if self.shown == "track" and self.track is not None:
+                out += self._show(now, self.track)
+            elif self.shown in ("gap", "unmatched"):
+                out += self._post(now, self.shown)
         if self.shown in ("track", "gap", "unmatched") and now - self.last_post_at >= ALIVE_EVERY_S:
             out += self._post(now, "alive")
 
@@ -161,6 +182,8 @@ class Loop:
         if isinstance(result, Failed):
             self.errors += 1
             self.next_clip_at = now + ERROR_RETRY_S
+            # Unknown, not "no match": the five-minute window starts again from here.
+            self.last_match_at = now
             return out
         self.errors = 0
 
@@ -216,6 +239,7 @@ class Loop:
     def _reset(self) -> None:
         self.shown, self.track, self.candidate = "idle", None, None
         self.misses, self.slow = 0, False
+        self.need_resync = False
         self.sound_since = self.silent_since = None
         self.gapped = False
         self.last_match_at = self.next_clip_at = -math.inf

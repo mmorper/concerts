@@ -762,6 +762,8 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - **No match.** Three misses in a row → POST `unmatched` once. Five minutes of sound with no
   match (the run-out groove, a record Shazam doesn't know) → POST `stopped` and try once every
   two minutes until something matches or real silence resets the loop.
+  A recognition error is not a miss and restarts those five minutes: a Shazam outage mid-record
+  leaves the last song showing and reports `failing`, and never says the record stopped.
 - **Heartbeats.** POST `alive` every 60 s while there is a track, a gap or `unmatched`. POST
   `status` every 5 minutes always (see [Listener health](#listener-health)); `recognizer` is
   `failing` when the last three recognition calls raised errors, as opposed to finding no match,
@@ -780,8 +782,9 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
   be recognised.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.
-  Events go out in order, each retried after 2, 5 and 15 s, then dropped (the next `alive` or
-  song brings the Worker up to date). A recognition gets 30 s and at most one retry inside
+  Events go out in order, each retried after 2, 5 and 15 s, then dropped; after a drop the
+  listener re-posts what the screen should show (`alive` can't: the Worker ignores it while idle).
+  After an audio outage it starts afresh, and the next clip posts what is playing then. A recognition gets 30 s and at most one retry inside
   `shazamio`; the loop has its own schedule for the next clip.
 
 **What the listener sends.** The raw response saved in Phase 0 check 2 is on #688; Phase 4 confirms this mapping against it:
@@ -1290,6 +1293,8 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
   - The return timers keep 4a's loudness rule, apart from the loop's `stopped`, so the return
     doesn't depend on Shazam. `NS_RECOGNIZER=off` gives the 4a listener.
   - No audio reports `recognizer: "failing"`. The journal names event kinds, never songs.
+  - QA on #726: a dropped event is re-posted (not left to `alive`); recognition errors don't count
+    toward "five minutes with no match"; a `track` body is kept under 2048 bytes in any script.
   - 4a passed on the equipment on 2026-11-27 (#697): every check, with the run-out check
     skipped for stylus wear.
 - **2026-11-26, v1.10.0: Phase 4 split into 4a and 4b; 4a built.**
