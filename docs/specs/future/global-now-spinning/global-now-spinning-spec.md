@@ -478,7 +478,11 @@ interface NowSpinningState {
     nights: { date: string; dateLabel: string; text: string; hasPhotos: boolean }[]; // max 4, newest first
                                              // hasPhotos is sent but no display draws it (2026-11-24)
     moreNights: number;
-    photos: { url: string; caption: string; fx: number; fy: number }[]; // absolute URLs, max 5
+    photos: {                                // absolute URLs, max 5
+      url: string; caption: string;
+      fx: number; fy: number;                // focal point: the centre of Mike's crop (the backdrop)
+      thumb?: { x: number; y: number; w: number; h: number }; // the thumbnail's 4:5 box, 0–1 of the image
+    }[];
     accentHue: number;                       // hue() from the mock, for the generated sleeve and glow
   };
 }
@@ -841,7 +845,10 @@ laptop, a phone or an iPad.
   scaled to fit. Colours match the site's dark scenes (`.claude/skills/design-system/SKILL.md`).
 - Motion: record at 33⅓ rpm (1.8 s a turn), slide-out and back on a new track (0.9 s), text
   fade-up (0.9 s), background photos crossfade every 7 s. Honour `prefers-reduced-motion`.
-- Photos use `fx`/`fy` as the focal point (`object-position`), so the crop Mike chose survives.
+- Photos keep the crop Mike chose. The strip's thumbnails are 4:5 (104×130) and show `thumb`
+  exactly: his crop from the media pipeline, widened to 4:5 where the photo allows, so nothing
+  he framed is cut. The blurred full-screen backdrop is centred on `fx`/`fy`. A photo without
+  `thumb` (an older Worker) crops its thumbnail around `fx`/`fy`.
 - Address: `https://concerts.morperhaus.org/now-spinning`. Cloudflare Pages serves
   `public/now-spinning.html` without the extension, as it does `/about-mcp`.
 - Token: open the page once as `…/now-spinning#token=…`. The page stores it in
@@ -1289,6 +1296,14 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
 
 ## Revision History
 
+- **2026-11-27, v1.12.0: 4:5 thumbnails that show Mike's crop.**
+  - The strip's thumbnails were 150×100 landscape, cropped around the centre of Mike's crop.
+    Most show photos are portrait (91 of 150), and those lost about 44% of the crop's height.
+  - The index gives each photo `t`, a 4:5 box from the media pipeline's crop (`thumbBox` in the
+    builder); the Worker sends it as `thumb`; the page and the tvOS app draw it at 104×130.
+    On 2026-11-27, 92 of 94 boxes were exactly Mike's crop, one was widened, and one lost 7% of
+    its width because the photo is too short for 4:5.
+  - The backdrop is unchanged: full-screen, blurred, centred on `fx`/`fy`.
 - **2026-11-27, v1.11.0: Phase 4b built (recognition).**
   - Phase 0 check 7 answered: `shazamio` sends a fingerprint made on the Pi, not audio (§Privacy).
   - Clips are 12 s, Shazam's own window, not 10 s.

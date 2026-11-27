@@ -317,12 +317,21 @@ function coverNights(rows: CoverRow[], label: (r: CoverRow) => string): Pick<Tra
   };
 }
 
+/** The index's thumbnail box, if it's a usable one: four numbers, inside the image. */
+function boxOf(t: unknown): { x: number; y: number; w: number; h: number } | null {
+  if (!Array.isArray(t) || t.length !== 4 || !t.every((n) => typeof n === "number" && Number.isFinite(n))) return null;
+  const [x, y, w, h] = t as number[];
+  if (x < 0 || y < 0 || w <= 0 || h <= 0 || x + w > 1.001 || y + h > 1.001) return null;
+  return { x, y, w, h };
+}
+
 /** Photos from these nights, newest night first. Every caption names the night it is from. */
 function photosOf(nights: { d: string; venue: string; photos: Photo[] }[]): Track["photos"] {
   const out: Track["photos"] = [];
   for (const n of [...nights].sort((a, b) => cmp(b.d, a.d))) {
     for (const p of n.photos) {
-      out.push({ url: `${SITE}${p.u}`, caption: `${dateLabel(n.d)} · ${n.venue}`, fx: p.fx, fy: p.fy });
+      const thumb = boxOf(p.t);
+      out.push({ url: `${SITE}${p.u}`, caption: `${dateLabel(n.d)} · ${n.venue}`, fx: p.fx, fy: p.fy, ...(thumb ? { thumb } : {}) });
       if (out.length === MAX_PHOTOS) return out;
     }
   }

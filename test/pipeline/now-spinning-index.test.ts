@@ -12,7 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { buildIndex, readInputs } from "../../scripts/build-now-spinning-index.ts";
+import { buildIndex, readInputs, thumbBox } from "../../scripts/build-now-spinning-index.ts";
 import { lookup } from "../../workers/now-spinning/src/identify.ts";
 import type { ActFile, CoversFile } from "../../workers/now-spinning/src/types.ts";
 
@@ -55,6 +55,23 @@ describe("Now Spinning index (real data)", () => {
     for (const a of acts) for (const n of a.nights) for (const p of n.photos) expect(published.has(p.u), p.u).toBe(true);
   });
 
+  it("gives every photo a 4:5 thumbnail box inside the image, around the centre of Mike's crop", () => {
+    const media = new Map(readInputs(DATA).media.map((m) => [m.url, m]));
+    for (const a of acts) {
+      for (const n of a.nights) {
+        for (const p of n.photos) {
+          const m = media.get(p.u)!;
+          if (!m.width || !m.height) continue; // no size: no box, and the thumbnail crops around fx/fy
+          expect(p.t, p.u).toBeDefined();
+          const [x, y, w, h] = p.t!;
+          expect(Math.abs((w * m.width) / (h * m.height) - 0.8), p.u).toBeLessThan(0.01);
+          expect(x >= 0 && y >= 0 && x + w <= 1.0005 && y + h <= 1.0005, p.u).toBe(true);
+          expect(p.fx >= x && p.fx <= x + w && p.fy >= y && p.fy <= y + h, p.u).toBe(true);
+        }
+      }
+    }
+  });
+
   it("gives every song at least one strict key", () => {
     for (const a of acts) for (const s of a.songs) expect(s.k.length, `${a.slug} "${s.n}"`).toBeGreaterThan(0);
   });
@@ -88,6 +105,30 @@ describe("Now Spinning index (real data)", () => {
 });
 
 describe("Now Spinning index builder", () => {
+  describe("thumbBox", () => {
+    const ratio = (b: number[], W: number, H: number) => (b[2] * W) / (b[3] * H);
+    it("keeps a 4:5 crop as it is", () => {
+      expect(thumbBox({ x: 0.1, y: 0, w: 0.6, h: 1 }, 2048, 1536)).toEqual([0.1, 0, 0.6, 1]);
+    });
+    it("widens a crop that's too narrow, keeping all of it", () => {
+      const b = thumbBox({ x: 0.3, y: 0.2, w: 0.3, h: 0.6 }, 2000, 2000)!;
+      expect(ratio(b, 2000, 2000)).toBeCloseTo(0.8, 2);
+      expect(b[0] <= 0.3 && b[0] + b[2] >= 0.6 && b[1] <= 0.2 && b[1] + b[3] >= 0.8).toBe(true);
+    });
+    it("trims only where the photo runs out, and stays inside it", () => {
+      const b = thumbBox({ x: 0, y: 0, w: 1, h: 1 }, 3000, 1000)!;
+      expect(ratio(b, 3000, 1000)).toBeCloseTo(0.8, 2);
+      expect(b[1]).toBe(0);
+      expect(b[3]).toBe(1);
+      expect(b[0] + b[2]).toBeLessThanOrEqual(1);
+    });
+    it("uses the whole photo without a crop, and gives no box without a size", () => {
+      expect(ratio(thumbBox(null, 1080, 1350)!, 1080, 1350)).toBeCloseTo(0.8, 2);
+      expect(thumbBox({ x: 0, y: 0, w: 1, h: 1 }, undefined, 1000)).toBeNull();
+      expect(thumbBox({ x: 0, y: 0, w: 1, h: 1 }, 0, 1000)).toBeNull();
+    });
+  });
+
   it("leaves bad data out and reports it, and never throws", () => {
     const inputs = readInputs(DATA);
     const c = inputs.concerts[0];

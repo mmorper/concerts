@@ -16,7 +16,15 @@ export interface Photo {
   /** Focal point (the centre of the crop Mike chose), 0–1. */
   fx: number;
   fy: number;
+  /**
+   * The thumbnail: a 4:5 box `[x, y, w, h]`, in fractions of the image. Mike's crop, widened to
+   * exactly 4:5 where the photo allows. Absent when the media index has no size for the photo.
+   */
+  t?: Box;
 }
+
+/** `[x, y, w, h]`, in fractions of an image: 0–1, and x + w, y + h at most 1. */
+export type Box = [number, number, number, number];
 
 export interface Album {
   t: string;
@@ -118,8 +126,11 @@ export interface Track {
   /** Newest first, at most 4. */
   nights: { date: string; dateLabel: string; text: string; hasPhotos: boolean }[];
   moreNights: number;
-  /** Absolute URLs, newest night first, at most 5. */
-  photos: { url: string; caption: string; fx: number; fy: number }[];
+  /**
+   * Absolute URLs, newest night first, at most 5. `fx`/`fy` place the blurred backdrop; `thumb`,
+   * when present, is the 4:5 box the strip shows (the index's `t`).
+   */
+  photos: { url: string; caption: string; fx: number; fy: number; thumb?: { x: number; y: number; w: number; h: number } }[];
   /** For the generated sleeve and the glow. */
   accentHue: number;
 }

@@ -602,8 +602,8 @@ private struct Strip: View {
     private var thumbs: some View {
         HStack(spacing: 14) {
             ForEach(Array(photos.enumerated()), id: \.element.id) { i, photo in
-                FocalImage(url: photo.url, fx: photo.fx, fy: photo.fy)
-                    .frame(width: 150, height: 100)
+                thumbnail(photo)
+                    .frame(width: 104, height: 130)
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(.white.opacity(i == index ? 0.8 : 0), lineWidth: 2))
                     .shadow(color: .black.opacity(0.5), radius: 15, y: 10)
@@ -614,6 +614,15 @@ private struct Strip: View {
         }
         .opacity(faded ? 0 : 1)
         .animation(.easeInOut(duration: 1.2), value: faded)
+    }
+
+    /// Mike's 4:5 crop, exactly; around the focal point if the Worker sent no box.
+    @ViewBuilder private func thumbnail(_ photo: Track.Photo) -> some View {
+        if let box = photo.thumb {
+            BoxImage(url: photo.url, box: box)
+        } else {
+            FocalImage(url: photo.url, fx: photo.fx, fy: photo.fy)
+        }
     }
 
     @ViewBuilder private var caption: some View {

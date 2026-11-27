@@ -28,7 +28,7 @@ import { fileURLToPath } from "node:url";
 import { normalizeArtistName } from "../src/utils/normalize.ts";
 import { lookupSongAlbum, type SongAlbumLookupContext } from "./utils/song-album-lookup.ts";
 import { actKey, nearKeys, rulesFingerprint, titleKeys } from "../workers/now-spinning/src/match.ts";
-import { INDEX_VERSION, type ActFile, type Album, type CoverRow, type CoversFile, type Manifest, type Night, type Photo } from "../workers/now-spinning/src/types.ts";
+import { INDEX_VERSION, type ActFile, type Album, type Box, type CoverRow, type CoversFile, type Manifest, type Night, type Photo } from "../workers/now-spinning/src/types.ts";
 
 // ── Inputs ─────────────────────────────────────────────────────────────────────
 
@@ -67,6 +67,9 @@ interface MediaAsset {
   hero?: boolean;
   order?: number;
   crop?: { x: number; y: number; w: number; h: number } | null;
+  /** Pixels, of the published image. */
+  width?: number;
+  height?: number;
 }
 
 export interface IndexInputs {
@@ -88,6 +91,33 @@ export interface BuiltIndex {
 const MAX_PHOTOS_PER_NIGHT = 3;
 const round = (n: number) => Math.round(n * 1000) / 1000;
 
+/**
+ * The 4:5 thumbnail box for a photo, in fractions of the image, from Mike's crop (or the whole
+ * photo, if he drew none). Most crops are already 4:5. One that isn't is widened to 4:5 around
+ * its centre, so the whole of it stays in frame; it is trimmed only where the photo itself runs
+ * out. Null without the image's size.
+ */
+export function thumbBox(
+  crop: { x: number; y: number; w: number; h: number } | null | undefined,
+  width?: number,
+  height?: number,
+): Box | null {
+  if (!width || !height || !(width > 0) || !(height > 0)) return null;
+  const c = crop ?? { x: 0, y: 0, w: 1, h: 1 };
+  const ratio = 4 / 5;
+  const cx = (c.x + c.w / 2) * width, cy = (c.y + c.h / 2) * height;
+  let w = c.w * width, h = c.h * height;
+  if (w / h < ratio) w = h * ratio;
+  else h = w / ratio;
+  // Too big for the photo: shrink to fit, keeping 4:5.
+  const fit = Math.min(1, width / w, height / h);
+  w *= fit;
+  h *= fit;
+  const x = Math.min(Math.max(cx - w / 2, 0), width - w), y = Math.min(Math.max(cy - h / 2, 0), height - h);
+  const fw = round(w / width), fh = round(h / height);
+  return [Math.min(round(x / width), round(1 - fw)), Math.min(round(y / height), round(1 - fh)), fw, fh];
+}
+
 // ── Build ──────────────────────────────────────────────────────────────────────
 
 export function buildIndex(inp: IndexInputs, generatedAt = new Date().toISOString()): BuiltIndex {
@@ -106,7 +136,8 @@ export function buildIndex(inp: IndexInputs, generatedAt = new Date().toISOStrin
     const list = photos.get(key) ?? [];
     if (list.length >= MAX_PHOTOS_PER_NIGHT) continue;
     const c = m.crop;
-    list.push({ u: m.url, fx: c ? round(c.x + c.w / 2) : 0.5, fy: c ? round(c.y + c.h / 2) : 0.5 });
+    const t = thumbBox(c, m.width, m.height);
+    list.push({ u: m.url, fx: c ? round(c.x + c.w / 2) : 0.5, fy: c ? round(c.y + c.h / 2) : 0.5, ...(t ? { t } : {}) });
     photos.set(key, list);
   }
 
