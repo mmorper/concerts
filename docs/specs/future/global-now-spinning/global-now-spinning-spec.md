@@ -42,7 +42,7 @@ tvOS app on the Apple TV that shows it.
 | Version number | v7.0.0. Social Syndication (#323) moves to v6.5.0. |
 | Listener health | Yes. A quiet heartbeat from the Pi, a notice on the idle screen when it's offline, and one line on the operator dashboard. No song data. |
 | Audio interface | The Mackie Onyx Blackjack Mike already owns. |
-| Cloudflare plan | Workers Paid since 2026-11-26 (#692): 30 s of CPU a request, capped at 100 ms per Worker in `wrangler.toml`. The index stays split into small files, which keeps each lookup to a few milliseconds. |
+| Cloudflare plan | Workers Paid since 2026-11-26 (#692): 30 s of CPU a request, capped at 100 ms per Worker in `wrangler.toml` (#723). The index stays split into small files, which keeps each lookup small (4–10 ms measured). |
 | A record Shazam doesn't know | The screen says "Listening…". |
 | "Most played" on the site | Counts songs heard from opening acts too (#690). |
 
@@ -527,7 +527,7 @@ interface NowSpinningState {
 - **CPU budget.** Designed for the free tier's 10 ms of CPU per request, which is why the index is
   split into small files. Measured in production: 4–10 ms a request (#692), above the 3 ms target,
   so the account moved to Workers Paid on 2026-11-26, with each Worker capped at 100 ms
-  (`[limits] cpu_ms` in `wrangler.toml`).
+  (`[limits] cpu_ms` in `wrangler.toml`, #723).
 - **No caching of answers.** Every response carries `Cache-Control: no-store`.
 - **Heartbeat.** A home network can drop an idle connection without either end noticing. The
   display would then keep showing an old song, and on the TV it would keep the screen awake doing

@@ -637,9 +637,12 @@ in. Three values aren't, because the repository is public:
 - `NS_TV_MAC`: the TV's MAC address. With the TV on: `ip neigh show 192.168.1.231`, the value
   after `lladdr`.
 
-Both identifiers are also kept in 1Password. `NS_APP_BUNDLE_ID` is
-already set to the Now Spinning tvOS app (`org.morperhaus.nowspinning`). To check the app's ID on
-the Apple TV:
+The Apple TV's identifier and the TV's MAC address are also kept in 1Password.
+`NS_APP_BUNDLE_ID` comes set to the Now Spinning tvOS app (`org.morperhaus.nowspinning`) in a new
+settings file. `install.sh` never overwrites an existing one, so a Pi installed before 2026-11-27
+still says `com.apple.TVMusic` (Music). To change it:
+`sudo sed -i 's/^NS_APP_BUNDLE_ID=.*/NS_APP_BUNDLE_ID=org.morperhaus.nowspinning/' /etc/now-spinning/env`,
+then `sudo systemctl restart now-spinning`. To check the app's ID on the Apple TV:
 `sudo -u now-spinning -H /opt/now-spinning/venv/bin/atvremote --scan-hosts 192.168.1.111 --id <NS_APPLE_TV_ID> app_list | tr ',' '\n' | grep -i spin`
 
 **4. Check it before it controls anything.** With a record playing on Phono, this reads the receiver
@@ -662,7 +665,7 @@ Expect a `ReceiverStatus(...)` line, a dBFS reading and a `shazam:` line naming 
 didn't answer (step 9's notes apply); `no input device` means the Blackjack isn't seen (step 6).
 
 Optional: the same command with `--dry-run` instead of `--check` runs everything but only logs
-what it would do. Put a record on and watch; Ctrl-C to stop.
+what it would do. It opens the Blackjack too, so stop the service first, as above. Put a record on and watch; Ctrl-C to stop.
 
 **5. Start it.**
 
