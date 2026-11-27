@@ -223,7 +223,7 @@ was also live, so gapless and live weren't told apart. Results are in the
 | 5 | **Required.** From the Pi with `pyatv`: pair, read the power state, read which app is in front and whether anything is playing, wake the Apple TV, launch an app, and bring an app back from behind the screensaver. Note which commands worked on tvOS 26, which network the Apple TV is on, and any firewall rule or `--scan-hosts` it needed. | The app can't put itself on screen. The Pi has to, for every record. |
 | 6 | Does anything else (Home Assistant, a control app) hold the receiver's telnet port? | These receivers are believed to accept one telnet client at a time |
 | 6b | From the Pi: read the main zone's input and power, turn Zone 2 on, set its source to Phono, turn it off. Note the commands that worked and the replies, which network the receiver is on, and any firewall rule it needed. | The listener's gating depends on all four. Nothing else in Phase 0 tests them. |
-| 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio). Answered from its source code in Phase 4. | So the privacy section states a fact |
+| 7 | Confirm what `shazamio` sends to Shazam (a fingerprint, or audio). Answered from its source code in Phase 4. **Answered in 4b (2026-11-27): a fingerprint made on the Pi; no audio** (see [Privacy](#privacy)). | So the privacy section states a fact |
 | 8 | As the `now-spinning` user, install `shazamio` with `uv` on Python 3.13. Note the Python version, and whether anything had to be compiled. | The listener pins its Python. If `shazamio-core` has no ready-made build for 3.13 on the Pi, Phase 4 pins a version that has one. |
 
 If check 2 fails, stop and pick another recogniser (ACRCloud, AudD) before going further.
@@ -747,8 +747,10 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 **Identification loop.**
 - Capture 44.1 kHz stereo from the Blackjack (`sounddevice`, selected by name, not by card
   number, which can change between boots), downmixed to mono.
-- **First match fast.** When sound follows silence, record a 10 s clip and recognise at once.
-  Target: the screen changes within about 30 s of the needle landing.
+- **First match fast.** When sound follows silence, record a 12 s clip and recognise at once.
+  Target: the screen changes within about 30 s of the needle landing. 12 s, not the 10 s first
+  planned: it is the window Shazam's own clients fingerprint, `shazamio` warns on any other, and
+  Shazam answers no match from 15 s up (Phase 0's 10 s clips also matched).
 - **Then slow down.** Once a track is established, check every 30 s, and immediately after any
   gap. That keeps calls to Shazam near two a minute.
 - **No flapping.** Replacing an established track needs two results in a row that agree. The
@@ -760,20 +762,32 @@ does it with `pyatv`, using the commands Phase 0 check 5 found to work.
 - **No match.** Three misses in a row → POST `unmatched` once. Five minutes of sound with no
   match (the run-out groove, a record Shazam doesn't know) → POST `stopped` and try once every
   two minutes until something matches or real silence resets the loop.
+  A recognition error is not a miss: it never posts `unmatched`. The five minutes without a match
+  run on through errors, though, so a long Shazam outage clears the song after five minutes
+  rather than leave it up stale ([honesty rule](#design-philosophy)), and the idle screen says
+  "Song recognition isn't working right now" (the check-in reports `failing`).
 - **Heartbeats.** POST `alive` every 60 s while there is a track, a gap or `unmatched`. POST
   `status` every 5 minutes always (see [Listener health](#listener-health)); `recognizer` is
   `failing` when the last three recognition calls raised errors, as opposed to finding no match,
   and `off` in Phase 4a, which has no recognition.
-- **Phase 4a, before recognition:** "the record has stopped" (which starts the return timers) is
-  three minutes without music-level sound (−45 dBFS), and the display wakes when music-level sound
-  follows silence on Phono. Phase 4b adds the `gap`, `unmatched` and `stopped` events above.
+- **The return timers keep 4a's loudness rule in 4b.** "The record has stopped", for the return
+  to the Apple TV input, stays three minutes without music-level sound (−45 dBFS), decided apart
+  from the loop's `stopped` event. So the return works the same when Shazam is down or blocked,
+  and it is the rule checked on the equipment (#697). The two agree on a lifted needle; on a
+  record Shazam doesn't know, music level holds the timers off either way, as above.
+  `NS_RECOGNIZER=off` turns recognition off and leaves exactly the 4a listener.
 - **No reading is not silence.** When the audio stream delivers nothing (the Blackjack unplugged
   or the capture stalled), the loudness is unknown: nothing is decided during the outage, and the
   return timers start again from zero when readings come back, so a playing record is never taken
   for a lifted needle. The stream is restarted every minute and the journal says so.
-  Phase 4b also reports an outage in the health check-in.
+  The health check-in reports `recognizer: "failing"` while the audio is out, since nothing can
+  be recognised.
 - Clips stay in memory and are never written to disk.
 - Network failures: retry with backoff. The listener never crashes because the Worker is down.
+  Events go out in order, each retried after 2, 5 and 15 s, then dropped; after a drop the
+  listener re-posts what the screen should show (`alive` can't: the Worker ignores it while idle).
+  After an audio outage it starts afresh, and the next clip posts what is playing then. A recognition gets 30 s and at most one retry inside
+  `shazamio`; the loop has its own schedule for the next clip.
 
 **What the listener sends.** The raw response saved in Phase 0 check 2 is on #688; Phase 4 confirms this mapping against it:
 
@@ -1060,9 +1074,13 @@ The listener records the two channels as stereo and downmixes to mono itself.
   Nothing is logged per song, and nothing goes to Analytics Engine or GA4. Stopping the record
   erases the last track.
 - **Shazam does see each identification**, with the home's IP address. That is inherent to
-  using a recognition service. ShazamIO is believed to send an audio fingerprint, not audio.
-  Phase 4 confirms that from its source code (check 7) and updates this line with the answer.
-- Clips are held in memory for one recognition and never written to disk.
+  using a recognition service. **What is sent is a fingerprint, not audio** (Phase 0 check 7,
+  answered from the source of `shazamio` 0.9.0 and `shazamio-core` 2.0.0 in Phase 4b):
+  `shazamio-core` turns the clip into a signature on the Pi (an encoded set of frequency peaks),
+  and the request carries that signature, its length, the time zone, a timestamp, empty
+  `context` and `geolocation` fields, and two random IDs. No audio leaves the house.
+- Clips are held in memory for one recognition and never written to disk. The Pi's journal
+  names event kinds (`track`, `gap`), never songs.
 - Reading the current state requires the display token. Nothing about it is public on the site.
 
 ---
@@ -1224,9 +1242,15 @@ Built in two steps (owner's decision, 2026-11-26), each installed the same way:
 `.github/workflows/now-spinning-pi-ci.yml`, a `uv` entry in `.github/dependabot.yml`
 **Modify (4a):** `docs/NOW_SPINNING_OPERATIONS.md` §12 (install, check, update, token rotation),
 the Worker's `status` validation (`recognizer: "off"`), the page's `#debug` panel
+**Create (4b):** `now_spinning/{recognition,loop}.py` and their tests
+**Modify (4b):** the service (`app.py`: the gate, recognition, ordered event posting,
+`recognizer` in the check-in), `audio.py` (the last 12 s in memory), `--check` (one clip through
+Shazam) and `--wav`, `config.py` and `env.example` (`NS_RECOGNIZER`), the lockfile (`shazamio`
+0.9.0, `shazamio-core` 2.0.0, `aiohttp-retry`; listener 0.5.0), the operations guide §12
 **Done when:** pytest passes (including a check that every locked package has an aarch64 wheel
 for Python 3.13, since the Pi installs with `--no-build`), and the hardware checklist (#697)
-passes; 4a's part of it is in the operations guide §12.
+passes; 4a's part of it is in the operations guide §12. 4a passed on the equipment on
+2026-11-27.
 
 ### Phase 5: tvOS app (#698, then #701)
 **Create:**
@@ -1265,6 +1289,16 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
 
 ## Revision History
 
+- **2026-11-27, v1.11.0: Phase 4b built (recognition).**
+  - Phase 0 check 7 answered: `shazamio` sends a fingerprint made on the Pi, not audio (§Privacy).
+  - Clips are 12 s, Shazam's own window, not 10 s.
+  - The return timers keep 4a's loudness rule, apart from the loop's `stopped`, so the return
+    doesn't depend on Shazam. `NS_RECOGNIZER=off` gives the 4a listener.
+  - No audio reports `recognizer: "failing"`. The journal names event kinds, never songs.
+  - QA on #726: a dropped event is re-posted (not left to `alive`); recognition errors are not misses
+    (never `unmatched`), but a long outage still clears the song after five minutes; a `track` body is kept under 2048 bytes in any script.
+  - 4a passed on the equipment on 2026-11-27 (#697): every check, with the run-out check
+    skipped for stylus wear.
 - **2026-11-26, v1.10.0: Phase 4 split into 4a and 4b; 4a built.**
   - 4a (owner's decision): receiver control, the return to the Apple TV input, waking the display
     with Music in front until #701, and the health check-in. 4b adds recognition.

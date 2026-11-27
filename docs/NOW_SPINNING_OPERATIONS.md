@@ -590,10 +590,12 @@ rm -f ~/level-test.wav
 
 ## 12. Installing the listener (Phase 4)
 
-**Phase 4a** (#696) is what this step installs: Zone 2 follows Phono, the receiver goes back to the
-Apple TV input after records, the TV and Apple TV wake when a record starts, and a health check-in
-every 5 minutes. Song recognition (Shazam) is Phase 4b; it installs the same way, as an update.
-What it does and why: `now-spinning/pi/README.md` and the spec's §Pi listener.
+This step installs the listener: Zone 2 follows Phono, the receiver goes back to the Apple TV
+input after records, the TV and Apple TV wake when a record starts, a health check-in every 5
+minutes (**Phase 4a**, #696, on the Pi since 2026-11-27), and song recognition with Shazam, so the
+Now Spinning page shows what's playing (**Phase 4b**). A Pi that already runs 4a gets 4b as an
+update: see "Adding song recognition (4b)" below. What it does and why:
+`now-spinning/pi/README.md` and the spec's §Pi listener.
 
 Everything here runs as `pi`. The listener itself runs as `now-spinning`, from code root owns:
 - the code in `/opt/now-spinning/app` and its Python environment in `/opt/now-spinning/venv`,
@@ -635,8 +637,9 @@ in. Three values aren't, because the repository is public:
 - `NS_TV_MAC`: the TV's MAC address. With the TV on: `ip neigh show 192.168.1.231`, the value
   after `lladdr`.
 
-**4. Check it before it controls anything.** This reads the receiver once and one second of audio,
-prints both and exits, as the `now-spinning` user with the real settings:
+**4. Check it before it controls anything.** With a record playing on Phono, this reads the receiver
+once, one second of audio and one 12-second clip through Shazam, prints them and exits, as the
+`now-spinning` user with the real settings:
 
 ```bash
 # Pi
@@ -646,7 +649,9 @@ sudo systemd-run --pipe --wait --quiet -p User=now-spinning -p SupplementaryGrou
   /opt/now-spinning/venv/bin/python -m now_spinning --check
 ```
 
-Expect a `ReceiverStatus(...)` line and a dBFS reading. `no complete reply` means the receiver
+Expect a `ReceiverStatus(...)` line, a dBFS reading and a `shazam:` line naming the record.
+`shazam: answered, no match` means Shazam works but didn't know the clip (or nothing was playing);
+`shazam: failed (…)` means it couldn't be reached. `no complete reply` means the receiver
 didn't answer (step 9's notes apply); `no input device` means the Blackjack isn't seen (step 6).
 
 Optional: the same command with `--dry-run` instead of `--check` runs everything but only logs
@@ -661,7 +666,7 @@ journalctl -u now-spinning -f               # its log; Ctrl-C to stop watching
 ```
 
 Within 5 minutes the page's `#debug` panel shows the listener online, with song recognition
-`off`. That's correct for Phase 4a.
+`ok` (`off` if `NS_RECOGNIZER=off`).
 
 **6. Check it on the equipment** (Phase 4a's part of #697). Tick each on #697:
 - [ ] Main zone to Phono → Zone 2 turns on within about 5 seconds (MULTI ZONE on the display).
@@ -678,6 +683,21 @@ Within 5 minutes the page's `#debug` panel shows the listener online, with song 
 
 **Record this in the UniFi runbook:** the `now-spinning` service, `libportaudio2`,
 `/usr/local/bin/uv` (pinned), `/opt/now-spinning` and `/etc/now-spinning`.
+
+**Adding song recognition (4b) to a Pi that runs 4a.** Run the update below; nothing else is needed,
+since recognition is on unless `/etc/now-spinning/env` says `NS_RECOGNIZER=off`. Then:
+1. Put a record on and run step 4's check: the `shazam:` line should name it.
+2. Within 5 minutes the `#debug` panel shows song recognition **`ok`** and version `pi-0.5.0`.
+3. With the page open (`#debug` too), run the "Acceptance: the listener" checks on #697: the screen
+   changes within about 30 seconds of the needle landing, keeps the last song through a side flip,
+   goes idle 3 minutes after the needle is lifted, and recovers by itself after the Pi's power is
+   pulled.
+4. To turn recognition off again without a code change: add `NS_RECOGNIZER=off` to
+   `/etc/now-spinning/env`, then `sudo systemctl restart now-spinning`.
+
+The service's log (`journalctl -u now-spinning`) names what the listener does (`event: track`,
+`event: gap`), never the songs: it keeps no play history. Only the tools you run by hand
+(`--check`, `--wav`, `--dry-run`) print song names, on your screen.
 
 **Updating, on purpose.** Pull, re-run the installer, which rebuilds from the lock file and
 restarts the service:

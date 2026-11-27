@@ -1,6 +1,6 @@
 [project]
 name = "now-spinning"
-version = "0.4.1"
+version = "0.5.0"
 description = "Now Spinning listener for the Raspberry Pi: receiver control, display wake, health (Phase 4a, #696)"
 readme = "README.md"
 requires-python = "==3.13.*"
@@ -11,6 +11,7 @@ dependencies = [
   # pyatv 0.18.0 can't pair with srptools 2.x (Phase 0 check 5, #688).
   "srptools>=1.0,<2",
   "sounddevice>=0.4.6",
+  "shazamio==0.9.0",
 ]
 
 [dependency-groups]
