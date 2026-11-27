@@ -111,7 +111,6 @@ export function HonestyLadder() {
             </button>
           ))}
         </div>
-        <TvScreen track={settled ? track : null} />
       </div>
 
       <ol className="px-4 sm:px-6 py-6" style={{ listStyle: 'none' }}>
@@ -201,6 +200,8 @@ export function HonestyLadder() {
                     })}
                   </ul>
                 )}
+                {/* The answer lands on the screen, in the step that decided it. */}
+                {isHit && track && <TvScreen key={sel} track={track} />}
               </div>
             </li>
           )
@@ -221,14 +222,15 @@ export function HonestyLadder() {
 /**
  * The real TV screen: public/now-spinning.html in ?embed mode, the web twin of the tvOS app,
  * drawn from the same state. It is framed rather than copied, so any change to the screen's
- * design shows here too. It repaints only once the ladder has settled.
+ * design shows here too. It appears inside the step that matched, once the ladder has settled,
+ * and stays hidden until it has painted, so the idle screen never flashes.
  */
 const SCREEN_URL = import.meta.env.DEV ? '/now-spinning.html?embed' : '/now-spinning?embed'
 
-function TvScreen({ track }: { track: Track | null }) {
+function TvScreen({ track }: { track: Track }) {
   const frame = useRef<HTMLIFrameElement>(null)
   const [ready, setReady] = useState(false)
-  const [shown, setShown] = useState<Track | null>(null)
+  const [painted, setPainted] = useState(false)
 
   useEffect(() => {
     const on = (e: MessageEvent) => {
@@ -239,18 +241,20 @@ function TvScreen({ track }: { track: Track | null }) {
   }, [])
 
   useEffect(() => {
-    if (!ready || !track) return
+    if (!ready) return
     const now = new Date().toISOString()
     frame.current?.contentWindow?.postMessage(
       // Mirrored: the sleeve on the right, as on the TV in the photo at the top of the page.
       { type: 'now-spinning:show', mirrored: true, state: { v: 1, kind: 'track', at: now, now, track } },
       location.origin,
     )
-    setShown(track)
+    // Two frames: the message is handled, then the screen has drawn.
+    let id = requestAnimationFrame(() => (id = requestAnimationFrame(() => setPainted(true))))
+    return () => cancelAnimationFrame(id)
   }, [ready, track])
 
   return (
-    <div className="mt-6">
+    <div className={`mt-4 hiw-land${painted ? ' is-in' : ''}`}>
       <div
         style={{
           position: 'relative',
@@ -269,20 +273,17 @@ function TvScreen({ track }: { track: Track | null }) {
           title="The Now Spinning TV screen"
           aria-hidden="true"
           tabIndex={-1}
-          loading="lazy"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0, pointerEvents: 'none' }}
         />
       </div>
       {/* The screen's words, readable on a phone (where the TV is too small) and by a screen reader. */}
-      <div className="mt-3 sm:sr-only" aria-live="polite">
-        {shown && (
-          <p className="font-sans" style={{ fontSize: 15, lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
-            <span style={{ color: 'var(--hiw-ink)', fontWeight: 600 }}>
-              {shown.title}, {shown.artist}.
-            </span>{' '}
-            {shown.headline} {shown.lines.join(' ')}
-          </p>
-        )}
+      <div className="mt-3 sm:sr-only">
+        <p className="font-sans" style={{ fontSize: 15, lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
+          <span style={{ color: 'var(--hiw-ink)', fontWeight: 600 }}>
+            {track.title}, {track.artist}.
+          </span>{' '}
+          {track.headline} {track.lines.join(' ')}
+        </p>
       </div>
     </div>
   )
