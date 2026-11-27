@@ -19,8 +19,13 @@
     /now-spinning#token=<display token>  once: stores the token and clears it from the address
     /now-spinning#debug                  the diagnostics panel
     /now-spinning?fixture=heard          render one state from test/fixtures/now-spinning-states.json
+    /now-spinning?embed                  draw states posted by the page that frames it (same origin
+                                         only). The How It Works chapter uses this to show the real
+                                         screen for a live lookup. No connection, no token, nothing
+                                         stored.
 
-  Not indexed, not in the sitemap, no analytics, not linked from the site.
+  Not indexed, not in the sitemap, no analytics, not linked from the site (framed, in ?embed mode,
+  by /how-it-works/now-spinning).
   Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Display
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -249,6 +254,7 @@ function readFragment() {
 }
 const debugOn = () => new URLSearchParams(location.hash.slice(1)).has('debug');
 const fixtureName = new URLSearchParams(location.search).get('fixture');
+const embedded = new URLSearchParams(location.search).has('embed');
 
 // ── What the page knows (the present moment only; nothing is kept) ────────────
 const diag = { conn: 'starting', lastMsgAt: 0, lastPongAt: 0, lastDrop: null, raw: null, health: null, healthErr: null, fixture: fixtureName, attempt: 0 };
@@ -337,7 +343,7 @@ function goDark(notice) {
 
 function setFlip(on) {
   $('stage').classList.toggle('flip', on);
-  store.set(FLIP_KEY, on ? '1' : '0');
+  if (!embedded) store.set(FLIP_KEY, on ? '1' : '0');   // a framed copy never moves the real display
 }
 
 function showUnmatched() {
@@ -677,7 +683,7 @@ addEventListener('resize', fit); fit();
 readFragment();
 addEventListener('hashchange', () => {
   // A new token (say, after "token refused", or after rotating it) starts again from scratch.
-  if (readFragment() && !fixtureName) {
+  if (readFragment() && !fixtureName && !embedded) {
     stopped = false; diag.attempt = 0; diag.conn = 'connecting';
     if (ws) { try { ws.close(); } catch {} ws = null; }
     stopPolling(); clearTimeout(reconnectTimer); stopHeartbeat();
@@ -686,10 +692,23 @@ addEventListener('hashchange', () => {
   syncDebug();
   if (!fixtureName && !ws && !stopped) connect();
 });
-if (store.get(FLIP_KEY) === '1') $('stage').classList.add('flip');
+if (!embedded && store.get(FLIP_KEY) === '1') $('stage').classList.add('flip');
 showIdle('', 0);
 syncDebug();
-if (fixtureName) loadFixture(fixtureName);
+if (embedded) {
+  // ?embed: the framing page posts { type: 'now-spinning:show', state, mirrored }. Only this
+  // site's own pages, framing this window directly, are listened to.
+  diag.conn = 'embedded';
+  stopped = true;   // never connect: 'online', 'visibilitychange' and 'hashchange' all check this
+  addEventListener('message', e => {
+    if (e.origin !== location.origin || e.source !== parent || !e.data || e.data.type !== 'now-spinning:show') return;
+    if (typeof e.data.mirrored === 'boolean') $('stage').classList.toggle('flip', e.data.mirrored);
+    pendingFlip = false;
+    apply(e.data.state);
+  });
+  if (parent !== window) parent.postMessage({ type: 'now-spinning:ready' }, location.origin);
+}
+else if (fixtureName) loadFixture(fixtureName);
 else if (!token()) { diag.conn = 'no token'; renderDebug(); }
 else connect();
 </script>

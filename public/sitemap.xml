@@ -3636,6 +3636,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://concerts.morperhaus.org/how-it-works/the-archive</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://concerts.morperhaus.org/how-it-works/now-spinning</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://concerts.morperhaus.org/about-mcp</loc>
     <lastmod>2026-11-27</lastmod>
     <changefreq>monthly</changefreq>

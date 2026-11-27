@@ -929,9 +929,10 @@ describe('generate-sitemap.ts', () => {
       const urlCount = (writtenXml.match(/<url>/g) || []).length
 
       // 1 home + 6 scenes + 3 artists + 4 venue entries (2 venues × 2 scenes)
-      // + 5 static pages = 19. Ask moved from the static list into the scenes
-      // list in #283, so the total is unchanged from before that fix.
-      expect(urlCount).toBe(19)
+      // + 7 static pages = 21. Ask moved from the static list into the scenes
+      // list in #283. How It Works became a landing page plus two chapters
+      // (/how-it-works/the-archive, /how-it-works/now-spinning), adding 2.
+      expect(urlCount).toBe(21)
     })
   })
 
@@ -1003,7 +1004,7 @@ describe('generate-sitemap.ts', () => {
       await generateSitemap()
 
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Sitemap generated'))
-      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Total URLs: 19'))
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Total URLs: 21'))
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Artists: 3'))
       expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Venues: 2'))
     })

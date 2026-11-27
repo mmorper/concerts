@@ -269,8 +269,8 @@ describe('SEO Files Validation', () => {
         const parsed = JSON.parse(jsonLdMatch[1])
 
         expect(parsed.hasPart).toBeDefined()
-        // All 6 scenes + How It Works + About page.
-        expect(parsed.hasPart).toHaveLength(8)
+        // All 6 scenes + How It Works (landing + 2 chapters) + About page.
+        expect(parsed.hasPart).toHaveLength(10)
 
         const sceneNames = parsed.hasPart.map((scene: any) => scene.name)
         expect(sceneNames).toContain('Timeline')
@@ -280,6 +280,7 @@ describe('SEO Files Validation', () => {
         expect(sceneNames).toContain('Genres')
         expect(sceneNames).toContain('Ask the Archive')
         expect(sceneNames).toContain('About the Archive')
+        expect(sceneNames).toContain('How It Works: Now Spinning')
       }
     })
 

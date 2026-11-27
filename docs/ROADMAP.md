@@ -8,7 +8,7 @@
 - **11,366 releases** joined against attendance — 178 shows carry album-cycle data
 - **1,716 of 1,912 setlist songs** matched to the studio album they came from (89.7%)
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
-- **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
+- **Standalone pages**: /liner-notes, /whats-playing, /how-it-works (landing; chapters /how-it-works/the-archive and /how-it-works/now-spinning), /about, /about-mcp, /dashboard
 - **Syndication**: a liner note a day plus On This Day, on Bluesky and Mastodon
 - **Now Spinning**: a record on the turntable at home shows on the TV with the nights it was heard live (a Raspberry Pi listener, a Worker, a tvOS app)
 - **Latest**: Now Spinning — the archive answers the turntable, on the TV, in about twenty seconds

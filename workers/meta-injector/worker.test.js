@@ -320,6 +320,8 @@ describe('meta-injector worker', () => {
       ['a liner note', '/liner-notes/a-note'],
       ['the liner notes feed', '/liner-notes'],
       ['how it works', '/how-it-works'],
+      ['the cascade chapter', '/how-it-works/the-archive'],
+      ['the Now Spinning chapter', '/how-it-works/now-spinning'],
       ["what's playing", '/whats-playing'],
       ['the about page', '/about'],
     ])('names %s as its own page', async (_, path) => {
@@ -331,6 +333,23 @@ describe('meta-injector worker', () => {
       expect(body).toContain('<title>Ask the Archive | Morperhaus Concert Archives</title>')
       expect(body).toContain('property="og:title" content="Ask the Archive | Morperhaus Concert Archives"')
       expect(body).toContain(canonical(`${SITE}/?scene=ask`))
+    })
+
+    it('previews the Now Spinning chapter with its own card and the living-room photo', async () => {
+      const body = await headOf('/how-it-works/now-spinning')
+      expect(body).toContain('<title>How Now Spinning Works | Morperhaus Concert Archives</title>')
+      expect(body).toContain(`property="og:image" content="${SITE}/og/how-it-works/now-spinning.jpg"`)
+      expect(body).toContain(`property="twitter:image" content="${SITE}/og/how-it-works/now-spinning.jpg"`)
+      expect(body).not.toContain('noindex')
+    })
+
+    it('describes the How It Works landing page as the section, and the cascade as its chapter', async () => {
+      const landing = await headOf('/how-it-works')
+      expect(landing).toContain('<title>How It Works | Morperhaus Concert Archives</title>')
+      expect(landing).not.toContain('seven APIs across six tiers')
+      const cascade = await headOf('/how-it-works/the-archive')
+      expect(cascade).toContain('How It Works: The Enrichment Cascade')
+      expect(cascade).toContain('seven APIs across six tiers')
     })
 
     it('leaves the homepage canonical on the homepage', async () => {

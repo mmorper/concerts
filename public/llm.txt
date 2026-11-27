@@ -482,7 +482,19 @@ default view.
 
 #### How It Works (`/how-it-works`)
 **Title:** "How It Works | Morperhaus Concert Archives"
-**Purpose:** Interactive explainer showing how a single concert entry flows through the data enrichment pipeline
+**Purpose:** The landing page for the archive's explainers, one chapter per system. Each chapter tells the story first, with "Under the hood" panels for engineering detail.
+
+**Chapters:**
+- `/how-it-works/the-archive`: The Enrichment Cascade
+- `/how-it-works/now-spinning`: Now Spinning
+
+**Meta Tags (bot-rendered):**
+- Dynamic description including current concert count and year span
+- URL: https://concerts.morperhaus.org/how-it-works
+
+#### How It Works: The Enrichment Cascade (`/how-it-works/the-archive`)
+**Title:** "How It Works: The Enrichment Cascade | Morperhaus Concert Archives"
+**Purpose:** Interactive explainer showing how a single concert entry flows through the data enrichment pipeline. `/cascade` redirects here.
 
 **What it does:**
 - User selects an artist, venue, and date (or watches an auto-run featured example)
@@ -500,7 +512,23 @@ default view.
 
 **Meta Tags (bot-rendered):**
 - Dynamic title and description including current concert count and year span
-- URL: https://concerts.morperhaus.org/how-it-works
+- URL: https://concerts.morperhaus.org/how-it-works/the-archive
+
+#### How It Works: Now Spinning (`/how-it-works/now-spinning`)
+**Title:** "How Now Spinning Works | Morperhaus Concert Archives"
+**Purpose:** Explains Now Spinning: when a record plays on the owner's living-room turntable, the TV shows the song and the concerts where he heard it live.
+
+**What it covers:**
+- The ear: a Raspberry Pi hears the receiver's Zone 2 line output (no microphone) and starts a 12-second clip when sound follows silence
+- The name: the Pi makes a fingerprint of the clip and sends only that to Shazam; no audio leaves the house
+- The memory: a Cloudflare Worker looks the song up against the setlists in the archive (most concerts have one), openers included, using the same matching rules as the site
+- The screen: a tvOS app receives the answer over a WebSocket. The screen never claims more than the setlists can prove
+- Interactive diagrams: the whole journey (with a "Simple / Under the hood" toggle), the fingerprint, the memory (how a messy song name is tidied and matched against forty years of setlists), an "honesty ladder" that runs the real lookup and shows the real TV screen, and the heartbeat (how the Pi and the archive know when the music stops)
+- No play history is kept anywhere
+
+**Meta Tags (bot-rendered):**
+- Static title and description, with a share image of the real TV screen
+- URL: https://concerts.morperhaus.org/how-it-works/now-spinning
 
 ---
 

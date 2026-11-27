@@ -337,6 +337,20 @@ fires these itself.
 - `ask_shared_answer_missing` — A shared link that couldn't open: `link_kind`. The overlay says so
   instead of showing a blank card
 
+**How It Works (`/how-it-works` and its chapters):**
+- `how_it_works_chapter_clicked` — A chapter card or "All chapters": `chapter` (a chapter id from
+  `src/components/how-it-works/chapters.ts`, `index`, or `about-mcp`), `surface` (`index`, or
+  `footer:<chapter>` for the "More from How It Works" footer)
+- `how_it_works_hood_opened` — An "Under the hood" panel opened: `chapter`, `section`
+- `how_it_works_diagram_played` — A diagram's play button: `chapter`, `diagram` (`round-trip`,
+  `fingerprint`); the round trip adds `mode` (`simple`, `hood`)
+- `how_it_works_diagram_mode_changed` — The Simple / Under the hood toggle: `chapter`, `diagram`, `mode`
+- `how_it_works_diagram_step` — A Fingerprint step chosen by hand: `chapter`, `diagram`, `step` (1–4)
+- `how_it_works_example_selected` — A record on the Honesty Ladder: `chapter`, `example`, `surface` (`chip`, or `hint` for the "Now try …" line)
+
+`chapter`, `section`, `diagram`, `mode`, `step` and `example` need registering as GA4 custom
+dimensions after deploy (Step 6).
+
 **Timeline (Scene 1):**
 - `timeline_year_selected`
 - `timeline_card_clicked`

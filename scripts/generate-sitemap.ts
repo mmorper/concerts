@@ -289,6 +289,8 @@ async function generateSitemap() {
 
   // How It Works — interactive data pipeline explainer
   xml += generateUrlEntry('/how-it-works', 0.6, 'monthly', lastmod)
+  xml += generateUrlEntry('/how-it-works/the-archive', 0.6, 'monthly', lastmod)
+  xml += generateUrlEntry('/how-it-works/now-spinning', 0.6, 'monthly', lastmod)
 
   // Ask the Archive is emitted with the scenes above as its canonical
   // `/?scene=ask` URL. `/ask` is a redirect to that URL — listing both told
@@ -316,7 +318,7 @@ async function generateSitemap() {
   console.log(`   - Clips: ${clipPages.length}`)
   console.log(`   - Venues: ${sortedVenues.length} × 2 scenes = ${sortedVenues.length * 2}`)
   console.log(`   - Liner notes: ${2 + linerNotesSlugs.length} (feed + ${linerNotesSlugs.length} posts)`)
-  console.log(`   - How It Works: 1`)
+  console.log(`   - How It Works: 3 (landing + 2 chapters)`)
   console.log(`   - Connector (about-mcp): 1`)
   console.log(`   - About: 1`)
   console.log()
