@@ -523,7 +523,7 @@ default view.
 - The name: the Pi makes a fingerprint of the clip and sends only that to Shazam; no audio leaves the house
 - The memory: a Cloudflare Worker looks the song up against the setlists in the archive (most concerts have one), openers included, using the same matching rules as the site
 - The screen: a tvOS app receives the answer over a WebSocket. The screen never claims more than the setlists can prove
-- Interactive diagrams: the round trip (with a "Simple / Under the hood" toggle), the fingerprint, and an "honesty ladder" that runs the real lookup against the published index
+- Interactive diagrams: the whole journey (with a "Simple / Under the hood" toggle), the fingerprint, the memory (how a messy song name is tidied and matched against forty years of setlists), an "honesty ladder" that runs the real lookup and shows the real TV screen, and the heartbeat (how the Pi and the archive know when the music stops)
 - No play history is kept anywhere
 
 **Meta Tags (bot-rendered):**

@@ -13,6 +13,8 @@ import { Hood, MoreChapters, usePageTitle } from '../shared'
 import { RoundTrip } from './RoundTrip'
 import { Fingerprint } from './Fingerprint'
 import { HonestyLadder } from './HonestyLadder'
+import { Memory } from './Memory'
+import { Heartbeat } from './Heartbeat'
 
 function Section({ id, step, title, children }: { id: string; step?: string; title: string; children: ReactNode }) {
   return (
@@ -53,7 +55,7 @@ export function NowSpinningChapter() {
             <h1 className="hiw-title" style={{ fontSize: 'clamp(44px, 8vw, 72px)' }}>
               Now Spinning
             </h1>
-            <p className="font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
+            <p className="hiw-dek font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
               When I play a record, the TV shows the song and the concerts where I heard it live.
             </p>
           </motion.header>
@@ -214,10 +216,13 @@ export function NowSpinningChapter() {
               </p>
               <p>
                 Then it puts the answer together: how many times I’ve heard the song live, at which concerts, and which
-                of those concerts I have photos from.
+                of those concerts I have photos from. The diagram below runs this live, on the real archive.
               </p>
             </Prose>
-            <div className="mt-6">
+            <Wide>
+              <Memory />
+            </Wide>
+            <div>
               <Hood chapter="now-spinning" id="memory" title="How the lookup works">
                 <ul>
                   <li>
@@ -301,6 +306,23 @@ export function NowSpinningChapter() {
             </Hood>
           </Section>
 
+          <Section id="heartbeat" title="Knowing when the music stops">
+            <Prose>
+              <p>
+                The screen should show a song only while that song is playing. So the Pi keeps the archive up to date
+                for as long as the record plays: when a song starts, every minute while it plays, when there’s a gap,
+                and when the record ends.
+              </p>
+              <p>
+                If the Pi stops checking in, for example because it loses power, the archive doesn’t wait for it. After
+                three minutes without a word, it clears the screen on its own.
+              </p>
+            </Prose>
+            <Wide>
+              <Heartbeat />
+            </Wide>
+          </Section>
+
           <Section id="doesnt" title="What it doesn’t do">
             <ul className="grid gap-4 sm:grid-cols-2" style={{ listStyle: 'none' }}>
               {[
@@ -345,7 +367,6 @@ export function NowSpinningChapter() {
                 receiver by hand.
               </li>
             </ul>
-            <p className="hiw-figcaption mt-12">Built with Claude Code.</p>
           </Section>
         </div>
       </article>

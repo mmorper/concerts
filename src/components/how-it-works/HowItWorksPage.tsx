@@ -83,7 +83,7 @@ export function HowItWorksPage() {
           <h1 className="hiw-title" style={{ fontSize: 'clamp(40px, 7vw, 68px)' }}>
             How It Works
           </h1>
-          <p className="hiw-prose mt-5" style={{ maxWidth: 640 }}>
+          <p className="hiw-prose hiw-dek mt-5" style={{ maxWidth: 640 }}>
             The machinery behind the archive, for the curious. Every chapter tells the story first. When you
             want the engineering, open the panels marked <em>Under the hood</em>.
           </p>

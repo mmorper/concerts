@@ -343,3 +343,31 @@
 @media (prefers-reduced-motion: reduce) {
   .hiw-land, .hiw-land.is-in { transform: none; }
 }
+
+/* The Memory diagram's scan across forty years of concerts (viewBox units: 30 → 970) */
+@keyframes hiw-scan {
+  0% { transform: translateX(0); opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { transform: translateX(940px); opacity: 0; }
+}
+
+/* The Heartbeat diagram draws itself left to right */
+@keyframes hiw-reveal-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* No single word left alone on the last line. Headings and short lines are balanced; running
+   text uses "pretty", which avoids an orphan on the last line. Browsers without "pretty" fall
+   back to normal wrapping. */
+.hiw h1,
+.hiw h2,
+.hiw h3,
+.hiw-title,
+.hiw-h2,
+.hiw .hiw-dek { text-wrap: balance; }
+.hiw p,
+.hiw li,
+.hiw figcaption,
+.hiw summary { text-wrap: pretty; }
