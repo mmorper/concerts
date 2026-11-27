@@ -1,6 +1,20 @@
 {
   "releases": [
     {
+      "version": "7.0.0",
+      "date": "2026-11-27",
+      "title": "Now Spinning",
+      "description": "Put a record on at home and the archive answers. The turntable feeds a small listener that recognises the song, and the TV shows it with its album, every night I heard it live, and my photos from those nights. Drop the needle on Depeche Mode’s “Everything Counts” and the screen says I’ve heard it five times. Play something I’ve never seen and it says so. Nothing is kept: the screen shows what’s playing now and lets it go when the record stops.",
+      "route": "",
+      "highlights": [
+        "Drop the needle and the TV shows the song in about 20 seconds: the title, the album, and the nights I heard it live",
+        "Photos from those nights run along the bottom of the screen, and a big number says how many times I’ve heard it",
+        "A record I’ve never seen live gets an honest answer: “Not in the archive. Yet.”",
+        "Most-played songs now count what the opening acts played too, so the site and the TV agree",
+        "Sting’s photo is Sting again, and a grey silhouette no longer stands in for a missing artist photo"
+      ]
+    },
+    {
       "version": "6.3.0",
       "date": "2026-11-02",
       "title": "The Whole Night",

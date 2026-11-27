@@ -1,5 +1,5 @@
 # Cloudflare Worker Configuration — Now Spinning
-# Spec: docs/specs/future/global-now-spinning/global-now-spinning-spec.md §Worker API
+# Spec: docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md §Worker API
 # Deploys to: concerts.morperhaus.org/api/now-spinning* (more specific than meta-injector's /*)
 #
 # Deployed by CI on push to main (.github/workflows/now-spinning-ci.yml). It answers 503 to

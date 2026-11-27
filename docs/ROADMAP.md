@@ -1,6 +1,6 @@
 # Roadmap
 
-## Current State (v6.3.0)
+## Current State (v7.0.0)
 
 - **186 concerts** spanning 1984-2027
 - **261 artists** (including openers) with 100% imagery coverage
@@ -10,11 +10,23 @@
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
 - **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
 - **Syndication**: a liner note a day plus On This Day, on Bluesky and Mastodon
-- **Latest**: the whole night — 150 of my photos and 22 clips in the gatefold and inside Ask; Ask rebuilt around search, with shareable answers
+- **Now Spinning**: a record on the turntable at home shows on the TV with the nights it was heard live (a Raspberry Pi listener, a Worker, a tvOS app)
+- **Latest**: Now Spinning — the archive answers the turntable, on the TV, in about twenty seconds
 
 ---
 
 ## Recently Completed
+
+### ✅ Now Spinning (v7.0.0)
+
+**Status**: Released 2026-11-27 — epic #687, #688–#730
+**Spec**: [global-now-spinning-spec.md](specs/implemented/global-now-spinning/global-now-spinning-spec.md) · Operations: [NOW_SPINNING_OPERATIONS.md](NOW_SPINNING_OPERATIONS.md)
+
+When a record plays on the living-room turntable, the TV shows the song, its album, and the nights it was heard live, with photos from those nights. A Raspberry Pi on the receiver's Zone 2 line output recognises the song (Shazam, fingerprint only); a Worker with a Durable Object runs the archive lookup and holds only the current state; the Morperhaus Now Spinning tvOS app shows it, brought forward by the Pi when a record starts. The Apple TV comes first: after records the listener puts the receiver back on the Apple TV input. No play history is kept.
+
+**Follow-ups (v7.0.x)**: the remaining equipment checks and the operator dashboard's listener line ([#697](https://github.com/mmorper/concerts/issues/697)).
+
+---
 
 ### ✅ Ask the Archive — Search-First Redesign, Media Viewer & Shareable Answers (v6.3.0)
 
@@ -207,18 +219,6 @@ Phase 0 creative investigation is closed — eleven decisions recorded, includin
 per-channel media matrix, measured text budgets, the imagery rubric and the provenance
 disclosure rule. Instagram (L2 carousel) is built and awaits credentials (#334); X is unbuilt; L3 video
 is gated on #89.
-### Now Spinning (v7.0.0)
-
-**Status**: Planned — spec complete, hardware ordered
-**Spec**: [global-now-spinning-spec.md](specs/future/global-now-spinning/global-now-spinning-spec.md)
-**Epic**: [#687](https://github.com/mmorper/concerts/issues/687)
-
-When a record plays on the living-room turntable, the TV shows the song and the archive's history with it: the nights it was heard live, with photos from those nights. A Raspberry Pi listens to the receiver's line output and identifies songs; a new Worker runs the archive lookup; a display shows the result. No play history is kept.
-
-**Depends on**: two existing bugs in song matching and the song index (#689, #690), then a hardware evening (#688).
-
----
-
 ### How It Works — Interactive Thumbnails (#88)
 
 **Status**: Planned

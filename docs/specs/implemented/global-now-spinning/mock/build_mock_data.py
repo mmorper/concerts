@@ -1,7 +1,7 @@
 """Build data.json + p/ (photos) for the Now Spinning mock from the repo's public/data.
 
-Usage (from repo root):  python3 docs/specs/future/global-now-spinning/mock/build_mock_data.py
-Then serve the mock folder:  python3 -m http.server -d docs/specs/future/global-now-spinning/mock 8765
+Usage (from repo root):  python3 docs/specs/implemented/global-now-spinning/mock/build_mock_data.py
+Then serve the mock folder:  python3 -m http.server -d docs/specs/implemented/global-now-spinning/mock 8765
 """
 import json, os, re, sys
 from PIL import Image  # pip install pillow
