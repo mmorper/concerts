@@ -1,0 +1,338 @@
+/*
+ * How It Works: the explainer register.
+ *
+ * Takes its colours from the Now Spinning TV screen (deep night blue, the pink "now spinning"
+ * dot, lavender type) so the diagrams and the photo of the real screen read as one thing.
+ * Warm = in the house. Cool = on the internet. That split carries meaning in every diagram.
+ */
+
+.hiw {
+  --hiw-bg: #070b1f;
+  --hiw-bg-2: #0d1233;
+  --hiw-ink: #eef0ff;
+  --hiw-ink-2: #b9c0e8;
+  --hiw-ink-3: #8189b5;
+  --hiw-line: rgba(165, 180, 252, 0.16);
+  --hiw-panel: rgba(255, 255, 255, 0.045);
+  --hiw-panel-line: rgba(165, 180, 252, 0.18);
+  --hiw-dot: #f472b6;
+  --hiw-lav: #a5b4fc;
+  --hiw-violet: #8b5cf6;
+  --hiw-warm: #f6b26b;
+  --hiw-warm-soft: rgba(246, 178, 107, 0.1);
+  --hiw-cool: #7dd3fc;
+  --hiw-cool-soft: rgba(125, 211, 252, 0.08);
+
+  color: var(--hiw-ink);
+  background:
+    radial-gradient(1200px 700px at 70% -10%, rgba(37, 99, 235, 0.22), transparent 60%),
+    radial-gradient(900px 600px at 0% 30%, rgba(139, 92, 246, 0.12), transparent 60%),
+    linear-gradient(180deg, var(--hiw-bg) 0%, var(--hiw-bg-2) 60%, var(--hiw-bg) 100%);
+}
+
+.hiw-kicker {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--hiw-lav);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hiw-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hiw-dot);
+  box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.18), 0 0 14px rgba(244, 114, 182, 0.7);
+  animation: hiw-breathe 2.4s ease-in-out infinite;
+  flex: none;
+}
+
+@keyframes hiw-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.hiw-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.hiw-prose {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--hiw-ink-2);
+}
+.hiw-prose p + p { margin-top: 1em; }
+.hiw-prose strong { color: var(--hiw-ink); font-weight: 600; }
+.hiw-prose em { color: var(--hiw-ink); }
+
+.hiw-h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--hiw-ink);
+}
+
+.hiw-step {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hiw-figure {
+  border: 1px solid var(--hiw-panel-line);
+  background: rgba(7, 11, 31, 0.6);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.hiw-figcaption {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hiw-ink-3);
+}
+
+/* ── Controls ─────────────────────────────────────────────────────────── */
+
+.hiw-seg {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--hiw-panel-line);
+}
+.hiw-seg button {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  min-height: 40px;
+  border-radius: 999px;
+  color: var(--hiw-ink-2);
+  transition: background 200ms, color 200ms;
+}
+.hiw-seg button[aria-pressed='true'] {
+  background: #4f46e5;
+  color: #fff;
+}
+.hiw-seg button:focus-visible,
+.hiw-btn:focus-visible,
+.hiw-chip:focus-visible,
+.hiw-card:focus-visible,
+.hiw-hood summary:focus-visible {
+  outline: 2px solid var(--hiw-lav);
+  outline-offset: 2px;
+}
+
+.hiw-btn {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px 8px 14px;
+  min-height: 40px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(244, 114, 182, 0.16);
+  border: 1px solid rgba(244, 114, 182, 0.5);
+  transition: background 200ms;
+}
+.hiw-btn:hover { background: rgba(244, 114, 182, 0.28); }
+.hiw-btn[disabled] { opacity: 0.55; cursor: default; }
+
+.hiw-chip {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  text-align: left;
+  padding: 8px 14px;
+  min-height: 40px;
+  border-radius: 12px;
+  color: var(--hiw-ink-2);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--hiw-panel-line);
+  transition: background 200ms, border-color 200ms, color 200ms;
+}
+.hiw-chip:hover { background: rgba(255, 255, 255, 0.09); color: var(--hiw-ink); }
+.hiw-chip[aria-pressed='true'] {
+  color: #fff;
+  background: rgba(79, 70, 229, 0.35);
+  border-color: rgba(165, 180, 252, 0.6);
+}
+.hiw-chip small { display: block; font-size: 12px; color: var(--hiw-ink-3); }
+
+/* ── Under the hood ───────────────────────────────────────────────────── */
+
+.hiw-hood {
+  border: 1px solid var(--hiw-panel-line);
+  border-radius: 14px;
+  background: var(--hiw-panel);
+}
+.hiw-hood summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  min-height: 48px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--hiw-ink);
+  border-radius: 14px;
+}
+.hiw-hood summary::-webkit-details-marker { display: none; }
+.hiw-hood summary .hiw-hood-tag {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hiw-cool);
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--hiw-cool-soft);
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  flex: none;
+}
+.hiw-hood summary .hiw-hood-chev {
+  margin-left: auto;
+  transition: transform 200ms;
+  color: var(--hiw-ink-3);
+  flex: none;
+}
+.hiw-hood[open] summary .hiw-hood-chev { transform: rotate(90deg); }
+.hiw-hood-body {
+  padding: 2px 18px 18px;
+  font-family: var(--font-sans);
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--hiw-ink-2);
+}
+.hiw-hood-body p + p,
+.hiw-hood-body p + ul,
+.hiw-hood-body ul + p { margin-top: 0.8em; }
+.hiw-hood-body ul { list-style: none; padding: 0; }
+.hiw-hood-body li { position: relative; padding-left: 18px; }
+.hiw-hood-body li + li { margin-top: 0.45em; }
+.hiw-hood-body li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.68em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hiw-violet);
+}
+.hiw-hood-body strong { color: var(--hiw-ink); font-weight: 600; }
+.hiw-hood-body code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.86em;
+  color: #c7d2fe;
+  background: rgba(165, 180, 252, 0.1);
+  padding: 1px 5px;
+  border-radius: 5px;
+  overflow-wrap: anywhere;
+}
+
+/* ── Cards (landing, footer) ──────────────────────────────────────────── */
+
+.hiw-card {
+  display: block;
+  border-radius: 18px;
+  border: 1px solid var(--hiw-panel-line);
+  background: var(--hiw-panel);
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 200ms, background 200ms;
+}
+.hiw-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(165, 180, 252, 0.45);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ── Diagrams ─────────────────────────────────────────────────────────── */
+
+.hiw-svg text { font-family: var(--font-sans); }
+.hiw-svg .serif { font-family: var(--font-serif); }
+.hiw-svg .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+.hiw-node-rect { transition: stroke 300ms, fill 300ms; }
+.hiw-fade { transition: opacity 400ms ease; }
+
+.hiw-flow {
+  stroke-dasharray: 2 9;
+  animation: hiw-flow 1.1s linear infinite;
+}
+@keyframes hiw-flow {
+  to { stroke-dashoffset: -11; }
+}
+
+.hiw-ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hiw-ripple 1.6s ease-out infinite;
+}
+@keyframes hiw-ripple {
+  from { transform: scale(0.6); opacity: 0.9; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+
+.hiw-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hiw-spin 1.8s linear infinite;
+}
+@keyframes hiw-spin {
+  to { transform: rotate(360deg); }
+}
+
+.hiw-slide { transition: transform 1.6s cubic-bezier(0.45, 0, 0.2, 1), opacity 500ms ease; }
+.hiw-reveal { transition: clip-path 1.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms ease; }
+
+/* Ladder */
+.hiw-rung { transition: opacity 300ms, border-color 300ms, background 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw-dot,
+  .hiw-flow,
+  .hiw-ripple,
+  .hiw-spin { animation: none; }
+  .hiw-ripple { opacity: 0.4; }
+  /* Motion carries meaning in the diagrams, so slides and reveals become cross-fades. */
+  .hiw-slide,
+  .hiw-reveal { transition: opacity 300ms ease; }
+  .hiw-card,
+  .hiw-card:hover { transform: none; }
+}
+
+@keyframes hiw-pop {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  @keyframes hiw-pop {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+@keyframes hiw-sweep {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}

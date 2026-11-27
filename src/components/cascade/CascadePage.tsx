@@ -5,6 +5,7 @@ import { CascadeAtom } from './CascadeAtom'
 import { ServiceGatewayPeer, CodeTransform, FlowArrow, API_BRANDS, PillGrid } from './CascadeApiEngine'
 import { useCascadeFocus } from './useCascadeFocus'
 import { AnimatedConnector } from './AnimatedConnector'
+import { MoreChapters } from '../how-it-works/shared'
 // The one place song→album keys are resolved. Reimplementing the key here would
 // silently match nothing — see the docblock in song-album-lookup.ts. The MCP
 // Worker imports it by the same route.
@@ -2348,6 +2349,7 @@ export function CascadePage() {
           </motion.button>
         )}
       </div>
+      <MoreChapters current="the-archive" />
       </div>{/* end scroll wrapper */}
 
       {/* ── FLOATING SELECTION BAR — visible once cascade completes ── */}

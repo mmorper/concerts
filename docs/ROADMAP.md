@@ -8,7 +8,7 @@
 - **11,366 releases** joined against attendance — 178 shows carry album-cycle data
 - **1,716 of 1,912 setlist songs** matched to the studio album they came from (89.7%)
 - **6 interactive scenes**: Timeline, Venues, Geography, Genres, Artists, Ask the Archive
-- **Standalone pages**: /liner-notes, /whats-playing, /how-it-works, /about, /about-mcp, /dashboard
+- **Standalone pages**: /liner-notes, /whats-playing, /how-it-works (landing; chapters /how-it-works/the-archive and /how-it-works/now-spinning), /about, /about-mcp, /dashboard
 - **Syndication**: a liner note a day plus On This Day, on Bluesky and Mastodon
 - **Latest**: the whole night — 150 of my photos and 22 clips in the gatefold and inside Ask; Ask rebuilt around search, with shareable answers
 
