@@ -59,5 +59,5 @@ if systemctl is-enabled --quiet now-spinning; then
   systemctl restart now-spinning
   echo "updated and restarted"
 else
-  echo "installed, not started. Next: NOW_SPINNING_OPERATIONS.md §12 steps 3-5 (settings, --check, then enable)"
+  echo "installed, not started. Next: docs/NOW_SPINNING_OPERATIONS.md §12 steps 3-5 (settings, --check, then enable)"
 fi
