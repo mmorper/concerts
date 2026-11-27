@@ -521,7 +521,7 @@ private struct QuietLines: View {
         VStack(alignment: .leading, spacing: 0) {
             if let headline {
                 Text(headline)
-                    .font(Theme.playfair(64, .bold))
+                    .font(Theme.playfair(48, .bold))  // as the web page's .quiet h3 (#727)
                     .foregroundStyle(Theme.ink)
                     .fixedSize(horizontal: false, vertical: true)
             }

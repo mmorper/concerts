@@ -10,7 +10,7 @@ equipment since 2026-11-27:
   stops with the needle lifted, 60 with the needle left in the run-out, at once if the receiver is
   put in standby on Phono. Music-level sound cancels the timers.
 - **The display wakes** when a record starts on Phono, not at the gaps between songs: the TV by
-  Wake-on-LAN, then the Apple TV, then the app (Music for now). Never while the Apple TV is
+  Wake-on-LAN, then the Apple TV, then the Now Spinning app. Never while the Apple TV is
   playing something.
 - **A health check-in** to the Worker every 5 minutes (`recognizer: "off"` until Phase 4b).
 - **No reading isn't silence.** If the Blackjack stops delivering audio, nothing is decided

@@ -1,6 +1,6 @@
 # Now Spinning
 
-**Status:** Planned
+**Status:** Built and installed (2026-11-27). The release (#699) waits on the last equipment checks (#697).
 **Target Version:** v7.0.0
 **Priority:** Medium
 **Estimated Complexity:** Very High (hardware, a Python listener, a new Worker with a Durable Object, a display)
@@ -42,7 +42,7 @@ tvOS app on the Apple TV that shows it.
 | Version number | v7.0.0. Social Syndication (#323) moves to v6.5.0. |
 | Listener health | Yes. A quiet heartbeat from the Pi, a notice on the idle screen when it's offline, and one line on the operator dashboard. No song data. |
 | Audio interface | The Mackie Onyx Blackjack Mike already owns. |
-| Cloudflare plan | Free tier. The index is split into small files to stay inside its CPU limit. |
+| Cloudflare plan | Workers Paid since 2026-11-26 (#692): 30 s of CPU a request, capped at 100 ms per Worker in `wrangler.toml` (#723). The index stays split into small files, which keeps each lookup small (4–10 ms measured). |
 | A record Shazam doesn't know | The screen says "Listening…". |
 | "Most played" on the site | Counts songs heard from opening acts too (#690). |
 
@@ -279,8 +279,9 @@ table resolving as listed.
 The lookup needs songs from **every** setlist (openers included), the alias groups, albums,
 covers, photos, and which nights have setlists. The raw files add up to about 1.9 MB.
 
-**The index is many small files, not one big one.** The Cloudflare account is on the free tier,
-which allows 10 ms of CPU per request. Parsing a single 360 KB index and building its lookup maps
+**The index is many small files, not one big one.** It was designed for Cloudflare's free tier,
+which allows 10 ms of CPU per request (the account moved to Workers Paid on 2026-11-26, #692; the
+split stays, since it keeps each lookup small). Parsing a single 360 KB index and building its lookup maps
 measured about 6 ms in Node on a fast machine, which is too close to rely on. So a lookup reads a
 small manifest and then one or two files of a few kilobytes each.
 
@@ -523,9 +524,10 @@ interface NowSpinningState {
 - **Where the lookup runs.** In the Worker, before the Durable Object is called. The manifest is
   kept in module scope for the life of the isolate and refreshed when the 300-second cache turns
   over. Act and covers files are fetched per song, through the same cache.
-- **CPU budget.** The account is on the free tier: 10 ms of CPU per request. That is why the index
-  is split into small files. Phase 2 still measures a cold request with `wrangler tail` and
-  records the figure; the target is under 3 ms.
+- **CPU budget.** Designed for the free tier's 10 ms of CPU per request, which is why the index is
+  split into small files. Measured in production: 4–10 ms a request (#692), above the 3 ms target,
+  so the account moved to Workers Paid on 2026-11-26, with each Worker capped at 100 ms
+  (`[limits] cpu_ms` in `wrangler.toml`, #723).
 - **No caching of answers.** Every response carries `Cache-Control: no-store`.
 - **Heartbeat.** A home network can drop an idle connection without either end noticing. The
   display would then keep showing an old song, and on the TV it would keep the screen awake doing
@@ -1296,6 +1298,10 @@ None open. Phase 0 (#688) is complete: every check it runs passed (check 7 is an
 
 ## Revision History
 
+- **2026-11-27, v1.11.1: Cleanup after installing.** Status: built and installed. The Cloudflare
+  plan and CPU budget lines follow the move to Workers Paid (#692). The tvOS app's quiet headline
+  follows the web page's 48 px (#727). The listener brings the Now Spinning app forward
+  (`org.morperhaus.nowspinning`), not Music.
 - **2026-11-27, v1.12.0: 4:5 thumbnails that show Mike's crop.**
   - The strip's thumbnails were 150×100 landscape, cropped around the centre of Mike's crop.
     Most show photos are portrait (91 of 150), and those lost about 44% of the crop's height.
