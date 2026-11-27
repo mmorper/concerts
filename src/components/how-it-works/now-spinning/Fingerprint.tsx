@@ -66,21 +66,20 @@ const STAGES = [
   {
     label: 'Listen',
     caption:
-      'Twelve seconds of the record, drawn as a picture of sound: time runs left to right, pitch runs bottom to top, and brighter means louder.',
+      'The Pi records 12 seconds of the song. Here it’s drawn as a picture: time goes left to right, pitch goes bottom to top, and brighter means louder.',
   },
   {
     label: 'Find the peaks',
-    caption:
-      'Keep only the loudest points, the peaks. They’re the part that survives surface noise, a worn needle and a quiet passage.',
+    caption: 'The Pi keeps only the loudest points, called peaks. Peaks stay the same even with surface noise or a worn needle.',
   },
   {
     label: 'Send the pattern',
-    caption: 'Only this pattern of dots leaves the house. It’s made on the Pi, and the music itself never goes anywhere.',
+    caption: 'Only this pattern of dots is sent to Shazam. The sound itself stays in the house.',
   },
   {
     label: 'Find the match',
     caption:
-      'Shazam slides the pattern along the songs it knows. Pitch has to agree exactly, but time can slide, so any twelve seconds will do. When the dots land on top of each other, that’s the song.',
+      'Shazam slides the pattern along the songs it knows until the dots line up. When they do, it has found the song. That’s why any 12 seconds of a song will work.',
   },
 ]
 

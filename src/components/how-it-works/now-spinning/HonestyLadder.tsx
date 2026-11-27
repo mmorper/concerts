@@ -17,39 +17,39 @@ const PINK = '#f472b6'
 
 const RUNGS: Record<RungId, { q: string; rule: string }> = {
   unknown: {
-    q: 'Is the archive out of reach?',
-    rule: 'Then show the song and say nothing about the archive. No guessing.',
+    q: 'The archive can’t be reached.',
+    rule: 'Show the song and nothing else. Don’t guess.',
   },
   heard: {
-    q: 'Did the band play this song on a night I was there?',
-    rule: 'Count the nights. Openers count too, and a song heard inside a medley counts and says so.',
+    q: 'I saw this band play this song.',
+    rule: 'Say how many times, and list the concerts. Opening acts count too.',
   },
   'seen-cover': {
-    q: 'I’ve seen the band, but did someone else play this one in front of me?',
-    rule: 'Say who, and what the band’s own setlists show.',
+    q: 'I saw this band, but I heard someone else play this song.',
+    rule: 'Say who played it.',
   },
   seen: {
-    q: 'I’ve seen the band, but the song isn’t on their setlists?',
-    rule: 'Three careful wordings, depending on what the setlists can prove:',
+    q: 'I saw this band, but this song isn’t on their setlists.',
+    rule: 'Choose the words carefully. It depends on what the setlists can prove:',
   },
   'cover-of-this': {
-    q: 'Never seen the band. Did someone else play this song?',
+    q: 'I never saw this band, but I heard someone else play this song.',
     rule: 'Say who played it, and when.',
   },
   covers: {
-    q: 'Never seen the band. Did anyone play other songs of theirs?',
-    rule: 'Count them, “in other hands.”',
+    q: 'I never saw this band, but I heard other bands play some of their songs.',
+    rule: 'Say how many of their songs I’ve heard that way.',
   },
   none: {
     q: 'None of the above.',
-    rule: 'Say so plainly.',
+    rule: 'Say “Not in the archive. Yet.”',
   },
 }
 
 const WORDINGS: { id: SeenWording; when: string; says: string }[] = [
-  { id: 'near', when: 'Something close is on a setlist', says: 'Name it. Claim neither “heard” nor “never.”' },
-  { id: 'never', when: 'Every one of those nights has a setlist', says: 'Only then: “never heard this one live.”' },
-  { id: 'maybe', when: 'Some nights have no setlist', says: '“Maybe you did.”' },
+  { id: 'near', when: 'A similar title is on a setlist.', says: 'Name it. Don’t say “heard” or “never heard.”' },
+  { id: 'never', when: 'Every one of those concerts has a setlist.', says: 'Only then is it safe to say “never heard this one live.”' },
+  { id: 'maybe', when: 'At least one concert has no setlist.', says: 'Say “maybe you did.”' },
 ]
 
 export function HonestyLadder() {
@@ -94,7 +94,7 @@ export function HonestyLadder() {
         <div className="hiw-step mb-3" style={{ color: 'var(--hiw-ink-3)' }}>
           Pick a record
         </div>
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Example records">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" role="group" aria-label="Example records">
           {EXAMPLES.map((ex, i) => (
             <button
               key={ex.title}
@@ -169,8 +169,8 @@ export function HonestyLadder() {
               >
                 <div className="font-sans" style={{ fontSize: 16.5, fontWeight: 600, color: 'var(--hiw-ink)', lineHeight: 1.4 }}>
                   {RUNGS[id].q}
-                  {passed && <span className="sr-only"> No.</span>}
-                  {isHit && <span className="sr-only"> Yes.</span>}
+                  {passed && <span className="sr-only"> Not true.</span>}
+                  {isHit && <span className="sr-only"> True: this is what the screen says.</span>}
                 </div>
                 <div className="font-sans mt-1" style={{ fontSize: 14.5, color: 'var(--hiw-ink-2)', lineHeight: 1.55 }}>
                   {RUNGS[id].rule}
@@ -194,7 +194,7 @@ export function HonestyLadder() {
                             transition: 'all 300ms',
                           }}
                         >
-                          <span style={{ color: 'var(--hiw-ink)', fontWeight: 600 }}>{w.when}.</span> {w.says}
+                          <span style={{ color: 'var(--hiw-ink)', fontWeight: 600 }}>{w.when}</span> {w.says}
                         </li>
                       )
                     })}
@@ -210,8 +210,8 @@ export function HonestyLadder() {
       <figcaption id="ladder-cap" className="hiw-figcaption px-4 sm:px-6 pb-5" aria-live="polite">
         {settled
           ? hit?.rung === 'unknown' && EXAMPLES[sel].expect !== 'unknown'
-            ? 'The archive didn’t answer just now, so the screen says nothing about it. That’s the first rung doing its job.'
-            : 'That’s a live answer: this page just ran the same lookup the TV runs, against the same archive.'
+            ? 'The archive didn’t answer just now, so the screen would show only the song. That’s the first rule doing its job.'
+            : 'This is a live answer. The page just ran the same lookup as the TV, on the same archive.'
           : 'Asking the archive…'}
       </figcaption>
     </figure>

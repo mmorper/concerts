@@ -20,20 +20,20 @@ type NodeId = 'record' | 'ear' | 'name' | 'memory' | 'screen'
 type EdgeId = 'music' | 'fp' | 'title' | 'ask' | 'story' | 'wake'
 
 const NODE_TEXT: Record<NodeId, Record<Mode, [string, string]>> = {
-  record: { simple: ['The record', 'Plays like it always has'], hood: ['Turntable', '→ receiver Zone 2 out'] },
-  ear: { simple: ['The ear', 'A tiny computer listens'], hood: ['Raspberry Pi 5', 'USB audio · Python'] },
-  name: { simple: ['The name', 'Shazam knows the song'], hood: ['Shazam', 'fingerprint lookup'] },
-  memory: { simple: ['The memory', '40 years of setlists'], hood: ['Cloudflare Worker', 'index + Durable Object'] },
-  screen: { simple: ['The screen', 'The TV tells the story'], hood: ['Apple TV app', 'tvOS, SwiftUI'] },
+  record: { simple: ['The record', 'Plays as usual'], hood: ['Turntable', '→ receiver Zone 2 out'] },
+  ear: { simple: ['The listener', 'A small computer'], hood: ['Raspberry Pi 5', 'USB audio · Python'] },
+  name: { simple: ['Shazam', 'Names the song'], hood: ['Shazam', 'fingerprint lookup'] },
+  memory: { simple: ['The archive', 'Every setlist I have'], hood: ['Cloudflare Worker', 'index + Durable Object'] },
+  screen: { simple: ['The TV', 'Shows the answer'], hood: ['Apple TV app', 'tvOS, SwiftUI'] },
 }
 
 const EDGE_TEXT: Record<EdgeId, Record<Mode, string>> = {
   music: { simple: 'the music', hood: 'line-level audio' },
-  fp: { simple: 'a fingerprint, not audio', hood: 'signature · HTTPS' },
+  fp: { simple: 'a fingerprint, no audio', hood: 'signature · HTTPS' },
   title: { simple: 'the song’s name', hood: 'artist · title · album' },
-  ask: { simple: 'what’s this song to me?', hood: 'POST /api/now-spinning' },
-  story: { simple: 'the story', hood: 'WebSocket push' },
-  wake: { simple: 'wakes the TV', hood: 'Wake-on-LAN · pyatv' },
+  ask: { simple: 'the song’s name', hood: 'POST /api/now-spinning' },
+  story: { simple: 'the answer', hood: 'WebSocket push' },
+  wake: { simple: 'turns on the TV', hood: 'Wake-on-LAN · pyatv' },
 }
 
 const ZONE = {
@@ -126,35 +126,35 @@ interface Step {
 }
 
 const STEPS: Step[] = [
-  { node: 'record', ms: 1400, phase: 'needle', caption: 'The needle drops: Royal Blood, “Out of the Black.”' },
+  { node: 'record', ms: 1400, phase: 'needle', caption: 'The needle drops on Royal Blood’s “Out of the Black.”' },
   {
     node: 'ear',
     edges: ['music', 'wake'],
     ms: 2600,
     phase: 'listen',
-    caption: 'The Pi hears sound after silence and starts a 12-second clip. At the same moment it wakes the TV and opens the app.',
+    caption: 'The Pi hears music after silence, so a new song has started. It records 12 seconds, and turns on the TV and the app.',
   },
-  { node: 'name', edges: ['fp'], ms: 1700, phase: 'name', caption: 'It boils the clip down to a fingerprint and sends only that to Shazam. No audio leaves the house.' },
-  { node: 'ear', edges: ['title'], ms: 1500, phase: 'name', caption: 'Shazam answers: Royal Blood, “Out of the Black.”' },
-  { node: 'memory', edges: ['ask'], ms: 1700, phase: 'remember', caption: 'The Pi asks the archive what that song means to me.' },
+  { node: 'name', edges: ['fp'], ms: 1700, phase: 'name', caption: 'The Pi turns the 12 seconds into a fingerprint and sends only that to Shazam. No music leaves the house.' },
+  { node: 'ear', edges: ['title'], ms: 1500, phase: 'name', caption: 'Shazam sends back the song’s name: “Out of the Black” by Royal Blood.' },
+  { node: 'memory', edges: ['ask'], ms: 1700, phase: 'remember', caption: 'The Pi sends the song’s name to my concert archive.' },
   {
     node: 'memory',
     ms: 1900,
     phase: 'remember',
-    caption: 'Three nights: the 9:30 Club in 2015 and 2017, and the House of Blues Anaheim in 2022.',
+    caption: 'The archive finds three concerts where I heard it: the 9:30 Club in 2015 and 2017, and the House of Blues Anaheim in 2022.',
   },
-  { node: 'screen', edges: ['story'], ms: 2600, phase: 'show', caption: 'The TV: “You’ve heard this one live 3 times.”' },
+  { node: 'screen', edges: ['story'], ms: 2600, phase: 'show', caption: 'The archive sends the answer to the TV: “You’ve heard this one live 3 times.”' },
 ]
 
 const PHASES: { id: Step['phase']; label: string; weight: number }[] = [
   { id: 'needle', label: 'Needle drops', weight: 1 },
-  { id: 'listen', label: 'Listening, 12 s', weight: 5 },
+  { id: 'listen', label: 'Listening (12 s)', weight: 5 },
   { id: 'name', label: 'Naming', weight: 1.4 },
-  { id: 'remember', label: 'Remembering', weight: 1.4 },
+  { id: 'remember', label: 'Checking archive', weight: 1.4 },
   { id: 'show', label: 'On screen', weight: 1.4 },
 ]
 
-const IDLE_CAPTION = 'Press play to send one record around the loop.'
+const IDLE_CAPTION = 'Press “Play a record” to follow one song from the turntable to the TV.'
 
 function Icon({ id, x, y, active }: { id: NodeId; x: number; y: number; active: boolean }) {
   const c = active ? PINK : 'rgba(238,240,255,0.7)'
@@ -249,7 +249,7 @@ export function RoundTrip() {
     STEPS[i].edges?.forEach((e) => travelled.add(e))
   }
 
-  const caption = cur ? cur.caption : done ? 'Seconds from needle to screen. Most of that is listening.' : IDLE_CAPTION
+  const caption = cur ? cur.caption : done ? 'Done. Most of the wait is the 12 seconds of listening. The rest takes a moment.' : IDLE_CAPTION
   const phaseIdx = cur ? PHASES.findIndex((p) => p.id === cur.phase) : done ? PHASES.length : -1
   const totalWeight = PHASES.reduce((a, p) => a + p.weight, 0)
   const fs = narrow ? 1.06 : 1 // a touch larger in the column, where the SVG is shrunk most
@@ -282,7 +282,7 @@ export function RoundTrip() {
         className="hiw-svg block w-full"
         viewBox={`0 0 ${L.w} ${L.h}`}
         role="img"
-        aria-label="A record plays. A small computer in the house hears it, sends a fingerprint to Shazam, gets the song's name back, asks the archive in the cloud what the song means, and the answer appears on the TV."
+        aria-label="A record plays. A small computer in the house hears it and sends a fingerprint to Shazam, which sends back the song's name. The computer sends the name to the archive on the internet, and the archive sends the answer to the TV."
         style={{ marginTop: 8 }}
       >
         <defs>

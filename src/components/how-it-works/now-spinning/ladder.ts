@@ -25,14 +25,14 @@ export interface Example {
   wording?: SeenWording
 }
 
+/**
+ * Four records, chosen to tell the honesty story: one I heard, two bands I saw whose setlists don't
+ * have the song (one with every setlist, one with a night missing), and one never in the archive.
+ */
 export const EXAMPLES: Example[] = [
   { artist: 'Royal Blood', title: 'Out of the Black', label: 'Out of the Black', expect: 'heard' },
-  { artist: 'Wham!', title: "I'm Your Man", label: 'I’m Your Man', expect: 'seen-cover' },
-  { artist: 'Devo', title: 'Mr. DNA', label: 'Mr. DNA', expect: 'seen', wording: 'near' },
   { artist: 'Depeche Mode', title: 'Barrel of a Gun', label: 'Barrel of a Gun', expect: 'seen', wording: 'never' },
   { artist: 'Oingo Boingo', title: 'Weird Science', label: 'Weird Science', expect: 'seen', wording: 'maybe' },
-  { artist: 'David Bowie', title: "Let's Dance - 2018 Remaster", label: 'Let’s Dance', expect: 'cover-of-this' },
-  { artist: 'The Rolling Stones', title: 'Paint It Black', label: 'Paint It Black', expect: 'covers' },
   { artist: 'Fleetwood Mac', title: 'Dreams', label: 'Dreams', expect: 'none' },
 ]
 

@@ -22,13 +22,9 @@ describe('How It Works: honesty ladder', () => {
     expect(RUNG_ORDER).toEqual(['unknown', 'heard', 'seen-cover', 'seen', 'cover-of-this', 'covers', 'none'])
   })
 
-  it('shows every rung except "unknown" with at least one example', () => {
-    const shown = new Set(EXAMPLES.map((e) => e.expect))
-    for (const r of RUNG_ORDER.filter((r) => r !== 'unknown')) expect(shown.has(r), r).toBe(true)
-  })
-
-  it('shows all three of the seen screen\'s wordings', () => {
-    expect(new Set(EXAMPLES.filter((e) => e.expect === 'seen').map((e) => e.wording))).toEqual(new Set(['near', 'never', 'maybe']))
+  it('contrasts the two careful wordings: every setlist ("never") and a missing setlist ("maybe")', () => {
+    const seen = new Set(EXAMPLES.filter((e) => e.expect === 'seen').map((e) => e.wording))
+    expect(seen.has('never') && seen.has('maybe')).toBe(true)
   })
 
   for (const ex of EXAMPLES) {
