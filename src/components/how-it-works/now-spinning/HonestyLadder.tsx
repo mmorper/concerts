@@ -59,8 +59,12 @@ export function HonestyLadder() {
   const [track, setTrack] = useState<Track | null>(null)
   const [walk, setWalk] = useState<number>(RUNG_ORDER.length) // how many rungs have been asked
   const runId = useRef(0)
+  const figure = useRef<HTMLElement>(null)
+  const started = useRef(false)
+  const [touched, setTouched] = useState(false) // has the reader picked a record yet?
 
   const run = async (i: number, animate: boolean) => {
+    started.current = true
     const id = ++runId.current
     setSel(i)
     setTrack(null)
@@ -71,10 +75,33 @@ export function HonestyLadder() {
     setTrack(t)
   }
 
+  // Royal Blood, the record in the photo, plays out once when the ladder first scrolls into view,
+  // so the reader sees the steps decide before being asked to click anything.
   useEffect(() => {
-    run(0, false)
+    const el = figure.current
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      run(0, false)
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return
+        io.disconnect()
+        if (!started.current) run(0, true)
+      },
+      { threshold: 0.3 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const pick = (i: number, surface: 'chip' | 'hint') => {
+    setTouched(true)
+    analytics.trackEvent('how_it_works_example_selected', { chapter: 'now-spinning', example: EXAMPLES[i].label, surface })
+    run(i, true)
+  }
+  const NEXT = 1 // Barrel of a Gun: the same kind of question, a very different answer
 
   const hit = track ? rungOf(track) : null
   const hitIdx = hit ? RUNG_ORDER.indexOf(hit.rung) : -1
@@ -89,7 +116,7 @@ export function HonestyLadder() {
   const settled = track !== null && walk > hitIdx
 
   return (
-    <figure className="hiw-figure" aria-labelledby="ladder-cap">
+    <figure ref={figure} className="hiw-figure" aria-labelledby="ladder-cap">
       <div className="px-4 sm:px-6 pt-5">
         <div className="hiw-step mb-3" style={{ color: 'var(--hiw-ink-3)' }}>
           Pick a record
@@ -101,15 +128,30 @@ export function HonestyLadder() {
               type="button"
               className="hiw-chip"
               aria-pressed={sel === i}
-              onClick={() => {
-                analytics.trackEvent('how_it_works_example_selected', { chapter: 'now-spinning', example: ex.label })
-                run(i, true)
-              }}
+              onClick={() => pick(i, 'chip')}
             >
               {ex.label}
               <small>{ex.artist}</small>
             </button>
           ))}
+        </div>
+        {/* One invitation, once: the most instructive next pick. Gone after the first click. */}
+        {/* Space kept for the line, so the ladder doesn't jump when it appears or goes. */}
+        <div style={{ minHeight: 34 }}>
+        {settled && !touched && sel === 0 && (
+          <p className="font-sans pt-3" style={{ fontSize: 15, color: 'var(--hiw-ink-2)', animation: 'hiw-pop 0.5s ease 1s both' }}>
+            Now try{' '}
+            <button
+              type="button"
+              onClick={() => pick(NEXT, 'hint')}
+              className="font-semibold underline underline-offset-4"
+              style={{ color: 'var(--hiw-ink)', textDecorationColor: 'var(--hiw-dot)' }}
+            >
+              {EXAMPLES[NEXT].label}
+            </button>
+            : a band I’ve seen, but a very different answer.
+          </p>
+        )}
         </div>
       </div>
 

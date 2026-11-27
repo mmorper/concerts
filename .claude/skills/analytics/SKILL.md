@@ -346,7 +346,7 @@ fires these itself.
   `fingerprint`); the round trip adds `mode` (`simple`, `hood`)
 - `how_it_works_diagram_mode_changed` — The Simple / Under the hood toggle: `chapter`, `diagram`, `mode`
 - `how_it_works_diagram_step` — A Fingerprint step chosen by hand: `chapter`, `diagram`, `step` (1–4)
-- `how_it_works_example_selected` — A record on the Honesty Ladder: `chapter`, `example`
+- `how_it_works_example_selected` — A record on the Honesty Ladder: `chapter`, `example`, `surface` (`chip`, or `hint` for the "Now try …" line)
 
 `chapter`, `section`, `diagram`, `mode`, `step` and `example` need registering as GA4 custom
 dimensions after deploy (Step 6).
