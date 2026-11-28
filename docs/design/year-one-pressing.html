@@ -1,0 +1,173 @@
+<title>The Pressing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+  /* Layout: one 1080×1350 LinkedIn card drawn as a single SVG, scaled to fit; a 7" single beside a 12" LP — the size gap is the chart. */
+  :root {
+    --ground-top: #181334;
+    --ground-bottom: #2c1660;
+    --vinyl: #0c0a16;
+    --fg: #f5f3ff;
+    --muted: #b8b4e0;
+    --accent: #a5b4fc;
+    --label-then: #e0e7ff;
+    --label-now: #818cf8;
+    --ink: #1e1b4b;
+    --rule: rgba(255, 255, 255, 0.14);
+    --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --font-body: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+    color-scheme: dark;
+  }
+  html { background: #0e0b22; }
+  body {
+    background: #0e0b22;
+    color: var(--fg);
+    font-family: var(--font-body);
+    padding-block: 32px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap { max-width: 720px; margin: 0 auto; display: grid; gap: 14px; }
+  svg.card { width: 100%; height: auto; display: block; border-radius: 6px; box-shadow: 0 30px 80px rgba(0,0,0,0.45); }
+  .note { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0; }
+  .display { font-family: var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+  .body { font-family: var(--font-body); }
+  .spin { transform-box: view-box; animation: spin linear infinite; }
+  .spin.lp { transform-origin: 720px 548px; animation-duration: 18s; }
+  .spin.single { transform-origin: 262px 548px; animation-duration: 13.33s; } /* 45 vs 33⅓ rpm, slowed 10× */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+</style>
+
+<div class="wrap">
+<svg class="card" viewBox="0 0 1080 1350" role="img" aria-labelledby="t d" xmlns="http://www.w3.org/2000/svg">
+  <title id="t">One year of the Morperhaus Concert Archives, then vs. now</title>
+  <desc id="d">A 7-inch single labelled v1.0 beside a 12-inch LP labelled v7.0. Lines of code 7,339 to 105,475. Automated tests 0 to 2,563. Lines of documentation 8,251 to 97,352. Services connected about 5 to about 22. Platforms 1 to 4. 1,302 commits, 455 pull requests, 280 issues, 21 epics, 49 releases. About $720 in AI subscriptions.</desc>
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="var(--ground-top)"/>
+      <stop offset="1" stop-color="var(--ground-bottom)"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.62" cy="0.38" r="0.6">
+      <stop offset="0" stop-color="rgba(140,122,224,0.30)"/>
+      <stop offset="1" stop-color="rgba(140,122,224,0)"/>
+    </radialGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="rgba(255,255,255,0)"/>
+      <stop offset="0.5" stop-color="rgba(255,255,255,0.10)"/>
+      <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1350" fill="url(#ground)"/>
+  <rect width="1080" height="1350" fill="url(#glow)"/>
+
+  <!-- Header -->
+  <text x="80" y="96" class="body" font-size="20" font-weight="600" letter-spacing="4" fill="var(--accent)">MORPERHAUS CONCERT ARCHIVES · YEAR ONE</text>
+  <text x="80" y="168" class="display" font-size="60" font-weight="700" fill="var(--fg)">A year of shipping software</text>
+  <text x="80" y="236" class="display" font-size="60" font-style="italic" font-weight="500" fill="var(--accent)">I can't read.</text>
+  <text x="80" y="286" class="body" font-size="24" fill="var(--muted)">One non-developer, one Google Sheet, one AI agent. Dec 2025 → Dec 2026.</text>
+
+  <!-- 12" LP (v7.0) -->
+  <g id="lp">
+    <circle cx="720" cy="548" r="240" fill="var(--vinyl)"/>
+    <g id="lp-grooves"></g>
+    <g class="spin lp"><path d="M720 548 L960 548 A240 240 0 0 0 890 378 Z" fill="url(#sheen)" opacity="0.9"/></g>
+    <circle cx="720" cy="548" r="88" fill="var(--label-now)"/>
+    <circle cx="720" cy="548" r="80" fill="none" stroke="rgba(30,27,75,0.35)" stroke-width="1"/>
+    <text x="720" y="526" text-anchor="middle" class="body" font-size="12" font-weight="600" letter-spacing="2.5" fill="var(--ink)">SIDE B · NOW</text>
+    <text x="720" y="562" text-anchor="middle" class="display" font-size="44" font-weight="700" fill="var(--ink)">v7.0</text>
+    <text x="720" y="590" text-anchor="middle" class="body" font-size="12" font-weight="600" letter-spacing="2" fill="var(--ink)">NOW SPINNING</text>
+    <text x="720" y="608" text-anchor="middle" class="body" font-size="11" letter-spacing="1.5" fill="var(--ink)">NOV 2026</text>
+    <text x="720" y="508" text-anchor="middle" class="body" font-size="10" letter-spacing="1.5" fill="var(--ink)" opacity="0.75">33⅓ RPM</text>
+    <circle cx="720" cy="548" r="4" fill="var(--ground-top)"/>
+  </g>
+
+  <!-- 7" single (v1.0): diameter is 7/12 of the LP -->
+  <g id="single">
+    <circle cx="262" cy="548" r="140" fill="var(--vinyl)"/>
+    <g id="single-grooves"></g>
+    <g class="spin single"><path d="M262 548 L402 548 A140 140 0 0 0 361 449 Z" fill="url(#sheen)" opacity="0.9"/></g>
+    <circle cx="262" cy="548" r="56" fill="var(--label-then)"/>
+    <text x="262" y="528" text-anchor="middle" class="body" font-size="10" font-weight="600" letter-spacing="2" fill="var(--ink)">SIDE A · THEN</text>
+    <text x="262" y="558" text-anchor="middle" class="display" font-size="30" font-weight="700" fill="var(--ink)">v1.0</text>
+    <text x="262" y="576" text-anchor="middle" class="body" font-size="10" letter-spacing="1.5" fill="var(--ink)">DEC 2025</text>
+    <text x="262" y="590" text-anchor="middle" class="body" font-size="9" letter-spacing="1.5" fill="var(--ink)" opacity="0.75">45 RPM</text>
+    <circle cx="262" cy="548" r="3" fill="var(--ground-top)"/>
+  </g>
+
+  <text x="262" y="740" text-anchor="middle" class="body" font-size="15" font-weight="600" letter-spacing="2.5" fill="var(--muted)">FOUR DAYS IN · ONE TRACK</text>
+  <text x="720" y="826" text-anchor="middle" class="body" font-size="15" font-weight="600" letter-spacing="2.5" fill="var(--muted)">ELEVEN MONTHS IN · SEVEN MAJOR VERSIONS</text>
+
+  <!-- Then / now table -->
+  <g id="table">
+    <text x="80" y="884" class="body" font-size="14" font-weight="600" letter-spacing="2.5" fill="var(--accent)">PRESSING NOTES</text>
+    <text x="640" y="884" text-anchor="end" class="body" font-size="14" font-weight="600" letter-spacing="2.5" fill="var(--accent)">v1.0</text>
+    <text x="1000" y="884" text-anchor="end" class="body" font-size="14" font-weight="600" letter-spacing="2.5" fill="var(--accent)">NOW</text>
+  </g>
+
+  <!-- Run-out groove: the GitOps numbers -->
+  <rect x="80" y="1160" width="920" height="84" rx="4" fill="rgba(255,255,255,0.055)" stroke="rgba(255,255,255,0.12)"/>
+  <g id="runout"></g>
+
+  <!-- Footer -->
+  <text x="80" y="1294" class="body" font-size="22" fill="var(--fg)">About <tspan font-weight="600">$720</tspan> in AI subscriptions. Two tools spun off at the day job.</text>
+  <text x="80" y="1324" class="body" font-size="15" fill="var(--muted)">Counted from git and GitHub, Nov 28, 2026</text>
+  <text x="1000" y="1324" text-anchor="end" class="body" font-size="15" font-weight="600" fill="var(--accent)">concerts.morperhaus.org</text>
+</svg>
+<p class="note">Mock-up for the LinkedIn header image, 1080×1350. The 7" single and the 12" LP are drawn to their real size ratio; the LP's seven bands are the seven major versions. Numbers come from git and GitHub on Nov 28, 2026; "services" is a curated count.</p>
+</div>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, text) => {
+    const n = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+    if (text != null) n.textContent = text;
+    return n;
+  };
+
+  // Grooves; the LP gets 7 track bands (7 major versions), the single one.
+  function grooves(id, cx, cy, inner, outer, tracks) {
+    const g = document.getElementById(id);
+    const span = outer - inner;
+    const gaps = Array.from({ length: tracks - 1 }, (_, i) => inner + span * (i + 1) / tracks);
+    for (let r = inner; r <= outer; r += 3.2) {
+      const nearGap = gaps.some(x => Math.abs(x - r) < 2.5);
+      g.appendChild(el("circle", {
+        cx, cy, r: r.toFixed(1), fill: "none",
+        stroke: nearGap ? "rgba(255,255,255,0.0)" : "rgba(255,255,255,0.055)",
+        "stroke-width": "1"
+      }));
+    }
+    gaps.forEach(r => g.appendChild(el("circle", { cx, cy, r, fill: "none", stroke: "rgba(0,0,0,0.6)", "stroke-width": "3" })));
+  }
+  grooves("lp-grooves", 720, 548, 100, 232, 7);
+  grooves("single-grooves", 262, 548, 64, 134, 1);
+
+  const rows = [
+    ["Lines of code", "7,339", "105,475"],
+    ["Automated tests", "0", "2,563"],
+    ["Lines of documentation", "8,251", "97,352"],
+    ["Services connected", "~5", "~22"],
+    ["Platforms", "1", "4"],
+  ];
+  const table = document.getElementById("table");
+  rows.forEach(([label, then, now], i) => {
+    const y = 940 + i * 46;
+    table.appendChild(el("line", { x1: 80, x2: 1000, y1: y - 34, y2: y - 34, stroke: "var(--rule)" }));
+    table.appendChild(el("text", { x: 80, y, class: "body", "font-size": 22, fill: "var(--fg)" }, label));
+    table.appendChild(el("text", { x: 640, y, "text-anchor": "end", class: "display", "font-size": 24, fill: "var(--muted)" }, then));
+    table.appendChild(el("text", { x: 1000, y, "text-anchor": "end", class: "display", "font-size": 30, "font-weight": 700, fill: "var(--fg)" }, now));
+  });
+
+  const runout = [["1,302", "commits"], ["455", "pull requests"], ["280", "issues"], ["21", "epics"], ["49", "releases"]];
+  const ro = document.getElementById("runout");
+  runout.forEach(([n, label], i) => {
+    const cx = 80 + 920 / runout.length * (i + 0.5);
+    ro.appendChild(el("text", { x: cx, y: 1200, "text-anchor": "middle", class: "display", "font-size": 30, "font-weight": 700, fill: "var(--fg)" }, n));
+    ro.appendChild(el("text", { x: cx, y: 1226, "text-anchor": "middle", class: "body", "font-size": 14, "letter-spacing": 1.5, fill: "var(--muted)" }, label.toUpperCase()));
+  });
+</script>

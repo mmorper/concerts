@@ -104,7 +104,12 @@ The then/now table, as prose or a single image.
 - **Animated posts → Virtru Decks.** The April video pilot (first PR in the repo) taught the
   pipeline: data → storyboard → render → voiceover. It became the day-job plugin where
   employees use an agent to build on-brand presentations that can be animated and narrated.
-  *The side project trained the day job.*
+  **Deployed company-wide**; very well received, with feedback on its value still arriving
+  every week. *The side project trained the day job.*
+- **Skills and voices → Marketing Sherpas.** Learning to write skills, and to make one agent
+  write in several voices, led directly to Marketing Sherpas: a suite of agent plugins with
+  ~40 skills and a shared canonical context library, now used by the marketing department.
+  It would not exist without this project.
 - **How MCP actually works.** Plain-English explainer: the archive exposes tools
   (`search_concerts`, `get_artist_history`, `on_this_day`…); Claude decides which to call and
   reads the results. Ask the Archive is the same tools behind a chat box. Worth one simple diagram.
@@ -130,6 +135,10 @@ The then/now table, as prose or a single image.
    rather than what was *built*. Since Nov 21 every PR gets this pass; the owner still merges.
 8. **Give agents expert hats.** Designer, UX researcher, architect, during spec and mock-up
    stages. Ask for mocks before code (see `docs/mock-ask-the-archive.html`).
+9. **Guardrails over trust.** Tests went 0 → 2,563 not because I can read them but because I
+   can't. Validation that fails when the README stats drift, the social kill switch,
+   Dependabot, independent QA. When you can't inspect the machinery, you build things that
+   inspect it for you.
 
 ### 5. Close
 What it means for non-developers in product and marketing roles: the bottleneck moved from
@@ -146,11 +155,10 @@ What it means for non-developers in product and marketing roles: the bottleneck 
   infographic stat.
 - **Docs ≈ code.** Probably the most surprising single stat for engineers *and* non-engineers.
   Could be the infographic's hero.
-- **Lesson 9 — guardrails over trust.** Tests went 0 → 2,563 not because I can read them but
-  because I can't. Validation that fails if the README stats drift, the social kill switch,
-  Dependabot. Could fold into lesson 4 or 7.
-- **Cost.** Total Claude spend for the year. People always ask; it's a strong number if you're
-  willing to share it.
+- **Cost — confirmed, sharing it.** $20/month for the first ~6 months, then the $100/month
+  Max plan: about **$720 for the year**. "No regrets." Pairs well with the then/now table.
+- **The day-job spillover as its own section.** Virtru Decks (company-wide) and Marketing
+  Sherpas (marketing department) are the "so what" for LinkedIn readers.
 - **Carousel instead of one long article**, or both: article for depth, carousel to travel.
 
 ---
@@ -172,7 +180,9 @@ Stats in the margins. Very technical, very shareable with engineers.
 0 → 2,563 tests, 7k → 105k lines, 5 → 22 services, 0 → 455 PRs. Easiest to read at
 thumbnail size.
 
-**Must-have numbers:** 1,302 commits · 455 PRs · 280 issues · 21 epics · 0 → 2,563 tests ·
+**Chosen: Concept A, The Pressing.**
+
+**Must-have numbers:** ~$720 for the year · 2 day-job products spun out · 1,302 commits · 455 PRs · 280 issues · 21 epics · 0 → 2,563 tests ·
 7,339 → 105,475 lines · 97k lines of docs · ~5 → ~22 services · 4 platforms · 49 releases ·
 0 lines written by hand.
 
@@ -183,7 +193,6 @@ thumbnail size.
 
 ## Still to pull before publishing
 
-- Claude usage and spend (Mike, if willing to share)
 - Number of distinct models/agents used, and the QA-pass count since Nov 21
-- Virtru Decks adoption numbers, if shareable
+- Virtru Decks: no hard numbers; use "deployed company-wide, feedback arriving weekly"
 - Confirm "0 lines written by hand" is literally true
