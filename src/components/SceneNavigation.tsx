@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, Fragment } from 'react'
+import { useEffect, useRef, useState, Fragment, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 import { analytics } from '../services/analytics'
 import { useActiveScene } from '../hooks/useActiveScene'
@@ -29,12 +29,56 @@ const MORE_LINKS = [
 const ASK_SCENE = SCENE_MAP.ask
 
 /**
- * Every rail item is a disc: a dark fill inside a white ring, like the scene dots. That reads on
- * the white timeline, the dark scenes and the busy artist cards alike, where a bare grey glyph
- * disappeared.
+ * The rail takes its tone from the scene behind it (mocks: Scene Rail Mocks). Light on the white
+ * Timeline, dark on the four dark scenes, and on Artists, where it sits over busy photos, one
+ * frosted capsule behind the whole rail. Colours ride on CSS variables so a tone change cross-fades.
  */
-const DISC = 'w-[22px] h-[22px] rounded-full flex items-center justify-center border-[1.5px] border-white/60 group-hover:border-white transition-colors duration-200'
-const DISC_FILL = 'rgba(30,41,59,0.85)'
+type RailTone = 'light' | 'dark' | 'imagery'
+const SCENE_TONE: Record<number, RailTone> = {
+  [SCENE_MAP.timeline]: 'light',
+  [SCENE_MAP.venues]: 'dark',
+  [SCENE_MAP.geography]: 'dark',
+  [SCENE_MAP.genres]: 'dark',
+  [SCENE_MAP.artists]: 'imagery',
+  [SCENE_MAP.ask]: 'dark',
+}
+
+const LIGHT_VARS = {
+  '--rail-dot': '#64748b', // slate-500, 4.8:1 on white
+  '--rail-icon': '#64748b',
+  '--rail-on': '#0f172a',
+  '--rail-hover-bg': 'rgba(255,255,255,0.85)',
+  '--rail-hover-bd': '#e2e8f0',
+} as CSSProperties
+const DARK_VARS = {
+  '--rail-dot': 'rgba(255,255,255,0.42)',
+  '--rail-icon': 'rgba(255,255,255,0.7)',
+  '--rail-on': '#ffffff',
+  '--rail-hover-bg': 'rgba(255,255,255,0.12)',
+  '--rail-hover-bd': 'rgba(255,255,255,0.22)',
+} as CSSProperties
+
+/** Search and More: a bare glyph at rest; a 28px disc appears only on hover or focus. */
+const ICON_DISC =
+  'w-7 h-7 rounded-full flex items-center justify-center border border-transparent text-[var(--rail-icon)] ' +
+  'transition-colors duration-300 group-hover:text-[var(--rail-on)] group-hover:bg-[var(--rail-hover-bg)] ' +
+  'group-hover:border-[var(--rail-hover-bd)] group-hover:backdrop-blur-sm group-focus-visible:text-[var(--rail-on)] ' +
+  'group-focus-visible:bg-[var(--rail-hover-bg)] group-focus-visible:border-[var(--rail-hover-bd)]'
+
+/** One label per item, shown on hover or keyboard focus. */
+const LABEL =
+  'absolute right-[50px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 ' +
+  'transition-opacity duration-200 whitespace-nowrap font-sans text-xs font-semibold leading-none text-white ' +
+  'px-[11px] py-[7px] rounded-lg pointer-events-none'
+const LABEL_LIGHT: CSSProperties = { background: '#111827' }
+// Dark scenes use the Ask glass, the same as the More menu.
+const LABEL_GLASS: CSSProperties = {
+  background: 'rgba(30,27,75,0.92)',
+  border: '1px solid rgba(165,180,252,0.18)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+}
 
 const scenes = [
   { id: 1, label: 'Timeline' },
@@ -49,11 +93,16 @@ export function SceneNavigation() {
   // Shared scroll observer (#142) — the rail and the wayfinding dock read the same source so they
   // can never disagree on the active scene.
   const { scene: activeScene, isScrolling } = useActiveScene({ sceneCount: ASK_SCENE })
-  const [revealedLabel, setRevealedLabel] = useState<number | null>(null)
   const { openSpotlight } = useAsk()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const moreButton = useRef<HTMLButtonElement>(null)
+
+  const tone = SCENE_TONE[activeScene] ?? 'dark'
+  const light = tone === 'light'
+  const labelStyle = light ? LABEL_LIGHT : LABEL_GLASS
+  // Reduced motion: the pill cross-fades into place instead of sliding (design-system rule 1).
+  const reduceMotion = useReducedMotion()
 
   // The "more" menu closes on Escape (returning focus to its button), on a click outside it, and
   // when a scroll starts.
@@ -76,24 +125,9 @@ export function SceneNavigation() {
     }
   }, [menuOpen])
 
-  // Dismiss any revealed dot-label as soon as the user starts scrolling.
   useEffect(() => {
-    if (isScrolling) {
-      setRevealedLabel(null)
-      setMenuOpen(false)
-    }
+    if (isScrolling) setMenuOpen(false)
   }, [isScrolling])
-
-  // Auto-dismiss label after 3 seconds
-  useEffect(() => {
-    if (revealedLabel === null) return
-
-    const timeout = setTimeout(() => {
-      setRevealedLabel(null)
-    }, 3000)
-
-    return () => clearTimeout(timeout)
-  }, [revealedLabel])
 
   const scrollToScene = (sceneId: number) => {
     haptics.light() // Haptic feedback on navigation
@@ -121,81 +155,89 @@ export function SceneNavigation() {
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 2, duration: 0.8 }}
       className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden md:block"
+      style={light ? LIGHT_VARS : DARK_VARS}
     >
       {/* The dots are the flow content, so the outer -translate-y-1/2 centers THEM at the
-          viewport middle. "Ask the Archive" (above) and "Liner Notes" (below) are floated out of
-          flow, so their unequal heights never shift the dots off center. */}
-      <div className="relative flex flex-col gap-3 items-center">
+          viewport middle. Search (above) and More (below) are floated out of flow, so their
+          heights never shift the dots off center. */}
+      <div className="relative flex flex-col items-center w-11">
+        {/* Over the Artists photos: one frosted capsule behind the whole rail, Search to More
+            (40px icon row + 4px margin + 4px padding at each end). Fades with the tone. */}
+        <div
+          aria-hidden="true"
+          className="absolute -top-12 -bottom-12 left-0 w-11 rounded-[22px] pointer-events-none transition-opacity duration-300"
+          style={{
+            opacity: tone === 'imagery' ? 1 : 0,
+            background: 'rgba(15,23,42,0.45)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+          }}
+        />
+
         {/* Search: opens Ask's ⌘K panel where you are. The sixth dot is the way to the Ask scene;
-            this is the way to ask from anywhere. Floated out of flow, like the menu below, so the
-            dots stay centred on the viewport. */}
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center">
+            this is the way to ask from anywhere. */}
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 flex flex-col items-center">
           <button
             type="button"
-            className="group relative flex items-center justify-center min-w-[44px] min-h-[40px]"
+            className="group relative flex items-center justify-center w-11 h-10"
             aria-label="Ask the Archive (⌘K)"
             onClick={() => openSpotlight('rail')}
           >
-            <span className={DISC} style={{ background: DISC_FILL }} aria-hidden="true">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.8" strokeLinecap="round">
+            <span className={ICON_DISC} aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
                 <circle cx="10.5" cy="10.5" r="6.5" />
                 <line x1="15.5" y1="15.5" x2="20.5" y2="20.5" />
               </svg>
             </span>
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg pointer-events-none">
+            <span className={LABEL} style={labelStyle}>
               Ask the Archive <span style={{ opacity: 0.6, marginLeft: 6 }}>⌘K</span>
             </span>
           </button>
         </div>
 
-        {scenes.map((scene) => (
-          <button
-            key={scene.id}
-            onClick={() => {
-              // Single click navigates directly
-              scrollToScene(scene.id)
-            }}
-            onMouseEnter={() => setRevealedLabel(scene.id)}
-            onMouseLeave={() => setRevealedLabel(null)}
-            className="group relative flex items-center justify-center min-w-[44px] min-h-[44px] touchable"
-            aria-label={`Go to ${scene.label}`}
-          >
-            {/* Dot - visually smaller but larger touch target */}
-            {/* Uses dark fill with white border for visibility on both light and dark backgrounds */}
-            <motion.div
-              className={`w-3 h-3 rounded-full transition-all duration-300 border-2 ${
-                activeScene === scene.id
-                  ? 'bg-slate-800 border-white scale-125'
-                  : 'bg-slate-600 border-white/60 group-hover:bg-slate-700 group-hover:border-white'
-              }`}
-              animate={revealedLabel === scene.id ? { scale: 1.3 } : { scale: 1 }}
-              transition={{ duration: 0.2 }}
-            />
-
-            {/* Label on tap or hover */}
-            <motion.span
-              initial={{ opacity: 0, x: 10 }}
-              animate={{
-                opacity: revealedLabel === scene.id ? 1 : 0,
-                x: revealedLabel === scene.id ? 0 : 10
-              }}
-              transition={{ duration: 0.2 }}
-              className="absolute right-14 top-1/2 -translate-y-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg pointer-events-none"
+        {scenes.map((scene) => {
+          const isActive = activeScene === scene.id
+          return (
+            <button
+              key={scene.id}
+              onClick={() => scrollToScene(scene.id)}
+              className="group relative flex items-center justify-center w-11 h-[34px] touchable"
+              aria-label={`Go to ${scene.label}`}
+              aria-current={isActive ? 'location' : undefined}
             >
-              {scene.label}
-            </motion.span>
-
-            {/* Also show on desktop hover */}
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg pointer-events-none hidden md:block">
-              {scene.label}
-            </span>
-          </button>
-        ))}
+              {isActive ? (
+                // The active marker is a pill that slides between positions as the scene changes.
+                reduceMotion ? (
+                  <motion.span
+                    key={scene.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.18 }}
+                    className="block w-1.5 h-5 rounded-[3px] bg-[var(--rail-on)] transition-colors duration-300"
+                  />
+                ) : (
+                  <motion.span
+                    layoutId="scene-rail-active"
+                    className="block w-1.5 h-5 rounded-[3px] bg-[var(--rail-on)] transition-colors duration-300"
+                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                  />
+                )
+              ) : (
+                <span className="block w-[7px] h-[7px] rounded-full bg-[var(--rail-dot)] group-hover:bg-[var(--rail-on)] group-focus-visible:bg-[var(--rail-on)] transition-colors duration-300" />
+              )}
+              <span className={LABEL} style={labelStyle}>
+                {scene.label}
+              </span>
+            </button>
+          )
+        })}
 
         {/* More: the pages about the site, behind one quiet mark (no text on the rail). */}
         <div
           ref={menuRef}
-          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 flex flex-col items-center"
+          className="absolute top-full left-1/2 -translate-x-1/2 mt-1 flex flex-col items-center"
           onBlur={(e) => {
             // Tabbing past the last item closes the menu, so focus never sits outside an open menu.
             // A blur with no relatedTarget (Safari, on a mouse click) is left to the outside-click
@@ -207,7 +249,7 @@ export function SceneNavigation() {
           <button
             ref={moreButton}
             type="button"
-            className="group relative flex items-center justify-center min-w-[44px] min-h-[36px]"
+            className="group relative flex items-center justify-center w-11 h-10"
             aria-label="More: Liner Notes, How It Works, What's Playing, About"
             aria-expanded={menuOpen}
             aria-controls="site-more-menu"
@@ -216,13 +258,13 @@ export function SceneNavigation() {
               setMenuOpen((o) => !o)
             }}
           >
-            <span className={`${DISC} gap-[2px]`} style={{ background: DISC_FILL }} aria-hidden="true">
+            <span className={`${ICON_DISC} gap-[2.5px]`} aria-hidden="true">
               {[0, 1, 2].map((k) => (
-                <span key={k} style={{ width: 2.5, height: 2.5, borderRadius: '50%', background: '#fff' }} />
+                <span key={k} className="block w-[3px] h-[3px] rounded-full bg-current" />
               ))}
             </span>
             {!menuOpen && (
-              <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg pointer-events-none">
+              <span className={LABEL} style={labelStyle}>
                 More
               </span>
             )}
