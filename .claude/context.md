@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v7.0.0 (Production)
+**Version:** v7.0.1 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-11-27
 
@@ -147,19 +147,11 @@ docs/
 
 **Recent Releases:**
 
+- **v7.0.1** (2026-11-27): How It Works — a section with two chapters (PR #733, #734). Now Spinning explained with playable diagrams (`src/components/how-it-works/now-spinning/`); How the Archive Is Built replaces the Enrichment Cascade (`/cascade` redirects): one row followed from sheet to site with a live fact tally (`archive/facts.ts`), real street maps, and three questions that open Ask. Menus: text-free desktop rail (Ask magnifier, six dots, a “more” menu), phone bar Ask · Liner Notes · How It Works · About, PageNav with the current page underlined. No liner-notes entry
 - **v7.0.0** (2026-11-27): Now Spinning — a record on the turntable at home shows on the TV with the nights it was heard live (epic #687). Raspberry Pi listener (`now-spinning/pi/`, Shazam fingerprint, receiver control, display wake, return to the Apple TV input; #724–#726), Worker + Durable Object (`workers/now-spinning`, #705; Workers Paid #722/#723), web display (#707), tvOS app (`now-spinning/tvos/`, #708). Opening acts counted in most-played songs (#703); artist photo fixes (#680/#683). Follow-ups in v7.0.x: #697
 - **v6.3.0** (2026-11-02): The whole night — Photos panel with 150 photos and 22 clips from 46 nights; Ask rebuilt search-first with media playing inside it; shareable answers with subject previews; follow-up chips; one share icon and the share sheet on iPad
 - **v6.2.0** (2026-10-31): Ask the Archive answers with pictures — photos, album sleeves, venue photos; album/discography/night/era/shape/songs cards and a photo viewer (#593)
 - **v6.1.0** (2026-10-31): The archive posts itself — Bluesky + Mastodon syndication with On This Day (#323); claim check on every note and post (#529); personal media pipeline, 129 photos + 15 clips from 44 shows; Instagram wired, inert pending credentials; liner-notes empty-run fix and Ask album questions (#317, PR #591); Sonnet 5, TypeScript 7, SDK 1.x
-- **v6.0.0** (2026-08-10): Song → album attribution — `song-albums.json` at 89.7% across three tiers (#276/#282); `road-tested` + `most-witnessed-album` detectors and MCP setlist annotation (#277); liner-note footers play their subject song (#299); 12 artists' wrong-band audio fixed and Re-Flex's discography corrected (#275/#300); one archive-stats derivation (#295); dashboard attribution stage (#289)
-- **v5.4.0** (2026-08-07): Discography trajectory — `album-eras.json` joins 11,359 releases against attendance; `get_career_position` MCP tool + `cycleBucket` search; `album-trajectory` detector; `album-context` repaired 17→24; voice checklist made executable (epic #266, PR #278)
-- **v5.3.0** (2026-08-06): Artist billing aliases in the mosaic and MCP (#227); `full-circle` + `guest-bridge` detectors and song joins across five more (#228/#229/#230); image-rot fixes with validation at the source and orphan pruning (#252/#255/#259/#256); meta-injector auto-deploy completes Worker automation (#262)
-- **v5.2.0** (2026-08-05): Liner notes selection rewritten to detector rotation — all 15 detectors publish, first repeat at post 16 (#226/#231); setlist deep links wired for the first time, 20 posts (#198/#239); geographic-chapter region mapping (#232); milestone-marker scoring + concert-streak window (#233); dangling relatedSlugs + venue image chain (#234/#235)
-- **v5.1.0** (2026-08-04): Setlist deep linking (`&show=`) across six surfaces (#195); root CI gate (#116); three pipeline/SEO suites repaired (#207); share implementations consolidated (#204)
-- **v5.0.0** (2026-06-20): Ask the Archive — in-app conversational client, ⌘K spotlight, MCP connector; Operator Dashboard phases 0–6 (#159)
-- **v4.6.1** (2026-04-16): Liner Notes Tuning & Polish — smarter artist/category variety, UI fixes
-- **v4.6.0** (2026-03-10): How It Works — interactive animated cascade showing 7 enrichment tiers
-- **v4.5.1** (2026-03-08): Mobile Polish — Liner Notes card layout, share button, artist modal badge
 
 ---
 
@@ -279,4 +271,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-11-27 by Claude Code for v7.0.0 release*
+*Last updated: 2026-11-27 by Claude Code for v7.0.1 release*
