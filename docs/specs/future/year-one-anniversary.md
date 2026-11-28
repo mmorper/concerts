@@ -27,7 +27,7 @@ Nov 28, 2026. Every number below was counted from git or GitHub, not estimated.
 | CI/CD workflows (GitHub Actions) | 0 | 14 | |
 | Cloudflare Workers (server code) | 0 | 5 | |
 | Claude skills + slash commands | 0 | 33 (16 skills, 17 commands) | |
-| Platforms | 1 (web) | 4 (web, Claude via MCP, Raspberry Pi, Apple TV) | |
+| Platforms | 1 (web) | 3 (web, Raspberry Pi, Apple TV) | |
 
 ### GitOps, by the numbers
 
@@ -77,7 +77,7 @@ Turnstile), GitHub API + Actions, Ahrefs, Semrush, Bluesky, Mastodon, Instagram,
 ## Article structure (draft outline)
 
 **Working title options**
-- "From a Google Sheet to four platforms"
+- "From a Google Sheet to three platforms"
 - "1,302 commits later: what a non-developer learned building with agents"
 - "From committing to main to multi-agent QA"
 
@@ -185,7 +185,7 @@ thumbnail size.
 **Chosen: Concept A, The Pressing.**
 
 **Must-have numbers:** ~$720 for the year · 2 day-job products spun out · 1,302 commits · 455 PRs · 280 issues · 21 epics · 0 → 2,563 tests ·
-7,339 → 105,475 lines · 97k lines of docs · ~5 → ~22 services · 4 platforms · 49 releases ·
+7,339 → 105,475 lines · 97k lines of docs · ~5 → ~22 services · 3 platforms · 49 releases ·
 0 lines written by hand.
 
 **Format:** 1080×1350 single image for the article header, plus a 6–8 slide carousel PDF
