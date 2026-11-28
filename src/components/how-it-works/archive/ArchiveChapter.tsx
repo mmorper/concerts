@@ -52,7 +52,7 @@ export function ArchiveChapter() {
           </div>
 
           <div style={{ maxWidth: 1000, margin: '36px auto 0' }}>
-            <ArchiveHero counts={ledger?.parts} />
+            <ArchiveHero />
           </div>
 
           <div style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -70,11 +70,9 @@ export function ArchiveChapter() {
                   Everything else on this site grew out of it.
                 </p>
                 <p>
-                  Here’s the idea. Each fact in a row is a key that can unlock more facts. Give a band’s name to the
-                  right services, and they send back a photo and the band’s best-known songs, with short previews. Give
-                  a venue and a city to Google, and it sends back a street address, the exact spot on a map and a
-                  picture of the building. Give the band, the date and the venue to setlist.fm, and it sends back the
-                  songs they played that night.
+                  Here’s the idea. Each fact in a row is a key that can unlock more facts. Give a band, a venue or a date
+                  to the right service, and it sends back something new: a photo, an address, the songs played that
+                  night.
                 </p>
                 <p>
                   Each answer becomes a new fact attached to the show, so a row of a few words grows into dozens of
@@ -87,7 +85,6 @@ export function ArchiveChapter() {
                   one step at a time, and keeps count of the facts as they add up.
                 </p>
               </Prose>
-              <ArchiveCount data={data} />
             </div>
 
             <Section id="journey" title="The whole journey">
@@ -146,9 +143,12 @@ export function ArchiveChapter() {
             <Section id="names" step="Step 2" title="One name, one band">
               <Prose>
                 <p>
-                  Bands don’t always perform under the same name. In my archive, Brian Setzer appears under four different
-                  names. A short list tells the site that all four are the same person, so his page shows all of those
-                  shows together.
+                  Social Distortion has always been Social Distortion. So for our row, this step adds one fact: a link
+                  to the band’s page, which gathers every night I’ve seen them.
+                </p>
+                <p>
+                  Not every band is that simple. In my archive, Brian Setzer appears under four different names. A short
+                  list tells the site that all four are the same person, so his page shows all of those shows together.
                 </p>
                 <p>
                   The list also records the opposite case. Stray Cats include Brian Setzer, but they’re a different band,
@@ -206,7 +206,7 @@ export function ArchiveChapter() {
               </Hood>
             </Section>
 
-            <Section id="face" step="Step 4" title="A photo for every band">
+            <Section id="face" step="Step 4" title="Finding each band’s photo">
               <Prose>
                 <p>
                   Every band needs a photo. The update asks one service first. If that service has nothing, it asks a
@@ -319,8 +319,8 @@ export function ArchiveChapter() {
               <Prose>
                 <p>
                   Once every night is a set of labeled facts, you can ask questions about them. Ask the Archive, the chat
-                  built into this site, reads the same files the weekly update writes. So does the Claude connector,
-                  which lets Claude answer questions about the archive from anywhere.
+                  built into this site, reads the same files the weekly update writes. Claude, Anthropic’s AI assistant,
+                  can read them too, through a connector I built.
                 </p>
                 <p>
                   Instead of searching the web, they look up the facts this page has been counting. Here are three
@@ -332,7 +332,10 @@ export function ArchiveChapter() {
               </Wide>
             </Section>
 
-            <Section id="fresh" title="Keeping it up to date">
+            <Section id="behind" title="Behind the scenes">
+              <h3 className="font-sans mt-0 mb-3" style={{ fontSize: 21, fontWeight: 600, color: 'var(--hiw-ink)' }}>
+                Keeping it up to date
+              </h3>
               <Prose>
                 <p>
                   The update runs every Monday morning. I can also start it by hand after adding a show.
@@ -347,9 +350,9 @@ export function ArchiveChapter() {
                   disappeared, it stops and saves nothing.
                 </p>
               </Prose>
-            </Section>
-
-            <Section id="tradeoffs" title="The trade-offs">
+              <h3 className="font-sans mt-10 mb-3" style={{ fontSize: 21, fontWeight: 600, color: 'var(--hiw-ink)' }}>
+                The trade-offs
+              </h3>
               <Prose>
                 <p>Every design has costs. These are the ones I accepted.</p>
               </Prose>
@@ -371,6 +374,20 @@ export function ArchiveChapter() {
                   current. But they only appear when that service is working.
                 </li>
               </ul>
+            </Section>
+
+            <Section id="close" title="From a list to an archive">
+              <Prose>
+                <p>
+                  It started as a list my wife and I made during the pandemic, from ticket stubs and old concert shirts.
+                  It still is a list: one row for each show, a few words in each.
+                </p>
+                <p>But every row now unlocks everything on this page. Across the whole archive, that adds up to this:</p>
+              </Prose>
+              <ArchiveCount data={data} />
+              <Prose>
+                <p className="mt-8">After a show, I type one row. On Monday, the update does the rest.</p>
+              </Prose>
             </Section>
           </div>
         </article>

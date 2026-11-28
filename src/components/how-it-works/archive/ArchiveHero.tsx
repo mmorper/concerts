@@ -5,7 +5,7 @@
  * Headliner, Genre, Venue, City/State; this night had no opener). Streams are coloured by the
  * column that feeds them, in the old cascade's colours: band violet, place indigo, date slate.
  * Which column feeds what follows docs/DATA_PIPELINE.md: venue and city → coordinates (Google
- * Geocoding) and venue photo (Google Places); headliner → photo and bio (TheAudioDB, then
+ * Geocoding) and venue photo (Google Places); headliner → photo (TheAudioDB, then
  * Deezer), song previews (Apple Music) and albums (MusicBrainz); headliner, date
  * and venue together → the setlist (setlist.fm).
  */
@@ -25,12 +25,9 @@ const COLUMNS = [
 
 type Col = (typeof COLUMNS)[number]['key']
 
-type Part = 'setlist' | 'photo' | 'previews' | 'albums' | 'venuePhoto' | 'pin'
-
-const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => JSX.Element }[] = [
+const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element }[] = [
   {
     label: 'The setlist',
-    part: 'setlist',
     from: ['date', 'band', 'venue'],
     icon: (c) => (
       <g stroke={c} strokeWidth="2" strokeLinecap="round">
@@ -41,8 +38,7 @@ const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => 
     ),
   },
   {
-    label: 'Photo and story',
-    part: 'photo',
+    label: 'Band photo',
     from: ['band'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2">
@@ -53,7 +49,6 @@ const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => 
   },
   {
     label: 'Song previews',
-    part: 'previews',
     from: ['band'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2" strokeLinecap="round">
@@ -65,7 +60,6 @@ const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => 
   },
   {
     label: 'Their albums',
-    part: 'albums',
     from: ['band'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2">
@@ -76,7 +70,6 @@ const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => 
   },
   {
     label: 'Venue photo',
-    part: 'venuePhoto',
     from: ['venue'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2" strokeLinejoin="round">
@@ -87,7 +80,6 @@ const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => 
   },
   {
     label: 'A pin on the map',
-    part: 'pin',
     from: ['venue', 'city'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2">
@@ -98,8 +90,7 @@ const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => 
   },
 ]
 
-/** How many facts each result adds for this row (from facts.ts), shown as a small "+n" under its label. */
-export function ArchiveHero({ counts }: { counts?: Record<Part, number> }) {
+export function ArchiveHero() {
   const narrow = useMediaQuery('(max-width: 640px)')
   const reduced = useReducedMotion()
   const col = (k: Col) => COLUMNS.find((c) => c.key === k)!
@@ -126,11 +117,6 @@ export function ArchiveHero({ counts }: { counts?: Record<Part, number> }) {
               </svg>
               <span className="font-sans" style={{ fontSize: 13, color: 'var(--hiw-ink-2)', lineHeight: 1.3 }}>
                 {a.label}
-                {counts && (
-                  <b className="block" style={{ color: 'var(--hiw-dot)', fontSize: 13 }}>
-                    +{counts[a.part]}
-                  </b>
-                )}
               </span>
               <span className="flex gap-1" aria-hidden="true">
                 {a.from.map((f) => (
@@ -153,7 +139,7 @@ export function ArchiveHero({ counts }: { counts?: Record<Part, number> }) {
 
   return (
     <figure className="hiw-figure" aria-label="One row of the spreadsheet, and what it becomes">
-      <svg className="hiw-svg block w-full" viewBox={`0 0 ${W} 356`} role="img" aria-label="A spreadsheet row: 12/6/2024, Social Distortion, Punk, The Belasco, Los Angeles. Its columns flow into a setlist, a band photo and story, song previews, albums, a venue photo and a pin on the map.">
+      <svg className="hiw-svg block w-full" viewBox={`0 0 ${W} 340`} role="img" aria-label="A spreadsheet row: 12/6/2024, Social Distortion, Punk, The Belasco, Los Angeles. Its columns flow into a setlist, a band photo, song previews, albums, a venue photo and a pin on the map.">
         {/* The row */}
         <rect x="56" y={rowTop} width="888" height={rowBottom - rowTop} rx="10" fill="#f8fafc" />
         {COLUMNS.map((c, i) => (
@@ -201,11 +187,6 @@ export function ArchiveHero({ counts }: { counts?: Record<Part, number> }) {
             <text x={xs[i]} y={iconY + 52} fontSize="14" textAnchor="middle" fill="#b9c0e8">
               {a.label}
             </text>
-            {counts && (
-              <text x={xs[i]} y={iconY + 72} fontSize="14" fontWeight="700" textAnchor="middle" fill="#f472b6" style={reduced ? undefined : { animation: 'hiw-pop 0.4s ease both' }}>
-                +{counts[a.part]} {counts[a.part] === 1 ? 'fact' : 'facts'}
-              </text>
-            )}
           </g>
         ))}
       </svg>

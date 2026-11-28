@@ -71,14 +71,12 @@ describe('How It Works: How the Archive Is Built', () => {
       expect(l.found).toBeGreaterThan(l.typed * 5)
     })
 
-    it('adds up the same way everywhere: lines, groups and parts agree with the total', () => {
+    it('adds up the same way everywhere: lines and groups agree with the total', () => {
       for (const c of data.concerts.slice(0, 40).concat(followed)) {
         const l = ledgerFor(c, data)
         expect(l.lines.reduce((s, x) => s + x.n, 0)).toBe(l.total)
         expect(Object.values(l.groups).reduce((s, n) => s + n, 0)).toBe(l.total)
         for (const line of l.lines) expect(line.items.reduce((s, i) => s + i.n, 0)).toBe(line.n)
-        const p = l.parts
-        expect(p.pin + p.venuePhoto).toBe(l.lines.find((x) => x.step === 'map')!.n)
       }
     })
 

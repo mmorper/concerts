@@ -59,8 +59,6 @@ export interface Ledger {
   typed: number
   found: number
   total: number
-  /** Parts the opening picture labels, one per icon. */
-  parts: { setlist: number; photo: number; previews: number; albums: number; venuePhoto: number; pin: number }
   /** The same total, grouped as "Where it all lands" shows it. */
   groups: { timeline: number; map: number; band: number; setlist: number }
   songs: number
@@ -167,14 +165,6 @@ export function ledgerFor(c: ConcertRow, d: FactData): Ledger {
     typed,
     found: total - typed,
     total,
-    parts: {
-      setlist: songs + covers,
-      photo: photos,
-      previews,
-      albums,
-      venuePhoto: mapItems.some((i) => i.label.startsWith('A photo')) ? 1 : 0,
-      pin: by('map') - (mapItems.some((i) => i.label.startsWith('A photo')) ? 1 : 0),
-    },
     groups: {
       timeline: 1 + (c.genre ? 1 : 0) + 3,
       map: 2 + 2 + by('map'),

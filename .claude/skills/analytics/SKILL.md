@@ -360,7 +360,7 @@ fires these itself.
   Surfaces: `chip` (the Honesty Ladder's records, or the concerts in "A row in a spreadsheet"), `hint`
   (the ladder's "Now try …" line), `map`, `sound`, `setlist` (those steps' pickers), `lands` (a
   concert chosen in "Where it all lands") and `ask` (an "Ask it for real" button; `example` is the
-  question's id: `opener`, `times-seen`, `most-heard`)
+  question's id: `opener`, `times-seen`, `most-seen`)
 - `how_it_works_preview_played` — A song preview played in "The sound": `chapter`, `artist`, `track`
 - `how_it_works_deep_link_clicked` — An "Open →" link in "Where it all lands": `chapter`, `panel`
 

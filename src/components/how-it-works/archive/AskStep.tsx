@@ -9,24 +9,25 @@
 import { analytics } from '../../../services/analytics'
 import { useAsk } from '../../ask/AskProvider'
 import type { Ledger } from './facts'
-import { useJson, useNearView } from './data'
+import { useConcerts } from './data'
 
-interface MostPlayed {
-  songs: { name: string; count: number; artists: string[] }[]
-}
 
 export function AskStep({ ledger }: { ledger?: Ledger }) {
-  const [ref, near] = useNearView<HTMLElement>()
-  const most = useJson<MostPlayed>('/data/most-played-songs.json', near)
+  const concerts = useConcerts()
   const { openSpotlight } = useAsk()
 
   const c = ledger?.concert
   const band = c?.headliner ?? 'Social Distortion'
   const nights = ledger?.seen
-  const top = most?.songs?.[0]
-  const tied = top ? most!.songs.filter((x) => x.count === top.count) : []
-  const mostLine = !top ? '…' : tied.length === 1 ? `“${top.name}”, ${top.count} times` : tied.length === 2 ? `“${tied[0].name}” and “${tied[1].name}”, ${top.count} times each` : `“${tied[0].name}”, “${tied[1].name}” and ${tied.length - 2} more, ${top.count} times each`
-  const mostBy = [...new Set(tied.flatMap((x) => x.artists))].join(', ')
+  // The acts seen most, as headliner or opener, up to today
+  const counts = new Map<string, number>()
+  for (const x of concerts ?? []) {
+    if (x.date > new Date().toISOString().slice(0, 10)) continue
+    for (const a of [x.headliner, ...x.openers]) counts.set(a, (counts.get(a) ?? 0) + 1)
+  }
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1])
+  const best = ranked[0]
+  const tiedBest = best ? ranked.filter(([, n]) => n === best[1]).map(([a]) => a) : []
 
   const cards = [
     {
@@ -39,18 +40,18 @@ export function AskStep({ ledger }: { ledger?: Ledger }) {
       id: 'times-seen',
       q: `How many times have you seen ${band}?`,
       a: nights === undefined ? '…' : `${nights} ${nights === 1 ? 'night' : 'nights'}`,
-      from: 'Step 2 · every row linked to one band page',
+      from: nights === undefined ? 'Step 2 · one name, one band' : `Step 2 · all ${nights} nights linked to one band`,
     },
     {
-      id: 'most-heard',
-      q: 'Which songs have you heard live the most?',
-      a: mostLine,
-      from: top ? `Step 6 · every setlist, counted · ${mostBy}` : 'Step 6 · every setlist, counted',
+      id: 'most-seen',
+      q: 'Which band have you seen the most?',
+      a: !best ? '…' : tiedBest.length === 1 ? `${best[0]}, ${best[1]} nights` : `${tiedBest.join(' and ')}, ${best[1]} nights each`,
+      from: 'Step 2 · every night counted, opening sets included',
     },
   ]
 
   return (
-    <figure ref={ref} className="hiw-figure" aria-labelledby="ask-cap">
+    <figure className="hiw-figure" aria-labelledby="ask-cap">
       <ul className="grid gap-3 md:grid-cols-3 p-4 sm:p-6" style={{ listStyle: 'none' }}>
         {cards.map((k) => (
           <li key={k.id} className="hiw-hood p-4 flex flex-col gap-3">
