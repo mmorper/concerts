@@ -6,6 +6,7 @@
  */
 
 import { useRef, useEffect } from 'react'
+import { PageHeader } from '../PageHeader'
 import { motion } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -81,36 +82,7 @@ export function AboutPage() {
 
         <PageNav current="about" theme="light" />
 
-        {/* Page header */}
-        <header className="mb-10" role="banner">
-          <div style={{ width: 40, height: 4, borderRadius: 2, backgroundColor: '#4f46e5', marginBottom: 16 }} />
-          <motion.h1
-            ref={headerRef}
-            tabIndex={-1}
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="outline-none mb-2"
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: 'clamp(32px, 5vw, 48px)',
-              fontWeight: 700,
-              color: '#1f2937',
-              lineHeight: 1.15,
-            }}
-          >
-            About the Archive
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-            className="font-sans text-gray-500"
-            style={{ fontSize: 'clamp(15px, 2vw, 18px)' }}
-          >
-            The human behind the data
-          </motion.p>
-        </header>
+        <PageHeader ref={headerRef} title="About the Archive" subtitle="The human behind the data" className="mb-10" />
 
         {/* The Archivist */}
         <section aria-label="About the creator" className="mb-10">

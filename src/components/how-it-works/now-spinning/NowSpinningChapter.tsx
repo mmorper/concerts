@@ -8,7 +8,7 @@
  */
 import { motion, MotionConfig } from 'framer-motion'
 import { PageNav } from '../../liner-notes/PageNav'
-import { Hood, MoreChapters, Prose, Section, Wide, usePageTitle } from '../shared'
+import { ChapterHeader, Hood, MoreChapters, Prose, Section, usePageTitle, Wide } from '../shared'
 import { RoundTrip } from './RoundTrip'
 import { Fingerprint } from './Fingerprint'
 import { HonestyLadder } from './HonestyLadder'
@@ -27,18 +27,7 @@ export function NowSpinningChapter() {
 
       <article className="px-4 sm:px-6">
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          <motion.header initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
-            <div className="hiw-kicker mb-5">
-              <span className="hiw-dot" aria-hidden="true" />
-              How It Works · Chapter 2
-            </div>
-            <h1 className="hiw-title" style={{ fontSize: 'clamp(44px, 8vw, 72px)' }}>
-              Now Spinning
-            </h1>
-            <p className="hiw-dek font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
-              Play a record, and the TV shows where I heard it live.
-            </p>
-          </motion.header>
+          <ChapterHeader id="now-spinning" dek="Play a record, and the TV shows where I heard it live." />
 
           <motion.figure initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.15 }} className="mt-8">
             <picture>
