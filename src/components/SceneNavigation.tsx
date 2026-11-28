@@ -198,7 +198,10 @@ export function SceneNavigation() {
           className="absolute top-full left-1/2 -translate-x-1/2 mt-3 flex flex-col items-center"
           onBlur={(e) => {
             // Tabbing past the last item closes the menu, so focus never sits outside an open menu.
-            if (menuOpen && !menuRef.current?.contains(e.relatedTarget as Node | null)) setMenuOpen(false)
+            // A blur with no relatedTarget (Safari, on a mouse click) is left to the outside-click
+            // handler, so it can't close the menu before a click on one of its links lands.
+            const next = e.relatedTarget as Node | null
+            if (menuOpen && next && !menuRef.current?.contains(next)) setMenuOpen(false)
           }}
         >
           <button
