@@ -28,6 +28,14 @@ const MORE_LINKS = [
 // Ask is the last scene (from the canonical roster). It is the sixth dot; the magnifier opens its ⌘K panel.
 const ASK_SCENE = SCENE_MAP.ask
 
+/**
+ * Every rail item is a disc: a dark fill inside a white ring, like the scene dots. That reads on
+ * the white timeline, the dark scenes and the busy artist cards alike, where a bare grey glyph
+ * disappeared.
+ */
+const DISC = 'w-[22px] h-[22px] rounded-full flex items-center justify-center border-[1.5px] border-white/60 group-hover:border-white transition-colors duration-200'
+const DISC_FILL = 'rgba(30,41,59,0.85)'
+
 const scenes = [
   { id: 1, label: 'Timeline' },
   { id: 2, label: 'Venues' },
@@ -106,11 +114,6 @@ export function SceneNavigation() {
     })
   }
 
-  // Scenes 1 (Timeline) and 5 (Artists) are light backgrounds; the rest are dark.
-  const onLight = [1, 5].includes(activeScene)
-  const railEdge = onLight ? 'rgba(30,41,59,0.15)' : 'rgba(255,255,255,0.1)'
-  const railIcon = onLight ? 'rgba(30,41,59,0.7)' : 'rgba(255,255,255,0.7)'
-
   return (
     <>
     <motion.div
@@ -126,22 +129,23 @@ export function SceneNavigation() {
         {/* Search: opens Ask's ⌘K panel where you are. The sixth dot is the way to the Ask scene;
             this is the way to ask from anywhere. Floated out of flow, like the menu below, so the
             dots stay centred on the viewport. */}
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center gap-2">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center">
           <button
             type="button"
             className="group relative flex items-center justify-center min-w-[44px] min-h-[40px]"
             aria-label="Ask the Archive (⌘K)"
             onClick={() => openSpotlight('rail')}
           >
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={railIcon} strokeWidth="2.2" strokeLinecap="round" aria-hidden="true" className="transition-opacity duration-200 opacity-80 group-hover:opacity-100">
-              <circle cx="10.5" cy="10.5" r="6.5" />
-              <line x1="15.5" y1="15.5" x2="20.5" y2="20.5" />
-            </svg>
+            <span className={DISC} style={{ background: DISC_FILL }} aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.8" strokeLinecap="round">
+                <circle cx="10.5" cy="10.5" r="6.5" />
+                <line x1="15.5" y1="15.5" x2="20.5" y2="20.5" />
+              </svg>
+            </span>
             <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg pointer-events-none">
               Ask the Archive <span style={{ opacity: 0.6, marginLeft: 6 }}>⌘K</span>
             </span>
           </button>
-          <span aria-hidden="true" style={{ width: 14, height: 1, background: railEdge }} />
         </div>
 
         {scenes.map((scene) => (
@@ -189,8 +193,7 @@ export function SceneNavigation() {
         ))}
 
         {/* More: the pages about the site, behind one quiet mark (no text on the rail). */}
-        <div ref={menuRef} className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-2">
-          <span aria-hidden="true" style={{ width: 14, height: 1, background: railEdge }} />
+        <div ref={menuRef} className="absolute top-full left-1/2 -translate-x-1/2 mt-3 flex flex-col items-center">
           <button
             ref={moreButton}
             type="button"
@@ -203,9 +206,9 @@ export function SceneNavigation() {
               setMenuOpen((o) => !o)
             }}
           >
-            <span className="flex gap-[3px] transition-opacity duration-200 opacity-80 group-hover:opacity-100" aria-hidden="true">
+            <span className={`${DISC} gap-[2px]`} style={{ background: DISC_FILL }} aria-hidden="true">
               {[0, 1, 2].map((k) => (
-                <span key={k} style={{ width: 3.5, height: 3.5, borderRadius: '50%', background: railIcon }} />
+                <span key={k} style={{ width: 2.5, height: 2.5, borderRadius: '50%', background: '#fff' }} />
               ))}
             </span>
             {!menuOpen && (
