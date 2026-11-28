@@ -298,6 +298,25 @@ Two rules:
 </button>
 ```
 
+### Scene rail (desktop)
+
+`src/components/SceneNavigation.tsx`. The rail takes its tone from the active scene (`SCENE_TONE`);
+colours ride on `--rail-*` CSS variables so a tone change cross-fades over 300ms.
+
+| Tone | Scenes | Dots / icons at rest | Active, hover | Hover disc | Label |
+|------|--------|----------------------|---------------|------------|-------|
+| Light | Timeline | `#64748b` (4.8:1) | `#0f172a` | `white/85`, `slate-200` border | `gray-900` |
+| Dark | Venues, Geography, Genres, Ask | dots `white/42` (≥3.5:1), icons `white/70` | `white` | `white/12`, `white/22` border | Ask glass `rgba(30,27,75,0.92)` |
+| Over photos | Artists | as Dark, inside one capsule | as Dark | as Dark | Ask glass |
+
+- **Capsule (Artists only):** `rgba(15,23,42,0.45)`, `blur(12px)`, `white/12` border, 22px radius,
+  spanning Search to More. Never on the light Timeline: no dark fills on a white scene.
+- **Geometry:** 7px dots in 34px rows; Search and More in 40px rows, bare glyphs that gain a 28px
+  disc on hover or focus; 44px wide.
+- **Active marker:** a 6×20px pill that slides between rows (`layoutId`); under reduced motion it
+  cross-fades into place instead.
+- One label per item, on hover and keyboard focus.
+
 ### Share (every surface)
 
 One icon for sharing, everywhere: lucide's `Share`, the box with an arrow up. Never `Link2` (a

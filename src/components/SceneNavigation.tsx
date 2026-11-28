@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, Fragment, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 import { analytics } from '../services/analytics'
 import { useActiveScene } from '../hooks/useActiveScene'
@@ -101,6 +101,8 @@ export function SceneNavigation() {
   const tone = SCENE_TONE[activeScene] ?? 'dark'
   const light = tone === 'light'
   const labelStyle = light ? LABEL_LIGHT : LABEL_GLASS
+  // Reduced motion: the pill cross-fades into place instead of sliding (design-system rule 1).
+  const reduceMotion = useReducedMotion()
 
   // The "more" menu closes on Escape (returning focus to its button), on a click outside it, and
   // when a scroll starts.
@@ -207,11 +209,21 @@ export function SceneNavigation() {
             >
               {isActive ? (
                 // The active marker is a pill that slides between positions as the scene changes.
-                <motion.span
-                  layoutId="scene-rail-active"
-                  className="block w-1.5 h-5 rounded-[3px] bg-[var(--rail-on)] transition-colors duration-300"
-                  transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                />
+                reduceMotion ? (
+                  <motion.span
+                    key={scene.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.18 }}
+                    className="block w-1.5 h-5 rounded-[3px] bg-[var(--rail-on)] transition-colors duration-300"
+                  />
+                ) : (
+                  <motion.span
+                    layoutId="scene-rail-active"
+                    className="block w-1.5 h-5 rounded-[3px] bg-[var(--rail-on)] transition-colors duration-300"
+                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                  />
+                )
               ) : (
                 <span className="block w-[7px] h-[7px] rounded-full bg-[var(--rail-dot)] group-hover:bg-[var(--rail-on)] group-focus-visible:bg-[var(--rail-on)] transition-colors duration-300" />
               )}
