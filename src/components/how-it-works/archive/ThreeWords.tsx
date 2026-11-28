@@ -14,7 +14,7 @@ const PLACE = '#6366f1'
 const DATE = '#94a3b8'
 
 /** Four rows chosen to show the range: the first show, a small club night, a festival, the hero. */
-const PICKS = [
+export const PICKS = [
   { date: '1984-04-27', label: 'My first show', sub: '1984' },
   { date: '2015-06-10', label: 'A club night', sub: '2015' },
   { date: '2003-09-20', label: 'A festival', sub: '2003' },
