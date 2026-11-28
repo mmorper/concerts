@@ -2,11 +2,12 @@
  * A real street map for "How the Archive Is Built": the archive's own dark basemap
  * (src/utils/basemap.ts, as in the Map scene and Ask's venue card) with venues pinned on it.
  */
-import { useEffect, useRef } from 'react'
-import L from 'leaflet'
+import { useEffect, useRef, useState } from 'react'
+import type * as Leaflet from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { addDarkBasemap } from '../../../utils/basemap'
 import { useReducedMotion } from '../shared'
+
+type LeafletLib = typeof Leaflet
 
 /** Straight-line distance in km between two points on the globe. */
 export function km(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
@@ -38,29 +39,41 @@ export function StreetMap({
   className?: string
 }) {
   const el = useRef<HTMLDivElement>(null)
-  const map = useRef<L.Map | null>(null)
-  const layer = useRef<L.LayerGroup | null>(null)
+  const map = useRef<Leaflet.Map | null>(null)
+  const layer = useRef<Leaflet.LayerGroup | null>(null)
+  const lib = useRef<LeafletLib | null>(null)
+  const [ready, setReady] = useState(false)
   const reduced = useReducedMotion()
 
+  // Leaflet (and the basemap helper that uses it) load only when a map is on the page, so the
+  // chapter's first download stays small and the module can be imported without a browser.
   useEffect(() => {
-    if (!el.current) return
-    const m = L.map(el.current, {
-      zoomControl: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      touchZoom: false,
-      dragging: false,
-      keyboard: false,
-      boxZoom: false,
-      attributionControl: true,
+    let live = true
+    let m: Leaflet.Map | null = null
+    Promise.all([import('leaflet'), import('../../../utils/basemap')]).then(([mod, { addDarkBasemap }]) => {
+      const L = (mod as unknown as { default?: LeafletLib }).default ?? (mod as unknown as LeafletLib)
+      if (!live || !el.current) return
+      m = L.map(el.current, {
+        zoomControl: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        touchZoom: false,
+        dragging: false,
+        keyboard: false,
+        boxZoom: false,
+        attributionControl: true,
+      })
+      m.attributionControl.setPrefix(false)
+      addDarkBasemap(m, 18)
+      L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(m)
+      layer.current = L.layerGroup().addTo(m)
+      lib.current = L
+      map.current = m
+      setReady(true)
     })
-    m.attributionControl.setPrefix(false)
-    addDarkBasemap(m, 18)
-    L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(m)
-    layer.current = L.layerGroup().addTo(m)
-    map.current = m
     return () => {
-      m.remove()
+      live = false
+      m?.remove()
       map.current = null
     }
   }, [])
@@ -69,7 +82,8 @@ export function StreetMap({
   useEffect(() => {
     const m = map.current
     const g = layer.current
-    if (!m || !g) return
+    const L = lib.current
+    if (!ready || !m || !g || !L) return
     m.invalidateSize()
     g.clearLayers()
     points.forEach((p, i) =>
@@ -93,7 +107,7 @@ export function StreetMap({
     if (reduced || !m.getZoom()) m.fitBounds(bounds, opts)
     else m.flyToBounds(bounds, { ...opts, duration: 1.2 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, reduced, numbered])
+  }, [key, reduced, numbered, ready])
 
   return <div ref={el} className={className} role="img" aria-label={`A street map around ${name}, with the nearest venues from the archive.`} />
 }
