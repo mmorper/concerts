@@ -77,15 +77,18 @@ Turnstile), GitHub API + Actions, Ahrefs, Semrush, Bluesky, Mastodon, Instagram,
 ## Article structure (draft outline)
 
 **Working title options**
-- "A year of shipping software I can't read"
+- "From a Google Sheet to four platforms"
 - "1,302 commits later: what a non-developer learned building with agents"
 - "From committing to main to multi-agent QA"
+
+**Framing note (Mike):** don't lean on "I can't read the code". It doesn't matter anymore and
+reads as a limitation. Frame around what got built and how the work is run.
 
 **Hook:** "A year ago I didn't know what a pull request was. This week my turntable told my
 Apple TV what song was playing — and a different AI checked the work before I merged it."
 
 ### 1. Where I started
-Holiday project, a Google Sheet, 7,339 lines of code nobody reviewed. No tests, no CI, no
+Holiday project, a Google Sheet, 7,339 lines of code. No tests, no CI, no
 issues, everything pushed straight to `main`. (Short: the first article told this part.)
 
 ### 2. Where I am now
@@ -114,8 +117,8 @@ The then/now table, as prose or a single image.
   (`search_concerts`, `get_artist_history`, `on_this_day`…); Claude decides which to call and
   reads the results. Ask the Archive is the same tools behind a chat box. Worth one simple diagram.
 - **Leaving the screen: the turntable.** A Raspberry Pi listens to the record, identifies it,
-  matches it to the archive, and an Apple TV app shows it. Software, hardware, and two new
-  languages (Python, Swift) I also can't read.
+  matches it to the archive, and an Apple TV app shows it. Software, hardware, and two more
+  languages (Python, Swift) added without slowing down.
 
 ### 4. Lessons learned
 1. **Riff with the robot.** Don't be super prescriptive at the start. Explore with the agent,
@@ -135,10 +138,9 @@ The then/now table, as prose or a single image.
    rather than what was *built*. Since Nov 21 every PR gets this pass; the owner still merges.
 8. **Give agents expert hats.** Designer, UX researcher, architect, during spec and mock-up
    stages. Ask for mocks before code (see `docs/mock-ask-the-archive.html`).
-9. **Guardrails over trust.** Tests went 0 → 2,563 not because I can read them but because I
-   can't. Validation that fails when the README stats drift, the social kill switch,
-   Dependabot, independent QA. When you can't inspect the machinery, you build things that
-   inspect it for you.
+9. **Guardrails over trust.** Tests went 0 → 2,563. Validation that fails when the README
+   stats drift, the social kill switch, Dependabot, independent QA. Nobody reviews 105k lines
+   by eye, so the system checks itself, whoever (or whatever) wrote the code.
 
 ### 5. Close
 What it means for non-developers in product and marketing roles: the bottleneck moved from
