@@ -14,7 +14,7 @@ import { motion } from 'framer-motion'
 
 const THEMES = {
   light: { bar: '#4f46e5', title: '#1f2937', subtitle: '#6b7280' },
-  dark: { bar: '#818cf8', title: '#eef0ff', subtitle: '#b9c0e8' },
+  dark: { bar: '#818cf8', title: 'var(--hiw-ink, #eef0ff)', subtitle: 'var(--hiw-ink-2, #b9c0e8)' },
 }
 
 export const PageHeader = forwardRef<

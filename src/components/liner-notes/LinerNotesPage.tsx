@@ -5,9 +5,9 @@
  */
 
 import { useEffect, useState, useRef } from 'react'
-import { PageHeader } from '../PageHeader'
 import { useSearchParams } from 'react-router-dom'
 import { Rss, X } from 'lucide-react'
+import { PageHeader } from '../PageHeader'
 import type { LinerNotesPost, LinerNotesData, PostCategory } from '../../types/liner-notes'
 import { LinerNoteCard } from './LinerNoteCard'
 import { CategoryFilterChips } from './CategoryFilterChips'

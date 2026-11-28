@@ -3,10 +3,10 @@
  */
 
 import { useEffect, useState, useRef } from 'react'
-import { PageHeader } from '../PageHeader'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Rss } from 'lucide-react'
+import { PageHeader } from '../PageHeader'
 import { ChangelogCard } from './ChangelogCard'
 import { setLastSeenChangelog } from '../../utils/changelogStorage'
 import { PageNav } from '../liner-notes/PageNav'

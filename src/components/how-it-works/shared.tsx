@@ -137,7 +137,6 @@ export function Section({ id, step, title, children }: { id: string; step?: stri
 }
 
 export const Prose = ({ children }: { children: ReactNode }) => <div className="hiw-prose">{children}</div>
-/** Diagrams break out of the text column on wider screens. */
 /**
  * A chapter's opening: "How It Works · Chapter n", its title and its subtitle. One size for every
  * chapter (they are long-form articles, so their title is larger than an index page's PageHeader).
@@ -147,6 +146,9 @@ export const Prose = ({ children }: { children: ReactNode }) => <div className="
 export function ChapterHeader({ id, dek }: { id: string; dek: ReactNode }) {
   const index = CHAPTERS.findIndex((c) => c.id === id)
   const chapter = CHAPTERS[index]
+  // A chapter page whose id isn't in public/data/how-it-works.json would render "Chapter 0" with
+  // no title. test/pipeline/how-it-works-share.test.ts checks every page's id; this says why.
+  if (!chapter) throw new Error(`ChapterHeader: "${id}" is not in public/data/how-it-works.json`)
   return (
     <motion.header initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
       <div className="hiw-kicker mb-5">
@@ -154,7 +156,7 @@ export function ChapterHeader({ id, dek }: { id: string; dek: ReactNode }) {
         How It Works · Chapter {index + 1}
       </div>
       <h1 className="hiw-title" style={{ fontSize: 'clamp(40px, 7vw, 64px)' }}>
-        {chapter?.title}
+        {chapter.title}
       </h1>
       <p className="hiw-dek font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
         {dek}
@@ -163,6 +165,7 @@ export function ChapterHeader({ id, dek }: { id: string; dek: ReactNode }) {
   )
 }
 
+/** Diagrams break out of the text column on wider screens. */
 export const Wide = ({ children }: { children: ReactNode }) => <div className="my-10 -mx-1 sm:-mx-8 lg:-mx-24">{children}</div>
 
 /**

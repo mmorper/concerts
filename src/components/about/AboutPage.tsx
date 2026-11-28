@@ -6,10 +6,10 @@
  */
 
 import { useRef, useEffect } from 'react'
-import { PageHeader } from '../PageHeader'
 import { motion } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { PageHeader } from '../PageHeader'
 import { PageNav } from '../liner-notes/PageNav'
 import { CHAPTERS } from '../how-it-works/chapters'
 import { analytics } from '../../services/analytics'

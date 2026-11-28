@@ -2,8 +2,8 @@
  * /how-it-works: the landing page for the explainers. One card per chapter (chapters.ts).
  */
 import { Link } from 'react-router-dom'
-import { PageHeader } from '../PageHeader'
 import { motion, MotionConfig } from 'framer-motion'
+import { PageHeader } from '../PageHeader'
 import { PageNav } from '../liner-notes/PageNav'
 import { analytics } from '../../services/analytics'
 import { ALSO, CHAPTERS } from './chapters'
