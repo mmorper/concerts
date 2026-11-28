@@ -174,18 +174,16 @@ it sits above a fixed 620px column.
 
 ---
 
-### Page headers — two kinds, never hand-rolled
+### Page headers — one treatment, never hand-rolled
 
-Every standalone page opens with one of two shared headers. Don't set an `<h1>` size by hand:
-that is how the How It Works landing page drifted to 68px while its siblings sat at 48px.
+Every standalone page opens with `PageHeader` (`src/components/PageHeader.tsx`): an indigo accent
+bar, a Playfair 700 title at `clamp(32px, 5vw, 48px)` and an 18px subtitle, `theme="light"` or
+`"dark"`. That covers Liner Notes, What's Playing, About, the How It Works landing page and every
+How It Works chapter. Chapters use it through `ChapterHeader` (`src/components/how-it-works/shared.tsx`),
+which takes the title from the chapter list.
 
-| Header | Use for | Title | Component |
-|--------|---------|-------|-----------|
-| `PageHeader` | Index pages: Liner Notes, What's Playing, About, the How It Works landing | Playfair 700, `clamp(32px, 5vw, 48px)`, indigo accent bar, 18px subtitle; `theme="light"` or `"dark"` | `src/components/PageHeader.tsx` |
-| `ChapterHeader` | How It Works chapters (long-form articles) | "How It Works · Chapter n" kicker, Playfair 700 `clamp(40px, 7vw, 64px)`, 22px subtitle | `src/components/how-it-works/shared.tsx` |
-
-`ChapterHeader` takes its title and number from the chapter list, so a new chapter matches the
-others without choosing a size. Pass `ref` to `PageHeader` when the page focuses its heading.
+Don't set an `<h1>` size by hand: that is how the How It Works pages drifted to 66–72px while their
+siblings sat at 48px. Pass `ref` to `PageHeader` when the page focuses its heading.
 
 ## Animation Standards
 

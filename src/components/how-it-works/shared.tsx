@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
 import { analytics } from '../../services/analytics'
+import { PageHeader } from '../PageHeader'
 import { ALSO, CHAPTERS } from './chapters'
 import './how-it-works.css'
 
@@ -138,31 +138,16 @@ export function Section({ id, step, title, children }: { id: string; step?: stri
 
 export const Prose = ({ children }: { children: ReactNode }) => <div className="hiw-prose">{children}</div>
 /**
- * A chapter's opening: "How It Works · Chapter n", its title and its subtitle. One size for every
- * chapter (they are long-form articles, so their title is larger than an index page's PageHeader).
- * The title and the number come from the chapter list, so a new chapter is numbered and sized
- * like the others.
+ * A chapter's opening: the same header as every index page (PageHeader: accent bar, 48px title,
+ * 18px subtitle), in the dark theme, with the chapter's title from the chapter list. The owner
+ * asked for one header treatment across the site, chapters included.
  */
 export function ChapterHeader({ id, dek }: { id: string; dek: ReactNode }) {
-  const index = CHAPTERS.findIndex((c) => c.id === id)
-  const chapter = CHAPTERS[index]
-  // A chapter page whose id isn't in public/data/how-it-works.json would render "Chapter 0" with
-  // no title. test/pipeline/how-it-works-share.test.ts checks every page's id; this says why.
+  const chapter = CHAPTERS.find((c) => c.id === id)
+  // A chapter page whose id isn't in public/data/how-it-works.json would render with no title.
+  // test/pipeline/how-it-works-share.test.ts checks every page's id; this says why.
   if (!chapter) throw new Error(`ChapterHeader: "${id}" is not in public/data/how-it-works.json`)
-  return (
-    <motion.header initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
-      <div className="hiw-kicker mb-5">
-        <span className="hiw-dot" aria-hidden="true" />
-        How It Works · Chapter {index + 1}
-      </div>
-      <h1 className="hiw-title" style={{ fontSize: 'clamp(40px, 7vw, 64px)' }}>
-        {chapter.title}
-      </h1>
-      <p className="hiw-dek font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
-        {dek}
-      </p>
-    </motion.header>
-  )
+  return <PageHeader theme="dark" className="" title={chapter.title} subtitle={dek} />
 }
 
 /** Diagrams break out of the text column on wider screens. */
