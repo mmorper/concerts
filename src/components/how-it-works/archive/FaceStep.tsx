@@ -10,7 +10,6 @@
 import { normalizeArtistName } from '../../../utils/normalize'
 import { useConcerts, useJson, useNearView, type ArtistMeta } from './data'
 
-
 export function FaceStep() {
   const [ref, near] = useNearView<HTMLElement>()
   const concerts = useConcerts()
