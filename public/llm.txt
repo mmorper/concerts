@@ -813,5 +813,5 @@ Concert enthusiast since 1984. This archive documents personal attendance histor
 ---
 
 **Last Updated:** 2026-11-28
-**Version:** v7.0.1
+**Version:** v7.0.2
 **Total Content:** 186 concerts | 261 artists | 80 venues | 11,592+ albums | 1984-2027
