@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**Version:** v7.0.1 (Production)
+**Version:** v7.0.2 (Production)
 **Status:** Live at concerts.morperhaus.org
 **Last Sync:** 2026-11-27
 
@@ -147,11 +147,11 @@ docs/
 
 **Recent Releases:**
 
+- **v7.0.2** (2026-11-27): Polish after How It Works (PR #737–#739). Share cards for every How It Works page, driven by one list (`public/data/how-it-works.json`, read by the site, the meta-injector at request time, and `npm run og:how-it-works`); the desktop scene rail adapts its tone to each scene (light on Timeline, dark elsewhere, frosted over Artists, sliding active pill); one `PageHeader` for every standalone page, How It Works chapters included. No liner-notes entry
 - **v7.0.1** (2026-11-27): How It Works — a section with two chapters (PR #733, #734). Now Spinning explained with playable diagrams (`src/components/how-it-works/now-spinning/`); How the Archive Is Built replaces the Enrichment Cascade (`/cascade` redirects): one row followed from sheet to site with a live fact tally (`archive/facts.ts`), real street maps, and three questions that open Ask. Menus: text-free desktop rail (Ask magnifier, six dots, a “more” menu), phone bar Ask · Liner Notes · How It Works · About, PageNav with the current page underlined. No liner-notes entry
 - **v7.0.0** (2026-11-27): Now Spinning — a record on the turntable at home shows on the TV with the nights it was heard live (epic #687). Raspberry Pi listener (`now-spinning/pi/`, Shazam fingerprint, receiver control, display wake, return to the Apple TV input; #724–#726), Worker + Durable Object (`workers/now-spinning`, #705; Workers Paid #722/#723), web display (#707), tvOS app (`now-spinning/tvos/`, #708). Opening acts counted in most-played songs (#703); artist photo fixes (#680/#683). Follow-ups in v7.0.x: #697
 - **v6.3.0** (2026-11-02): The whole night — Photos panel with 150 photos and 22 clips from 46 nights; Ask rebuilt search-first with media playing inside it; shareable answers with subject previews; follow-up chips; one share icon and the share sheet on iPad
 - **v6.2.0** (2026-10-31): Ask the Archive answers with pictures — photos, album sleeves, venue photos; album/discography/night/era/shape/songs cards and a photo viewer (#593)
-- **v6.1.0** (2026-10-31): The archive posts itself — Bluesky + Mastodon syndication with On This Day (#323); claim check on every note and post (#529); personal media pipeline, 129 photos + 15 clips from 44 shows; Instagram wired, inert pending credentials; liner-notes empty-run fix and Ask album questions (#317, PR #591); Sonnet 5, TypeScript 7, SDK 1.x
 
 ---
 
@@ -271,4 +271,4 @@ See `.claude/commands/README.md` for full documentation.
 
 ---
 
-*Last updated: 2026-11-27 by Claude Code for v7.0.1 release*
+*Last updated: 2026-11-27 by Claude Code for v7.0.2 release*
