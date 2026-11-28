@@ -12,6 +12,7 @@ import { analytics } from '../../../services/analytics'
 import { artistDeepLink, setlistDeepLink, timelineYearDeepLink, venueMapDeepLink } from '../../../utils/deepLinks'
 import { sheetDate, useConcerts, useJson, useNearView, type ArtistMeta, type ConcertRow, type TopTracks, type VenueMeta } from './data'
 import { ledgerFor, type FactData } from './facts'
+import { km, StreetMap } from './StreetMap'
 
 const PINK = '#f472b6'
 const DEFAULT = '2024-12-06'
@@ -63,13 +64,16 @@ export function LandsStep({ data }: { data?: FactData | null }) {
   const y0 = years[0] ?? 1984
   const y1 = years[years.length - 1] ?? 2026
 
-  // Map: every venue by its coordinates, this one lit
-  const pts = venues ? Object.values(venues).filter((x) => x.location) : []
-  const la = pts.map((x) => x.location!.lat)
-  const ln = pts.map((x) => x.location!.lng)
-  const [minLa, maxLa, minLn, maxLn] = [Math.min(...la), Math.max(...la), Math.min(...ln), Math.max(...ln)]
-  const mx = (lng: number) => 10 + ((lng - minLn) / (maxLn - minLn || 1)) * 280
-  const my = (lat: number) => 10 + ((maxLa - lat) / (maxLa - minLa || 1)) * 120
+  // Map: the venue on a real street map, with the archive's other venues nearby as dots
+  const nearby =
+    v?.location && venues
+      ? Object.entries(venues)
+          .filter(([slug, x]) => slug !== venueSlug && x.location)
+          .map(([slug, x]) => ({ slug, lat: x.location!.lat, lng: x.location!.lng, d: km(v.location!, x.location!) }))
+          .filter((n) => n.d <= 25)
+          .sort((a, b) => a.d - b.d)
+          .slice(0, 5)
+      : []
 
   const choose = (x: ConcertRow) => {
     setDate(x.date)
@@ -157,17 +161,11 @@ export function LandsStep({ data }: { data?: FactData | null }) {
 
             {/* Map */}
             <Panel count={ledger?.groups.map} title="On the map" to={venueSlug ? venueMapDeepLink(venueSlug) : undefined} delay={0.08}>
-              <svg viewBox="0 0 300 140" className="block w-full hiw-svg" aria-hidden="true">
-                {pts.map((p, i) => (
-                  <circle key={i} cx={mx(p.location!.lng)} cy={my(p.location!.lat)} r={2.4} fill="#a5b4fc" fillOpacity="0.4" />
-                ))}
-                {v?.location && (
-                  <>
-                    <circle cx={mx(v.location.lng)} cy={my(v.location.lat)} r={10} fill={PINK} opacity={0.3} />
-                    <circle cx={mx(v.location.lng)} cy={my(v.location.lat)} r={4.5} fill={PINK} stroke="#fff" strokeWidth="1.2" />
-                  </>
-                )}
-              </svg>
+              {v?.location ? (
+                <StreetMap here={v.location} name={v.name} points={nearby} numbered={false} className="hiw-map hiw-map-sm" />
+              ) : (
+                <div className="hiw-map hiw-map-sm" />
+              )}
               <Note>{v?.places?.formattedAddress ?? (venues === undefined ? '…' : 'No address on file')}</Note>
             </Panel>
 
