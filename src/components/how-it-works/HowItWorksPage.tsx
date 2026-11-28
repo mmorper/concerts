@@ -140,14 +140,18 @@ export function HowItWorksPage() {
             <a
               key={a.href}
               href={a.href}
-              className="hiw-card p-5 flex flex-wrap items-baseline gap-x-6 gap-y-1"
+              className="hiw-card p-5"
               onClick={() => analytics.trackEvent('how_it_works_chapter_clicked', { chapter: a.href.slice(1), surface: 'index' })}
             >
-              <span className="hiw-title" style={{ fontSize: 22 }}>
-                {a.title}
-              </span>
-              <span className="font-sans" style={{ fontSize: 15, color: 'var(--hiw-ink-2)' }}>
-                {a.dek}
+              {/* The layout lives on an inner box: .hiw-card sets display: block, and unlayered CSS
+                  beats Tailwind's utilities, so "flex" on the card itself was silently ignored. */}
+              <span className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
+                <span className="hiw-title" style={{ fontSize: 22 }}>
+                  {a.title}
+                </span>
+                <span className="font-sans" style={{ fontSize: 15, color: 'var(--hiw-ink-2)' }}>
+                  {a.dek}
+                </span>
               </span>
             </a>
           ))}

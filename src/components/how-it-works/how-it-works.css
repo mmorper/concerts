@@ -371,3 +371,81 @@
 .hiw li,
 .hiw figcaption,
 .hiw summary { text-wrap: pretty; }
+
+/* Streams in the archive chapter's opening picture draw themselves in */
+@keyframes hiw-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* "Putting it on the map": the street map in Step 3 */
+.hiw-map {
+  height: clamp(280px, 42vw, 380px);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111827;
+}
+.hiw-map .leaflet-control-attribution {
+  background: rgba(10, 14, 38, 0.7);
+  color: #8189b5;
+  font-size: 10px;
+}
+.hiw-map .leaflet-control-attribution a { color: #a5b4fc; }
+.hiw-map .leaflet-control-scale-line {
+  background: rgba(10, 14, 38, 0.6);
+  border-color: #c7d2fe;
+  color: #eef0ff;
+}
+.hiw-map-pin span,
+.hiw-map-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #a5b4fc;
+  color: #0a0e26;
+  font: 700 13px/1 'Source Sans 3', system-ui, sans-serif;
+  box-shadow: 0 0 0 2px rgba(10, 14, 38, 0.8);
+}
+.hiw-map-num {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  box-shadow: none;
+  transform: translateY(3px);
+}
+.hiw-map-here span {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f472b6;
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 0 8px rgba(244, 114, 182, 0.3);
+}
+.hiw-map-here b {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font: 700 14px/1.2 'Source Sans 3', system-ui, sans-serif;
+  color: #fff;
+  background: rgba(10, 14, 38, 0.85);
+  border: 1px solid rgba(244, 114, 182, 0.5);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+.hiw-map-sm {
+  height: 180px;
+}
+.hiw-map-dot span {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #a5b4fc;
+  box-shadow: 0 0 0 2px rgba(10, 14, 38, 0.8);
+}

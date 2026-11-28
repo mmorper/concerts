@@ -12,7 +12,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Play, RotateCcw } from 'lucide-react'
 import { analytics } from '../../../services/analytics'
-import { useMediaQuery, useReducedMotion } from '../shared'
+import { readingTime, useMediaQuery, useReducedMotion } from '../shared'
 import { siteLoader } from './ladder'
 import { allConcertDates, MEMORY_EXAMPLE, memoryOf, type Memory as MemoryData } from './memory'
 
@@ -48,7 +48,7 @@ export function Memory() {
       setAuto(false)
       return
     }
-    const t = window.setTimeout(() => setStage((s) => s + 1), stage === 2 ? 3000 : 2400)
+    const t = window.setTimeout(() => setStage((s) => s + 1), readingTime(captions[stage] ?? '', 3000))
     return () => window.clearTimeout(t)
   }, [auto, stage])
 
@@ -63,14 +63,6 @@ export function Memory() {
     setAuto(true)
   }
 
-  if (data === null) {
-    return (
-      <figure className="hiw-figure p-6">
-        <p className="hiw-figcaption">The archive didn’t answer just now, so this diagram can’t run. Try reloading the page.</p>
-      </figure>
-    )
-  }
-
   const nights = data?.nights ?? []
   const heard = nights.filter((n) => n.heard)
   const withSetlist = nights.filter((n) => n.hasSetlist).length
@@ -82,6 +74,14 @@ export function Memory() {
       : 'It checks every concert where I saw the band.',
     data ? `The song is on ${heard.length === nights.length ? `all ${spelled(heard.length)}` : spelled(heard.length)} of those setlists, so the TV says: “${data.track.headline}”` : '',
   ]
+
+  if (data === null) {
+    return (
+      <figure className="hiw-figure p-6">
+        <p className="hiw-figcaption">The archive didn’t answer just now, so this diagram can’t run. Try reloading the page.</p>
+      </figure>
+    )
+  }
 
   // Timeline geometry
   const W = 1000

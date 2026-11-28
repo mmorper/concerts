@@ -8,7 +8,10 @@
 import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { PageNav } from '../liner-notes/PageNav'
+import { CHAPTERS } from '../how-it-works/chapters'
+import { analytics } from '../../services/analytics'
 
 /** LinkedIn brand icon SVG */
 /* lucide dropped its brand icons in v1, so the GitHub mark is local now — the
@@ -263,6 +266,28 @@ export function AboutPage() {
               counting!), and an experience I'm genuinely proud of. I can't tell you if the code is
               good—but the product works and the experience delights.
             </p>
+            {/* The How It Works chapters, as doorways in that section's own dark colours. */}
+            <div className="grid gap-3 sm:grid-cols-2 mb-4">
+              {CHAPTERS.map((c) => (
+                <Link
+                  key={c.id}
+                  to={c.path}
+                  className="block rounded-xl p-4 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500"
+                  style={{ background: 'linear-gradient(160deg, #0d1233, #070b1f)', border: '1px solid #1e1b4b' }}
+                  onClick={() => analytics.trackEvent('how_it_works_chapter_clicked', { chapter: c.id, surface: 'about' })}
+                >
+                  <span className="block font-sans" style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a5b4fc', fontWeight: 600 }}>
+                    How It Works
+                  </span>
+                  <span className="block" style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700, color: '#fff', marginTop: 4 }}>
+                    {c.title}
+                  </span>
+                  <span className="block font-sans" style={{ fontSize: 14, color: '#b9c0e8', marginTop: 4, lineHeight: 1.5, textWrap: 'pretty' }}>
+                    {c.dek}
+                  </span>
+                </Link>
+              ))}
+            </div>
             <p className="font-sans text-gray-500 text-sm">
               Curious about the technical details?{' '}
               <a

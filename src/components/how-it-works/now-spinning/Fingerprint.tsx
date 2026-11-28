@@ -13,7 +13,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Play, RotateCcw } from 'lucide-react'
 import { analytics } from '../../../services/analytics'
-import { useMediaQuery, useReducedMotion } from '../shared'
+import { readingTime, useMediaQuery, useReducedMotion } from '../shared'
 
 interface Box {
   x: number
@@ -159,7 +159,7 @@ export function Fingerprint() {
       setAuto(false)
       return
     }
-    t.current = window.setTimeout(() => setStage((s) => s + 1), stage === 0 ? 2600 : 3400)
+    t.current = window.setTimeout(() => setStage((s) => s + 1), readingTime(STAGES[stage].caption, 3000))
     return () => {
       if (t.current) window.clearTimeout(t.current)
     }

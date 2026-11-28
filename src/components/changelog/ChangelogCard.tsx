@@ -84,7 +84,7 @@ export function ChangelogCard({ release, isLatest = false }: ChangelogCardProps)
             onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
             onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
           >
-            See it live →
+            {release.route.startsWith('/how-it-works') ? 'How it works →' : 'See it live →'}
           </a>
         )}
       </div>

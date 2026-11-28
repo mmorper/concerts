@@ -13,8 +13,7 @@ import { ChangelogToast, ChangelogRSS } from './components/changelog'
 import { WhatsPlayingPage } from './components/changelog/WhatsPlayingPage'
 import { LinerNotesPage, LinerNotePermalink } from './components/liner-notes'
 import { AboutPage } from './components/about'
-import { CascadePage } from './components/cascade/CascadePage'
-import { HowItWorksPage, NowSpinningChapter } from './components/how-it-works'
+import { ArchiveChapter, HowItWorksPage, NowSpinningChapter } from './components/how-it-works'
 import { DashboardPage } from './components/dashboard/DashboardPage'
 import { AskDevHarness } from './components/ask/AskDevHarness'
 import { AskProvider } from './components/ask/AskProvider'
@@ -44,7 +43,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         {/* How It Works: a landing page and one route per chapter (components/how-it-works/chapters.ts). */}
         <Route path="/how-it-works" element={<HowItWorksPage />} />
-        <Route path="/how-it-works/the-archive" element={<CascadePage />} />
+        <Route path="/how-it-works/the-archive" element={<ArchiveChapter />} />
         <Route path="/how-it-works/now-spinning" element={<NowSpinningChapter />} />
         {/* Operator dashboard (#171). Fenced by Cloudflare Access at the edge; data from /dashboard/data/. */}
         <Route path="/dashboard" element={<DashboardPage />} />

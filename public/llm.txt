@@ -485,30 +485,28 @@ default view.
 **Purpose:** The landing page for the archive's explainers, one chapter per system. Each chapter tells the story first, with "Under the hood" panels for engineering detail.
 
 **Chapters:**
-- `/how-it-works/the-archive`: The Enrichment Cascade
+- `/how-it-works/the-archive`: How the Archive Is Built
 - `/how-it-works/now-spinning`: Now Spinning
 
 **Meta Tags (bot-rendered):**
 - Dynamic description including current concert count and year span
 - URL: https://concerts.morperhaus.org/how-it-works
 
-#### How It Works: The Enrichment Cascade (`/how-it-works/the-archive`)
-**Title:** "How It Works: The Enrichment Cascade | Morperhaus Concert Archives"
-**Purpose:** Interactive explainer showing how a single concert entry flows through the data enrichment pipeline. `/cascade` redirects here.
+#### How It Works: How the Archive Is Built (`/how-it-works/the-archive`)
+**Title:** "How the Archive Is Built | Morperhaus Concert Archives"
+**Purpose:** Explains, step by step, how one row in the owner's spreadsheet (date, headliner, genre, openers, venue, city) becomes the archive. `/cascade` redirects here.
 
-**What it does:**
-- User selects an artist, venue, and date (or watches an auto-run featured example)
-- The page animates the full enrichment cascade tier-by-tier: structural parsing → geographic enrichment → artist identity → audio previews → setlist/performance data
-- Each tier reveals which APIs are called, what data fields are populated, and how many data points are generated
-- Ends with a live preview of the archive's scenes fed by that concert's enriched data
-
-**Tiers explained:**
-- Tier 1 — Structural: date parsing, decade/day-of-week computation, normalized slugs
-- Tier 2 — Geographic: lat/lng, venue address, venue photos (Google Places)
-- Tier 3 — Artist Identity: bio, genres, images (TheAudioDB, then Deezer when TheAudioDB has no match)
-- Tier 4 — Audio: 30-second previews, album art (Apple Music / iTunes)
-- Tier 5 — Performance: setlists, covers, tour context (setlist.fm / Ticketmaster)
-- Tier 6 — Output: the interactive archive scenes
+**What it covers:**
+- The whole journey: once a week a build reads the Google Sheet, asks outside services about every band, venue and night, and saves the answers as data files that publish the site; on a visit, the site only reads those files (and looks up upcoming tours live)
+- A row in a spreadsheet: what the owner types, and what is worked out from it with no outside help (day, decade, plain-text names used in every link)
+- One name, one band: an alias list folds an act's different billings into one artist (Brian Setzer, four billings) and keeps bands that share a member apart (Stray Cats)
+- Putting it on the map: Google geocoding and Places give coordinates, an address and a venue photo
+- A face for every band: TheAudioDB first, then Deezer, then the site's own tile; bands whose name Deezer gives to someone else are never looked up there
+- The sound: 30-second previews from Apple Music
+- The setlists: setlist.fm for each band on each night, each song matched to its album via MusicBrainz, covers credited
+- Where it all lands: search any concert and see it on the timeline, the map, the artist page and its setlist, with links into each scene
+- Keeping it fresh (a weekly Monday run, with saved answers) and the trade-offs (gaps instead of guesses)
+- Every example and count on the page is read live from the published data
 
 **Meta Tags (bot-rendered):**
 - Dynamic title and description including current concert count and year span
