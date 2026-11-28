@@ -1,153 +1,189 @@
-# One Year of the Archive — Article + Infographic Brainstorm
+# Year One — The Technical Learnings Article + Infographic
 
-*Working doc for the first-anniversary LinkedIn article and stats infographic.
-Anniversary: the build started between Christmas and New Year's 2025, so the target date is
-roughly Dec 26, 2026. The follow-up to `post-claude-code-misnomer.md`.*
+*Working doc for the first-anniversary LinkedIn article and its stats infographic. The build
+started Dec 27, 2025, so the anniversary is **Dec 27, 2026**. This is the follow-up to the
+"Claude Code Is a Misnomer" article.*
+
+**Focus (from Mike):** only the technical lessons, from a non-developer. Where I started,
+where I am now: first release to latest. Commits → PRs → connecting services. Not a tour of
+the concert stats.
 
 ---
 
-## The facts we can use (pulled from the repo, Nov 28, 2026)
+## Then vs. now — the numbers
 
-### What was built
+"Then" is the v1.0.0 commit (`f3a5554`, Dec 31, 2025, four days in). "Now" is `main` on
+Nov 28, 2026. Every number below was counted from git or GitHub, not estimated.
 
-| Stat | Value | Source |
-|---|---|---|
-| Releases shipped | **49** (v1.3.2 → v7.0.0) | `src/data/changelog.json` |
-| Major versions | **7** | changelog |
-| Busiest release day | **3 releases** on Mar 8, 2026 (Liner Notes, Deep Cuts, Mobile Polish) | changelog |
-| First 3 weeks | **21 releases** (Jan 2 → Jan 20) | changelog |
-| Specs written & implemented | **67** implemented, **25** still in the future folder | `docs/specs/` |
-| Front-end code | ~37,500 lines in `src/` | `wc -l` |
-| Pipeline + Workers code | ~70,000 lines in `scripts/` + `workers/` | `wc -l` |
-| Test files | **142** | `test/`, `workers/` |
-| Skills + slash commands | **37** | `.claude/` |
-| CI / automation workflows | **14** | `.github/workflows/` |
-| Cloudflare Workers | **5** (meta-injector, MCP server, ask-chat, dashboard, now-spinning) | `workers/` |
-| Lines of code I wrote by hand | **0** (to verify — the honest number is the punchline) | — |
+| | v1.0 (Dec 31, 2025) | Now (Nov 2026) | Change |
+|---|---|---|---|
+| Lines of code (TS/JS/Python/Swift, tests excluded) | 7,339 | 105,475 | **14×** |
+| Automated tests | 0 | **2,563** (2,464 JS/TS + 99 Python) | 0 → 2,563 |
+| Test files | 0 | 154 | |
+| Lines of documentation | 8,251 | 97,352 | **≈ as many lines of docs as code** |
+| Docs (markdown files) | 21 | 196 | |
+| Specs | 13 | 115 | |
+| External services / APIs | ~5 | **~22** | see list below |
+| CI/CD workflows (GitHub Actions) | 0 | 14 | |
+| Cloudflare Workers (server code) | 0 | 5 | |
+| Claude skills + slash commands | 0 | 33 (16 skills, 17 commands) | |
+| Platforms | 1 (web) | 4 (web, Claude via MCP, Raspberry Pi, Apple TV) | |
 
-### What it holds
+### GitOps, by the numbers
 
 | Stat | Value |
 |---|---|
-| Concerts | **186** across 40+ years (1984 → present) |
-| Artists | **261** |
-| Venues | **80** in **36** cities |
-| Setlists cached | **376** |
-| Distinct songs indexed | **2,267** |
-| Personal photos & videos | **172** |
-| AI-written liner notes posts | **59** |
-| Most-seen artist | **Social Distortion — 8 times** |
-| Most-visited venue | **Pacific Amphitheatre — 17 shows** |
-| Busiest concert year | **2022 — 14 shows** |
-| Top cities | Washington DC (34), Los Angeles (24), Costa Mesa (18) |
+| Commits | **1,302** over **192** active days |
+| Busiest day | **87 commits** (Nov 2, 2026 — the photos and videos release) |
+| Releases | 49 named releases, v1.0 → v7.0 |
+| Commits made by bots (the archive committing to itself) | 199 from GitHub Actions + 50 from Dependabot |
+| Issues opened / closed | **280 / 228** |
+| Epics | **21** |
+| Pull requests opened / merged | **455 / 404** |
+| Dependabot PRs | 94 |
+| First GitHub issue | **Feb 2, 2026** (day 37): "Venue photos broken" |
+| First pull request | **Apr 19, 2026** (day 113). For the first four months I committed straight to `main`. |
+| Commit types | 246 `feat`, 228 `fix`, 227 `docs`, 152 `content`, 100 `data` — nearly as many docs commits as features |
 
-### Stats we don't have yet (worth pulling before publishing)
+### Services connected
 
-- GA4: total visitors, countries, most-opened artist, most-asked question in Ask the Archive.
-  (The GA connector failed to connect in this session — retry or pull by hand.)
-- Claude usage: number of sessions, rough spend. The "what did it cost" number is one people
-  always want.
-- Social: posts the archive published itself since v6.1.0.
-- MCP: how many people added the archive to Claude.
+**v1:** Google Sheets, Google Maps geocoding, TheAudioDB, Last.fm, OpenStreetMap tiles.
 
----
+**Now:** Google Sheets, Google Places, GA4 Data API, Chrome UX Report, Spotify, Deezer,
+Apple Music / iTunes, MusicBrainz, Cover Art Archive, Wikidata / Wikimedia, TheAudioDB,
+setlist.fm, Ticketmaster, Anthropic (Claude API), Cloudflare (Pages, Workers, R2,
+Turnstile), GitHub API + Actions, Ahrefs, Semrush, Bluesky, Mastodon, Instagram, Shazam.
 
-## The article: angle options
+### Milestones on the timeline (for the article and the infographic)
 
-The first article was *"Claude Code is a misnomer"* — the tool, the workflow, the superpowers.
-The anniversary piece should not repeat that. Pick one spine:
-
-**A. "A year of building things I'm not qualified to build"** *(recommended)*
-The arc from a holiday side project to a product with a data pipeline, AI writing, a public
-MCP server, a chat interface, and a Raspberry Pi that knows what record is playing. Lessons
-are framed for non-engineers (marketers, PMs) who now *can* build. Strongest for LinkedIn:
-it's personal, has a clear before/after, and the lessons travel.
-
-**B. "The project stopped being the point"**
-What building taught me about my real job: specs as the product, taste as the bottleneck,
-QA as a discipline. Less about the app, more about work.
-
-**C. "Seven versions, one spreadsheet"**
-A version-by-version tour (each major version = one lesson). Easy to structure, risks reading
-like a changelog.
+| Date | Milestone |
+|---|---|
+| Dec 27, 2025 | First commit: "Initial project structure". Five "phases" in one day. |
+| Dec 31 | v1.0.0 |
+| Jan 7, 2026 | First skill (design system) and the first `/spec` + `/implement` commands |
+| Feb 2 | First GitHub issue, first CI workflow |
+| Mar 8 | Liner notes: Claude writing as a product marketer |
+| Apr 19 | First pull request: the animated video pilot (Social Distortion), the seed of Virtru Decks |
+| Jun 16 | MCP server: the archive becomes something you add to Claude |
+| Jun 20 | v5.0: Ask the Archive, chat on top of the MCP tools |
+| Aug | 321 commits in one month, the busiest |
+| Oct 10 | The steward skill: the rules for how a Claude session carries a PR to done |
+| Oct 31 | v6.1: "The Archive Posts Itself" — automated social posting |
+| Nov 21 | Independent QA by a different model; Now Spinning starts |
+| Nov 27 | v7.0 "Now Spinning": a turntable → Raspberry Pi → Apple TV |
 
 ---
 
-## Lesson candidates (pick 5–7)
+## Article structure (draft outline)
 
-Each one should be tied to a concrete moment in the archive's history.
+**Working title options**
+- "A year of shipping software I can't read"
+- "1,302 commits later: what a non-developer learned building with agents"
+- "From committing to main to multi-agent QA"
 
-1. **The spec is the product.** 67 specs shipped. The work moved from "build it" to "describe
-   it precisely". Outcome over implementation, continued from the first article.
-2. **Scope creep is the plan, if you can ship weekly.** 21 releases in the first three weeks.
-   Small, frequent releases made ambition safe.
-3. **Taste doesn't automate.** Claude can write liner notes; it took a voice skill and many
-   rounds of tuning (v4.6.1) before they sounded like me. Judgment is the scarce input.
-4. **Build the guardrails before you need them.** Tests (142 files), validation that fails when
-   the README stats drift, a kill switch for social posting, independent QA on every PR by a
-   different model. A non-engineer learns to trust process because you can't trust your eyes.
-5. **Your data is more interesting than you think.** A pandemic Google Sheet turned into 2,267
-   songs and 376 setlists. "Five Songs That Didn't Exist Yet" (v6.0.0) — the data told stories
-   I never would have found.
-6. **Make it talk.** v5.0 "Forty Years, Now a Conversation" and the MCP server: the archive is
-   now something you ask, not something you browse. The interface trend, seen up close.
-7. **Let it run itself.** v6.1 "The Archive Posts Itself": GitHub Actions write liner notes,
-   post On This Day, refresh data. The project works while I sleep — and what that requires.
-8. **Physical is the last mile.** v7.0 "Now Spinning": from web app to a Pi and a TV in the
-   living room. Software that leaves the screen.
-9. **What I still can't do.** Honest section: I still can't read the code. What broke, what I
-   rolled back, what I'd do differently. Credibility for everything else.
+**Hook:** "A year ago I didn't know what a pull request was. This week my turntable told my
+Apple TV what song was playing — and a different AI checked the work before I merged it."
 
-Hooks to open with:
-- "A year ago I'd never written a React component. Last week my record player started
-  telling my TV what song was playing."
-- "49 releases. 0 lines of code typed by me. 1 very patient wife."
-- "I set out to list every concert I've been to. I ended up learning how software gets made."
+### 1. Where I started
+Holiday project, a Google Sheet, 7,339 lines of code nobody reviewed. No tests, no CI, no
+issues, everything pushed straight to `main`. (Short: the first article told this part.)
+
+### 2. Where I am now
+The then/now table, as prose or a single image.
+
+### 3. What the agent learned to do (the capability arc)
+- **Write in the voice of a developer.** Commit prefixes, PR descriptions, release notes,
+  changelogs. Lesson: the agent follows conventions you write down (`.claude/readme-maintenance.md`
+  is the voice guide).
+- **Write in the voice of a product marketer.** Liner notes, What's Playing. Lesson: a voice
+  skill plus examples, then iterations of tuning (v4.6.1). Two voices in one repo, kept apart.
+- **Create and publish content with code.** Generated share images, deep links to a single
+  night (`/?scene=artists&artist=…&show=…`), scheduled posts to Bluesky / Mastodon /
+  Instagram, with a kill switch. Lesson: publishing automation needs a stop button before it
+  needs a go button.
+- **Animated posts → Virtru Decks.** The April video pilot (first PR in the repo) taught the
+  pipeline: data → storyboard → render → voiceover. It became the day-job plugin where
+  employees use an agent to build on-brand presentations that can be animated and narrated.
+  *The side project trained the day job.*
+- **How MCP actually works.** Plain-English explainer: the archive exposes tools
+  (`search_concerts`, `get_artist_history`, `on_this_day`…); Claude decides which to call and
+  reads the results. Ask the Archive is the same tools behind a chat box. Worth one simple diagram.
+- **Leaving the screen: the turntable.** A Raspberry Pi listens to the record, identifies it,
+  matches it to the archive, and an Apple TV app shows it. Software, hardware, and two new
+  languages (Python, Swift) I also can't read.
+
+### 4. Lessons learned
+1. **Riff with the robot.** Don't be super prescriptive at the start. Explore with the agent,
+   ask what it would do, let it push back.
+2. **Land on an approach, then write the spec.** The riffing ends; the spec becomes the source
+   of truth. (115 specs.)
+3. **Break the spec into issues.** GitHub issues and epics make the work trackable and
+   resumable across sessions. (280 issues, 21 epics.)
+4. **Documentation is critical, user docs included.** 97k lines of docs vs. 105k lines of
+   code. Docs are how the next session, and the next person, knows what's true.
+5. **GitOps: I knew nothing about it a year ago.** Commits → branches → PRs → CI → automated
+   deploys. First PR on day 113; 455 since. The bot commits more than some humans.
+6. **Use the most capable model to build out the spec; let others write code.** Planning and
+   architecture get the strongest model; implementation can be cheaper and faster.
+7. **QA with a different agent — against the spec, not the PR.** The author grades its own
+   homework kindly. A second model, on a different model family, checking what was *asked*
+   rather than what was *built*. Since Nov 21 every PR gets this pass; the owner still merges.
+8. **Give agents expert hats.** Designer, UX researcher, architect, during spec and mock-up
+   stages. Ask for mocks before code (see `docs/mock-ask-the-archive.html`).
+
+### 5. Close
+What it means for non-developers in product and marketing roles: the bottleneck moved from
+"can you code" to "can you say what you want, check whether you got it, and run a process."
+
+---
+
+## Other ideas to consider
+
+- **A "what broke" section.** Credibility. Candidates: the Google Places photo URLs that
+  expired (issue #1), rollbacks (`/release-undo` exists for a reason), the four months
+  without PRs.
+- **The bot as a contributor.** 249 commits by bots — the archive maintains itself. Strong
+  infographic stat.
+- **Docs ≈ code.** Probably the most surprising single stat for engineers *and* non-engineers.
+  Could be the infographic's hero.
+- **Lesson 9 — guardrails over trust.** Tests went 0 → 2,563 not because I can read them but
+  because I can't. Validation that fails if the README stats drift, the social kill switch,
+  Dependabot. Could fold into lesson 4 or 7.
+- **Cost.** Total Claude spend for the year. People always ask; it's a strong number if you're
+  willing to share it.
+- **Carousel instead of one long article**, or both: article for depth, carousel to travel.
 
 ---
 
 ## The infographic
 
-### Concept options
+Now technical, so the concept changes from the music theme to "then vs. now", still dressed
+in the archive's look.
 
-**1. The Ticket Stub** *(recommended)*
-A tall concert-ticket layout: "ADMIT ONE — The Morperhaus Archive, Year One". Perforated
-edge divides "The Shows" (186 concerts, 261 artists, 80 venues, 40 years) from "The Build"
-(49 releases, 67 specs, 5 Workers, 0 lines by hand). Fits the brand and is recognisable in a
-LinkedIn feed at thumbnail size.
+**Concept A — The Pressing (recommended).** Two records side by side: a 7" single labelled
+"v1.0 · Dec 2025" and a 12" LP labelled "v7.0 · Nov 2026", with the stats on each label. The
+size difference *is* the chart. Tracklist strip underneath = the milestone timeline.
 
-**2. The Setlist**
-Styled like a taped-to-the-stage setlist: each "song" is a milestone with its version and
-date. Encore = Now Spinning. Very on-theme; less room for numbers.
+**Concept B — The Git Graph.** A real commit graph for the year, rendered as a subway map:
+`main` as the line, stations at each release, branches appearing at day 113 when PRs start.
+Stats in the margins. Very technical, very shareable with engineers.
 
-**3. The Liner Notes / Gatefold**
-Echoes the artist gatefold from the site: left panel the music stats, right panel the build
-stats, the vinyl in the middle as a timeline of the year's 49 releases.
+**Concept C — Then / Now split card.** Classic two-column comparison, big numbers:
+0 → 2,563 tests, 7k → 105k lines, 5 → 22 services, 0 → 455 PRs. Easiest to read at
+thumbnail size.
 
-**4. Two-timeline split**
-Top: 1984 → 2026, the concerts. Bottom: Jan → Dec 2026, the releases. Same width, different
-scale — "forty years of shows, one year of building".
+**Must-have numbers:** 1,302 commits · 455 PRs · 280 issues · 21 epics · 0 → 2,563 tests ·
+7,339 → 105,475 lines · 97k lines of docs · ~5 → ~22 services · 4 platforms · 49 releases ·
+0 lines written by hand.
 
-### Must-have panels
-- Hero numbers: 186 / 261 / 80 / 40 years
-- Build numbers: 49 releases, 7 major versions, 67 specs, 142 test files
-- Release cadence chart: the burst in January, the bursts in March and August
-- "Most" callouts: Social Distortion ×8, Pacific Amphitheatre ×17, 2022 ×14
-- Version names as a strip — they're good titles ("Mange Tout, 1984", "Five Songs That
-  Didn't Exist Yet")
-
-### Format notes
-- LinkedIn: 1080×1350 (4:5) for the feed; a carousel PDF (one panel per slide) usually
-  outperforms a single image.
-- Build it as HTML in the site's design system, then export PNG + PDF. It could also live at
-  `/year-one` on the site as a permanent page the article links to.
+**Format:** 1080×1350 single image for the article header, plus a 6–8 slide carousel PDF
+(one lesson or stat per slide). Build as HTML in the site's design system, export PNG + PDF.
 
 ---
 
-## Open questions for Mike
+## Still to pull before publishing
 
-1. Which spine: A, B, or C?
-2. Which infographic concept — and single image, carousel, or both?
-3. Should the infographic also ship on the site (e.g. `/year-one`)?
-4. Are the cost and usage numbers (Claude spend, sessions) ones you're willing to share?
-5. Publish date — Dec 26 itself, or the week before so it doesn't land in the holiday dead zone?
+- Claude usage and spend (Mike, if willing to share)
+- Number of distinct models/agents used, and the QA-pass count since Nov 21
+- Virtru Decks adoption numbers, if shareable
+- Confirm "0 lines written by hand" is literally true
