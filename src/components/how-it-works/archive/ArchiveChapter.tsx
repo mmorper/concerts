@@ -54,17 +54,30 @@ export function ArchiveChapter() {
                 <p>
                   My wife and I have been going to concerts together since our early twenties. During the pandemic, we
                   decided to write them all down. That took real digging: research, old ticket stubs, concert shirts.
-                  The result was a spreadsheet with a row for every show: the date, the
-                  bands, the venue and the city.
+                  The result was a spreadsheet with one row per show and only a few facts in each: the date, the bands,
+                  the venue and the city.
                 </p>
                 <p>
-                  Then it just sat there for a few years. Eventually I picked it back up as a way to learn something new:
-                  could I use Claude to help me learn how to build a website driven by data? This site is the answer,
-                  and that spreadsheet is still the only thing I type.
+                  Then it just sat there for a few years. Eventually I picked it back up to learn something new: could I
+                  use Claude to help me build a website driven by data? That spreadsheet is still the only thing I type.
+                  Everything else on this site grew out of it.
                 </p>
                 <p>
-                  Everything else here comes from those few words: the maps, the band photos, the song previews and the
-                  setlists. This page shows how.
+                  Here’s the idea. Each fact in a row is a key that can unlock more facts. Give a band’s name to the
+                  right services, and they send back a photo and the band’s best-known songs, with short previews. Give
+                  a venue and a city to Google, and it sends back a street address, the exact spot on a map and a
+                  picture of the building. Give the band, the date and the venue to setlist.fm, and it sends back the
+                  songs they played that night.
+                </p>
+                <p>
+                  Each answer becomes a new fact attached to the show, so a row of a few words grows into dozens of
+                  facts. And each new fact makes something new possible on the site. Map coordinates put every show
+                  on the map. Setlists let you see what a band played on a given night, and which songs I’ve heard
+                  most. Photos and previews let you see and hear the bands.
+                </p>
+                <p>
+                  The picture above shows one real row and what it becomes. The rest of this page follows that row,
+                  one step at a time.
                 </p>
               </Prose>
             </div>
