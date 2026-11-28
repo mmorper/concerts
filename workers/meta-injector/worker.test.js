@@ -352,6 +352,17 @@ describe('meta-injector worker', () => {
       expect(cascade).toContain('rows in a spreadsheet become')
     })
 
+    it('gives the How It Works landing page and the archive chapter their own share cards', async () => {
+      const landing = await headOf('/how-it-works')
+      expect(landing).toContain(`property="og:image" content="${SITE}/og/how-it-works/landing.jpg"`)
+      expect(landing).toContain(`property="twitter:image" content="${SITE}/og/how-it-works/landing.jpg"`)
+      const archive = await headOf('/how-it-works/the-archive')
+      expect(archive).toContain(`property="og:image" content="${SITE}/og/how-it-works/the-archive.jpg"`)
+      expect(archive).toContain(`property="twitter:image" content="${SITE}/og/how-it-works/the-archive.jpg"`)
+      expect(archive).toContain('property="twitter:title" content="How the Archive Is Built | Morperhaus Concert Archives"')
+      expect(archive).not.toContain('og-image.jpg')
+    })
+
     it('leaves the homepage canonical on the homepage', async () => {
       expect(await headOf('/')).toContain(canonical(`${SITE}/`))
     })

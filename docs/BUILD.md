@@ -135,6 +135,21 @@ npm run og:generate
 OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate
 ```
 
+#### How It Works share cards
+
+The How It Works landing page and the "How the Archive Is Built" chapter have their own cards,
+`public/og/how-it-works/landing.jpg` and `the-archive.jpg`, wired in `workers/meta-injector/worker.js`.
+They are made from the real chapter page, so regenerate them when its opening picture changes:
+
+```bash
+npm run dev                  # in another terminal, then
+npm run og:how-it-works
+# or, with no server:
+OG_SITE_URL=https://concerts.morperhaus.org npm run og:how-it-works
+```
+
+The Now Spinning chapter's card (`now-spinning.jpg`) is a crop of the living-room photo, made by hand.
+
 #### Debugging
 
 **Preview Tool**: `npm run og:preview`

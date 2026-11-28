@@ -1113,7 +1113,9 @@ async function injectSharedSongMeta(html, artistSlug, songSlug, url, ctx) {
 
 /**
  * Inject meta tags for /how-it-works (the landing page for the explainers) and its first chapter,
- * /how-it-works/the-archive (the interactive data pipeline explainer).
+ * /how-it-works/the-archive. Each has its own share card (public/og/how-it-works/landing.jpg and
+ * the-archive.jpg, made by `npm run og:how-it-works`), so a link to either doesn't preview as the
+ * generic site image.
  */
 async function injectHowItWorksMeta(html, origin, ctx, pathname = '/how-it-works') {
   try {
@@ -1130,16 +1132,20 @@ async function injectHowItWorksMeta(html, origin, ctx, pathname = '/how-it-works
       ? `How the Archive Is Built | Morperhaus Concert Archives`
       : `How It Works | Morperhaus Concert Archives`;
     const description = chapter
-      ? `How ${concertCount} rows in a spreadsheet become ${yearSpan} years of live music: the weekly build, the outside services it asks, and how every band, venue and night is matched, explained step by step.`
+      ? `Follow one real row of the spreadsheet as it becomes a pin on a street map, a band photo, song previews and the songs played that night. How ${concertCount} rows in a spreadsheet become ${yearSpan} years of live music.`
       : `The machinery behind ${concertCount} concerts and ${yearSpan} years of live music, explained for the curious: how the archive is built, and how the turntable in the living room knows when a song was heard live.`;
     const pageUrl = `${origin}${chapter ? pathname : '/how-it-works'}`;
+    const imageUrl = `${origin}/og/how-it-works/${chapter ? 'the-archive' : 'landing'}.jpg`;
 
     html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
     html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
     html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
     html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
     html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+    html = html.replace(/<meta property="og:image" content="[^"]*" \/>/, () => `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`);
+    html = html.replace(/<meta property="twitter:title" content="[^"]*" \/>/, () => `<meta property="twitter:title" content="${escapeHtml(title)}" />`);
     html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta property="twitter:image" content="[^"]*" \/>/, () => `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`);
 
     html = injectPageIdentity(html, title, pageUrl);
 
