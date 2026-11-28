@@ -25,9 +25,12 @@ const COLUMNS = [
 
 type Col = (typeof COLUMNS)[number]['key']
 
-const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element }[] = [
+type Part = 'setlist' | 'photo' | 'previews' | 'albums' | 'venuePhoto' | 'pin'
+
+const ARTIFACTS: { label: string; part: Part; from: Col[]; icon: (c: string) => JSX.Element }[] = [
   {
     label: 'The setlist',
+    part: 'setlist',
     from: ['date', 'band', 'venue'],
     icon: (c) => (
       <g stroke={c} strokeWidth="2" strokeLinecap="round">
@@ -39,6 +42,7 @@ const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element 
   },
   {
     label: 'Photo and story',
+    part: 'photo',
     from: ['band'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2">
@@ -49,6 +53,7 @@ const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element 
   },
   {
     label: 'Song previews',
+    part: 'previews',
     from: ['band'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2" strokeLinecap="round">
@@ -60,6 +65,7 @@ const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element 
   },
   {
     label: 'Their albums',
+    part: 'albums',
     from: ['band'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2">
@@ -70,6 +76,7 @@ const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element 
   },
   {
     label: 'Venue photo',
+    part: 'venuePhoto',
     from: ['venue'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2" strokeLinejoin="round">
@@ -80,6 +87,7 @@ const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element 
   },
   {
     label: 'A pin on the map',
+    part: 'pin',
     from: ['venue', 'city'],
     icon: (c) => (
       <g fill="none" stroke={c} strokeWidth="2">
@@ -90,7 +98,8 @@ const ARTIFACTS: { label: string; from: Col[]; icon: (c: string) => JSX.Element 
   },
 ]
 
-export function ArchiveHero() {
+/** How many facts each result adds for this row (from facts.ts), shown as a small "+n" under its label. */
+export function ArchiveHero({ counts }: { counts?: Record<Part, number> }) {
   const narrow = useMediaQuery('(max-width: 640px)')
   const reduced = useReducedMotion()
   const col = (k: Col) => COLUMNS.find((c) => c.key === k)!
@@ -117,6 +126,11 @@ export function ArchiveHero() {
               </svg>
               <span className="font-sans" style={{ fontSize: 13, color: 'var(--hiw-ink-2)', lineHeight: 1.3 }}>
                 {a.label}
+                {counts && (
+                  <b className="block" style={{ color: 'var(--hiw-dot)', fontSize: 13 }}>
+                    +{counts[a.part]}
+                  </b>
+                )}
               </span>
               <span className="flex gap-1" aria-hidden="true">
                 {a.from.map((f) => (
@@ -139,7 +153,7 @@ export function ArchiveHero() {
 
   return (
     <figure className="hiw-figure" aria-label="One row of the spreadsheet, and what it becomes">
-      <svg className="hiw-svg block w-full" viewBox={`0 0 ${W} 340`} role="img" aria-label="A spreadsheet row: 12/6/2024, Social Distortion, Punk, The Belasco, Los Angeles. Its columns flow into a setlist, a band photo and story, song previews, albums, a venue photo and a pin on the map.">
+      <svg className="hiw-svg block w-full" viewBox={`0 0 ${W} 356`} role="img" aria-label="A spreadsheet row: 12/6/2024, Social Distortion, Punk, The Belasco, Los Angeles. Its columns flow into a setlist, a band photo and story, song previews, albums, a venue photo and a pin on the map.">
         {/* The row */}
         <rect x="56" y={rowTop} width="888" height={rowBottom - rowTop} rx="10" fill="#f8fafc" />
         {COLUMNS.map((c, i) => (
@@ -187,6 +201,11 @@ export function ArchiveHero() {
             <text x={xs[i]} y={iconY + 52} fontSize="14" textAnchor="middle" fill="#b9c0e8">
               {a.label}
             </text>
+            {counts && (
+              <text x={xs[i]} y={iconY + 72} fontSize="14" fontWeight="700" textAnchor="middle" fill="#f472b6" style={reduced ? undefined : { animation: 'hiw-pop 0.4s ease both' }}>
+                +{counts[a.part]} {counts[a.part] === 1 ? 'fact' : 'facts'}
+              </text>
+            )}
           </g>
         ))}
       </svg>

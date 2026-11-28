@@ -327,7 +327,8 @@ fires these itself.
 - `ask_deeplink_clicked` with `kind: media_viewer` — "The whole night" in Ask's media viewer, which
   leaves for the gatefold. Opening a photo or clip from a card no longer leaves Ask: it fires
   `ask_photo_opened` or `ask_deeplink_clicked` as before, then `media_viewed` with `surface: ask`
-- `ask_opened` — `surface` (`kbd`, `scene`, `prompt`, `shared`, `return`, `rail`). `return` is "Back to
+- `ask_opened` — `surface` (`kbd`, `scene`, `prompt`, `shared`, `return`, `rail`, `how_it_works`). `how_it_works`
+  is an "Ask it for real" button in "Facts you can ask about", which opens Ask with that question. `return` is "Back to
   Ask", or the browser's Back to the page Ask was left from. `rail` is the magnifying glass at the top
   of the desktop scene rail
 - `ask_closed` — `reason` (`dismiss`, `promote`, `leave`), `turn_count`. `leave` means a link in an
@@ -357,8 +358,9 @@ fires these itself.
 - `how_it_works_diagram_step` — A Fingerprint step chosen by hand: `chapter`, `diagram`, `step` (1–4)
 - `how_it_works_example_selected` — An example picked in a chapter: `chapter`, `example`, `surface`.
   Surfaces: `chip` (the Honesty Ladder's records, or the concerts in "A row in a spreadsheet"), `hint`
-  (the ladder's "Now try …" line), `map`, `sound`, `setlist` (those steps' pickers) and `lands` (a
-  concert chosen in "Where it all lands")
+  (the ladder's "Now try …" line), `map`, `sound`, `setlist` (those steps' pickers), `lands` (a
+  concert chosen in "Where it all lands") and `ask` (an "Ask it for real" button; `example` is the
+  question's id: `opener`, `times-seen`, `most-heard`)
 - `how_it_works_preview_played` — A song preview played in "The sound": `chapter`, `artist`, `track`
 - `how_it_works_deep_link_clicked` — An "Open →" link in "Where it all lands": `chapter`, `panel`
 

@@ -12,7 +12,7 @@ import type { ArchiveLookups } from './types'
 import { mediaId, wholeNightReel, type ReelItem } from './media'
 import { analytics } from '@/services/analytics'
 
-export type AskOpenSurface = 'kbd' | 'scene' | 'prompt' | 'shared' | 'return' | 'rail'
+export type AskOpenSurface = 'kbd' | 'scene' | 'prompt' | 'shared' | 'return' | 'rail' | 'how_it_works'
 
 /**
  * Where the visitor was when an answer's link took them out of Ask, kept for the tab. While it's

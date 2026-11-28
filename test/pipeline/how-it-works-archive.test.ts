@@ -11,6 +11,7 @@ import { PICKS as ROW_PICKS } from '../../src/components/how-it-works/archive/Th
 import { PICKS as VENUE_PICKS } from '../../src/components/how-it-works/archive/MapStep'
 import { PICKS as SOUND_PICKS } from '../../src/components/how-it-works/archive/SoundStep'
 import { PICKS as NIGHT_PICKS } from '../../src/components/how-it-works/archive/SetlistStep'
+import { archiveTotals, FOLLOWED, ledgerFor, type FactData } from '../../src/components/how-it-works/archive/facts'
 
 const ROOT = path.join(__dirname, '..', '..')
 const json = (f: string) => JSON.parse(readFileSync(path.join(ROOT, 'public', 'data', f), 'utf8'))
@@ -49,5 +50,41 @@ describe('How It Works: How the Archive Is Built', () => {
     const a = json('artist-aliases.json')
     expect(a.sameAct.find((g: { canonical: string }) => g.canonical === 'brian-setzer')?.billings.length).toBeGreaterThan(1)
     expect(a.sharesMember.some((s: { acts: string[] }) => s.acts.includes('brian-setzer') && s.acts.includes('stray-cats'))).toBe(true)
+  })
+
+  describe('the fact tally', () => {
+    const data: FactData = {
+      concerts: json('concerts.json').concerts,
+      venues: json('venues-metadata.json'),
+      meta: json('artists-metadata.json'),
+      tops: json('artists-top-tracks.json'),
+      sets: json('setlists-cache.json').entries,
+      albums: json('song-albums.json').songs,
+    }
+    const followed = data.concerts.find((c) => c.date === FOLLOWED)!
+
+    it('follows a row that exists and has a setlist', () => {
+      expect(followed).toBeDefined()
+      const l = ledgerFor(followed, data)
+      expect(l.songs).toBeGreaterThan(0)
+      expect(l.firstSong).toBeTruthy()
+      expect(l.found).toBeGreaterThan(l.typed * 5)
+    })
+
+    it('adds up the same way everywhere: lines, groups and parts agree with the total', () => {
+      for (const c of data.concerts.slice(0, 40).concat(followed)) {
+        const l = ledgerFor(c, data)
+        expect(l.lines.reduce((s, x) => s + x.n, 0)).toBe(l.total)
+        expect(Object.values(l.groups).reduce((s, n) => s + n, 0)).toBe(l.total)
+        for (const line of l.lines) expect(line.items.reduce((s, i) => s + i.n, 0)).toBe(line.n)
+        const p = l.parts
+        expect(p.pin + p.venuePhoto).toBe(l.lines.find((x) => x.step === 'map')!.n)
+      }
+    })
+
+    it('counts the whole archive once per fact', () => {
+      const t = archiveTotals(data)
+      expect(t.total).toBeGreaterThan(t.typed * 4)
+    })
   })
 })

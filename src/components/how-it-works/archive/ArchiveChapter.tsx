@@ -17,9 +17,16 @@ import { FaceStep } from './FaceStep'
 import { SoundStep } from './SoundStep'
 import { SetlistStep } from './SetlistStep'
 import { LandsStep } from './LandsStep'
+import { AskStep } from './AskStep'
+import { ArchiveCount, LedgerAside, StepReceipt, useActiveSection, useFactData, useFollowedLedger } from './Ledger'
+
+const TRACKED = ['journey', 'row', 'names', 'map', 'face', 'sound', 'setlists', 'lands', 'ask']
 
 export function ArchiveChapter() {
   usePageTitle('How the Archive Is Built | Morperhaus Concert Archives')
+  const data = useFactData()
+  const ledger = useFollowedLedger(data)
+  const active = useActiveSection(TRACKED)
 
   return (
     <MotionConfig reducedMotion="user">
@@ -45,7 +52,7 @@ export function ArchiveChapter() {
           </div>
 
           <div style={{ maxWidth: 1000, margin: '36px auto 0' }}>
-            <ArchiveHero />
+            <ArchiveHero counts={ledger?.parts} />
           </div>
 
           <div style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -77,9 +84,10 @@ export function ArchiveChapter() {
                 </p>
                 <p>
                   The picture above shows one real row and what it becomes. The rest of this page follows that row,
-                  one step at a time.
+                  one step at a time, and keeps count of the facts as they add up.
                 </p>
               </Prose>
+              <ArchiveCount data={data} />
             </div>
 
             <Section id="journey" title="The whole journey">
@@ -114,6 +122,7 @@ export function ArchiveChapter() {
               <Wide>
                 <ThreeWords />
               </Wide>
+              <StepReceipt ledger={ledger} step="row" />
               <Hood chapter="the-archive" id="row" title="Reading the sheet">
                 <ul>
                   <li>
@@ -149,6 +158,7 @@ export function ArchiveChapter() {
               <Wide>
                 <OneName />
               </Wide>
+              <StepReceipt ledger={ledger} step="names" />
               <Hood chapter="the-archive" id="names" title="The list of names">
                 <ul>
                   <li>
@@ -176,6 +186,7 @@ export function ArchiveChapter() {
               <Wide>
                 <MapStep />
               </Wide>
+              <StepReceipt ledger={ledger} step="map" />
               <Hood chapter="the-archive" id="map" title="Locations and photos">
                 <ul>
                   <li>
@@ -210,6 +221,7 @@ export function ArchiveChapter() {
               <Wide>
                 <FaceStep />
               </Wide>
+              <StepReceipt ledger={ledger} step="face" />
               <Hood chapter="the-archive" id="face" title="Who is asked, and in what order">
                 <ul>
                   <li>
@@ -242,6 +254,7 @@ export function ArchiveChapter() {
               <Wide>
                 <SoundStep />
               </Wide>
+              <StepReceipt ledger={ledger} step="sound" />
               <Hood chapter="the-archive" id="sound" title="Where the previews come from">
                 <ul>
                   <li>
@@ -271,6 +284,7 @@ export function ArchiveChapter() {
               <Wide>
                 <SetlistStep />
               </Wide>
+              <StepReceipt ledger={ledger} step="setlists" />
               <Hood chapter="the-archive" id="setlists" title="Setlists and albums">
                 <ul>
                   <li>
@@ -297,7 +311,24 @@ export function ArchiveChapter() {
                 </p>
               </Prose>
               <Wide>
-                <LandsStep />
+                <LandsStep data={data} />
+              </Wide>
+            </Section>
+
+            <Section id="ask" title="Facts you can ask about">
+              <Prose>
+                <p>
+                  Once every night is a set of labeled facts, you can ask questions about them. Ask the Archive, the chat
+                  built into this site, reads the same files the weekly update writes. So does the Claude connector,
+                  which lets Claude answer questions about the archive from anywhere.
+                </p>
+                <p>
+                  Instead of searching the web, they look up the facts this page has been counting. Here are three
+                  questions, each with the fact that answers it. Try one for real.
+                </p>
+              </Prose>
+              <Wide>
+                <AskStep ledger={ledger} />
               </Wide>
             </Section>
 
@@ -343,6 +374,7 @@ export function ArchiveChapter() {
             </Section>
           </div>
         </article>
+        <LedgerAside ledger={ledger} active={active} />
 
         <MoreChapters current="the-archive" />
       </main>

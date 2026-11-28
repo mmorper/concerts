@@ -11,6 +11,7 @@ import { Search } from 'lucide-react'
 import { analytics } from '../../../services/analytics'
 import { artistDeepLink, setlistDeepLink, timelineYearDeepLink, venueMapDeepLink } from '../../../utils/deepLinks'
 import { sheetDate, useConcerts, useJson, useNearView, type ArtistMeta, type ConcertRow, type TopTracks, type VenueMeta } from './data'
+import { ledgerFor, type FactData } from './facts'
 
 const PINK = '#f472b6'
 const DEFAULT = '2024-12-06'
@@ -21,7 +22,7 @@ interface SetlistEntry {
   setlist?: { sets?: { set?: { song?: { name: string; tape?: boolean }[] }[] } }
 }
 
-export function LandsStep() {
+export function LandsStep({ data }: { data?: FactData | null }) {
   const [ref, near] = useNearView<HTMLElement>()
   const concerts = useConcerts()
   const venues = useJson<Record<string, VenueMeta>>('/data/venues-metadata.json', near)
@@ -49,6 +50,7 @@ export function LandsStep() {
   const track = c ? tops?.[c.headlinerNormalized]?.tracks?.find((t) => t.previewUrl) : undefined
   const setlist = c ? sets?.entries.find((e) => e.date === c.date && e.artistName === c.headliner) : undefined
   const songs = (setlist?.setlist?.sets?.set ?? []).flatMap((s) => s.song ?? []).filter((s) => !s.tape && s.name)
+  const ledger = useMemo(() => (c && data ? ledgerFor(c, data) : undefined), [c, data])
   const shows = c ? (concerts ?? []).filter((x) => x.headlinerNormalized === c.headlinerNormalized && x.date <= today).length : 0
 
   // Timeline: shows per year, this year lit
@@ -120,9 +122,23 @@ export function LandsStep() {
           <div className="font-sans" style={{ fontSize: 15, color: 'var(--hiw-ink-2)' }}>
             <span style={{ color: 'var(--hiw-ink)', fontWeight: 600 }}>{c.headliner}</span> · {c.venue}, {c.cityState} · {sheetDate(c.date)}
           </div>
+          {ledger && (
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center mt-4 font-sans" key={`t-${c.date}`} style={{ animation: 'hiw-pop 0.4s ease both' }}>
+              <Total n={ledger.typed} label="typed into the sheet" />
+              <span className="hidden sm:inline" style={{ color: 'var(--hiw-lav)', fontSize: 20 }} aria-hidden="true">
+                →
+              </span>
+              <Total n={ledger.total} label="facts the site knows about this night" accent />
+              <p className="col-span-2" style={{ fontSize: 14, color: 'var(--hiw-ink-3)', lineHeight: 1.45, flex: '1 1 200px' }}>
+                {ledger.songs
+                  ? 'Pick another concert and the numbers change.'
+                  : 'No setlist exists for this night, so it has fewer facts. Older shows often don’t.'}
+              </p>
+            </div>
+          )}
           <div className="grid gap-3 sm:grid-cols-2 mt-3" key={c.date}>
             {/* Timeline */}
-            <Panel title="On the timeline" to={timelineYearDeepLink(c.year)} delay={0}>
+            <Panel count={ledger?.groups.timeline} title="On the timeline" to={timelineYearDeepLink(c.year)} delay={0}>
               <svg viewBox="0 0 300 70" className="block w-full hiw-svg" aria-hidden="true">
                 {years.map((yr) => {
                   const x = 10 + ((yr - y0) / (y1 - y0 || 1)) * 280
@@ -140,7 +156,7 @@ export function LandsStep() {
             </Panel>
 
             {/* Map */}
-            <Panel title="On the map" to={venueSlug ? venueMapDeepLink(venueSlug) : undefined} delay={0.08}>
+            <Panel count={ledger?.groups.map} title="On the map" to={venueSlug ? venueMapDeepLink(venueSlug) : undefined} delay={0.08}>
               <svg viewBox="0 0 300 140" className="block w-full hiw-svg" aria-hidden="true">
                 {pts.map((p, i) => (
                   <circle key={i} cx={mx(p.location!.lng)} cy={my(p.location!.lat)} r={2.4} fill="#a5b4fc" fillOpacity="0.4" />
@@ -156,7 +172,7 @@ export function LandsStep() {
             </Panel>
 
             {/* The band */}
-            <Panel title="The band" to={artistDeepLink(c.headlinerNormalized)} delay={0.16}>
+            <Panel count={ledger?.groups.band} title="The band" to={artistDeepLink(c.headlinerNormalized)} delay={0.16}>
               <div className="flex items-center gap-3">
                 {a?.image ? (
                   <img src={a.image} alt="" loading="lazy" className="rounded-lg object-cover" style={{ width: 64, height: 64, border: '1px solid rgba(255,255,255,0.14)' }} />
@@ -176,7 +192,7 @@ export function LandsStep() {
             </Panel>
 
             {/* The setlist */}
-            <Panel title="The setlist" to={songs.length ? setlistDeepLink(c.headlinerNormalized, c.date) : undefined} delay={0.24}>
+            <Panel count={ledger?.groups.setlist} title="The setlist" to={songs.length ? setlistDeepLink(c.headlinerNormalized, c.date) : undefined} delay={0.24}>
               {sets === undefined ? (
                 <Note>…</Note>
               ) : songs.length ? (
@@ -205,12 +221,17 @@ export function LandsStep() {
   )
 }
 
-function Panel({ title, to, delay, children }: { title: string; to?: string; delay: number; children: React.ReactNode }) {
+function Panel({ title, count, to, delay, children }: { title: string; count?: number; to?: string; delay: number; children: React.ReactNode }) {
   return (
     <div className="hiw-hood p-4 flex flex-col gap-2" style={{ animation: `hiw-pop 0.4s ease ${delay}s both` }}>
       <div className="flex items-baseline justify-between gap-2">
         <span className="hiw-step" style={{ fontSize: 11, color: 'var(--hiw-ink-3)' }}>
           {title}
+          {count !== undefined && (
+            <span style={{ color: 'var(--hiw-dot)', marginLeft: 8, letterSpacing: 0 }}>
+              {count} {count === 1 ? 'fact' : 'facts'}
+            </span>
+          )}
         </span>
         {to && (
           <Link
@@ -224,6 +245,17 @@ function Panel({ title, to, delay, children }: { title: string; to?: string; del
         )}
       </div>
       {children}
+    </div>
+  )
+}
+
+function Total({ n, label, accent }: { n: number; label: string; accent?: boolean }) {
+  return (
+    <div className="rounded-xl px-4 py-2 text-center" style={{ border: `1px solid ${accent ? 'rgba(244,114,182,0.5)' : 'var(--hiw-panel-line)'}` }}>
+      <b className="block" style={{ fontSize: 30, lineHeight: 1.1, color: accent ? 'var(--hiw-dot)' : 'var(--hiw-ink)', fontVariantNumeric: 'tabular-nums' }}>
+        {n}
+      </b>
+      <span style={{ fontSize: 12.5, color: 'var(--hiw-ink-3)' }}>{label}</span>
     </div>
   )
 }
