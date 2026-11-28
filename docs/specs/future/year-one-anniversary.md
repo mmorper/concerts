@@ -110,7 +110,7 @@ The then/now table, as prose or a single image.
   **Deployed company-wide**; very well received, with feedback on its value still arriving
   every week. *The side project trained the day job.*
 - **Skills and voices → Marketing Sherpas.** Learning to write skills, and to make one agent
-  write in several voices, led directly to Marketing Sherpas: a suite of agent plugins with
+  write in several voices, led directly to Marketing Sherpas: a single Claude plugin with
   ~40 skills and a shared canonical context library, now used by the marketing department.
   It would not exist without this project.
 - **How MCP actually works.** Plain-English explainer: the archive exposes tools
