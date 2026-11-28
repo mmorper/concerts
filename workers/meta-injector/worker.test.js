@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import worker from './worker.js'
+import howItWorks from '../../public/data/how-it-works.json'
 
 /**
  * This Worker sits in front of **every request to concerts.morperhaus.org**, so
@@ -298,6 +299,7 @@ describe('meta-injector worker', () => {
         if (url.includes('/data/artists-metadata.json')) return json(artists)
         if (url.includes('/data/venues-metadata.json')) return json(venues)
         if (url.includes('/data/liner-notes.json')) return json(liner)
+        if (url.includes('/data/how-it-works.json')) return json(howItWorks)
         if (url.includes('/data/')) return json({})
         return htmlResponse(PAGE)
       })
@@ -352,15 +354,23 @@ describe('meta-injector worker', () => {
       expect(cascade).toContain('rows in a spreadsheet become')
     })
 
-    it('gives the How It Works landing page and the archive chapter their own share cards', async () => {
-      const landing = await headOf('/how-it-works')
-      expect(landing).toContain(`property="og:image" content="${SITE}/og/how-it-works/landing.jpg"`)
-      expect(landing).toContain(`property="twitter:image" content="${SITE}/og/how-it-works/landing.jpg"`)
-      const archive = await headOf('/how-it-works/the-archive')
-      expect(archive).toContain(`property="og:image" content="${SITE}/og/how-it-works/the-archive.jpg"`)
-      expect(archive).toContain(`property="twitter:image" content="${SITE}/og/how-it-works/the-archive.jpg"`)
-      expect(archive).toContain('property="twitter:title" content="How the Archive Is Built | Morperhaus Concert Archives"')
-      expect(archive).not.toContain('og-image.jpg')
+    it.each([howItWorks.landing, ...howItWorks.chapters].map((p) => [p.path, p]))(
+      'gives %s its own title, description and share card, from public/data/how-it-works.json',
+      async (path, page) => {
+        const body = await headOf(path)
+        expect(body).toContain(`<title>${page.share.title}</title>`)
+        expect(body).toContain(`property="og:image" content="${SITE}${page.share.image}"`)
+        expect(body).toContain(`property="twitter:image" content="${SITE}${page.share.image}"`)
+        expect(body).toContain(`property="twitter:title" content="${page.share.title}"`)
+        expect(body).not.toContain('og-image.jpg')
+        expect(body).not.toMatch(/\{(concerts|years)\}/)
+      },
+    )
+
+    it('leaves a How It Works path that is not in the list on the generic card', async () => {
+      const body = await headOf('/how-it-works/not-a-chapter')
+      expect(body).toContain('og-image.jpg')
+      expect(body).not.toContain('/og/how-it-works/')
     })
 
     it('leaves the homepage canonical on the homepage', async () => {

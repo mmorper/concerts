@@ -1,0 +1,40 @@
+{
+  "_about": "How It Works: the landing page and its chapters, in reading order. The site (src/components/how-it-works/chapters.ts), the share-card script (npm run og:how-it-works) and the link-preview Worker (workers/meta-injector) all read this one list. To add a chapter: add it here, build its page, run npm run og:how-it-works. test/pipeline/how-it-works-share.test.ts fails until its card exists. In share descriptions, {concerts} and {years} are filled in from concerts.json when a link is previewed.",
+  "landing": {
+    "path": "/how-it-works",
+    "title": "How It Works",
+    "dek": "The machinery behind forty years of live music, explained for the curious.",
+    "share": {
+      "title": "How It Works | Morperhaus Concert Archives",
+      "description": "The machinery behind {concerts} concerts and {years} years of live music, explained for the curious: how the archive is built, and how the turntable in the living room knows when a song was heard live.",
+      "image": "/og/how-it-works/landing.jpg"
+    }
+  },
+  "chapters": [
+    {
+      "id": "the-archive",
+      "path": "/how-it-works/the-archive",
+      "title": "How the Archive Is Built",
+      "dek": "A few words in a spreadsheet become four decades of live music: maps, photos, setlists and sound.",
+      "share": {
+        "title": "How the Archive Is Built | Morperhaus Concert Archives",
+        "description": "Follow one real row of the spreadsheet as it becomes a pin on a street map, a band photo, song previews and the songs played that night. How {concerts} rows in a spreadsheet become {years} years of live music.",
+        "image": "/og/how-it-works/the-archive.jpg",
+        "card": "rendered",
+        "subtitle": "A few words in a spreadsheet become forty years of live music."
+      }
+    },
+    {
+      "id": "now-spinning",
+      "path": "/how-it-works/now-spinning",
+      "title": "Now Spinning",
+      "dek": "Play a record, and the TV shows where I heard it live. Here’s how.",
+      "share": {
+        "title": "How Now Spinning Works | Morperhaus Concert Archives",
+        "description": "Put a record on, and seconds later the TV knows the song and the concerts where it was heard live. How a Raspberry Pi, a Shazam fingerprint and forty years of setlists make it happen.",
+        "image": "/og/how-it-works/now-spinning.jpg",
+        "card": "photo"
+      }
+    }
+  ]
+}

@@ -2,9 +2,12 @@
  * How It Works: the chapters, in reading order.
  *
  * Each chapter explains one part of the machinery for curious friends: the story first, with
- * "Under the hood" panels for anyone who wants the engineering. Add a chapter here and it shows
- * on the landing page and in every chapter's "More from How It Works" footer.
+ * "Under the hood" panels for anyone who wants the engineering. Add a chapter to
+ * public/data/how-it-works.json and it shows on the landing page, in every chapter's "More from
+ * How It Works" footer, and in link previews (once `npm run og:how-it-works` has made its card).
  */
+
+import data from '../../../public/data/how-it-works.json'
 
 export interface Chapter {
   id: string
@@ -14,20 +17,11 @@ export interface Chapter {
   dek: string
 }
 
-export const CHAPTERS: Chapter[] = [
-  {
-    id: 'the-archive',
-    path: '/how-it-works/the-archive',
-    title: 'How the Archive Is Built',
-    dek: 'A few words in a spreadsheet become four decades of live music: maps, photos, setlists and sound.',
-  },
-  {
-    id: 'now-spinning',
-    path: '/how-it-works/now-spinning',
-    title: 'Now Spinning',
-    dek: 'Play a record, and the TV shows where I heard it live. Here’s how.',
-  },
-]
+/**
+ * The list lives in public/data/how-it-works.json, so the link-preview Worker and the share-card
+ * script read the same chapters as the site. Each entry there also carries its share card.
+ */
+export const CHAPTERS: Chapter[] = data.chapters.map(({ id, path, title, dek }) => ({ id, path, title, dek }))
 
 /** Related pages that aren't chapters: plain links, full page loads. */
 export const ALSO = [
