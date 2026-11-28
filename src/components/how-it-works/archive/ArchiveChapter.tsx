@@ -52,12 +52,19 @@ export function ArchiveChapter() {
             <div className="mt-12">
               <Prose>
                 <p>
-                  I keep a spreadsheet of every concert I’ve been to. Each row has the date, the band, the venue and the
-                  city. That’s all I type.
+                  My wife and I have been going to concerts together since our early twenties. During the pandemic, we
+                  decided to write them all down. That took real digging: research, old ticket stubs, concert shirts.
+                  The result was a spreadsheet with a row for every show: the date, the
+                  bands, the venue and the city.
                 </p>
                 <p>
-                  Everything else on this site comes from those few words: the maps, the band photos, the song previews
-                  and the setlists. This page shows how.
+                  Then it just sat there for a few years. Eventually I picked it back up as a way to learn something new:
+                  could I use Claude to help me learn how to build a website driven by data? This site is the answer,
+                  and that spreadsheet is still the only thing I type.
+                </p>
+                <p>
+                  Everything else here comes from those few words: the maps, the band photos, the song previews and the
+                  setlists. This page shows how.
                 </p>
               </Prose>
             </div>
