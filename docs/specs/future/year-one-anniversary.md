@@ -77,7 +77,7 @@ Turnstile), GitHub API + Actions, Ahrefs, Semrush, Bluesky, Mastodon, Instagram,
 ## Article structure (draft outline)
 
 **Working title options**
-- "From a Google Sheet to three platforms"
+- "From a Google Sheet to 105,000 lines of code" (chosen)
 - "1,302 commits later: what a non-developer learned building with agents"
 - "From committing to main to multi-agent QA"
 
