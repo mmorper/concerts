@@ -32,7 +32,7 @@ const NODE_TEXT: Record<NodeId, Record<Mode, [string, string]>> = {
 
 const SERVICES: Record<Mode, string[]> = {
   simple: ['Maps and venue photos', 'Band photos and stories', 'Song previews', 'Albums', 'Setlists'],
-  hood: ['Google Geocoding · Places', 'TheAudioDB → Deezer', 'Apple Music → Deezer', 'MusicBrainz', 'setlist.fm'],
+  hood: ['Google Geocoding · Places', 'TheAudioDB → Deezer', 'Apple Music', 'MusicBrainz', 'setlist.fm'],
 }
 
 const EDGE_TEXT: Record<EdgeId, Record<Mode, string>> = {

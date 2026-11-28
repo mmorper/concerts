@@ -108,7 +108,7 @@ export function ArchiveChapter() {
                   </li>
                   <li>
                     <strong>A safety check.</strong> Before the weekly update saves anything, it counts the concerts. If
-                    the count has dropped sharply, it saves nothing and reports a failure instead.
+                    more than two have disappeared, it saves nothing and reports a failure instead.
                   </li>
                 </ul>
               </Hood>
@@ -225,8 +225,8 @@ export function ArchiveChapter() {
               <Hood chapter="the-archive" id="sound" title="Where the previews come from">
                 <ul>
                   <li>
-                    <strong>Apple Music first, with Deezer as a backup</strong> (<code>scripts/enrich-top-tracks.ts</code>).
-                    The previews play from their servers. The archive stores only the links.
+                    <strong>Apple Music</strong> (<code>scripts/enrich-top-tracks.ts</code>). The previews play from
+                    Apple’s servers. The archive stores only the links.
                   </li>
                   <li>
                     <strong>Checked every 30 days.</strong> The links rarely change, so there’s no need to ask more often.
@@ -292,8 +292,8 @@ export function ArchiveChapter() {
                   and nights that don’t have a setlist yet.
                 </p>
                 <p>
-                  Before saving anything, the update checks that no concerts have gone missing. If the count drops
-                  sharply, it stops and saves nothing.
+                  Before saving anything, the update checks that no concerts have gone missing. If more than two have
+                  disappeared, it stops and saves nothing.
                 </p>
               </Prose>
             </Section>

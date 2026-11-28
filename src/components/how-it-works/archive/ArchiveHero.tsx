@@ -6,7 +6,7 @@
  * column that feeds them, in the old cascade's colours: band violet, place indigo, date slate.
  * Which column feeds what follows docs/DATA_PIPELINE.md: venue and city → coordinates (Google
  * Geocoding) and venue photo (Google Places); headliner → photo and bio (TheAudioDB, then
- * Deezer), song previews (Apple Music, then Deezer) and albums (MusicBrainz); headliner, date
+ * Deezer), song previews (Apple Music) and albums (MusicBrainz); headliner, date
  * and venue together → the setlist (setlist.fm).
  */
 import { useMediaQuery, useReducedMotion } from '../shared'

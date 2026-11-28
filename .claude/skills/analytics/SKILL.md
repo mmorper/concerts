@@ -351,15 +351,19 @@ fires these itself.
   for the About page's cards, or `footer:<chapter>` for the "More from How It Works" footer)
 - `how_it_works_hood_opened` — An "Under the hood" panel opened: `chapter`, `section`
 - `how_it_works_diagram_played` — A diagram's play button: `chapter`, `diagram` (`round-trip`,
-  `fingerprint`); the round trip adds `mode` (`simple`, `hood`)
+  `fingerprint`, `memory`, `heartbeat`, `journey`); the two journey diagrams (`round-trip`, `journey`)
+  and the heartbeat add `mode`
 - `how_it_works_diagram_mode_changed` — The Simple / Under the hood toggle: `chapter`, `diagram`, `mode`
 - `how_it_works_diagram_step` — A Fingerprint step chosen by hand: `chapter`, `diagram`, `step` (1–4)
-- `how_it_works_example_selected` — An example picked in a chapter (a record on the Honesty Ladder, a
-  concert in "A row in a spreadsheet"): `chapter`, `example`, `surface` (`chip`, or `hint` for the
-  "Now try …" line)
+- `how_it_works_example_selected` — An example picked in a chapter: `chapter`, `example`, `surface`.
+  Surfaces: `chip` (the Honesty Ladder's records, or the concerts in "A row in a spreadsheet"), `hint`
+  (the ladder's "Now try …" line), `map`, `sound`, `setlist` (those steps' pickers) and `lands` (a
+  concert chosen in "Where it all lands")
+- `how_it_works_preview_played` — A song preview played in "The sound": `chapter`, `artist`, `track`
+- `how_it_works_deep_link_clicked` — An "Open →" link in "Where it all lands": `chapter`, `panel`
 
-`chapter`, `section`, `diagram`, `mode`, `step` and `example` need registering as GA4 custom
-dimensions after deploy (Step 6).
+`chapter`, `section`, `diagram`, `mode`, `step`, `example`, `artist`, `track`, `panel`,
+`destination` and `current` need registering as GA4 custom dimensions after deploy (Step 6).
 
 **Timeline (Scene 1):**
 - `timeline_year_selected`

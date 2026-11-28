@@ -193,7 +193,14 @@ export function SceneNavigation() {
         ))}
 
         {/* More: the pages about the site, behind one quiet mark (no text on the rail). */}
-        <div ref={menuRef} className="absolute top-full left-1/2 -translate-x-1/2 mt-3 flex flex-col items-center">
+        <div
+          ref={menuRef}
+          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 flex flex-col items-center"
+          onBlur={(e) => {
+            // Tabbing past the last item closes the menu, so focus never sits outside an open menu.
+            if (menuOpen && !menuRef.current?.contains(e.relatedTarget as Node | null)) setMenuOpen(false)
+          }}
+        >
           <button
             ref={moreButton}
             type="button"

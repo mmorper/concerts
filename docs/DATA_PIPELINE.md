@@ -104,7 +104,7 @@ This table lists all external services used in the data enrichment pipeline:
 | **Google Maps Geocoding** | Venue coordinates | API Key | 50 req/sec | $5/1k requests (free tier: $200/mo) | Step 1: Fetch |
 | **Google Places** | Venue photos/metadata | API Key | 50 req/sec | Variable by operation (free tier: $200/mo) | Step 5: Venues |
 | **TheAudioDB** | Artist photos/bios/genres (primary) | API Key (optional) | 2 req/sec | Free | Step 4: Artists |
-| **Deezer** | Artist metadata & audio fallback | None | Variable | Free | Step 4: Artists, Step 6: Audio |
+| **Deezer** | Artist photos (fallback after TheAudioDB) | None | Variable | Free | Step 4: Artists |
 | **iTunes/Apple Music** | Audio preview tracks (primary) | None | ~1.6 req/sec | Free | Step 6: Audio |
 | **MusicBrainz** | Artist discography data | None | 1 req/sec | Free | Step 7: Discography |
 | **setlist.fm** | Concert setlists | API Key | ~1 req/sec | Free | Step 8: Setlists |
@@ -769,7 +769,7 @@ npm run prefetch:setlists -- --force-refresh
 
 **What it does:**
 - Enriches artist metadata with 30-second audio preview URLs
-- Fetches top 5 tracks per artist from iTunes/Apple Music (primary) or Deezer (fallback)
+- Fetches top 5 tracks per artist from iTunes/Apple Music. (`deezer-client.ts` can fetch top tracks, but this step doesn't call it.)
 - Validates preview URLs with HEAD requests to ensure they're working
 - Only includes artists meeting 40% quality bar (minimum 2 of 5 tracks with valid previews)
 - Caches results for 30 days
@@ -991,7 +991,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 3. **Validate concerts** → Quality checks (optional)
 4. **Enrich artist metadata** → TheAudioDB, then Deezer (always runs)
 5. **Enrich venue metadata** → Google Places API (optional)
-6. **Enrich audio preview data** → iTunes/Apple Music (primary), Deezer (fallback) (optional)
+6. **Enrich audio preview data** → iTunes/Apple Music (optional)
 7. **Enrich discography** → MusicBrainz albums (optional)
 7.5. **Derive album eras** → `album-eras.json`, the discography × attendance join (local, no API calls)
 8. **Pre-fetch setlists** → setlist.fm cache (optional)
@@ -1012,7 +1012,7 @@ See [docs/specs/future/artists-discography.md](specs/future/artists-discography.
 | `--dry-run` | Preview without writing files | Testing changes safely |
 | `--skip-validation` | Skip data quality checks | Faster builds, trusted data |
 | `--skip-venues` | Skip venue enrichment | Saving API quota/cost |
-| `--skip-tracks` | Skip audio preview enrichment (iTunes/Deezer) | Faster builds, no track data needed |
+| `--skip-tracks` | Skip audio preview enrichment (iTunes) | Faster builds, no track data needed |
 | `--skip-discography` | Skip discography enrichment | Faster builds, no MusicBrainz needed |
 | `--skip-album-eras` | Skip album-era derivation | Rarely needed — it's local and fast |
 | `--skip-setlists` | Skip setlist pre-fetch | No setlist.fm API key |

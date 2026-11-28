@@ -1,7 +1,7 @@
 /**
  * Step 5, "The sound": every band gets a few 30-second previews and their album art.
  *
- * scripts/enrich-top-tracks.ts asks Apple Music first and Deezer as the backup; the results are
+ * scripts/enrich-top-tracks.ts asks Apple Music (it has no other source); the results are
  * public/data/artists-top-tracks.json, which this reads live. The previews play from Apple's
  * servers, exactly as they do on the artist pages.
  */
@@ -117,7 +117,7 @@ export function SoundStep() {
 
       <figcaption id="sound-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-4">
         {tops
-          ? `Live count: ${withPreviews} bands have previews. ${bySource.itunes ?? 0} came from Apple Music${bySource.deezer ? ` and ${bySource.deezer} from Deezer` : '; none has needed the Deezer backup yet'}.`
+          ? `Live count: ${withPreviews} of the archive’s bands have previews${Object.keys(bySource).every((k) => k === 'itunes') ? ', all from Apple Music' : ''}.`
           : 'Asking the archive…'}
       </figcaption>
     </figure>

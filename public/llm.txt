@@ -502,7 +502,7 @@ default view.
 - One name, one band: an alias list folds an act's different billings into one artist (Brian Setzer, four billings) and keeps bands that share a member apart (Stray Cats)
 - Putting it on the map: Google geocoding and Places give coordinates, an address and a venue photo
 - A face for every band: TheAudioDB first, then Deezer, then the site's own tile; bands whose name Deezer gives to someone else are never looked up there
-- The sound: 30-second previews from Apple Music, with Deezer as the backup
+- The sound: 30-second previews from Apple Music
 - The setlists: setlist.fm for each band on each night, each song matched to its album via MusicBrainz, covers credited
 - Where it all lands: search any concert and see it on the timeline, the map, the artist page and its setlist, with links into each scene
 - Keeping it fresh (a weekly Monday run, with saved answers) and the trade-offs (gaps instead of guesses)
