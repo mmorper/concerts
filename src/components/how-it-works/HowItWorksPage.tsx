@@ -3,6 +3,7 @@
  */
 import { Link } from 'react-router-dom'
 import { motion, MotionConfig } from 'framer-motion'
+import { PageHeader } from '../PageHeader'
 import { PageNav } from '../liner-notes/PageNav'
 import { analytics } from '../../services/analytics'
 import { ALSO, CHAPTERS } from './chapters'
@@ -70,24 +71,17 @@ export function HowItWorksPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-12 py-10">
         <PageNav current="how-it-works" theme="dark" />
 
-        <motion.header
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+        <PageHeader
+          theme="dark"
           className="mb-12"
-        >
-          <div className="hiw-kicker mb-5">
-            <span className="hiw-dot" aria-hidden="true" />
-            Morperhaus Concert Archives
-          </div>
-          <h1 className="hiw-title" style={{ fontSize: 'clamp(40px, 7vw, 68px)' }}>
-            How It Works
-          </h1>
-          <p className="hiw-prose hiw-dek mt-5" style={{ maxWidth: 640 }}>
-            The machinery behind the archive, for the curious. Every chapter tells the story first. When you
-            want the engineering, open the panels marked <em>Under the hood</em>.
-          </p>
-        </motion.header>
+          title="How It Works"
+          subtitle={
+            <>
+              The machinery behind the archive, for the curious. Every chapter tells the story first. When you want
+              the engineering, open the panels marked <em>Under the hood</em>.
+            </>
+          }
+        />
 
         <div className="grid gap-5 md:grid-cols-2">
           {CHAPTERS.map((c, i) => {

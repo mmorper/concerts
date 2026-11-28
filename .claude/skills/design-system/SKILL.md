@@ -174,6 +174,17 @@ it sits above a fixed 620px column.
 
 ---
 
+### Page headers — one treatment, never hand-rolled
+
+Every standalone page opens with `PageHeader` (`src/components/PageHeader.tsx`): an indigo accent
+bar, a Playfair 700 title at `clamp(32px, 5vw, 48px)` and an 18px subtitle, `theme="light"` or
+`"dark"`. That covers Liner Notes, What's Playing, About, the How It Works landing page and every
+How It Works chapter. Chapters use it through `ChapterHeader` (`src/components/how-it-works/shared.tsx`),
+which takes the title from the chapter list.
+
+Don't set an `<h1>` size by hand: that is how the How It Works pages drifted to 66–72px while their
+siblings sat at 48px. Pass `ref` to `PageHeader` when the page focuses its heading.
+
 ## Animation Standards
 
 ### Entry Animation

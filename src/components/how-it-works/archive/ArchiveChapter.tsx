@@ -5,9 +5,9 @@
  * diagram, and "Under the hood" panels hold the engineering. Facts come from
  * docs/DATA_PIPELINE.md, scripts/ and .github/workflows/data-refresh.yml.
  */
-import { motion, MotionConfig } from 'framer-motion'
+import { MotionConfig } from 'framer-motion'
 import { PageNav } from '../../liner-notes/PageNav'
-import { Hood, MoreChapters, Prose, Section, Wide, usePageTitle } from '../shared'
+import { ChapterHeader, Hood, MoreChapters, Prose, Section, usePageTitle, Wide } from '../shared'
 import { ArchiveHero } from './ArchiveHero'
 import { ArchiveJourney } from './ArchiveJourney'
 import { ThreeWords } from './ThreeWords'
@@ -37,18 +37,7 @@ export function ArchiveChapter() {
 
         <article className="px-4 sm:px-6">
           <div style={{ maxWidth: 720, margin: '0 auto' }}>
-            <motion.header initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
-              <div className="hiw-kicker mb-5">
-                <span className="hiw-dot" aria-hidden="true" />
-                How It Works · Chapter 1
-              </div>
-              <h1 className="hiw-title" style={{ fontSize: 'clamp(40px, 7vw, 66px)' }}>
-                How the Archive Is Built
-              </h1>
-              <p className="hiw-dek font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
-                A few words in a spreadsheet become forty years of live music.
-              </p>
-            </motion.header>
+            <ChapterHeader id="the-archive" dek="A few words in a spreadsheet become forty years of live music." />
           </div>
 
           <div style={{ maxWidth: 1000, margin: '36px auto 0' }}>

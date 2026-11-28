@@ -6,8 +6,8 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { Rss, X } from 'lucide-react'
+import { PageHeader } from '../PageHeader'
 import type { LinerNotesPost, LinerNotesData, PostCategory } from '../../types/liner-notes'
 import { LinerNoteCard } from './LinerNoteCard'
 import { CategoryFilterChips } from './CategoryFilterChips'
@@ -96,15 +96,7 @@ export function LinerNotesPage() {
       <main className="h-screen overflow-y-auto" style={{ background: '#fafaf9' }}>
         <div className="max-w-5xl mx-auto px-6 lg:px-12 py-10">
           <PageNav current="liner-notes" theme="light" />
-          <h1
-            className="mb-3"
-            style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 700, color: '#1f2937' }}
-          >
-            Liner Notes
-          </h1>
-          <p className="font-sans text-gray-500 mb-12" style={{ fontSize: 'clamp(14px, 2vw, 18px)' }}>
-            Stories from 42 years of live music
-          </p>
+          <PageHeader title="Liner Notes" subtitle="Stories from 42 years of live music" className="mb-12" />
           <p className="font-sans text-gray-500 leading-relaxed">
             Liner notes coming soon — the first stories from 42 years of live music are on their way.
           </p>
@@ -119,45 +111,7 @@ export function LinerNotesPage() {
 
         <PageNav current="liner-notes" theme="light" />
 
-        {/* Page header */}
-        <header className="mb-8">
-          {/* Indigo accent bar — ties to app primary color */}
-          <div
-            style={{
-              width: 40,
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: '#4f46e5',
-              marginBottom: 16,
-            }}
-          />
-          <motion.h1
-            ref={headerRef}
-            tabIndex={-1}
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="outline-none mb-2"
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: 'clamp(32px, 5vw, 48px)',
-              fontWeight: 700,
-              color: '#1f2937',
-              lineHeight: 1.15,
-            }}
-          >
-            Liner Notes
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-            className="font-sans text-gray-500"
-            style={{ fontSize: 'clamp(15px, 2vw, 18px)' }}
-          >
-            Stories from 42 years of live music
-          </motion.p>
-        </header>
+        <PageHeader ref={headerRef} title="Liner Notes" subtitle="Stories from 42 years of live music" />
 
         {/* Active artist/venue filter chips (#66) */}
         {(artistParam || venueParam) && (

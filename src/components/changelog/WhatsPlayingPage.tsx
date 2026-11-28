@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Rss } from 'lucide-react'
+import { PageHeader } from '../PageHeader'
 import { ChangelogCard } from './ChangelogCard'
 import { setLastSeenChangelog } from '../../utils/changelogStorage'
 import { PageNav } from '../liner-notes/PageNav'
@@ -63,37 +64,7 @@ export function WhatsPlayingPage() {
 
         <PageNav current="whats-playing" theme="light" />
 
-        {/* Page header */}
-        <header className="mb-8" role="banner">
-          {/* Indigo accent bar — matches Liner Notes */}
-          <div style={{ width: 40, height: 4, borderRadius: 2, backgroundColor: '#4f46e5', marginBottom: 16 }} />
-          <motion.h1
-            ref={headerRef}
-            tabIndex={-1}
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="outline-none mb-2"
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: 'clamp(32px, 5vw, 48px)',
-              fontWeight: 700,
-              color: '#1f2937',
-              lineHeight: 1.15,
-            }}
-          >
-            What&apos;s Playing
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-            className="font-sans text-gray-500"
-            style={{ fontSize: 'clamp(15px, 2vw, 18px)' }}
-          >
-            App updates and new features
-          </motion.p>
-        </header>
+        <PageHeader ref={headerRef} title="What's Playing" subtitle="App updates and new features" />
 
         {/* Release list */}
         <section id="releases" aria-label="Release history">

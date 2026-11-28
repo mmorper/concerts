@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefO
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import { analytics } from '../../services/analytics'
+import { PageHeader } from '../PageHeader'
 import { ALSO, CHAPTERS } from './chapters'
 import './how-it-works.css'
 
@@ -136,6 +137,19 @@ export function Section({ id, step, title, children }: { id: string; step?: stri
 }
 
 export const Prose = ({ children }: { children: ReactNode }) => <div className="hiw-prose">{children}</div>
+/**
+ * A chapter's opening: the same header as every index page (PageHeader: accent bar, 48px title,
+ * 18px subtitle), in the dark theme, with the chapter's title from the chapter list. The owner
+ * asked for one header treatment across the site, chapters included.
+ */
+export function ChapterHeader({ id, dek }: { id: string; dek: ReactNode }) {
+  const chapter = CHAPTERS.find((c) => c.id === id)
+  // A chapter page whose id isn't in public/data/how-it-works.json would render with no title.
+  // test/pipeline/how-it-works-share.test.ts checks every page's id; this says why.
+  if (!chapter) throw new Error(`ChapterHeader: "${id}" is not in public/data/how-it-works.json`)
+  return <PageHeader theme="dark" className="" title={chapter.title} subtitle={dek} />
+}
+
 /** Diagrams break out of the text column on wider screens. */
 export const Wide = ({ children }: { children: ReactNode }) => <div className="my-10 -mx-1 sm:-mx-8 lg:-mx-24">{children}</div>
 

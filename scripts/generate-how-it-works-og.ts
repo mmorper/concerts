@@ -35,8 +35,8 @@ const CARD_CSS = `
   html, body { margin: 0; background: #070b1f; }
   .og { width: ${W}px; height: ${H}px; box-sizing: border-box; position: relative; overflow: hidden;
         background: radial-gradient(1200px 600px at 20% 0%, #121a4a 0%, #070b1f 60%); color: #eef0ff; }
-  .og .kicker { display: flex; align-items: center; gap: 12px; }
-  .og .kicker span.dot { animation: none; }
+  .og .bar { width: 40px; height: 4px; border-radius: 2px; background: #818cf8; }
+  .og .title { font-family: var(--font-serif); font-size: 58px; font-weight: 700; line-height: 1.15; margin-top: 16px; }
   .og .sub { font-family: var(--font-sans); font-size: 23px; color: #b9c0e8; margin-top: 12px; }
   .og svg[data-og-picture] { width: 100%; height: auto; display: block; }
 `
@@ -85,7 +85,7 @@ async function main() {
     await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }])
 
     const pictures = new Map<string, string | null>()
-    for (const [i, chapter] of data.chapters.entries()) {
+    for (const chapter of data.chapters) {
       const picture = await pictureOf(page, chapter)
       pictures.set(chapter.id, picture)
       if (chapter.share.card !== 'rendered') {
@@ -97,8 +97,8 @@ async function main() {
         page,
         outPath(chapter.share.image),
         `<div style="padding:48px 56px 0">
-           <div class="hiw-kicker kicker"><span class="hiw-dot dot"></span>How It Works · Chapter ${i + 1}</div>
-           <div class="hiw-title" style="font-size:58px;margin-top:16px">${esc(chapter.title)}</div>
+           <div class="bar"></div>
+           <div class="title">${esc(chapter.title)}</div>
            <div class="sub">${esc(subtitle)}</div>
          </div>
          ${picture ? `<div style="position:absolute;left:40px;right:40px;bottom:-6px">${picture}</div>` : ''}`,
@@ -123,8 +123,8 @@ async function main() {
       page,
       outPath(data.landing.share.image),
       `<div style="padding:48px 56px 0">
-         <div class="hiw-kicker kicker"><span class="hiw-dot dot"></span>Morperhaus Concert Archives</div>
-         <div class="hiw-title" style="font-size:64px;margin-top:14px">${esc(data.landing.title)}</div>
+         <div class="bar"></div>
+         <div class="title">${esc(data.landing.title)}</div>
          <div class="sub">${esc(data.landing.dek)}</div>
        </div>
        <div style="position:absolute;left:56px;right:56px;top:262px;display:grid;grid-template-columns:repeat(${data.chapters.length},1fr);gap:24px">
