@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import worker from './worker.js'
+import howItWorks from '../../public/data/how-it-works.json'
 
 /**
  * This Worker sits in front of **every request to concerts.morperhaus.org**, so
@@ -298,6 +299,7 @@ describe('meta-injector worker', () => {
         if (url.includes('/data/artists-metadata.json')) return json(artists)
         if (url.includes('/data/venues-metadata.json')) return json(venues)
         if (url.includes('/data/liner-notes.json')) return json(liner)
+        if (url.includes('/data/how-it-works.json')) return json(howItWorks)
         if (url.includes('/data/')) return json({})
         return htmlResponse(PAGE)
       })
@@ -350,6 +352,55 @@ describe('meta-injector worker', () => {
       const cascade = await headOf('/how-it-works/the-archive')
       expect(cascade).toContain('<title>How the Archive Is Built | Morperhaus Concert Archives</title>')
       expect(cascade).toContain('rows in a spreadsheet become')
+    })
+
+    it.each([howItWorks.landing, ...howItWorks.chapters].map((p) => [p.path, p]))(
+      'gives %s its own title, description and share card, from public/data/how-it-works.json',
+      async (path, page) => {
+        const body = await headOf(path)
+        expect(body).toContain(`<title>${page.share.title}</title>`)
+        expect(body).toContain(`property="og:image" content="${SITE}${page.share.image}"`)
+        expect(body).toContain(`property="twitter:image" content="${SITE}${page.share.image}"`)
+        expect(body).toContain(`property="twitter:title" content="${page.share.title}"`)
+        expect(body).not.toContain('og-image.jpg')
+        expect(body).not.toMatch(/\{(concerts|years)\}/)
+      },
+    )
+
+    // Serve everything as headOf does, except the given data file, then render the page.
+    async function headWith(path, file, response) {
+      serve()
+      const served = vi.mocked(fetch).getMockImplementation()
+      vi.mocked(fetch).mockImplementation(async (input, init) =>
+        String(input?.url ?? input).includes(file) ? response() : served(input, init),
+      )
+      return (await worker.fetch(req(path), {}, ctx)).text()
+    }
+
+    it.each([
+      ['missing', () => new Response('Not found', { status: 404 })],
+      ['not JSON', () => new Response('<html>oops</html>', { status: 200 })],
+    ])('leaves How It Works on the generic card when the list is %s', async (_, response) => {
+      for (const path of ['/how-it-works', '/how-it-works/the-archive']) {
+        const body = await headWith(path, '/data/how-it-works.json', response)
+        expect(body).toContain('og-image.jpg')
+        expect(body).not.toContain('/og/how-it-works/')
+      }
+    })
+
+    it('leaves the page unchanged when its description needs concerts.json and that fails', async () => {
+      const page = howItWorks.chapters.find((c) => /\{(concerts|years)\}/.test(c.share.description))
+      expect(page).toBeDefined()
+      const body = await headWith(page.path, '/data/concerts.json', () => new Response('down', { status: 500 }))
+      expect(body).toContain('og-image.jpg')
+      expect(body).not.toContain(page.share.title)
+      expect(body).not.toMatch(/\{(concerts|years)\}/)
+    })
+
+    it('leaves a How It Works path that is not in the list on the generic card', async () => {
+      const body = await headOf('/how-it-works/not-a-chapter')
+      expect(body).toContain('og-image.jpg')
+      expect(body).not.toContain('/og/how-it-works/')
     })
 
     it('leaves the homepage canonical on the homepage', async () => {

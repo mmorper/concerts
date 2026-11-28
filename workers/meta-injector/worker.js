@@ -186,10 +186,8 @@ export default {
     let html = await response.text();
 
     // Inject dynamic meta tags — pathname routes take precedence over query params
-    if (url.pathname === '/how-it-works' || url.pathname === '/how-it-works/the-archive') {
+    if (url.pathname === '/how-it-works' || url.pathname.startsWith('/how-it-works/')) {
       html = await injectHowItWorksMeta(html, url.origin, ctx, url.pathname);
-    } else if (url.pathname === '/how-it-works/now-spinning') {
-      html = injectNowSpinningChapterMeta(html, url.origin);
     } else if (url.pathname === '/about') {
       html = await injectAboutMeta(html, url.origin, ctx);
     } else if (url.pathname === '/liner-notes') {
@@ -1112,69 +1110,55 @@ async function injectSharedSongMeta(html, artistSlug, songSlug, url, ctx) {
 }
 
 /**
- * Inject meta tags for /how-it-works (the landing page for the explainers) and its first chapter,
- * /how-it-works/the-archive (the interactive data pipeline explainer).
+ * Inject meta tags for /how-it-works and each of its chapters, from public/data/how-it-works.json:
+ * the same list the site's chapter cards and the share-card script (`npm run og:how-it-works`)
+ * read. A chapter added to that list gets its own title, description and card here with no change
+ * to this Worker. {concerts} and {years} in a description are filled in from concerts.json.
+ *
+ * A path under /how-it-works/ that isn't in the list is left as it is (the generic card), and so is
+ * every page if the list can't be read: a cosmetic failure, never a broken page.
  */
-async function injectHowItWorksMeta(html, origin, ctx, pathname = '/how-it-works') {
+async function injectHowItWorksMeta(html, origin, ctx, pathname) {
   try {
-    const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
-    if (!concertsResponse.ok) return html;
-    const concertsData = await concertsResponse.json();
+    const listResponse = await cachedJsonFetch(`${origin}/data/how-it-works.json`, ctx);
+    if (!listResponse.ok) return html;
+    const list = await listResponse.json();
+    const path = pathname.replace(/\/+$/, '') || '/how-it-works';
+    const page = path === list.landing?.path ? list.landing : (list.chapters ?? []).find((c) => c.path === path);
+    if (!page?.share) return html;
 
-    const concertCount = concertsData.concerts.length;
-    const years = concertsData.concerts.map(c => c.year);
-    const yearSpan = Math.max(...years) - Math.min(...years) + 1;
+    let description = page.share.description;
+    if (/\{(concerts|years)\}/.test(description)) {
+      const concertsResponse = await cachedJsonFetch(`${origin}/data/concerts.json`, ctx);
+      if (!concertsResponse.ok) return html;
+      const { concerts } = await concertsResponse.json();
+      const years = concerts.map((c) => c.year);
+      description = description
+        .replaceAll('{concerts}', String(concerts.length))
+        .replaceAll('{years}', String(Math.max(...years) - Math.min(...years) + 1));
+    }
 
-    const chapter = pathname === '/how-it-works/the-archive';
-    const title = chapter
-      ? `How the Archive Is Built | Morperhaus Concert Archives`
-      : `How It Works | Morperhaus Concert Archives`;
-    const description = chapter
-      ? `How ${concertCount} rows in a spreadsheet become ${yearSpan} years of live music: the weekly build, the outside services it asks, and how every band, venue and night is matched, explained step by step.`
-      : `The machinery behind ${concertCount} concerts and ${yearSpan} years of live music, explained for the curious: how the archive is built, and how the turntable in the living room knows when a song was heard live.`;
-    const pageUrl = `${origin}${chapter ? pathname : '/how-it-works'}`;
-
-    html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
-    html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
-    html = html.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
-    html = html.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
-    html = html.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
-    html = html.replace(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
-
+    const title = page.share.title;
+    const pageUrl = `${origin}${page.path}`;
+    const imageUrl = `${origin}${page.share.image}`;
+    const set = (pattern, tag) => (html = html.replace(pattern, () => tag));
+    set(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
+    set(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
+    set(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+    set(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+    set(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
+    set(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`);
+    set(/<meta property="twitter:title" content="[^"]*" \/>/, `<meta property="twitter:title" content="${escapeHtml(title)}" />`);
+    set(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
+    set(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`);
     html = injectPageIdentity(html, title, pageUrl);
 
-    console.log(`[How It Works Meta Injected]`);
+    console.log(`[How It Works Meta Injected: ${page.path}]`);
     return html;
-
   } catch (error) {
     console.error(`Error injecting how-it-works meta: ${error.message}`);
     return html;
   }
-}
-
-/**
- * Inject meta tags for /how-it-works/now-spinning. Static copy and the living-room photo, cropped
- * to a share card (public/og/how-it-works/now-spinning.jpg), so a link sent to a friend previews
- * the real screen. Indexable, unlike the shared-answer cards that applyShareMeta marks noindex.
- */
-function injectNowSpinningChapterMeta(html, origin) {
-  const title = `How Now Spinning Works | Morperhaus Concert Archives`;
-  const description = `Put a record on, and seconds later the TV knows the song and the concerts where it was heard live. How a Raspberry Pi, a Shazam fingerprint and forty years of setlists make it happen.`;
-  const pageUrl = `${origin}/how-it-works/now-spinning`;
-  const imageUrl = `${origin}/og/how-it-works/now-spinning.jpg`;
-  const set = (pattern, tag) => (html = html.replace(pattern, () => tag));
-  set(/<title>.*?<\/title>/, `<title>${escapeTitleText(title)}</title>`);
-  set(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`);
-  set(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`);
-  set(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`);
-  set(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${escapeHtml(pageUrl)}" />`);
-  set(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${escapeHtml(imageUrl)}" />`);
-  set(/<meta property="twitter:title" content="[^"]*" \/>/, `<meta property="twitter:title" content="${escapeHtml(title)}" />`);
-  set(/<meta property="twitter:description" content="[^"]*" \/>/, `<meta property="twitter:description" content="${escapeHtml(description)}" />`);
-  set(/<meta property="twitter:image" content="[^"]*" \/>/, `<meta property="twitter:image" content="${escapeHtml(imageUrl)}" />`);
-  html = injectPageIdentity(html, title, pageUrl);
-  console.log(`[How It Works: Now Spinning Meta Injected]`);
-  return html;
 }
 
 /**

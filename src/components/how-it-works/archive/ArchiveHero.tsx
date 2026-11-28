@@ -139,7 +139,7 @@ export function ArchiveHero() {
 
   return (
     <figure className="hiw-figure" aria-label="One row of the spreadsheet, and what it becomes">
-      <svg className="hiw-svg block w-full" viewBox={`0 0 ${W} 340`} role="img" aria-label="A spreadsheet row: 12/6/2024, Social Distortion, Punk, The Belasco, Los Angeles. Its columns flow into a setlist, a band photo, song previews, albums, a venue photo and a pin on the map.">
+      <svg data-og-picture className="hiw-svg block w-full" viewBox={`0 0 ${W} 340`} role="img" aria-label="A spreadsheet row: 12/6/2024, Social Distortion, Punk, The Belasco, Los Angeles. Its columns flow into a setlist, a band photo, song previews, albums, a venue photo and a pin on the map.">
         {/* The row */}
         <rect x="56" y={rowTop} width="888" height={rowBottom - rowTop} rx="10" fill="#f8fafc" />
         {COLUMNS.map((c, i) => (

@@ -135,6 +135,29 @@ npm run og:generate
 OG_SITE_URL=https://concerts.morperhaus.org npm run og:generate
 ```
 
+#### How It Works share cards
+
+Every How It Works page has its own share card in `public/og/how-it-works/`. The pages are listed
+once, in `public/data/how-it-works.json`. The site's chapter cards, the link-preview Worker
+(`workers/meta-injector`, which reads the list at request time, so a new chapter needs no Worker
+deploy) and the card script all read that list.
+
+**Adding a chapter:** add it to `public/data/how-it-works.json` (with its `share` title,
+description and image), build its page and route, then make its card:
+
+```bash
+npm run dev                  # in another terminal, then
+npm run og:how-it-works
+# or, with no server:
+OG_SITE_URL=https://concerts.morperhaus.org npm run og:how-it-works
+```
+
+A `"rendered"` card is the chapter's title and subtitle over the picture on its page marked
+`data-og-picture` (title and subtitle only, if it has none). A `"photo"` card is a hand-made image,
+like Now Spinning's living-room photo. The landing card gets a tile per chapter. Rerun the script
+when a chapter's title, subtitle or marked picture changes. `test/pipeline/how-it-works-share.test.ts`
+fails while any page is missing its card.
+
 #### Debugging
 
 **Preview Tool**: `npm run og:preview`

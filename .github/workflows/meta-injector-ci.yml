@@ -9,7 +9,9 @@ name: Meta-injector CI
 #     time, so new posts need no redeploy. Content changes never required this.
 #   - Its routes are hardcoded in worker.js, so a new SPA route is a change to
 #     this directory — which means the paths filter below fires exactly when a
-#     deploy is actually needed.
+#     deploy is actually needed. The exception is How It Works: its chapters come
+#     from public/data/how-it-works.json at request time, so a new chapter needs
+#     no deploy either.
 #
 # It also fronts EVERY request to concerts.morperhaus.org, not just bot traffic,
 # so the test gate is weighted toward passthrough: the failure that matters is
@@ -25,6 +27,9 @@ on:
     paths:
       - 'workers/meta-injector/**'
       - '.github/workflows/meta-injector-ci.yml'
+      # The How It Works list is read at request time (no redeploy needed), but its tests import
+      # it, so a change to the list runs them.
+      - 'public/data/how-it-works.json'
   # Manual escape hatch. During the 2026-08-06 Actions outage, GitHub throttled
   # webhook triggers — "many push and pull request events are not triggering new
   # workflow runs" — which left no way to validate this workflow at all: you
