@@ -11,7 +11,6 @@ import { PICKS as ROW_PICKS } from '../../src/components/how-it-works/archive/Th
 import { PICKS as VENUE_PICKS } from '../../src/components/how-it-works/archive/MapStep'
 import { PICKS as SOUND_PICKS } from '../../src/components/how-it-works/archive/SoundStep'
 import { PICKS as NIGHT_PICKS } from '../../src/components/how-it-works/archive/SetlistStep'
-import { NOT_FROM_DEEZER } from '../../src/components/how-it-works/archive/FaceStep'
 
 const ROOT = path.join(__dirname, '..', '..')
 const json = (f: string) => JSON.parse(readFileSync(path.join(ROOT, 'public', 'data', f), 'utf8'))
@@ -50,16 +49,5 @@ describe('How It Works: How the Archive Is Built', () => {
     const a = json('artist-aliases.json')
     expect(a.sameAct.find((g: { canonical: string }) => g.canonical === 'brian-setzer')?.billings.length).toBeGreaterThan(1)
     expect(a.sharesMember.some((s: { acts: string[] }) => s.acts.includes('brian-setzer') && s.acts.includes('stray-cats'))).toBe(true)
-  })
-
-  it('the "never asked of Deezer" list matches the exception lists in scripts/enrich-artists.ts', () => {
-    const src = readFileSync(path.join(ROOT, 'scripts', 'enrich-artists.ts'), 'utf8')
-    const setOf = (name: string) => {
-      const m = src.match(new RegExp(`const ${name} = new Set\\(\\[([^\\]]*)\\]\\)`))
-      return (m?.[1].match(/'([^']+)'/g) ?? []).map((s) => s.slice(1, -1))
-    }
-    const script = [...setOf('DEEZER_NAMESAKES'), ...setOf('DEEZER_WRONG_PICTURES')].sort()
-    expect(script.length).toBeGreaterThan(0)
-    expect(NOT_FROM_DEEZER.map((n) => n.slug).sort()).toEqual(script)
   })
 })

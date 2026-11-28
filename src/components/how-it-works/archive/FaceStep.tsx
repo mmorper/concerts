@@ -3,24 +3,13 @@
  * nobody does, the site draws its own tile. Never a stranger.
  *
  * Order and the exceptions follow scripts/enrich-artists.ts: TheAudioDB first (photo, story,
- * genres), then Deezer (photo only), skipped for acts whose name Deezer gives to someone else
- * (DEEZER_NAMESAKES) or whose Deezer picture is wrong (DEEZER_WRONG_PICTURES). Counts are live,
+ * genres), then Deezer (photo only), skipped for the acts in its exception lists (the chapter's
+ * prose and Hood panel describe them). Counts are live,
  * from artists-metadata.json against every headliner and opener in concerts.json.
  */
 import { normalizeArtistName } from '../../../utils/normalize'
 import { useConcerts, useJson, useNearView, type ArtistMeta } from './data'
 
-const PINK = '#f472b6'
-
-/** Kept in step with scripts/enrich-artists.ts by hand: the build reads these, not this page. */
-export const NOT_FROM_DEEZER = [
-  { slug: 'heart', why: 'Deezer’s “Heart” is another act’s single' },
-  { slug: 'james', why: 'Deezer’s “James” is a Dutch rapper' },
-  { slug: 'beck', why: 'Deezer’s “Beck” isn’t Beck' },
-  { slug: 'fear', why: 'Deezer’s “F.E.A.R.” isn’t Fear' },
-  { slug: 'john-doe', why: 'Deezer’s “Johndoe” isn’t X’s John Doe' },
-  { slug: 'sting', why: 'Deezer shows a record cover' },
-]
 
 export function FaceStep() {
   const [ref, near] = useNearView<HTMLElement>()
@@ -95,27 +84,6 @@ export function FaceStep() {
           ))}
         </ol>
       )}
-
-      {/* Never a stranger */}
-      <div className="px-4 sm:px-6 pt-5">
-        <div className="rounded-xl p-4" style={{ border: `1px dashed ${PINK}66`, background: 'rgba(244,114,182,0.05)' }}>
-          <div className="font-sans" style={{ fontSize: 15, fontWeight: 600 }}>
-            Never looked up on Deezer
-          </div>
-          <p className="font-sans mt-1" style={{ fontSize: 14, color: 'var(--hiw-ink-2)', lineHeight: 1.55 }}>
-            Two acts can share a name. For these bands, Deezer’s picture would show the wrong act or the wrong thing, so the
-            update never asks Deezer about them.
-          </p>
-          <ul className="flex flex-wrap gap-2 mt-3" style={{ listStyle: 'none' }}>
-            {NOT_FROM_DEEZER.map((n) => (
-              <li key={n.slug} className="font-sans rounded-lg px-2.5 py-1.5" style={{ fontSize: 13, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(165,180,252,0.2)' }}>
-                <span style={{ fontWeight: 600 }}>{meta?.[n.slug]?.name ?? n.slug}</span>
-                <span style={{ color: 'var(--hiw-ink-3)' }}> · {n.why}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
 
       <figcaption id="face-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-4">
         {ready
