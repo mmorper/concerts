@@ -224,6 +224,7 @@ export function RoundTrip() {
   const [step, setStep] = useState(-1) // -1: not started; STEPS.length: finished
   const [paused, setPaused] = useState(false)
   const timer = useRef<number | null>(null)
+  const playBtn = useRef<HTMLButtonElement>(null)
 
   const playing = step >= 0 && step < STEPS.length
   const done = step >= STEPS.length
@@ -275,7 +276,7 @@ export function RoundTrip() {
             </button>
           ))}
         </div>
-        <button type="button" className="hiw-btn" onClick={play} disabled={playing}>
+        <button ref={playBtn} type="button" className="hiw-btn" onClick={play} disabled={playing}>
           {done ? <RotateCcw size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
           {playing ? 'Playing…' : done ? 'Play again' : 'Play a record'}
         </button>
@@ -425,6 +426,7 @@ export function RoundTrip() {
         </p>
         {playing && (
           <StepControls
+            returnFocusTo={playBtn}
             index={step}
             total={STEPS.length}
             paused={paused}

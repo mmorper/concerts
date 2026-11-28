@@ -8,6 +8,7 @@
  */
 import { useState } from 'react'
 import { analytics } from '../../../services/analytics'
+import { useMediaQuery } from '../shared'
 import { useJson, useNearView, type VenueMeta } from './data'
 
 const PLACE = '#6366f1'
@@ -19,14 +20,17 @@ export function MapStep() {
   const [ref, near] = useNearView<HTMLElement>()
   const venues = useJson<Record<string, VenueMeta>>('/data/venues-metadata.json', near)
   const [sel, setSel] = useState(0)
+  // On a phone the wide map would shrink its labels to a few pixels, so it gets its own narrower
+  // frame, with numbered dots and the names listed underneath.
+  const narrow = useMediaQuery('(max-width: 640px)')
 
   const v = venues?.[PICKS[sel]]
   const all = venues ? Object.entries(venues).filter(([, x]) => x.location) : []
 
   // Zoom on the chosen venue: frame it with its nearest neighbours from the archive.
   // Equirectangular around the venue (longitude scaled by cos(latitude)), so distances read true.
-  const W = 900
-  const H = 340
+  const W = narrow ? 360 : 900
+  const H = narrow ? 300 : 340
   const here = v?.location
   const kmPerDegLat = 111.32
   const k = here ? Math.cos((here.lat * Math.PI) / 180) : 1
@@ -45,7 +49,7 @@ export function MapStep() {
   const scale = W / 2 / halfKm
   const px = (xKm: number) => W / 2 + xKm * scale
   const py = (yKm: number) => H / 2 + yKm * scale
-  const barKm = [1, 2, 5, 10, 20, 50].find((km) => km * scale > 90) ?? 50
+  const barKm = [1, 2, 5, 10, 20, 50].find((km) => km * scale > W / 10) ?? 50
 
   // Names sit in two columns, left and right, with a thin leader back to each dot, so they stay
   // readable however close together the venues are.
@@ -59,7 +63,8 @@ export function MapStep() {
     const colX = side === 'left' ? 230 : W - 230
     return list.map((n, i) => ({ ...n, lx: colX, ly: start + i * gap, side }))
   }
-  const labelled = [...column('left'), ...column('right')]
+  const labelled = narrow ? [] : [...column('left'), ...column('right')]
+  const numbered = narrow ? [...inFrame].sort((a, b) => a.d - b.d) : []
 
   return (
     <figure ref={ref} className="hiw-figure" aria-labelledby="map-cap">
@@ -152,6 +157,14 @@ export function MapStep() {
                   </text>
                 </g>
               ))}
+              {numbered.map((n, i) => (
+                <g key={n.slug}>
+                  <circle cx={n.cx} cy={n.cy} r="11" fill="#a5b4fc" />
+                  <text x={n.cx} y={n.cy + 4.5} fontSize="13" fontWeight="700" textAnchor="middle" fill="#0a0e26">
+                    {i + 1}
+                  </text>
+                </g>
+              ))}
               {here && (
                 <g>
                   <circle cx={W / 2} cy={H / 2} r="20" fill={PINK} opacity="0.25" />
@@ -169,6 +182,19 @@ export function MapStep() {
                 </text>
               </g>
             </svg>
+            {narrow && numbered.length > 0 && (
+              <ol className="font-sans px-2 pt-2 pb-1 grid gap-1" style={{ listStyle: 'none', fontSize: 14, color: '#c7d2fe' }}>
+                {numbered.map((n, i) => (
+                  <li key={n.slug} className="flex gap-2">
+                    <span style={{ color: '#a5b4fc', fontWeight: 700, minWidth: 16 }}>{i + 1}</span>
+                    {n.name}
+                    <span className="ml-auto" style={{ color: 'var(--hiw-ink-3)', fontSize: 13 }}>
+                      {n.d < 10 ? n.d.toFixed(1) : Math.round(n.d)} km
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            )}
             <div className="font-sans px-2 pb-1" style={{ fontSize: 12, color: 'var(--hiw-ink-3)' }}>
               The closest venues I’ve been to, placed at their real locations
             </div>

@@ -141,6 +141,7 @@ export function ArchiveJourney() {
   const [step, setStep] = useState(-1)
   const [paused, setPaused] = useState(false)
   const timer = useRef<number | null>(null)
+  const playBtn = useRef<HTMLButtonElement>(null)
   const playing = step >= 0 && step < STEPS.length
   const done = step >= STEPS.length
 
@@ -195,6 +196,7 @@ export function ArchiveJourney() {
           ))}
         </div>
         <button
+          ref={playBtn}
           type="button"
           className="hiw-btn"
           disabled={playing}
@@ -314,6 +316,7 @@ export function ArchiveJourney() {
         </p>
         {playing && (
           <StepControls
+            returnFocusTo={playBtn}
             index={step}
             total={STEPS.length}
             paused={paused}

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import { analytics } from '../../services/analytics'
@@ -156,6 +156,7 @@ export function StepControls({
   onBack,
   onToggle,
   onNext,
+  returnFocusTo,
 }: {
   index: number
   total: number
@@ -163,10 +164,20 @@ export function StepControls({
   onBack: () => void
   onToggle: () => void
   onNext: () => void
+  /** Where keyboard focus goes when playback ends and these controls disappear. */
+  returnFocusTo?: RefObject<HTMLElement>
 }) {
+  const group = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    const el = group.current
+    return () => {
+      // If focus was on one of these buttons, move it to the play button rather than drop it on <body>.
+      if (el?.contains(document.activeElement)) requestAnimationFrame(() => returnFocusTo?.current?.focus())
+    }
+  }, [returnFocusTo])
   const btn = 'font-sans text-sm px-3 min-h-[36px] rounded-full transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-300 disabled:opacity-40'
   return (
-    <div className="flex flex-wrap items-center gap-2 mt-2" role="group" aria-label="Playback">
+    <div ref={group} className="flex flex-wrap items-center gap-2 mt-2" role="group" aria-label="Playback">
       <button type="button" className={btn} onClick={onBack} disabled={index === 0} style={{ color: 'var(--hiw-ink-2)' }}>
         ← Back
       </button>
