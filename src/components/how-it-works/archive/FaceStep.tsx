@@ -43,9 +43,9 @@ export function FaceStep() {
   const pick = (list: string[], n: number, prefer: string[] = []) => [...prefer.filter((s) => list.includes(s)), ...list.filter((s) => !prefer.includes(s))].slice(0, n)
 
   const steps = [
-    { key: 'theaudiodb', title: 'TheAudioDB', gives: 'A photo, a short story and genres', list: tiers.theaudiodb, prefer: ['sting', 'heart'] },
+    { key: 'theaudiodb', title: 'TheAudioDB', gives: 'A photo, a short biography and genres', list: tiers.theaudiodb, prefer: ['sting', 'heart'] },
     { key: 'deezer', title: 'Deezer', gives: 'A photo only', list: tiers.deezer, prefer: ['social-distortion', 'depeche-mode', 'royal-blood'] },
-    { key: 'none', title: 'The site’s own tile', gives: 'When nobody has a photo', list: tiers.none, prefer: [] },
+    { key: 'none', title: 'The site’s own tile', gives: 'The band’s initials, when no one has a photo', list: tiers.none, prefer: [] },
   ]
 
   return (
@@ -100,11 +100,11 @@ export function FaceStep() {
       <div className="px-4 sm:px-6 pt-5">
         <div className="rounded-xl p-4" style={{ border: `1px dashed ${PINK}66`, background: 'rgba(244,114,182,0.05)' }}>
           <div className="font-sans" style={{ fontSize: 15, fontWeight: 600 }}>
-            Never asked of Deezer
+            Never looked up on Deezer
           </div>
           <p className="font-sans mt-1" style={{ fontSize: 14, color: 'var(--hiw-ink-2)', lineHeight: 1.55 }}>
-            A matching name isn’t the same band. For these, Deezer’s picture would be a stranger or the wrong thing, so the
-            build never asks it.
+            Two acts can share a name. For these bands, Deezer’s picture would show the wrong act or the wrong thing, so the
+            update never asks Deezer about them.
           </p>
           <ul className="flex flex-wrap gap-2 mt-3" style={{ listStyle: 'none' }}>
             {NOT_FROM_DEEZER.map((n) => (
@@ -119,7 +119,7 @@ export function FaceStep() {
 
       <figcaption id="face-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-4">
         {ready
-          ? `Live counts, across all ${names.size} bands in the archive, headliners and openers.`
+          ? `These numbers are live: all ${names.size} bands in the archive, including opening acts.`
           : 'Asking the archive…'}
       </figcaption>
     </figure>

@@ -52,13 +52,12 @@ export function ArchiveChapter() {
             <div className="mt-12">
               <Prose>
                 <p>
-                  Every concert in this archive started as one row in a spreadsheet I keep: the date, the band, the venue
-                  and the city. Everything else on this site, the maps, the band photos, the setlists and the song
-                  previews, is built from those few words.
+                  I keep a spreadsheet of every concert I’ve been to. Each row has the date, the band, the venue and the
+                  city. That’s all I type.
                 </p>
                 <p>
-                  Most of that work happens once a week, before anyone visits. When you open the site, you’re reading
-                  answers that were worked out ahead of time.
+                  Everything else on this site comes from those few words: the maps, the band photos, the song previews
+                  and the setlists. This page shows how.
                 </p>
               </Prose>
             </div>
@@ -66,8 +65,13 @@ export function ArchiveChapter() {
             <Section id="journey" title="The whole journey">
               <Prose>
                 <p>
-                  Press <em>Play</em> to follow one week, from the spreadsheet to this page. Switch to{' '}
-                  <em>Under the hood</em> to see the real names of each part.
+                  Most of the work happens once a week, in an automatic update. The update reads my spreadsheet, asks
+                  other services about every band, venue and night, and saves their answers. When you visit the site,
+                  you’re reading those saved answers.
+                </p>
+                <p>
+                  Press <em>Play</em> to follow one week, step by step. Switch to <em>Under the hood</em> to see the real
+                  names of each part.
                 </p>
               </Prose>
               <Wide>
@@ -78,13 +82,13 @@ export function ArchiveChapter() {
             <Section id="row" step="Step 1" title="A row in a spreadsheet">
               <Prose>
                 <p>
-                  I keep the list in a Google Sheet. Each concert is one row: the date, the headliner, the genre, any
-                  opening acts, the venue and the city. That’s all I type.
+                  The spreadsheet is a Google Sheet. Each concert is one row: the date, the headliner, the genre, any
+                  opening acts, the venue and the city.
                 </p>
                 <p>
-                  Before asking anyone else anything, the build works out what it can on its own: the day of the week,
-                  the decade, and a plain-text version of each name. Those plain-text names are how the rest of the site
-                  links things together.
+                  Some things can be worked out from the row alone, with no outside help: the day of the week, the decade,
+                  and a simple version of each name, all lowercase with hyphens. The site uses those simple names to link
+                  pages together.
                 </p>
               </Prose>
               <Wide>
@@ -94,17 +98,17 @@ export function ArchiveChapter() {
                 <ul>
                   <li>
                     <strong>The reader.</strong> <code>scripts/fetch-google-sheet.ts</code> reads the sheet through the
-                    Google Sheets API and writes <code>public/data/concerts.json</code>. A row without a headliner is
-                    skipped, and a row without a venue gets a warning.
+                    Google Sheets API and writes <code>public/data/concerts.json</code>. A row with no headliner is
+                    skipped. A row with no venue is kept, with a warning.
                   </li>
                   <li>
-                    <strong>Plain-text names.</strong> Lowercase, with anything that isn’t a letter or a number turned
-                    into a hyphen: “Depeche Mode” becomes <code>depeche-mode</code>. They’re the keys in every link on
-                    the site, such as <code>/?scene=artists&amp;artist=depeche-mode</code>.
+                    <strong>Simple names.</strong> Lowercase, with anything that isn’t a letter or a number turned into a
+                    hyphen: “Depeche Mode” becomes <code>depeche-mode</code>. They appear in every link on the site, for
+                    example <code>/?scene=artists&amp;artist=depeche-mode</code>.
                   </li>
                   <li>
-                    <strong>A safety net.</strong> Before the weekly refresh saves anything, it checks the number of
-                    concerts. If it has dropped sharply, nothing is saved and the run fails loudly instead.
+                    <strong>A safety check.</strong> Before the weekly update saves anything, it counts the concerts. If
+                    the count has dropped sharply, it saves nothing and reports a failure instead.
                   </li>
                 </ul>
               </Hood>
@@ -113,27 +117,27 @@ export function ArchiveChapter() {
             <Section id="names" step="Step 2" title="One name, one band">
               <Prose>
                 <p>
-                  Bands don’t always use the same name. Brian Setzer has played under four different names in my
-                  archive. A short list of aliases tells the site they’re the same person, so his page shows every one
-                  of those shows together.
+                  Bands don’t always perform under the same name. In my archive, Brian Setzer appears under four different
+                  names. A short list tells the site that all four are the same person, so his page shows all of those
+                  shows together.
                 </p>
                 <p>
-                  The same list records the opposite case too. Stray Cats share a member with him, but they’re a
-                  different band, so they stay separate.
+                  The list also records the opposite case. Stray Cats include Brian Setzer, but they’re a different band,
+                  so the site keeps them separate.
                 </p>
               </Prose>
               <Wide>
                 <OneName />
               </Wide>
-              <Hood chapter="the-archive" id="names" title="The alias list">
+              <Hood chapter="the-archive" id="names" title="The list of names">
                 <ul>
                   <li>
-                    <strong>Kept by hand.</strong> <code>data/artist-aliases.json</code> is edited by hand. The build
-                    copies it to <code>public/data/</code>, where the site and the Claude connector both read it.
+                    <strong>Kept by hand.</strong> I edit <code>data/artist-aliases.json</code> myself. The update copies
+                    it to <code>public/data/</code>, where the site and the Claude connector both read it.
                   </li>
                   <li>
-                    <strong>Two kinds of link.</strong> <code>sameAct</code> merges billings into one artist.{' '}
-                    <code>sharesMember</code> links two bands that share a person without merging them.
+                    <strong>Two kinds of entry.</strong> <code>sameAct</code> joins several names into one artist.{' '}
+                    <code>sharesMember</code> links two bands that share a member, without joining them.
                   </li>
                 </ul>
               </Hood>
@@ -142,61 +146,64 @@ export function ArchiveChapter() {
             <Section id="map" step="Step 3" title="Putting it on the map">
               <Prose>
                 <p>
-                  A venue name and a city aren’t enough to draw a map. So the build asks Google where each venue is. It
-                  gets back a full address and a pair of coordinates, plus a photo of the venue. The coordinates are
-                  saved for good; the photos are refreshed every week, because Google’s photo links expire.
+                  A venue name and a city aren’t enough to draw a map. So the update asks Google where each venue is.
+                  Google sends back the full address, the exact location, and a photo of the venue.
+                </p>
+                <p>
+                  Pick a venue below to see what comes back, and where it sits among the other venues I’ve been to.
                 </p>
               </Prose>
               <Wide>
                 <MapStep />
               </Wide>
-              <Hood chapter="the-archive" id="map" title="Coordinates and photos">
+              <Hood chapter="the-archive" id="map" title="Locations and photos">
                 <ul>
                   <li>
-                    <strong>Coordinates</strong> come from Google’s geocoding service and are saved per venue, so a venue’s
-                    location is looked up once.
+                    <strong>Locations</strong> come from Google’s geocoding service. Each venue’s location is saved, so
+                    it’s looked up only once.
                   </li>
                   <li>
-                    <strong>The address and photo</strong> come from Google Places (<code>scripts/enrich-venues.ts</code>)
-                    and are published in <code>venues-metadata.json</code>. Google’s photo links expire, so the photos are
-                    refreshed on a 7-day cycle.
+                    <strong>Addresses and photos</strong> come from Google Places (<code>scripts/enrich-venues.ts</code>)
+                    and are saved in <code>venues-metadata.json</code>. Google’s photo links expire, so the photos are
+                    refreshed every 7 days.
                   </li>
                   <li>
-                    <strong>Closed venues</strong> are part of the history too. Irvine Meadows was demolished in 2016, but
-                    it stays on the map where it stood, marked as demolished.
+                    <strong>Closed venues stay.</strong> Irvine Meadows was demolished in 2016, but it’s still on the map
+                    where it stood, marked as demolished.
                   </li>
                 </ul>
               </Hood>
             </Section>
 
-            <Section id="face" step="Step 4" title="A face for every band">
+            <Section id="face" step="Step 4" title="A photo for every band">
               <Prose>
                 <p>
-                  Every band needs a photo. The build asks one service first. If it has nothing, it asks a second. If
-                  neither has a photo, the site draws its own tile instead.
+                  Every band needs a photo. The update asks one service first. If that service has nothing, it asks a
+                  second one. If neither has a photo, the site shows a simple tile with the band’s initials.
                 </p>
                 <p>
-                  <strong>It never guesses.</strong> A matching name isn’t always the same band: on one service, “Heart”
-                  is someone else’s single and “James” is a Dutch rapper. For bands like those, the build skips that
-                  service entirely. A plain tile is better than a stranger’s face.
+                  <strong>It never guesses.</strong> Two acts can share a name. On one service, “Heart” leads to someone
+                  else’s song, and “James” leads to a Dutch rapper. For bands like these, the update never asks that
+                  service. A plain tile is better than a stranger’s face.
                 </p>
               </Prose>
               <Wide>
                 <FaceStep />
               </Wide>
-              <Hood chapter="the-archive" id="face" title="The fallback chain">
+              <Hood chapter="the-archive" id="face" title="Who is asked, and in what order">
                 <ul>
                   <li>
                     <strong>TheAudioDB first,</strong> for a photo, a short biography and genres. Then{' '}
                     <strong>Deezer</strong>, for a photo only (<code>scripts/enrich-artists.ts</code>).
                   </li>
                   <li>
-                    <strong>Simpler names are tried too.</strong> “Brian Setzer and the Nashvillians” is also tried as
-                    “Brian Setzer”, and a leading “DJ” is dropped.
+                    <strong>Shorter names are tried too.</strong> If “Brian Setzer and the Nashvillians” finds nothing,
+                    the update tries “Brian Setzer”. A leading “DJ” is also dropped.
                   </li>
                   <li>
-                    <strong>Two exception lists</strong> keep certain bands away from Deezer: one for names it gives to a
-                    different act, one for acts it has right but pictures wrong (its Sting photo is a record cover).
+                    <strong>Two exception lists</strong> keep certain bands away from Deezer. One is for names Deezer
+                    gives to a different act. The other is for acts Deezer has a wrong picture of: its Sting photo is a
+                    record cover.
                   </li>
                   <li>
                     <strong>Answers are kept for 30 days,</strong> so most weeks only new bands are looked up.
@@ -208,8 +215,8 @@ export function ArchiveChapter() {
             <Section id="sound" step="Step 5" title="The sound">
               <Prose>
                 <p>
-                  For each band, the build fetches a few of its best-known songs as 30-second previews, with their album
-                  covers. That’s what plays on the artist pages. Try one.
+                  For each band, the update finds a few of its best-known songs, as 30-second previews with their album
+                  covers. These are the previews that play on the artist pages. Try one below.
                 </p>
               </Prose>
               <Wide>
@@ -218,11 +225,11 @@ export function ArchiveChapter() {
               <Hood chapter="the-archive" id="sound" title="Where the previews come from">
                 <ul>
                   <li>
-                    <strong>Apple Music first, Deezer as the backup</strong> (<code>scripts/enrich-top-tracks.ts</code>).
-                    The previews stream from their servers; the archive stores only the links.
+                    <strong>Apple Music first, with Deezer as a backup</strong> (<code>scripts/enrich-top-tracks.ts</code>).
+                    The previews play from their servers. The archive stores only the links.
                   </li>
                   <li>
-                    <strong>Refreshed every 30 days.</strong> The links don’t change, so there’s no need to ask more often.
+                    <strong>Checked every 30 days.</strong> The links rarely change, so there’s no need to ask more often.
                   </li>
                 </ul>
               </Hood>
@@ -231,13 +238,14 @@ export function ArchiveChapter() {
             <Section id="setlists" step="Step 6" title="The setlists">
               <Prose>
                 <p>
-                  The best part of the archive is knowing what was played. For each band on each night, the build asks
-                  setlist.fm, a site where fans write down setlists. Then it matches every song to the album it comes
+                  My favourite part of the archive is knowing what was played. For each band on each night, the update
+                  asks setlist.fm, a website where fans record setlists. Then it matches each song to the album it comes
                   from.
                 </p>
                 <p>
-                  Covers get credited properly. When Social Distortion play “Ring of Fire”, setlist.fm notes the song’s
-                  original, and the archive files it under the Social Distortion album they recorded it on.
+                  Cover songs are handled carefully. Social Distortion often play “Ring of Fire”, which they didn’t write.
+                  setlist.fm marks it as a cover, and the archive lists it under the Social Distortion album where they
+                  recorded their own version.
                 </p>
               </Prose>
               <Wide>
@@ -246,17 +254,16 @@ export function ArchiveChapter() {
               <Hood chapter="the-archive" id="setlists" title="Setlists and albums">
                 <ul>
                   <li>
-                    <strong>setlist.fm</strong> is asked once per band per night, and a setlist with songs is saved for good
-                    (<code>scripts/prefetch-setlists.ts</code>). A night with no setlist yet is asked about again on later
-                    runs, because fans sometimes write one up weeks after the show.
+                    <strong>setlist.fm</strong> is asked about each band on each night
+                    (<code>scripts/prefetch-setlists.ts</code>). A setlist with songs is saved for good. A night with no
+                    setlist yet is asked about again later, because fans sometimes add one weeks after the show.
                   </li>
                   <li>
-                    <strong>Albums</strong> come from MusicBrainz. Each song is matched to an album by name, with the same
-                    careful rules as the rest of the archive: no match is better than a wrong one
-                    (<code>scripts/resolve-song-albums.ts</code>).
+                    <strong>Albums</strong> come from MusicBrainz. Songs are matched to albums by title, with strict rules:
+                    no match is better than a wrong one (<code>scripts/resolve-song-albums.ts</code>).
                   </li>
                   <li>
-                    <strong>Album covers</strong> come from Apple’s catalogue, one request per band, kept for 90 days.
+                    <strong>Album covers</strong> come from Apple’s catalogue: one request per band, saved for 90 days.
                   </li>
                 </ul>
               </Hood>
@@ -265,8 +272,8 @@ export function ArchiveChapter() {
             <Section id="lands" title="Where it all lands">
               <Prose>
                 <p>
-                  All of that comes together on the site. Search for any concert in the archive and see where its row
-                  ended up: a dot on the timeline, a pin on the map, a face and a song, and a setlist.
+                  Here’s the result. Search for any concert in the archive and see where its row ends up on the site: on
+                  the timeline, on the map, on the band’s page, and in its setlist.
                 </p>
               </Prose>
               <Wide>
@@ -274,16 +281,19 @@ export function ArchiveChapter() {
               </Wide>
             </Section>
 
-            <Section id="fresh" title="Keeping it fresh">
+            <Section id="fresh" title="Keeping it up to date">
               <Prose>
                 <p>
-                  The whole process runs again every Monday morning, and I can also start it by hand after adding a show.
-                  Most of the answers are already saved from earlier weeks, so a normal week asks very few new questions.
-                  Only new bands, new venues and new nights go out to the services.
+                  The update runs every Monday morning. I can also start it by hand after adding a show.
                 </p>
                 <p>
-                  Before it saves anything, the build checks that nothing has gone missing. If the number of concerts
-                  drops sharply, it stops and saves nothing.
+                  Most answers are saved from earlier weeks, so a normal week asks few new questions. The update asks
+                  about new bands, new venues and new nights. It also re-checks a few things that change: venue photos,
+                  and nights that don’t have a setlist yet.
+                </p>
+                <p>
+                  Before saving anything, the update checks that no concerts have gone missing. If the count drops
+                  sharply, it stops and saves nothing.
                 </p>
               </Prose>
             </Section>
@@ -294,22 +304,20 @@ export function ArchiveChapter() {
               </Prose>
               <ul className="hiw-prose mt-4" style={{ listStyle: 'disc', paddingLeft: 22 }}>
                 <li>
-                  <strong>A week behind, at most.</strong> Because the work happens ahead of time, a new show appears after
-                  the next run, not the moment I type it. In return, the site is fast and never waits on another service
-                  while you browse.
+                  <strong>Up to a week behind.</strong> A new show appears after the next update, not the moment I type it.
+                  In return, the site is fast, because it never has to wait for another service while you browse.
                 </li>
                 <li className="mt-2">
-                  <strong>Gaps instead of guesses.</strong> Some bands have no photo, some songs no album, and some nights
-                  no setlist. The site shows the gap rather than something that might be wrong.
+                  <strong>Gaps instead of guesses.</strong> Some bands have no photo, some songs have no album, and some
+                  nights have no setlist. The site shows the gap rather than something that might be wrong.
                 </li>
                 <li className="mt-2">
-                  <strong>Borrowed knowledge.</strong> Photos, previews, albums and setlists come from free outside
-                  services. If one of them has something wrong, it can show up here until it’s corrected or added to an
-                  exception list.
+                  <strong>Borrowed information.</strong> The photos, previews, albums and setlists come from free outside
+                  services. If one of them has a mistake, it can appear here until it’s fixed.
                 </li>
                 <li className="mt-2">
-                  <strong>One live exception.</strong> Upcoming tour dates are looked up while you browse, so they’re
-                  current, but they depend on that service being available.
+                  <strong>One thing is live.</strong> Upcoming tour dates are looked up while you browse, so they’re always
+                  current. But they only appear when that service is working.
                 </li>
               </ul>
             </Section>

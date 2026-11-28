@@ -12,7 +12,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Play, RotateCcw } from 'lucide-react'
 import { analytics } from '../../../services/analytics'
-import { useMediaQuery, useReducedMotion } from '../shared'
+import { readingTime, StepControls, useMediaQuery, useReducedMotion } from '../shared'
 
 type Mode = 'simple' | 'hood'
 type NodeId = 'sheet' | 'build' | 'files' | 'site' | 'tours'
@@ -24,8 +24,8 @@ const VISIT = '#7dd3fc'
 
 const NODE_TEXT: Record<NodeId, Record<Mode, [string, string]>> = {
   sheet: { simple: ['The spreadsheet', 'One row per concert'], hood: ['Google Sheet', 'Google Sheets API'] },
-  build: { simple: ['The weekly build', 'Every Monday morning'], hood: ['GitHub Actions', 'build-data.ts · Mon 07:00 UTC'] },
-  files: { simple: ['The data files', 'Every answer, written down'], hood: ['public/data/*.json', 'committed to the repo'] },
+  build: { simple: ['The weekly update', 'Every Monday morning'], hood: ['GitHub Actions', 'build-data.ts · Mon 07:00 UTC'] },
+  files: { simple: ['The saved answers', 'Ready for the site'], hood: ['public/data/*.json', 'committed to the repo'] },
   site: { simple: ['The website', 'What you’re looking at'], hood: ['Cloudflare Pages', 'React · D3 · Leaflet'] },
   tours: { simple: ['Upcoming tours', 'checked as you browse'], hood: ['Ticketmaster API', 'called from your browser'] },
 }
@@ -120,17 +120,17 @@ interface Step {
 
 const STEPS: Step[] = [
   { nodes: ['sheet'], ms: 1700, caption: 'It starts with my spreadsheet: one row for every concert I’ve been to.' },
-  { nodes: ['build'], edges: ['rows'], ms: 1800, caption: 'Every Monday morning, a build reads every row.' },
+  { nodes: ['build'], edges: ['rows'], ms: 1800, caption: 'Every Monday morning, an automatic update reads every row.' },
   {
     nodes: ['services'],
     edges: ['ask'],
     ms: 2200,
-    caption: 'For each band, venue and night, it asks outside services: where is this venue? What does this band look like? What did they play?',
+    caption: 'For each band, venue and night, it asks other services questions. Where is this venue? What does this band look like? What did they play that night?',
   },
-  { nodes: ['build'], edges: ['answer'], ms: 1700, caption: 'The answers come back. Most were already known from earlier weeks, so only new questions go out.' },
-  { nodes: ['files'], edges: ['write'], ms: 1800, caption: 'Everything is written down as data files and saved.' },
-  { nodes: ['site'], edges: ['publish'], ms: 1900, caption: 'Saving the files republishes the website. All of that happens before you arrive.' },
-  { nodes: ['site', 'tours'], edges: ['live'], ms: 2300, caption: 'When you visit, the site reads those files. Only upcoming tour dates are looked up live, while you browse.' },
+  { nodes: ['build'], edges: ['answer'], ms: 1700, caption: 'The answers come back. Most were already saved in earlier weeks, so only a few questions are new.' },
+  { nodes: ['files'], edges: ['write'], ms: 1800, caption: 'All the answers are saved as data files.' },
+  { nodes: ['site'], edges: ['publish'], ms: 1900, caption: 'Saving the files updates the website. All of this happens before you arrive.' },
+  { nodes: ['site', 'tours'], edges: ['live'], ms: 2300, caption: 'When you visit, the site reads the saved answers. Only upcoming tour dates are looked up live, while you browse.' },
 ]
 
 export function ArchiveJourney() {
@@ -139,21 +139,23 @@ export function ArchiveJourney() {
   const L = narrow ? NARROW : WIDE
   const [mode, setMode] = useState<Mode>('simple')
   const [step, setStep] = useState(-1)
+  const [paused, setPaused] = useState(false)
   const timer = useRef<number | null>(null)
   const playing = step >= 0 && step < STEPS.length
   const done = step >= STEPS.length
 
+  // Each step stays up long enough to read its caption; Pause holds it.
   useEffect(() => {
-    if (!playing) return
-    timer.current = window.setTimeout(() => setStep((s) => s + 1), STEPS[step].ms)
+    if (!playing || paused) return
+    timer.current = window.setTimeout(() => setStep((s) => s + 1), readingTime(STEPS[step].caption, STEPS[step].ms))
     return () => {
       if (timer.current) window.clearTimeout(timer.current)
     }
-  }, [step, playing])
+  }, [step, playing, paused])
 
   const cur = playing ? STEPS[step] : null
   const fs = narrow ? 1.06 : 1
-  const caption = cur ? cur.caption : done ? 'Done. The slow part happens once a week; your visit only reads the results.' : 'Press “Play” to follow one week of the archive, from spreadsheet to screen.'
+  const caption = cur ? cur.caption : done ? 'Done. The slow work happens once a week. Your visit only reads the results.' : 'Press “Play” to follow one week, from the spreadsheet to this page.'
 
   const nodeBox = (b: Box, id: string, active: boolean, kind: 'build' | 'visit') => {
     const edge = kind === 'build' ? BUILD : VISIT
@@ -198,6 +200,7 @@ export function ArchiveJourney() {
           disabled={playing}
           onClick={() => {
             analytics.trackEvent('how_it_works_diagram_played', { chapter: 'the-archive', diagram: 'journey', mode })
+            setPaused(false)
             setStep(0)
           }}
         >
@@ -305,9 +308,27 @@ export function ArchiveJourney() {
         })}
       </svg>
 
-      <p id="aj-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-2" aria-live="polite" style={{ minHeight: '4.4em', color: cur ? 'var(--hiw-ink)' : undefined }}>
-        {caption}
-      </p>
+      <div className="px-4 sm:px-6 pb-5 pt-2">
+        <p id="aj-cap" className="hiw-figcaption" aria-live="polite" style={{ minHeight: '3em', color: cur ? 'var(--hiw-ink)' : undefined }}>
+          {caption}
+        </p>
+        {playing && (
+          <StepControls
+            index={step}
+            total={STEPS.length}
+            paused={paused}
+            onBack={() => {
+              setPaused(true)
+              setStep((s) => Math.max(0, s - 1))
+            }}
+            onToggle={() => setPaused((p) => !p)}
+            onNext={() => {
+              setPaused(true)
+              setStep((s) => s + 1)
+            }}
+          />
+        )}
+      </div>
     </figure>
   )
 }

@@ -13,7 +13,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Play, RotateCcw } from 'lucide-react'
 import { analytics } from '../../../services/analytics'
-import { useMediaQuery, useReducedMotion } from '../shared'
+import { readingTime, StepControls, useMediaQuery, useReducedMotion } from '../shared'
 
 type Mode = 'simple' | 'hood'
 type NodeId = 'record' | 'ear' | 'name' | 'memory' | 'screen'
@@ -222,21 +222,24 @@ export function RoundTrip() {
   const L = narrow ? NARROW : WIDE
   const [mode, setMode] = useState<Mode>('simple')
   const [step, setStep] = useState(-1) // -1: not started; STEPS.length: finished
+  const [paused, setPaused] = useState(false)
   const timer = useRef<number | null>(null)
 
   const playing = step >= 0 && step < STEPS.length
   const done = step >= STEPS.length
 
+  // Each step stays up long enough to read its caption; Pause holds it.
   useEffect(() => {
-    if (!playing) return
-    timer.current = window.setTimeout(() => setStep((s) => s + 1), STEPS[step].ms * (reduced ? 1.15 : 1))
+    if (!playing || paused) return
+    timer.current = window.setTimeout(() => setStep((s) => s + 1), readingTime(STEPS[step].caption, STEPS[step].ms))
     return () => {
       if (timer.current) window.clearTimeout(timer.current)
     }
-  }, [step, playing, reduced])
+  }, [step, playing, paused])
 
   const play = () => {
     analytics.trackEvent('how_it_works_diagram_played', { chapter: 'now-spinning', diagram: 'round-trip', mode })
+    setPaused(false)
     setStep(0)
   }
 
@@ -420,6 +423,22 @@ export function RoundTrip() {
         <p id="rt-cap" className="hiw-figcaption mt-3" aria-live="polite" style={{ minHeight: '3.1em', color: cur ? 'var(--hiw-ink)' : undefined }}>
           {caption}
         </p>
+        {playing && (
+          <StepControls
+            index={step}
+            total={STEPS.length}
+            paused={paused}
+            onBack={() => {
+              setPaused(true)
+              setStep((s) => Math.max(0, s - 1))
+            }}
+            onToggle={() => setPaused((p) => !p)}
+            onNext={() => {
+              setPaused(true)
+              setStep((s) => s + 1)
+            }}
+          />
+        )}
       </div>
     </figure>
   )

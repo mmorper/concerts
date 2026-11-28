@@ -199,7 +199,7 @@ export function LandsStep() {
       )}
 
       <figcaption id="lands-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-4">
-        One row in the spreadsheet, four places on the site. Each panel opens the real scene.
+        One row in the spreadsheet ends up in four places on the site. Use “Open” to go to each one.
       </figcaption>
     </figure>
   )

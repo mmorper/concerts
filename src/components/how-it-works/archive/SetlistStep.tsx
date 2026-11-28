@@ -102,7 +102,7 @@ export function SetlistStep() {
                         {song.name}
                         {song.cover?.name && (
                           <span className="ml-2 rounded px-1.5 py-0.5" style={{ fontSize: 11, color: '#f9a8d4', background: 'rgba(244,114,182,0.12)' }}>
-                            cover · {song.cover.name}
+                            {song.cover.name} cover
                           </span>
                         )}
                       </span>
@@ -121,7 +121,7 @@ export function SetlistStep() {
       <figcaption id="sl-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-4">
         {loading
           ? 'Asking the archive…'
-          : `${matched} of these ${total} songs are matched to an album. Across the archive, setlist.fm has a setlist for ${withSongs} of the ${nights} band-nights the build asked about. The rest show no setlist rather than a guess.`}
+          : `${matched} of these ${total} songs are matched to an album. Across the archive, setlist.fm has a setlist for ${withSongs} of ${nights} band performances. For the rest, the site shows no setlist rather than a guess.`}
       </figcaption>
     </figure>
   )

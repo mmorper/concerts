@@ -52,8 +52,8 @@ export function ThreeWords() {
     ? [
         { label: 'Day of the week', value: row.dayOfWeek ?? '' },
         { label: 'Decade', value: row.decade ?? '' },
-        { label: 'Band, as plain text', value: row.headlinerNormalized, mono: true },
-        { label: 'Venue, as plain text', value: row.venueNormalized ?? '', mono: true },
+        { label: 'Band, as a simple name', value: row.headlinerNormalized, mono: true },
+        { label: 'Venue, as a simple name', value: row.venueNormalized ?? '', mono: true },
       ]
     : []
 
@@ -130,8 +130,8 @@ export function ThreeWords() {
 
       <figcaption id="tw-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-4">
         {row && openers.length > 2
-          ? `One row, ${openers.length + 1} bands: the headliner and every opening act that night.`
-          : 'The coloured marks show which columns feed what comes next: the band (violet), the place (indigo) and the date (grey).'}
+          ? `One row, ${openers.length + 1} bands: the headliner and every opening act that day.`
+          : 'The coloured lines show which columns the later steps use: violet for the band, indigo for the place, and grey for the date.'}
       </figcaption>
     </figure>
   )

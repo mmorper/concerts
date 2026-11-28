@@ -117,7 +117,7 @@ export function SoundStep() {
 
       <figcaption id="sound-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-4">
         {tops
-          ? `Live: ${withPreviews} bands in the archive have previews. ${bySource.itunes ?? 0} came from Apple Music${bySource.deezer ? `, ${bySource.deezer} from Deezer` : ', and none so far have needed the Deezer backup'}.`
+          ? `Live count: ${withPreviews} bands have previews. ${bySource.itunes ?? 0} came from Apple Music${bySource.deezer ? ` and ${bySource.deezer} from Deezer` : '; none has needed the Deezer backup yet'}.`
           : 'Asking the archive…'}
       </figcaption>
     </figure>

@@ -142,7 +142,9 @@ export function OneName() {
         )}
       </svg>
       <figcaption id="on-cap" className="hiw-figcaption px-4 sm:px-6 pb-5 pt-2">
-        {group?.note ?? ''} {apart?.note ?? ''}
+        {total
+          ? `${total} shows under ${billings.length} different names, from ${first} to ${last}. One person, so one artist page.${apart ? ' Stray Cats include him, but they’re a separate band.' : ''}`
+          : ''}
       </figcaption>
     </figure>
   )

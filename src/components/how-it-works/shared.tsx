@@ -138,3 +138,47 @@ export function Section({ id, step, title, children }: { id: string; step?: stri
 export const Prose = ({ children }: { children: ReactNode }) => <div className="hiw-prose">{children}</div>
 /** Diagrams break out of the text column on wider screens. */
 export const Wide = ({ children }: { children: ReactNode }) => <div className="my-10 -mx-1 sm:-mx-8 lg:-mx-24">{children}</div>
+
+/**
+ * How long a step stays up while a diagram plays: long enough to read its caption at an easy
+ * pace (about 16 characters a second, plus a moment to look at the picture), never shorter than
+ * the step's own minimum.
+ */
+export function readingTime(caption: string, minimum = 0): number {
+  return Math.max(minimum, 1600 + caption.length * 62)
+}
+
+/** Back · Pause/Resume · Next, with "Step n of m", for a diagram that plays through steps. */
+export function StepControls({
+  index,
+  total,
+  paused,
+  onBack,
+  onToggle,
+  onNext,
+}: {
+  index: number
+  total: number
+  paused: boolean
+  onBack: () => void
+  onToggle: () => void
+  onNext: () => void
+}) {
+  const btn = 'font-sans text-sm px-3 min-h-[36px] rounded-full transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-300 disabled:opacity-40'
+  return (
+    <div className="flex flex-wrap items-center gap-2 mt-2" role="group" aria-label="Playback">
+      <button type="button" className={btn} onClick={onBack} disabled={index === 0} style={{ color: 'var(--hiw-ink-2)' }}>
+        ← Back
+      </button>
+      <button type="button" className={btn} onClick={onToggle} style={{ color: 'var(--hiw-ink)', border: '1px solid var(--hiw-panel-line)' }}>
+        {paused ? 'Resume' : 'Pause'}
+      </button>
+      <button type="button" className={btn} onClick={onNext} style={{ color: 'var(--hiw-ink-2)' }}>
+        {index === total - 1 ? 'Finish →' : 'Next →'}
+      </button>
+      <span className="font-sans ml-auto" style={{ fontSize: 12.5, color: 'var(--hiw-ink-3)' }}>
+        Step {index + 1} of {total}
+      </span>
+    </div>
+  )
+}
