@@ -371,3 +371,8 @@
 .hiw li,
 .hiw figcaption,
 .hiw summary { text-wrap: pretty; }
+
+/* Streams in the archive chapter's opening picture draw themselves in */
+@keyframes hiw-draw {
+  to { stroke-dashoffset: 0; }
+}

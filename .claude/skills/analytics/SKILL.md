@@ -293,6 +293,13 @@ See complete list in: `docs/specs/implemented/global-analytics-tracking.md` (lin
 - `scene_view` — User navigates to a scene
 - `scene_nav_clicked` — User clicks scene dot navigation
 - `deep_link_accessed` — User arrives via URL parameter
+- `site_menu_opened` — The desktop rail's "more" mark (•••) opened its menu: `from_scene`
+- `liner_notes_nav_clicked`, `how_it_works_nav_clicked`, `whats_playing_nav_clicked`,
+  `about_nav_clicked` — A link to that page from the home page: `from_scene`, and `surface: 'menu'`
+  when it came from the rail's menu (the phone bar sends no `surface`)
+- `page_nav_clicked` — A link in the secondary pages' header (`PageNav`): `destination`
+  (`liner-notes`, `how-it-works`, `whats-playing`, `about`), `current`. Its Ask link sends
+  `ask_archive_nav_clicked` with `surface: 'pagenav'` instead
 
 ### Scene-Specific Events
 
@@ -320,8 +327,9 @@ fires these itself.
 - `ask_deeplink_clicked` with `kind: media_viewer` — "The whole night" in Ask's media viewer, which
   leaves for the gatefold. Opening a photo or clip from a card no longer leaves Ask: it fires
   `ask_photo_opened` or `ask_deeplink_clicked` as before, then `media_viewed` with `surface: ask`
-- `ask_opened` — `surface` (`kbd`, `scene`, `prompt`, `shared`, `return`). `return` is "Back to
-  Ask", or the browser's Back to the page Ask was left from
+- `ask_opened` — `surface` (`kbd`, `scene`, `prompt`, `shared`, `return`, `rail`). `return` is "Back to
+  Ask", or the browser's Back to the page Ask was left from. `rail` is the magnifying glass at the top
+  of the desktop scene rail
 - `ask_closed` — `reason` (`dismiss`, `promote`, `leave`), `turn_count`. `leave` means a link in an
   answer took the visitor elsewhere and the conversation was kept for "Back to Ask"
 - `ask_suggested_prompt_clicked` — An idea or a follow-up that asks for the visitor: `prompt`,
@@ -339,14 +347,16 @@ fires these itself.
 
 **How It Works (`/how-it-works` and its chapters):**
 - `how_it_works_chapter_clicked` — A chapter card or "All chapters": `chapter` (a chapter id from
-  `src/components/how-it-works/chapters.ts`, `index`, or `about-mcp`), `surface` (`index`, or
-  `footer:<chapter>` for the "More from How It Works" footer)
+  `src/components/how-it-works/chapters.ts`, `index`, or `about-mcp`), `surface` (`index`, `about`
+  for the About page's cards, or `footer:<chapter>` for the "More from How It Works" footer)
 - `how_it_works_hood_opened` — An "Under the hood" panel opened: `chapter`, `section`
 - `how_it_works_diagram_played` — A diagram's play button: `chapter`, `diagram` (`round-trip`,
   `fingerprint`); the round trip adds `mode` (`simple`, `hood`)
 - `how_it_works_diagram_mode_changed` — The Simple / Under the hood toggle: `chapter`, `diagram`, `mode`
 - `how_it_works_diagram_step` — A Fingerprint step chosen by hand: `chapter`, `diagram`, `step` (1–4)
-- `how_it_works_example_selected` — A record on the Honesty Ladder: `chapter`, `example`, `surface` (`chip`, or `hint` for the "Now try …" line)
+- `how_it_works_example_selected` — An example picked in a chapter (a record on the Honesty Ladder, a
+  concert in "A row in a spreadsheet"): `chapter`, `example`, `surface` (`chip`, or `hint` for the
+  "Now try …" line)
 
 `chapter`, `section`, `diagram`, `mode`, `step` and `example` need registering as GA4 custom
 dimensions after deploy (Step 6).

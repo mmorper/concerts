@@ -6,34 +6,14 @@
  * (docs/specs/implemented/global-now-spinning/global-now-spinning-spec.md) and the code; home-network
  * specifics (addresses, hostnames, what else runs on the Pi, how tokens are kept) stay out.
  */
-import type { ReactNode } from 'react'
 import { motion, MotionConfig } from 'framer-motion'
 import { PageNav } from '../../liner-notes/PageNav'
-import { Hood, MoreChapters, usePageTitle } from '../shared'
+import { Hood, MoreChapters, Prose, Section, Wide, usePageTitle } from '../shared'
 import { RoundTrip } from './RoundTrip'
 import { Fingerprint } from './Fingerprint'
 import { HonestyLadder } from './HonestyLadder'
 import { Memory } from './Memory'
 import { Heartbeat } from './Heartbeat'
-
-function Section({ id, step, title, children }: { id: string; step?: string; title: string; children: ReactNode }) {
-  return (
-    <section id={id} aria-labelledby={`${id}-h`} className="mt-20 sm:mt-24">
-      {step && (
-        <div className="hiw-step mb-3" style={{ color: 'var(--hiw-dot)' }}>
-          {step}
-        </div>
-      )}
-      <h2 id={`${id}-h`} className="hiw-h2 mb-6">
-        {title}
-      </h2>
-      {children}
-    </section>
-  )
-}
-
-const Prose = ({ children }: { children: ReactNode }) => <div className="hiw-prose">{children}</div>
-const Wide = ({ children }: { children: ReactNode }) => <div className="my-10 -mx-1 sm:-mx-8 lg:-mx-24">{children}</div>
 
 export function NowSpinningChapter() {
   usePageTitle('How Now Spinning Works | Morperhaus Concert Archives')
@@ -56,7 +36,7 @@ export function NowSpinningChapter() {
               Now Spinning
             </h1>
             <p className="hiw-dek font-sans mt-4" style={{ fontSize: 'clamp(19px, 2.4vw, 22px)', lineHeight: 1.5, color: 'var(--hiw-ink-2)' }}>
-              When I play a record, the TV shows the song and the concerts where I heard it live.
+              Play a record, and the TV shows where I heard it live.
             </p>
           </motion.header>
 

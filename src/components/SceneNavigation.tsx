@@ -1,10 +1,11 @@
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, useRef, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { haptics } from '../utils/haptics'
 import { analytics } from '../services/analytics'
 import { useActiveScene } from '../hooks/useActiveScene'
 import { SCENE_MAP } from './changelog/constants'
+import { useAsk } from './ask/AskProvider'
 
 const NAV_LINKS = [
   // Ask leads (#142). Like the rail's scene dots it's a button that scrolls to its scene, not a
@@ -12,11 +13,19 @@ const NAV_LINKS = [
   // redirects to it), so CTAs/shared links don't need this to be an anchor.
   { to: '/ask', label: 'Ask', event: 'ask_archive_nav_clicked', ask: true },
   { to: '/liner-notes', label: 'Liner Notes', event: 'liner_notes_nav_clicked' },
-  { to: '/whats-playing', label: "What's Playing", event: 'whats_playing_nav_clicked' },
+  { to: '/how-it-works', label: 'How It Works', event: 'how_it_works_nav_clicked' },
   { to: '/about', label: 'About', event: 'about_nav_clicked' },
 ] as const
 
-// Ask is the last scene (from the canonical roster); the data dots cover the rest.
+/** The desktop rail's "more" menu: the pages about the site. */
+const MORE_LINKS = [
+  { to: '/liner-notes', label: 'Liner Notes', note: 'Stories from the archive', event: 'liner_notes_nav_clicked' },
+  { to: '/how-it-works', label: 'How It Works', note: 'The machinery, explained', event: 'how_it_works_nav_clicked' },
+  { to: '/whats-playing', label: "What's Playing", note: 'What changed, and when', event: 'whats_playing_nav_clicked' },
+  { to: '/about', label: 'About', note: 'Who, and why', event: 'about_nav_clicked' },
+] as const
+
+// Ask is the last scene (from the canonical roster). It is the sixth dot; the magnifier opens its ⌘K panel.
 const ASK_SCENE = SCENE_MAP.ask
 
 const scenes = [
@@ -25,6 +34,7 @@ const scenes = [
   { id: 3, label: 'Map' },
   { id: 4, label: 'Genres' },
   { id: 5, label: 'Artists' },
+  { id: 6, label: 'Ask the Archive' },
 ]
 
 export function SceneNavigation() {
@@ -32,10 +42,38 @@ export function SceneNavigation() {
   // can never disagree on the active scene.
   const { scene: activeScene, isScrolling } = useActiveScene({ sceneCount: ASK_SCENE })
   const [revealedLabel, setRevealedLabel] = useState<number | null>(null)
+  const { openSpotlight } = useAsk()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const moreButton = useRef<HTMLButtonElement>(null)
+
+  // The "more" menu closes on Escape (returning focus to its button), on a click outside it, and
+  // when a scroll starts.
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false)
+        moreButton.current?.focus()
+      }
+    }
+    const onDown = (e: PointerEvent) => {
+      if (!menuRef.current?.contains(e.target as Node)) setMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', onDown)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', onDown)
+    }
+  }, [menuOpen])
 
   // Dismiss any revealed dot-label as soon as the user starts scrolling.
   useEffect(() => {
-    if (isScrolling) setRevealedLabel(null)
+    if (isScrolling) {
+      setRevealedLabel(null)
+      setMenuOpen(false)
+    }
   }, [isScrolling])
 
   // Auto-dismiss label after 3 seconds
@@ -70,19 +108,8 @@ export function SceneNavigation() {
 
   // Scenes 1 (Timeline) and 5 (Artists) are light backgrounds; the rest are dark.
   const onLight = [1, 5].includes(activeScene)
-  const railLabel = onLight ? 'rgba(30,41,59,0.55)' : 'rgba(255,255,255,0.4)'
   const railEdge = onLight ? 'rgba(30,41,59,0.15)' : 'rgba(255,255,255,0.1)'
-
-  // Shared vertical-text style for the rail's two destination labels.
-  const vLabel = (color: string) => ({
-    fontSize: 11,
-    letterSpacing: '0.12em',
-    textTransform: 'uppercase' as const,
-    color,
-    writingMode: 'vertical-rl' as const,
-    transform: 'rotate(180deg)',
-    lineHeight: 1,
-  })
+  const railIcon = onLight ? 'rgba(30,41,59,0.7)' : 'rgba(255,255,255,0.7)'
 
   return (
     <>
@@ -96,28 +123,25 @@ export function SceneNavigation() {
           viewport middle. "Ask the Archive" (above) and "Liner Notes" (below) are floated out of
           flow, so their unequal heights never shift the dots off center. */}
       <div className="relative flex flex-col gap-3 items-center">
-        {/* Ask the Archive — goes to the Ask scene (scene 6), like the dots go to theirs. It used to
-            open the ⌘K overlay over the current scene, which read as a broken link: a label that
-            names a scene should take you to it. ⌘K and `/` still open the overlay from anywhere.
-            Brightens when you're on the Ask scene, so it doubles as the "you're here" cue. */}
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center gap-2.5">
+        {/* Search: opens Ask's ⌘K panel where you are. The sixth dot is the way to the Ask scene;
+            this is the way to ask from anywhere. Floated out of flow, like the menu below, so the
+            dots stay centred on the viewport. */}
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center gap-2">
           <button
             type="button"
-            className="group flex items-center justify-center min-w-[44px]"
-            aria-label="Go to Ask the Archive"
-            onClick={() => {
-              analytics.trackEvent('ask_archive_nav_clicked', { surface: 'rail', from_scene: activeScene })
-              scrollToScene(ASK_SCENE)
-            }}
+            className="group relative flex items-center justify-center min-w-[44px] min-h-[40px]"
+            aria-label="Ask the Archive (⌘K)"
+            onClick={() => openSpotlight('rail')}
           >
-            <span
-              className="font-sans transition-colors duration-200"
-              style={vLabel(activeScene === ASK_SCENE ? 'rgba(255,255,255,0.9)' : railLabel)}
-            >
-              Ask the Archive
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={railIcon} strokeWidth="2.2" strokeLinecap="round" aria-hidden="true" className="transition-opacity duration-200 opacity-80 group-hover:opacity-100">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <line x1="15.5" y1="15.5" x2="20.5" y2="20.5" />
+            </svg>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg pointer-events-none">
+              Ask the Archive <span style={{ opacity: 0.6, marginLeft: 6 }}>⌘K</span>
             </span>
           </button>
-          <span aria-hidden="true" style={{ width: 18, height: 1, background: railEdge }} />
+          <span aria-hidden="true" style={{ width: 14, height: 1, background: railEdge }} />
         </div>
 
         {scenes.map((scene) => (
@@ -164,19 +188,66 @@ export function SceneNavigation() {
           </button>
         ))}
 
-        {/* Liner Notes — floated below the dots (mirrors the Ask block above) */}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 flex flex-col items-center gap-2.5">
-          <span aria-hidden="true" style={{ width: 18, height: 1, background: railEdge }} />
-          <Link
-            to="/liner-notes"
-            className="group flex items-center justify-center min-w-[44px]"
-            aria-label="Go to Liner Notes"
-            onClick={() => analytics.trackEvent('liner_notes_nav_clicked', { from_scene: activeScene })}
+        {/* More: the pages about the site, behind one quiet mark (no text on the rail). */}
+        <div ref={menuRef} className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-2">
+          <span aria-hidden="true" style={{ width: 14, height: 1, background: railEdge }} />
+          <button
+            ref={moreButton}
+            type="button"
+            className="group relative flex items-center justify-center min-w-[44px] min-h-[36px]"
+            aria-label="More: Liner Notes, How It Works, What's Playing, About"
+            aria-expanded={menuOpen}
+            aria-controls="site-more-menu"
+            onClick={() => {
+              if (!menuOpen) analytics.trackEvent('site_menu_opened', { from_scene: activeScene })
+              setMenuOpen((o) => !o)
+            }}
           >
-            <span className="font-sans transition-colors duration-200" style={vLabel(railLabel)}>
-              Liner Notes
+            <span className="flex gap-[3px] transition-opacity duration-200 opacity-80 group-hover:opacity-100" aria-hidden="true">
+              {[0, 1, 2].map((k) => (
+                <span key={k} style={{ width: 3.5, height: 3.5, borderRadius: '50%', background: railIcon }} />
+              ))}
             </span>
-          </Link>
+            {!menuOpen && (
+              <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 whitespace-nowrap bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg pointer-events-none">
+                More
+              </span>
+            )}
+          </button>
+          {menuOpen && (
+            <motion.nav
+              id="site-more-menu"
+              aria-label="More"
+              initial={{ opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.18, ease: [0.2, 0.7, 0.3, 1] }}
+              className="absolute right-12 bottom-0 w-60 rounded-2xl p-2"
+              style={{
+                background: 'rgba(30,27,75,0.92)',
+                border: '1px solid rgba(165,180,252,0.18)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                boxShadow: '0 24px 60px rgba(0,0,0,0.4)',
+              }}
+            >
+              {MORE_LINKS.map((m) => (
+                <Link
+                  key={m.to}
+                  to={m.to}
+                  className="block rounded-xl px-3 py-2.5 hover:bg-white/10 focus-visible:bg-white/10 outline-none transition-colors"
+                  onClick={() => {
+                    analytics.trackEvent(m.event, { from_scene: activeScene, surface: 'menu' })
+                    setMenuOpen(false)
+                  }}
+                >
+                  <span className="block font-sans text-sm font-semibold text-white">{m.label}</span>
+                  <span className="block font-sans text-xs" style={{ color: 'rgba(199,210,254,0.7)' }}>
+                    {m.note}
+                  </span>
+                </Link>
+              ))}
+            </motion.nav>
+          )}
         </div>
       </div>
     </motion.div>

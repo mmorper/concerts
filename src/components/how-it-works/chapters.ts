@@ -18,14 +18,14 @@ export const CHAPTERS: Chapter[] = [
   {
     id: 'the-archive',
     path: '/how-it-works/the-archive',
-    title: 'The Enrichment Cascade',
-    dek: 'How three words in a spreadsheet become four decades of live music: photos, maps, setlists and sound.',
+    title: 'How the Archive Is Built',
+    dek: 'A few words in a spreadsheet become four decades of live music: maps, photos, setlists and sound.',
   },
   {
     id: 'now-spinning',
     path: '/how-it-works/now-spinning',
     title: 'Now Spinning',
-    dek: 'When I play a record, the TV shows the song and the concerts where I heard it live. Here’s how.',
+    dek: 'Play a record, and the TV shows where I heard it live. Here’s how.',
   },
 ]
 

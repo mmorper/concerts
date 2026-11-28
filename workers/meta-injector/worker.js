@@ -1127,10 +1127,10 @@ async function injectHowItWorksMeta(html, origin, ctx, pathname = '/how-it-works
 
     const chapter = pathname === '/how-it-works/the-archive';
     const title = chapter
-      ? `How It Works: The Enrichment Cascade | Morperhaus Concert Archives`
+      ? `How the Archive Is Built | Morperhaus Concert Archives`
       : `How It Works | Morperhaus Concert Archives`;
     const description = chapter
-      ? `See how ${concertCount} concerts come to life. An interactive walkthrough of the data enrichment pipeline — from a single artist, venue, and date through seven APIs across six tiers, building ${yearSpan} years of live music history.`
+      ? `How ${concertCount} rows in a spreadsheet become ${yearSpan} years of live music: the weekly build, the outside services it asks, and how every band, venue and night is matched, explained step by step.`
       : `The machinery behind ${concertCount} concerts and ${yearSpan} years of live music, explained for the curious: how the archive is built, and how the turntable in the living room knows when a song was heard live.`;
     const pageUrl = `${origin}${chapter ? pathname : '/how-it-works'}`;
 

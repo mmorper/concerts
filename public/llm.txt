@@ -485,15 +485,15 @@ default view.
 **Purpose:** The landing page for the archive's explainers, one chapter per system. Each chapter tells the story first, with "Under the hood" panels for engineering detail.
 
 **Chapters:**
-- `/how-it-works/the-archive`: The Enrichment Cascade
+- `/how-it-works/the-archive`: How the Archive Is Built
 - `/how-it-works/now-spinning`: Now Spinning
 
 **Meta Tags (bot-rendered):**
 - Dynamic description including current concert count and year span
 - URL: https://concerts.morperhaus.org/how-it-works
 
-#### How It Works: The Enrichment Cascade (`/how-it-works/the-archive`)
-**Title:** "How It Works: The Enrichment Cascade | Morperhaus Concert Archives"
+#### How It Works: How the Archive Is Built (`/how-it-works/the-archive`)
+**Title:** "How the Archive Is Built | Morperhaus Concert Archives"
 **Purpose:** Interactive explainer showing how a single concert entry flows through the data enrichment pipeline. `/cascade` redirects here.
 
 **What it does:**

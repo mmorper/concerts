@@ -117,3 +117,24 @@ export function MoreChapters({ current }: { current: string }) {
     </section>
   )
 }
+
+/** A chapter section: an optional step label, a heading, then its content. */
+export function Section({ id, step, title, children }: { id: string; step?: string; title: string; children: ReactNode }) {
+  return (
+    <section id={id} aria-labelledby={`${id}-h`} className="mt-20 sm:mt-24">
+      {step && (
+        <div className="hiw-step mb-3" style={{ color: 'var(--hiw-dot)' }}>
+          {step}
+        </div>
+      )}
+      <h2 id={`${id}-h`} className="hiw-h2 mb-6">
+        {title}
+      </h2>
+      {children}
+    </section>
+  )
+}
+
+export const Prose = ({ children }: { children: ReactNode }) => <div className="hiw-prose">{children}</div>
+/** Diagrams break out of the text column on wider screens. */
+export const Wide = ({ children }: { children: ReactNode }) => <div className="my-10 -mx-1 sm:-mx-8 lg:-mx-24">{children}</div>

@@ -346,10 +346,10 @@ describe('meta-injector worker', () => {
     it('describes the How It Works landing page as the section, and the cascade as its chapter', async () => {
       const landing = await headOf('/how-it-works')
       expect(landing).toContain('<title>How It Works | Morperhaus Concert Archives</title>')
-      expect(landing).not.toContain('seven APIs across six tiers')
+      expect(landing).not.toContain('rows in a spreadsheet become')
       const cascade = await headOf('/how-it-works/the-archive')
-      expect(cascade).toContain('How It Works: The Enrichment Cascade')
-      expect(cascade).toContain('seven APIs across six tiers')
+      expect(cascade).toContain('<title>How the Archive Is Built | Morperhaus Concert Archives</title>')
+      expect(cascade).toContain('rows in a spreadsheet become')
     })
 
     it('leaves the homepage canonical on the homepage', async () => {
